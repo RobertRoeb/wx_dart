@@ -82,18 +82,22 @@ class WxStopWatch {
     return _stopWatch.elapsedMicroseconds + _startValue*1000;
   }
 
+  /// Stops the stop watch and resets it
   void stop() {
     _stopWatch.reset();
   }
 
+  /// Resumes the stop watch
   void resume() {
     _stopWatch.start();
   }
 
+  /// Pauses
   void pause() {
     _stopWatch.stop();
   }
 
+  /// Returns true if stop watch is currently running
   bool isRunning() {
     return _stopWatch.isRunning;
   }
@@ -113,6 +117,7 @@ class WxSelectionStore
 
     void setItemCount(int count) {}
 
+    /// Clears the selection store
     void clear() { 
       _itemsSel.clear();
     }

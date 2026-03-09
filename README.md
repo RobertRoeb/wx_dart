@@ -56,14 +56,6 @@ wxDart aims to provide Dart bindings to the wxWidgets library very similar to th
 
 If you are coming from the Flutter world, consider wxDart a new toolkit based on the Flutter core (next to [Material UI](https://flutter.dev/docs/development/ui/widgets/material), [Cupertino UI](https://flutter.dev/docs/development/ui/widgets/cupertino), [MacOS UI](https://pub.dev/packages/macos_ui) or [Fluent UI](https://pub.dev/packages/fluent_ui)), but with a fully native twin brother library and a single code base for all of them.
 
-## Web app example
-
-Here is an example of a wxDart web app running in this HTML page. Click on the button or the menu
-to start to start the fireworks animation.<BR>
-<iframe width=100% height=300 title="Hello world"
- src="https://wxdesigner-software.com/demo03?tutorial=Fireworks">
-</iframe><BR>
-
 
 ## Installation of wxDart Flutter
 To use wxDart Flutter, add wx_dart as a dependency in your pubspec.yaml file.
@@ -330,43 +322,11 @@ Here is a link to the [demo app](https://wxdesigner-software.com/demo03) (writte
 
 ## Web app tutorials
 
-Here are samples from the tutorials that you can run in the window.<BR>
-
-Hello World<BR>
-This sample shows a minimal Hello World app. The app will adapt to screen size and
-switch between desktop mode (optmized for alrge screens and mouse usage) and a 
-touch mode (optimized for small screens and finger touch).<BR>
-<iframe width=100% height=350 title="Hello world"
- src="https://wxdesigner-software.com/demo03?tutorial=tut06">
-</iframe><BR>
-Colour themes<BR>
-In this sample you can choose between light and dark modes and different colour
-themes from the menu.<BR>
-<iframe width=100% height=350 title="Hello world"
- src="https://wxdesigner-software.com/demo03?tutorial=tut02">
-</iframe><BR>
-Sizers<BR>
-This sample shows the layout system of wxDart based on so-called sizers that 
-easily let you define layout rules that adapt when resizing the window.<BR>
-<iframe width=100% height=350 title="Hello world"
- src="https://wxdesigner-software.com/demo03?tutorial=tut07">
-</iframe><BR>
-Showing a long vertical list of item - a typical smart phone interface.<BR>
-<iframe width=330 height=400 title="Hello world"
- src="https://wxdesigner-software.com/demo03?tutorial=tut11">
-</iframe><BR>
+Here are samples from the [tutorials](https://wxdesigner-software.com/tutorial01) that you can run in the window.<BR>
 
 ## Screencasts from the demo
-wxDart Native on macOS Tahoe.<BR>
-<img src="https://wxdesigner-software.com/resources/macOS.gif" width="75%"/><BR>
-wxDart Native on Windows 11.<BR>
-<img src="https://wxdesigner-software.com/resources/WindowsLight.gif" width="75%"/><BR>
-wxDart Native on Linux Ubuntu.<BR>
-<img src="https://wxdesigner-software.com/resources/Linux.gif" width="75%"/><BR>
-wxDart Flutter on the Web.<BR>
-<img src="https://wxdesigner-software.com/resources/WebTheme.gif" width="75%"/><BR>
-wxDart Flutter on iPhone and mobile web.<BR>
-<img src="https://wxdesigner-software.com/resources/iPhone.gif" width="75%"/><BR>
+
+Here are [screencasts](https://wxdesigner-software.com/screenshots) from the demo running on different platforms.<BR>
 
 ## Hello world
 ```dart

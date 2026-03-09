@@ -364,6 +364,12 @@ abstract class WxDataViewModel
 // ------------------- wxDataViewListModel -------------------
 
 /// Abstract [WxDataViewModel] simplified for tabular data.
+/// 
+/// Need to override
+/// * [getValueByRow]
+/// * [setValueByRow]
+/// * [getRow]
+/// * [getCount]
 
 abstract class WxDataViewListModel extends WxDataViewModel {
   WxDataViewListModel();
@@ -392,40 +398,48 @@ abstract class WxDataViewListModel extends WxDataViewModel {
   /// Needs to be overridden to return the number of rows
   int getCount();
 
+  /// Always returns invalid (root) itemsDeleted
   @override
   WxDataViewItem getParent( WxDataViewItem item ) {
     return WxDataViewItem();
   }
 
+  /// Always returns false for list model
   @override
   bool isContainer( WxDataViewItem item ) {
     return false;
   }
 
+  /// Overrides base function converting to call [getValueByRow]
   @override
   dynamic getValue( WxDataViewItem item, int column ) {
     return getValueByRow( getRow(item), column );
   }
 
+  /// Overrides base function converting to call [setValueByRow]
   @override
   bool setValue( dynamic value, WxDataViewItem item, int column ) {
     return setValueByRow( value, getRow(item), column );
   }
 
+  /// Override this to give row an attribute
   WxDataViewItemAttr? getAttrByRow( int row , int col) {
     return null;
   }
 
+  /// Overrides base function converting to call [getAttrByRow]
   @override
   WxDataViewItemAttr? getAttr( WxDataViewItem item, int col) {
     return getAttrByRow( getRow(item), col );
   }
 
+  /// Overrides base function converting to call [isEnabledByRow]
   @override
   bool isEnabled( WxDataViewItem item, int column ) {
     return isEnabledByRow( getRow(item), column );
   }
 
+  /// Always returns true for list model
   @override
   bool isListModel() {
     return true;
@@ -615,6 +629,35 @@ class WxDataViewListStore extends WxDataViewVirtualListModel
 ///     // delete the first
 ///     listctrl.deleteItem( 0 );
 /// ```
+///
+/// Adding columns
+/// * [appendTextColumn]
+/// * [appendBitmapColumn]
+/// * [appendToggleColumn]
+/// * [appendProgressColumn]
+/// * [appendChoiceColumn]
+/// * [appendIconTextColumn]
+/// * [appendColumnWithType]
+/// * [prependColumnWithType]
+/// * [insertColumnWithType]
+///
+/// Adding and removing rows
+/// * [appendItem]
+/// * [prependItem]
+/// * [insertItem]
+/// * [deleteItem]
+/// * [deleteAllItem]
+/// * [getItemCount]
+///
+/// Conversion between rows and items
+/// * [rowToItem]
+/// * [itemToRow]
+///
+/// Selection
+/// * [selectRow]
+/// * [unselectRow]
+/// * [getSelectedRow]
+/// * [isRowSelected]
 
 class WxDataViewListCtrl extends WxDataViewCtrl {
   WxDataViewListCtrl( super.parent, super.id, { super.pos = wxDefaultPosition, super.size = wxDefaultSize, super.style = 0 } ) {
@@ -719,6 +762,7 @@ class WxDataViewListCtrl extends WxDataViewCtrl {
     insertColumn(pos, column);
   }
 
+  /// Appends text column
   void appendTextColumn( String label, { int mode = wxDATAVIEW_CELL_EDITABLE, int width = wxCOL_WIDTH_DEFAULT, int align = wxALIGN_LEFT, int flags = wxDATAVIEW_COL_RESIZABLE } ) {
     _store._columns.add( "string" );
     final renderer = WxDataViewTextRenderer( mode: mode );
@@ -726,6 +770,7 @@ class WxDataViewListCtrl extends WxDataViewCtrl {
     appendColumn( dvc );
   }
 
+  /// Appends bitmap column
   void appendBitmapColumn( String label, { int mode = wxDATAVIEW_CELL_INERT, int width = wxCOL_WIDTH_DEFAULT, int align = wxALIGN_LEFT, int flags = wxDATAVIEW_COL_RESIZABLE } ) {
     _store._columns.add( "bitmap" );
     final renderer = WxDataViewBitmapRenderer( mode: mode );
@@ -733,6 +778,7 @@ class WxDataViewListCtrl extends WxDataViewCtrl {
     appendColumn( dvc );
   }
 
+  /// Appends toggle column
   void appendToggleColumn( String label, { int mode = wxDATAVIEW_CELL_ACTIVATABLE, int width = wxCOL_WIDTH_DEFAULT, int align = wxALIGN_LEFT, int flags = wxDATAVIEW_COL_RESIZABLE } ) {
     _store._columns.add( "bool" );
     final renderer = WxDataViewToggleRenderer( mode: mode );
@@ -740,6 +786,7 @@ class WxDataViewListCtrl extends WxDataViewCtrl {
     appendColumn( dvc );
   }
 
+  /// Appends progress column
   void appendProgressColumn( String label, { int mode = wxDATAVIEW_CELL_INERT, int width = wxCOL_WIDTH_DEFAULT, int align = wxALIGN_LEFT, int flags = wxDATAVIEW_COL_RESIZABLE } ) {
     _store._columns.add( "long" );
     final renderer = WxDataViewProgressRenderer( mode: mode );  
@@ -747,6 +794,7 @@ class WxDataViewListCtrl extends WxDataViewCtrl {
     appendColumn( dvc );
   }
 
+  /// Appends choice column
   void appendChoiceColumn( String label, List<String> choices,{ int mode = wxDATAVIEW_CELL_EDITABLE, int width = wxCOL_WIDTH_DEFAULT, int align = wxALIGN_LEFT, int flags = wxDATAVIEW_COL_RESIZABLE } ) {
     _store._columns.add( "long" );
     final renderer = WxDataViewChoiceRenderer( choices, mode: mode );  
@@ -754,6 +802,7 @@ class WxDataViewListCtrl extends WxDataViewCtrl {
     appendColumn( dvc );
   }
 
+  /// Appends icon+text column
   void appendIconTextColumn( String label, { int mode = wxDATAVIEW_CELL_INERT, int width = wxCOL_WIDTH_DEFAULT, int align = wxALIGN_LEFT, int flags = wxDATAVIEW_COL_RESIZABLE } ) {
     _store._columns.add( (WxDataViewIconTextData).toString() );
     final renderer = WxDataViewIconTextRenderer();  
@@ -785,6 +834,11 @@ class WxDataViewListCtrl extends WxDataViewCtrl {
 ///      dataview.appendTile( leading, "Title in row #$i", "Medium text", small: "Small text at the bottom", trailing: trailing );
 ///    }
 /// ```
+/// 
+/// Adding tiles:
+/// * [appendTile]
+/// * [prependTile]
+/// * [insertTile]
 
 class WxDataViewTileListCtrl extends WxDataViewListCtrl {
   WxDataViewTileListCtrl( super.parent, super.id, int height, int margins,
@@ -978,6 +1032,20 @@ class WxDataViewTreeStore extends WxDataViewModel
 /// tree.appendItem( root, null, "Branch 2" ); 
 /// tree.appendItem( root, null, "Branch 3" ); 
 /// ```
+/// 
+/// Adding/removing items:
+/// * [appendItem]
+/// * [deleteItem]
+/// * [deleteAllItems]
+/// 
+/// Changing an item:
+/// * [setValue]
+/// * [getItemText]
+/// * [setItemText]
+/// * [getItemText]
+/// * [setItemData]
+/// * [getItemData]
+
 class WxDataViewTreeCtrl extends WxDataViewCtrl {
   WxDataViewTreeCtrl( super.parent, super.id, { super.pos = wxDefaultPosition, super.size = wxDefaultSize, super.style = wxDV_NO_HEADER } ) {
     _store = WxDataViewTreeStore();
@@ -1064,16 +1132,20 @@ class WxDataViewBookStore extends WxDataViewTreeStore {
   WxDataViewItemAttr? _header2;
   WxDataViewItemAttr? _header3;
 
+  /// Sets the attributes of the top level header
   void setHeaderOneAttr( WxDataViewItemAttr? attr ) {
     _header1 = attr;
   }
+  /// Sets the attributes of the second level header
   void setHeaderTwoAttr( WxDataViewItemAttr? attr ) {
     _header2 = attr;
   }
+  /// Sets the attributes of the third level header
   void setHeaderThreeAttr( WxDataViewItemAttr? attr ) {
     _header3 = attr;
   }
 
+  /// Overridden to return header attributes based on branch depth
   @override
   WxDataViewItemAttr? getAttr( WxDataViewItem item, int col)
   {
@@ -1114,6 +1186,24 @@ class WxDataViewChapterRenderer extends WxDataViewIconTextRenderer {
 /// It uses [WxDataViewBookStore] internally to store the data and styling and
 /// it is - in turn - used internally by [WxDataViewBook] to implement a book
 /// control (letting the user choose a chapter or page). 
+/// 
+/// Adding/removing items:
+/// * [appendItem]
+/// * [deleteItem]
+/// * [deleteAllItems]
+/// 
+/// Changing an item:
+/// * [setValue]
+/// * [getItemText]
+/// * [setItemText]
+/// * [getItemText]
+/// * [setItemData]
+/// * [getItemData]
+/// 
+/// Changing formatting of headers:
+/// * [setHeaderOneAttr]
+/// * [setHeaderTwoAttr]
+/// * [setHeaderThreeAttr]
 
 class WxDataViewChapterCtrl extends WxDataViewCtrl {
   WxDataViewChapterCtrl( super.parent, super.id, { super.pos = wxDefaultPosition, super.size = wxDefaultSize, 
@@ -1136,12 +1226,15 @@ class WxDataViewChapterCtrl extends WxDataViewCtrl {
     associateModel( _store );
   }
 
+  /// Calls [WxDataViewBookStore.setHeaderOneAttr]
   void setHeaderOneAttr( WxDataViewItemAttr? attr ) {
     _store.setHeaderOneAttr( attr );
   }
+  /// Calls [WxDataViewBookStore.setHeaderTwoAttr]
   void setHeaderTwoAttr( WxDataViewItemAttr? attr ) {
     _store.setHeaderTwoAttr( attr );
   }
+  /// Calls [WxDataViewBookStore.setHeaderThreeAttr]
   void setHeaderThreeAttr( WxDataViewItemAttr? attr ) {
     _store.setHeaderThreeAttr( attr );
   }
