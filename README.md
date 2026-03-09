@@ -5,7 +5,6 @@ Build web apps, mobile apps and native desktop apps from a single source using t
 ## Table of contents
 
 * [Introduction](#wxdart-flutter-and-wxdart-native)
-* [Fireworks web app example](#web-app-example)
 * [Installation](#installation-of-wxdart-flutter)
 * [Licence](#licence)
 * [Classes by Category](#classes-by-category)
