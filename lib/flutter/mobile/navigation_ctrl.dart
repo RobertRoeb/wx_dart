@@ -10,8 +10,57 @@ part of '../../wx_dart.dart';
 /// The standard main window of most smart phone apps with 
 /// three to five icons at the bottom of the smart phone screen.
 /// 
-/// This control is emulated on desktop platforms in wxDart Native
-/// but uses the UITabBar in wxDart Native on iOS.
+/// In wxDart Native, [WxNavigatonCtrl] is emulated using a wxToolBook
+/// on desktop platforms, but is natively implemented on iOS.
+/// 
+///```dart
+///  // create navigation control
+///  final navi = WxNavigationCtrl(this,-1);
+///
+///  // create image list
+///  List<WxBitmapBundle> images = [];
+/// 
+///  // add images to image list
+///  images.add( WxBitmapBundle.fromMaterialIcon(WxMaterialIcon.home, WxSize(30,30) ) );
+///  images.add( WxBitmapBundle.fromMaterialIcon(WxMaterialIcon.info, WxSize(30,30) ) );
+///  images.add( WxBitmapBundle.fromMaterialIcon(WxMaterialIcon.tour, WxSize(30,30) ) );
+/// 
+///  // assign image list to navigation control
+///  navi.setImages(images);
+///
+///  // add pages to navigation control
+///  final home = MyHomePage( navi );
+///  navi.addPage(info, "Home", image: 0);
+/// 
+///  final home = MyInfoPage( navi );
+///  navi.addPage(info, "Info", image: 1);
+/// 
+///  final home = MyTourPage( navi );
+///  navi.addPage(info, "Tour", image: 2);
+///```
+/// 
+/// Page interface
+/// * [addPage]
+/// * [insertPage]
+/// * [findPage]
+/// * [getPage]
+/// * [deletePage]
+/// * [deleteAllPages]
+/// * [findPage]
+/// 
+/// Image interface
+/// * [setImages]
+/// * [hasImages]
+/// * [getImageCount]
+/// 
+/// Title interface
+/// * [setPageText]
+/// * [getPageText]
+/// 
+/// Selection interface
+/// * [setSelection]
+/// * [getSelection]
+/// * [getCurrentPage]
 
 class WxNavigationCtrl extends WxBookCtrlBase {
   WxNavigationCtrl( super.parent, super.id, { super.pos = wxDefaultPosition, super.size = wxDefaultSize, super.style = 0 } );

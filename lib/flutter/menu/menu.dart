@@ -129,6 +129,51 @@ const int wxMENU_TEAROFF = 0x0001;
 /// filemenu.appendItem( wxID_EXIT, "Quit app\tCtrl-Q", help: "Run, baby, run!" );
 /// ```
 /// 
+/// Adding items using [WxMenuItem] helper class
+/// * [append] 
+/// * [delete] 
+/// * [insert] 
+/// 
+/// Adding items
+/// * [appendItem]
+/// * [appendRadioItem]
+/// * [appendCheckItem]
+/// * [appendSubMenu]
+/// * [appendSeparator]
+/// * [insertItem]
+/// * [insertRadioItem]
+/// * [insertCheckItem]
+/// * [insertSubMenu]
+/// * [insertSeparator]
+/// 
+/// Other item interface
+/// * [deleteItem]
+/// * [enableItem]
+/// * [findItem]
+/// * [findItemByPosition]
+/// * [getMenuItemCount]
+/// Todo
+/// * [checkItem]
+/// * [isItemChecked]
+/// * [isItemEnabled]
+/// * [setLabel]
+/// * [getLabel]
+/// * [getLabelText]
+/// * [setHelpString]
+/// * [getHelpString]
+/// 
+/// 
+/// Parent class interface
+/// * [attach]
+/// * [detach]
+/// * [isAttached]
+/// * [setInvokingWindow]
+/// * [getInvokingWindow]
+/// 
+/// Title interface
+/// * [setTitle]
+/// * [getTitle]
+/// 
 /// # Command event emitted
 /// 
 /// [Menu](/wxdart/wxGetMenuEventType.html) event gets sent when user selects a menu item |

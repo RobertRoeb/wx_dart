@@ -142,6 +142,26 @@ const int wxMB_UNDERLINE = 0x0002;
 /// 
 /// ```
 /// 
+/// Menu interface
+/// * [append]
+/// * [insert]
+/// * [remove]
+/// * [getMenu]
+/// * [getMenuCount]
+/// 
+/// Menu item interface (iterate over menus and sub-menus)
+/// * [findItem]
+/// * [enableItem]
+/// * [checkItem]
+/// * [isItemEnabled]
+/// * [isItemChecked]
+/// 
+/// Parent class interface
+/// * [getFrame]
+/// * [attach]
+/// * [detach]
+/// * [isAttached]
+/// 
 /// # Constants
 /// | constant | meaning |
 /// | -------- | -------- |

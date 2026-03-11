@@ -59,7 +59,6 @@ const int wxBK_ALIGN_MASK = (wxBK_TOP | wxBK_BOTTOM | wxBK_LEFT | wxBK_RIGHT);
 /// * [getSelection]
 /// * [getCurrentPage]
 
-
 abstract class WxBookCtrlBase extends WxControl {
   WxBookCtrlBase( super.parent, super.id, { super.pos = wxDefaultPosition, super.size = wxDefaultSize, super.style = 0 } );
 

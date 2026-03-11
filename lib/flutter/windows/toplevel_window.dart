@@ -51,6 +51,47 @@ const int wxRESIZE_BORDER = 0x0040;
 /// Many of the functions in this class are not available in wxDart Flutter
 /// and do not make sense on mobile devices or in a web browser.
 /// 
+/// Showing and destroy interface
+/// * [show]
+/// * [hide]
+/// * [showFullScreen]
+/// * [isFullScreen]
+/// * [canSetTransparent]
+/// * [setTransparent]
+/// 
+/// Close/destroy/delete interface
+/// * [close]
+/// * [destroy]
+/// * [isBeingDeleted]
+/// 
+/// Window decorations
+/// * [setTitle]
+/// * [getTitle]
+/// * [enableCloseButton]
+/// * [enableMaximizeButton]
+/// * [enableMinimizeButton]
+/// * [enableFullScreenView]
+/// 
+///  Position, sizing and hints
+/// * [setSize]
+/// * [setPosition]
+/// * [centreOnScreen]
+/// * [getSize]
+/// * [getPosition]
+/// * [setMinSize]
+/// * [setMaxSize]
+/// 
+/// Window manager interface:
+/// * [raise]
+/// * [lower]
+/// * [maximize]
+/// * [minimize]
+/// * [restore]
+/// * [isAlwaysMaximized]
+/// * [requestUserAttention]
+/// TODO 
+/// * [iconize]
+/// * [setIcon]
 /// 
 /// ## flag constants
 /// | constant | value  |

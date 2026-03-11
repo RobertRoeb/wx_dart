@@ -128,6 +128,30 @@ const int wxNB_CLASSIC_THEME = 0x0800;
 ///     }, -1); 
 ///   }
 ///```
+///
+/// Page interface
+/// * [addPage]
+/// * [insertPage]
+/// * [findPage]
+/// * [getPage]
+/// * [deletePage]
+/// * [deleteAllPages]
+/// * [findPage]
+/// 
+/// Image interface
+/// * [setImages]
+/// * [hasImages]
+/// * [getImageCount]
+/// 
+/// Title interface
+/// * [setPageText]
+/// * [getPageText]
+/// 
+/// Selection interface
+/// * [setSelection]
+/// * [getSelection]
+/// * [getCurrentPage]
+/// 
 /// # Events emitted
 ///
 /// [NotebookPageChanged](/wxdart/wxGetNotebookPageChangedEventType.html) event gets sent when the changed the page |

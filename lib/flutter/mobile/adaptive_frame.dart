@@ -115,6 +115,25 @@ part of '../../wx_dart.dart';
 /// A classical feature on a small screen is a floating action button, usually
 /// placed in the right bottom corner of the screen.  It can be
 /// added to a [WxAdaptiveFrame] with [createFloatingActionButton].
+/// 
+/// Interface for main UI elements:
+/// * [createAppBar]
+/// * [getAppBar]
+/// * [createFloatingActionButton]
+/// * [getFloatingActionButton]
+/// 
+/// Inherited from [WxFrame]
+/// * [createStatusBar]
+/// * [getStatusBar]
+/// * [createToolBar]
+/// * [getToolBar]
+/// 
+/// Drawer interface:
+/// * [openDrawer]
+/// * [closeDrawer]
+/// * [setDrawerTitle]
+/// * [setDrawerFromWindow]
+/// * [setDrawerFromMenuBar]
 
 class WxAdaptiveFrame extends WxFrame {
   WxAdaptiveFrame( super._parent, super._id, super._title, { super.pos = wxDefaultPosition, super.size = wxDefaultSize, super.style = wxDEFAULT_FRAME_STYLE } );

@@ -80,6 +80,37 @@ extension TreebookNodeExpandedEventBinder on WxEvtHandler {
 /// tree.addPage(panel2, "Chapter 2", image: 0 );
 ///  // etc.
 /// ```
+/// 
+/// Page interface
+/// * [addPage]
+/// * [addSubPage]
+/// * [insertPage]
+/// * [insertSubPage]
+/// * [findPage]
+/// * [getPage]
+/// * [deletePage]
+/// * [deleteAllPages]
+/// * [findPage]
+/// 
+/// Image interface
+/// * [setImages]
+/// * [hasImages]
+/// * [getImageCount]
+/// 
+/// Title interface
+/// * [setPageText]
+/// * [getPageText]
+/// 
+/// Selection interface
+/// * [setSelection]
+/// * [getSelection]
+/// * [getCurrentPage]
+/// 
+/// Tree interface
+/// * [getPageParent]
+/// * [expandNode]
+/// * [collapseNode]
+/// * [isNodeExpanded]
 
 class WxTreebook extends WxBookCtrlBase {
   WxTreebook( super.parent, super.id, { super.pos, super.size, int flags = 0 } ) 

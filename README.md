@@ -1,10 +1,11 @@
 # wxDart
 
-Build web apps, mobile apps and native desktop apps from a single source using the Dart programming language.
+A cross-platform GUI library to build native desktop apps, web apps and mobile apps from a single source using the Dart programming language.
 
 ## Table of contents
 
 * [Introduction](#wxdart-flutter-and-wxdart-native)
+* [Screenshot](#screenshot)
 * [Installation](#installation-of-wxdart-flutter)
 * [Licence](#licence)
 * [Classes by Category](#classes-by-category)
@@ -21,8 +22,9 @@ Build web apps, mobile apps and native desktop apps from a single source using t
     - [Layout classes](#layout-classes)
     - [Event classes](#event-classes)
 * [Live web demo](#demo)
+* [More screenshot](#screenshots)
 * [Live tutorial apps](#web-app-tutorials)
-* [Screenshots (screencasts from desktops)](#screencasts-from-the-demo)
+* [Screencasts from desktops](#screencasts-from-the-demo)
 * [Hello World](#hello-world)
 * [Who is doing all this?](#who)
 * [Full Licence](#license-of-wxdart-flutter)
@@ -51,10 +53,18 @@ When using wxDart Flutter (this package), your applications will have an identic
 platforms (and on the web). With wxDart Native, your applications will have the native look and feel.
 
 wxDart aims to provide Dart bindings to the wxWidgets library very similar to the hugely popular
-[wxPython](https://wxpython.org/) for Python, adding support for mobile apps and web apps.
+[wxPython](https://wxpython.org/) for Python, with additional support for mobile devices and web apps.
 
 If you are coming from the Flutter world, consider wxDart a new toolkit based on the Flutter core (next to [Material UI](https://flutter.dev/docs/development/ui/widgets/material), [Cupertino UI](https://flutter.dev/docs/development/ui/widgets/cupertino), [MacOS UI](https://pub.dev/packages/macos_ui) or [Fluent UI](https://pub.dev/packages/fluent_ui)), but with a fully native twin brother library and a single code base for all of them.
 
+## Screenshot
+
+A screenshot showing the demo running side-by-side in a browser (wxDart Flutter, in light mode)
+and running natively on macOS Tahoe (wxDart Native, in dark mode). There are more screenshots
+[below](#screenshots) and you can run the entire demo in browser by clicking 
+[here](https://wxdesigner-software.com/demo03).
+
+![Web vs macOS](https://wxdesigner-software.com/resources/macOS_Web.png)
 
 ## Installation of wxDart Flutter
 To use wxDart Flutter, add wx_dart as a dependency in your pubspec.yaml file.
@@ -77,7 +87,7 @@ the interface to the respective platforms.
 
 'wxDart Flutter' is free software under the wxWindows licence. The wxWindows licence allows you to
 use 'wxDart Flutter' to create free and commercial software with no restrictions, but not to create
-a closed source competitor of the library itself.
+a closed source competitor of the library itself. See the [Licence](#license-of-wxdart-flutter) in full.
 
 'wxDart Native' is not open source.
 
@@ -319,6 +329,20 @@ Command events (deriving from WxCommandEvent)
 
 Here is a link to the [demo app](https://wxdesigner-software.com/demo03) (written in wxDart) running in your browser.<BR>
 
+## Screenshots
+
+Several pages from the demo running on the iPhone emulator:
+![iPhone](https://wxdesigner-software.com/resources/iPhone17.png)
+
+The demo running on Windows 11 in light mode
+![Windows 11 light mode](https://wxdesigner-software.com/resources/Windows11Small.png)
+
+The demo running on Windows 11 in dark mode
+![Windows 11 dark mode](https://wxdesigner-software.com/resources/Windows11DarkSmall.png)
+
+The demo running on Linux Ubuntu in dark mode
+![Linux Ubuntu](https://wxdesigner-software.com/resources/Ubuntu.png)
+
 ## Web app tutorials
 
 Here are samples from the [tutorials](https://wxdesigner-software.com/tutorial01) that you can run in the window.<BR>
@@ -404,7 +428,7 @@ void main()
 ## Developer
 This package is developed by wxDesigner Software.
 
-## License of wxDart Flutter (this package)
+## License of wxDart Flutter
 ```
 wxWindows Library Licence, Version 3.1
                 ======================================

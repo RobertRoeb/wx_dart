@@ -646,7 +646,7 @@ class WxDataViewListStore extends WxDataViewVirtualListModel
 /// * [prependItem]
 /// * [insertItem]
 /// * [deleteItem]
-/// * [deleteAllItem]
+/// * [deleteAllItems]
 /// * [getItemCount]
 ///
 /// Conversion between rows and items
