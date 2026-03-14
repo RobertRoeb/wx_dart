@@ -13,6 +13,7 @@ import '../assets/tut/tut09.dart' as tut09;
 import '../assets/tut/tut10.dart' as tut10;
 import '../assets/tut/tut11.dart' as tut11;
 import '../assets/tut/tut12.dart' as tut12;
+import '../assets/tut/tut13.dart' as tut13;
 
 
 // --------------------------- MyTutorialPage ----------------------------
@@ -92,6 +93,10 @@ class MyTutorialPage extends WxPanel
       } else 
       if (_tutorial == "tut12.dart") {
         final frame = tut12.MyFrame( parent );
+        frame.show();
+      } else 
+      if (_tutorial == "tut13.dart") {
+        final frame = tut13.MyFrame( parent );
         frame.show();
       } 
   }

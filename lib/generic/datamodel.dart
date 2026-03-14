@@ -906,12 +906,12 @@ class WxDataViewListCtrl extends WxDataViewCtrl {
 
   /// Returns the [WxDataViewItem] for the [row]
   WxDataViewItem rowToItem( int row ) {
-    return WxDataViewItem( index: row );
+    return WxDataViewItem( id: row );
   }
 
   /// Returns the row index of [item]
   int itemToRow( WxDataViewItem item ) {
-    return item.index;
+    return item.getID();
   }
 
   /// Selects the item in [row]

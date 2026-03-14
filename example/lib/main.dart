@@ -205,6 +205,7 @@ class MyMainFrame extends WxAdaptiveFrame {
     final tut08 = databook.appendPage( chapter2, null, "Dialog with data", MyTutorialPage(databook, -1, "tut08.dart") );
     final tut09 = databook.appendPage( chapter2, null, "Paint events", MyTutorialPage(databook, -1, "tut09.dart") );
     final tut10 = databook.appendPage( chapter2, null, "Scrolling", MyTutorialPage(databook, -1, "tut10.dart") );
+    final tut13 = databook.appendPage( chapter2, null, "Sorted table", MyTutorialPage(databook, -1, "tut13.dart") );
 
     // expand both chapters
     final datactrl = databook.getDataViewChapterCtrl();
@@ -246,6 +247,9 @@ class MyMainFrame extends WxAdaptiveFrame {
         } else
         if (tutorial == "tut10") {
           databook.setSelection(tut10);
+        } else
+        if (tutorial == "tut13") {
+          databook.setSelection(tut13);
         }
       }
     }
