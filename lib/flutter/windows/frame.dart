@@ -68,6 +68,56 @@ const int wxDEFAULT_FRAME_STYLE = (wxSYSTEM_MENU | wxRESIZE_BORDER | wxMINIMIZE_
 ///   }
 /// }
 /// ```
+/// 
+/// Showing and destroy interface
+/// * [show]
+/// * [hide]
+/// * [showFullScreen]
+/// * [isFullScreen]
+/// * [canSetTransparent]
+/// * [setTransparent]
+/// 
+/// Main UI elements
+/// * [setMenuBar]
+/// * [getMenuBar]
+/// * [findItemInMenuBar]
+/// * [createStatusBar]
+/// * [getStatusBar]
+/// * [setStatusText]
+/// * [createToolBar]
+/// * [getToolBar]
+/// 
+/// Close/destroy/delete interface
+/// * [close]
+/// * [destroy]
+/// * [isBeingDeleted]
+/// 
+/// Window decorations
+/// * [setTitle]
+/// * [getTitle]
+/// * [enableCloseButton]
+/// * [enableMaximizeButton]
+/// * [enableMinimizeButton]
+/// * [enableFullScreenView]
+/// 
+///  Position, sizing and hints
+/// * [setSize]
+/// * [setPosition]
+/// * [centreOnScreen]
+/// * [getSize]
+/// * [getPosition]
+/// * [setMinSize]
+/// * [setMaxSize]
+/// 
+/// Window manager interface:
+/// * [raise]
+/// * [lower]
+/// * [maximize]
+/// * [minimize]
+/// * [restore]
+/// * [isAlwaysMaximized]
+/// * [requestUserAttention]
+/// 
 /// # Constants
 /// | constant | meaning |
 /// | -------- | -------- |

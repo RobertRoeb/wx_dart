@@ -10,7 +10,7 @@ part of '../../wx_dart.dart';
 /// The standard main window of most smart phone apps with 
 /// three to five icons at the bottom of the smart phone screen.
 /// 
-/// In wxDart Native, [WxNavigatonCtrl] is emulated using a wxToolBook
+/// In wxDart Native, [WxNavigationCtrl] is emulated using a wxToolBook
 /// on desktop platforms, but is natively implemented on iOS.
 /// 
 ///```dart

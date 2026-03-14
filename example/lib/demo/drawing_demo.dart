@@ -33,7 +33,11 @@ class MyLinesWindow extends WxWindow {
 class MyShapesWindow extends WxWindow {
   MyShapesWindow( WxWindow parent, int style ) : super( parent, -1, wxDefaultPosition, WxSize( 200, 300), style )
   {
-    bindPaintEvent( (_) {
+    bindPaintEvent( onPaint );
+  }
+
+  void onPaint( WxPaintEvent event )
+  {
       final dc = WxPaintDC( this );
 
       dc.setPen( wxRED_PEN );
@@ -92,7 +96,16 @@ class MyShapesWindow extends WxWindow {
         points2.add( WxPoint( 400, 250 ) );
       dc.setPen( wxRED_PEN );
       dc.drawSpline(points2);
-    } );
+
+      // Polygon
+      final List<WxPoint> points3 = [];
+        points3.add( WxPoint( 170, 240 ) );
+        points3.add( WxPoint( 220, 220 ) );
+        points3.add( WxPoint( 220, 280 ) );
+        points3.add( WxPoint( 170, 260 ) );
+      dc.setBrush( wxYELLOW_BRUSH );
+      dc.drawPolygon(points3);
+
   }
 }
 

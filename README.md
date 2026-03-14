@@ -59,9 +59,9 @@ If you are coming from the Flutter world, consider wxDart a new toolkit based on
 
 ## Screenshot
 
-A screenshot showing the demo running side-by-side in a browser (wxDart Flutter, in light mode)
+A screenshot showing the demo running side-by-side in a web browser (wxDart Flutter, in light mode)
 and running natively on macOS Tahoe (wxDart Native, in dark mode). There are more screenshots
-[below](#screenshots) and you can run the entire demo in browser by clicking 
+[below](#screenshots) and you can run the entire demo in the browser by clicking 
 [here](https://wxdesigner-software.com/demo03).
 
 ![Web vs macOS](https://wxdesigner-software.com/resources/macOS_Web.png)
@@ -104,30 +104,30 @@ of the Dart classes as well as the C++ classes which wxDart Native uses internal
 | Dart | C++ |
 | ------------------ | ----------------- |
 | [WxClass](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxClass-class.html) | Any C++ class |
-| [WxObject](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxObject-class.html) | [wxObject](https://docs.wxwidgets.org/3.3/classwx_object.html) |
-| [String](https://api.flutter.dev/flutter/dart-core/String-class.html) | [wxString](https://docs.wxwidgets.org/3.3/classwx_string.html) |
-| [List](https://api.flutter.dev/flutter/dart-core/List-class.html) | [wxList](https://docs.wxwidgets.org/3.3/classwx_list_3_01_t_01_4.html) |
-| [dynamic](https://dart.dev/language/type-system) | [wxVariant](https://docs.wxwidgets.org/3.3/classwx_variant.html) |
-| [WxApp](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxApp-class.html) | [wxApp](https://docs.wxwidgets.org/3.3/classwx_app.html) |
+| [WxObject](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxObject-class.html) | [wxObject](https://docs.wxwidgets.org/trunk/classwx_object.html) |
+| [String](https://api.flutter.dev/flutter/dart-core/String-class.html) | [wxString](https://docs.wxwidgets.org/trunk/classwx_string.html) |
+| [List](https://api.flutter.dev/flutter/dart-core/List-class.html) | [wxList](https://docs.wxwidgets.org/trunk/classwx_list_3_01_t_01_4.html) |
+| [dynamic](https://dart.dev/language/type-system) | [wxVariant](https://docs.wxwidgets.org/trunk/classwx_variant.html) |
+| [WxApp](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxApp-class.html) | [wxApp](https://docs.wxwidgets.org/trunk/classwx_app.html) |
 
 ## Window classes
 
 | Dart | C++ |
 | ------------------ | ----------------- |
-| [WxWindow](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxWindow-class.html) | [wxWindow](https://docs.wxwidgets.org/3.3/classwx_window.html) |
-| [WxPanel](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxPanel-class.html) | [wxPanel](https://docs.wxwidgets.org/3.3/classwx_panel.html) |
-| [WxScrolledWindow](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxScrolledWindow-class.html) | [wxScrolledWindow](https://docs.wxwidgets.org/3.3/classwx_scrolled.html) |
-| [WxSplitterWindow](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxSplitterWindow-class.html) | [wxSplitterWindow](https://docs.wxwidgets.org/3.3/classwx_splitter_window.html) |
-| [WxTopLevelWindow](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxTopLevelWindow-class.html) | [wxTopLevelWindow](https://docs.wxwidgets.org/3.3/classwx_top_level_window.html) |
-| [WxDialog](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDialog-class.html) | [wxDialog](https://docs.wxwidgets.org/3.3/classwx_dialog.html) |
-| [WxFrame](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxFrame-class.html) | [wxFrame](https://docs.wxwidgets.org/3.3/classwx_frame.html) |
+| [WxWindow](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxWindow-class.html) | [wxWindow](https://docs.wxwidgets.org/trunk/classwx_window.html) |
+| [WxPanel](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxPanel-class.html) | [wxPanel](https://docs.wxwidgets.org/trunk/classwx_panel.html) |
+| [WxScrolledWindow](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxScrolledWindow-class.html) | [wxScrolledWindow](https://docs.wxwidgets.org/trunk/classwx_scrolled.html) |
+| [WxSplitterWindow](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxSplitterWindow-class.html) | [wxSplitterWindow](https://docs.wxwidgets.org/trunk/classwx_splitter_window.html) |
+| [WxTopLevelWindow](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxTopLevelWindow-class.html) | [wxTopLevelWindow](https://docs.wxwidgets.org/trunk/classwx_top_level_window.html) |
+| [WxDialog](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDialog-class.html) | [wxDialog](https://docs.wxwidgets.org/trunk/classwx_dialog.html) |
+| [WxFrame](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxFrame-class.html) | [wxFrame](https://docs.wxwidgets.org/trunk/classwx_frame.html) |
 
 ## Book controls
 
 | Dart | C++ |
 | ------------------ | ----------------- |
-| [WxNotebook](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxNotebook-class.html) | [wxNotebook](https://docs.wxwidgets.org/3.3/classwx_notebook.html) |
-| [WxTreebook](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxTreebook-class.html) | [wxTreebook](https://docs.wxwidgets.org/3.3/classwx_treebook.html) |
+| [WxNotebook](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxNotebook-class.html) | [wxNotebook](https://docs.wxwidgets.org/trunk/classwx_notebook.html) |
+| [WxTreebook](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxTreebook-class.html) | [wxTreebook](https://docs.wxwidgets.org/trunk/classwx_treebook.html) |
 | [WxDataViewBook](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDataViewBook-class.html) | Only available in wxDart |
 
 ## Windows for mobile interfaces
@@ -142,151 +142,152 @@ of the Dart classes as well as the C++ classes which wxDart Native uses internal
 
 | Dart | C++ |
 | ------------------ | ----------------- |
-| [WxMessageDialog](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxMessageDialog-class.html) | [wxMessageDialog](https://docs.wxwidgets.org/3.3/classwx_message_dialog.html) |
-| [WxFileDialog](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxFileDialog-class.html) | [wxFileDialog](https://docs.wxwidgets.org/3.3/classwx_file_dialog.html) |
-| [WxDirDialog](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDirDialog-class.html) | [wxDirDialog](https://docs.wxwidgets.org/3.3/classwx_dir_dialog.html) |
+| [WxMessageDialog](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxMessageDialog-class.html) | [wxMessageDialog](https://docs.wxwidgets.org/trunk/classwx_message_dialog.html) |
+| [WxFileDialog](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxFileDialog-class.html) | [wxFileDialog](https://docs.wxwidgets.org/trunk/classwx_file_dialog.html) |
+| [WxDirDialog](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDirDialog-class.html) | [wxDirDialog](https://docs.wxwidgets.org/trunk/classwx_dir_dialog.html) |
 
 ## Menu classes, status bar and tool bar
 
 | Dart | C++ |
 | ------------------ | ----------------- |
-| [WxMenuBar](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxMenuBar-class.html) | [wxMenuBar](https://docs.wxwidgets.org/3.3/classwx_menu_bar.html) |
-| [WxMenu](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxMenu-class.html) | [wxMenu](https://docs.wxwidgets.org/3.3/classwx_menu.html) |
-| [WxMenuItem](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxMenuItem-class.html) | [wxMenuItem](https://docs.wxwidgets.org/3.3/classwx_menu_item.html) |
-| [WxToolBar](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxToolBar-class.html) | [wxToolBar](https://docs.wxwidgets.org/3.3/classwx_tool_bar.html) |
-| [WxStatusBar](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxStatusBar-class.html) | [wxStatusBar](https://docs.wxwidgets.org/3.3/classwx_status_bar.html) |
+| [WxMenuBar](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxMenuBar-class.html) | [wxMenuBar](https://docs.wxwidgets.org/trunk/classwx_menu_bar.html) |
+| [WxMenu](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxMenu-class.html) | [wxMenu](https://docs.wxwidgets.org/trunk/classwx_menu.html) |
+| [WxMenuItem](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxMenuItem-class.html) | [wxMenuItem](https://docs.wxwidgets.org/trunk/classwx_menu_item.html) |
+| [WxToolBar](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxToolBar-class.html) | [wxToolBar](https://docs.wxwidgets.org/trunk/classwx_tool_bar.html) |
+| [WxStatusBar](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxStatusBar-class.html) | [wxStatusBar](https://docs.wxwidgets.org/trunk/classwx_status_bar.html) |
 
 ## Misc classes 
 
 | Dart | C++ |
 | ------------------ | ----------------- |
 | [WxUIAnimation](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxUIAnimation-class.html) | Only available in wxDart |
-| [WxTimer](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxTimer-class.html) | [wxTimer](https://docs.wxwidgets.org/3.3/classwx_timer.html) |
-| [WxStopWatch](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxStopWatch-class.html) | [wxStopWatch](https://docs.wxwidgets.org/3.3/classwx_stop_watch.html) |
-| [WxStandardPaths](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxStandardPaths-class.html) | [wxStandardPaths](https://docs.wxwidgets.org/3.3/classwx_standard_paths.html) |
-| [WxSystemSettings](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxSystemSettings-class.html) | [wxSystemSettings](https://docs.wxwidgets.org/3.3/classwx_system_settings.html) |
+| [WxTimer](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxTimer-class.html) | [wxTimer](https://docs.wxwidgets.org/trunk/classwx_timer.html) |
+| [WxStopWatch](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxStopWatch-class.html) | [wxStopWatch](https://docs.wxwidgets.org/trunk/classwx_stop_watch.html) |
+| [WxStandardPaths](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxStandardPaths-class.html) | [wxStandardPaths](https://docs.wxwidgets.org/trunk/classwx_standard_paths.html) |
+| [WxSystemSettings](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxSystemSettings-class.html) | [wxSystemSettings](https://docs.wxwidgets.org/trunk/classwx_system_settings.html) |
 
 ## Graphics classes
 
-[wxDC overview](https://docs.wxwidgets.org/3.3/overview_dc.html)
+[wxDC overview](https://docs.wxwidgets.org/trunk/overview_dc.html)
 
 | Dart | C++ |
 | ------------------ | ----------------- |
-| [WxPoint](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxPoint-class.html) | [wxPoint](https://docs.wxwidgets.org/3.3/classwx_point.html) |
-| [WxSize](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxSize-class.html) | [wxSize](https://docs.wxwidgets.org/3.3/classwx_size.html) |
-| [WxRect](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxRect-class.html) | [wxRect](https://docs.wxwidgets.org/3.3/classwx_rect.html) |
-| [WxReadOnlyDC](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxReadOnlyDC-class.html) | [wxReadOnlyDC](https://docs.wxwidgets.org/3.3/classwx_read_only_dc.html) |
-| [WxDC](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDC-class.html) | [wxDC](https://docs.wxwidgets.org/3.3/classwx_dc.html) |
-| [WxPaintDC](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxPaintDC-class.html) | [wxPaintDC](https://docs.wxwidgets.org/3.3/classwx_paint_dc.html) |
-| [WxMemoryDC](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxMemoryDC-class.html) | [wxMemoryDC](https://docs.wxwidgets.org/3.3/classwx_memory_dc.html) |
-| [WxInfoDC](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxInfoDC-class.html) | [wxInfoDC](https://docs.wxwidgets.org/3.3/classwx_info_dc.html) |
-| [WxPaintEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxPaintEvent-class.html) | [wxPaintEvent](https://docs.wxwidgets.org/3.3/classwx_paint_event.html) |
-| [WxColour](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxColour-class.html) | [wxColour](https://docs.wxwidgets.org/3.3/classwx_colour.html) |
-| [WxCursor](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxCursor-class.html) | [wxCursor](https://docs.wxwidgets.org/3.3/classwx_cursor.html) |
-| [WxFont](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxFont-class.html) | [wxFont](https://docs.wxwidgets.org/3.3/classwx_font.html) |
-| [WxPen](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxPen-class.html) | [wxPen](https://docs.wxwidgets.org/3.3/classwx_pen.html) |
-| [WxBrush](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxBrush-class.html) | [wxBrush](https://docs.wxwidgets.org/3.3/classwx_brush.html) |
-| [WxBitmap](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxBitmap-class.html) | [wxBitmap](https://docs.wxwidgets.org/3.3/classwx_bitmap.html) |
-| [WxBitmapBundle](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxBitmapBundle-class.html) | [wxBitmapBundle](https://docs.wxwidgets.org/3.3/classwx_bitmap_bundle.html) |
-| [WxImage](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxImage-class.html) | [wxImage](https://docs.wxwidgets.org/3.3/classwx_image.html) |
-| [WxRendererNative](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxRendererNative-class.html) | [wxRendererNative](https://docs.wxwidgets.org/3.3/classwx_renderer_native.html) |
+| [WxPoint](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxPoint-class.html) | [wxPoint](https://docs.wxwidgets.org/trunk/classwx_point.html) |
+| [WxSize](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxSize-class.html) | [wxSize](https://docs.wxwidgets.org/trunk/classwx_size.html) |
+| [WxRect](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxRect-class.html) | [wxRect](https://docs.wxwidgets.org/trunk/classwx_rect.html) |
+| [WxReadOnlyDC](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxReadOnlyDC-class.html) | [wxReadOnlyDC](https://docs.wxwidgets.org/trunk/classwx_read_only_dc.html) |
+| [WxDC](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDC-class.html) | [wxDC](https://docs.wxwidgets.org/trunk/classwx_dc.html) |
+| [WxPaintDC](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxPaintDC-class.html) | [wxPaintDC](https://docs.wxwidgets.org/trunk/classwx_paint_dc.html) |
+| [WxMemoryDC](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxMemoryDC-class.html) | [wxMemoryDC](https://docs.wxwidgets.org/trunk/classwx_memory_dc.html) |
+| [WxInfoDC](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxInfoDC-class.html) | [wxInfoDC](https://docs.wxwidgets.org/trunk/classwx_info_dc.html) |
+| [WxPaintEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxPaintEvent-class.html) | [wxPaintEvent](https://docs.wxwidgets.org/trunk/classwx_paint_event.html) |
+| [WxColour](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxColour-class.html) | [wxColour](https://docs.wxwidgets.org/trunk/classwx_colour.html) |
+| [WxCursor](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxCursor-class.html) | [wxCursor](https://docs.wxwidgets.org/trunk/classwx_cursor.html) |
+| [WxFont](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxFont-class.html) | [wxFont](https://docs.wxwidgets.org/trunk/classwx_font.html) |
+| [WxPen](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxPen-class.html) | [wxPen](https://docs.wxwidgets.org/trunk/classwx_pen.html) |
+| [WxBrush](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxBrush-class.html) | [wxBrush](https://docs.wxwidgets.org/trunk/classwx_brush.html) |
+| [WxBitmap](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxBitmap-class.html) | [wxBitmap](https://docs.wxwidgets.org/trunk/classwx_bitmap.html) |
+| [WxBitmapBundle](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxBitmapBundle-class.html) | [wxBitmapBundle](https://docs.wxwidgets.org/trunk/classwx_bitmap_bundle.html) |
+| [WxImage](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxImage-class.html) | [wxImage](https://docs.wxwidgets.org/trunk/classwx_image.html) |
+| [WxRendererNative](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxRendererNative-class.html) | [wxRendererNative](https://docs.wxwidgets.org/trunk/classwx_renderer_native.html) |
 
 ## Control classes
 
 | Dart | C++ |
 | ------------------ | ----------------- |
-| [WxControl](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxControl-class.html) | [wxControl](https://docs.wxwidgets.org/3.3/classwx_control.html) |
-| [WxStaticLine](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxStaticLine-class.html) | [wxStaticLine](https://docs.wxwidgets.org/3.3/classwx_static_line.html) |
-| [WxStaticBox](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxStaticBox-class.html) | [wxStaticBox](https://docs.wxwidgets.org/3.3/classwx_static_box.html) |
-| [WxStaticText](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxStaticText-class.html) | [wxStaticText](https://docs.wxwidgets.org/3.3/classwx_static_text.html) |
-| [WxStaticBitmap](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxStaticBitmap-class.html) | [wxStaticBitmap](https://docs.wxwidgets.org/3.3/classwx_static_bitmap.html) |
-| [WxButton](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxButton-class.html) | [wxButton](https://docs.wxwidgets.org/3.3/classwx_button.html) |
-| [WxBitmapButton](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxBitmapButton-class.html) | [wxBitmapButton](https://docs.wxwidgets.org/3.3/classwx_bitmap_button.html) |
-| [WxToggleButton](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxToggleButton-class.html) | [wxToggleButton](https://docs.wxwidgets.org/3.3/classwx_toggle_button.html) |
-| [WxAnimationCtrl](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxAnimationCtrl-class.html) | [wxAnimationCtrl](https://docs.wxwidgets.org/3.3/classwx_animation_ctrl.html) |
-| [WxCheckBox](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxCheckBox-class.html) | [wxCheckBox](https://docs.wxwidgets.org/3.3/classwx_check_box.html) |
-| [WxTextCtrl](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxTextCtrl-class.html) | [wxTextCtrl](https://docs.wxwidgets.org/3.3/classwx_text_ctrl.html) |
-| [WxChoice](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxChoice-class.html) | [wxChoice](https://docs.wxwidgets.org/3.3/classwx_choice.html) |
-| [WxRadioButton](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxRadioButton-class.html) | [wxRadioButton](https://docs.wxwidgets.org/3.3/classwx_radio_button.html) |
-| [WxRadioBox](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxRadioBox-class.html) | [wxRadioBox](https://docs.wxwidgets.org/3.3/classwx_radio_box.html) |
-| [WxComboBox](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxComboBox-class.html) | [wxComboBox](https://docs.wxwidgets.org/3.3/classwx_combo_box.html) |
-| [WxListBox](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxListBox-class.html) | [wxListBox](https://docs.wxwidgets.org/3.3/classwx_list_box.html) |
-| [WxSlider](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxSlider-class.html) | [wxSlider](https://docs.wxwidgets.org/3.3/classwx_slider.html) |
-| [WxGauge](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxGauge-class.html) | [wxGauge](https://docs.wxwidgets.org/3.3/classwx_gauge.html) |
-| [WxSpinCtrl](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxSpinCtrl-class.html) | [wxSpinCtrl](https://docs.wxwidgets.org/3.3/classwx_spin_ctrl.html) |
-| [WxSpinCtrlDouble](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxSpinCtrlDouble-class.html) | [wxSpinCtrlDouble](https://docs.wxwidgets.org/3.3/classwx_spin_ctrl_double.html) |
-| [WxHyperlinkCtrl](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxHyperlinkCtrl-class.html) | [wxHyperlinkCtrl](https://docs.wxwidgets.org/3.3/classwx_hyperlink_ctrl.html) |
+| [WxControl](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxControl-class.html) | [wxControl](https://docs.wxwidgets.org/trunk/classwx_control.html) |
+| [WxStaticLine](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxStaticLine-class.html) | [wxStaticLine](https://docs.wxwidgets.org/trunk/classwx_static_line.html) |
+| [WxStaticBox](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxStaticBox-class.html) | [wxStaticBox](https://docs.wxwidgets.org/trunk/classwx_static_box.html) |
+| [WxStaticText](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxStaticText-class.html) | [wxStaticText](https://docs.wxwidgets.org/trunk/classwx_static_text.html) |
+| [WxStaticBitmap](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxStaticBitmap-class.html) | [wxStaticBitmap](https://docs.wxwidgets.org/trunk/classwx_static_bitmap.html) |
+| [WxButton](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxButton-class.html) | [wxButton](https://docs.wxwidgets.org/trunk/classwx_button.html) |
+| [WxBitmapButton](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxBitmapButton-class.html) | [wxBitmapButton](https://docs.wxwidgets.org/trunk/classwx_bitmap_button.html) |
+| [WxToggleButton](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxToggleButton-class.html) | [wxToggleButton](https://docs.wxwidgets.org/trunk/classwx_toggle_button.html) |
+| [WxAnimationCtrl](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxAnimationCtrl-class.html) | [wxAnimationCtrl](https://docs.wxwidgets.org/trunk/classwx_animation_ctrl.html) |
+| [WxCheckBox](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxCheckBox-class.html) | [wxCheckBox](https://docs.wxwidgets.org/trunk/classwx_check_box.html) |
+| [WxTextCtrl](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxTextCtrl-class.html) | [wxTextCtrl](https://docs.wxwidgets.org/trunk/classwx_text_ctrl.html) |
+| [WxChoice](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxChoice-class.html) | [wxChoice](https://docs.wxwidgets.org/trunk/classwx_choice.html) |
+| [WxRadioButton](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxRadioButton-class.html) | [wxRadioButton](https://docs.wxwidgets.org/trunk/classwx_radio_button.html) |
+| [WxRadioBox](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxRadioBox-class.html) | [wxRadioBox](https://docs.wxwidgets.org/trunk/classwx_radio_box.html) |
+| [WxComboBox](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxComboBox-class.html) | [wxComboBox](https://docs.wxwidgets.org/trunk/classwx_combo_box.html) |
+| [WxListBox](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxListBox-class.html) | [wxListBox](https://docs.wxwidgets.org/trunk/classwx_list_box.html) |
+| [WxSlider](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxSlider-class.html) | [wxSlider](https://docs.wxwidgets.org/trunk/classwx_slider.html) |
+| [WxGauge](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxGauge-class.html) | [wxGauge](https://docs.wxwidgets.org/trunk/classwx_gauge.html) |
+| [WxSpinCtrl](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxSpinCtrl-class.html) | [wxSpinCtrl](https://docs.wxwidgets.org/trunk/classwx_spin_ctrl.html) |
+| [WxSpinCtrlDouble](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxSpinCtrlDouble-class.html) | [wxSpinCtrlDouble](https://docs.wxwidgets.org/trunk/classwx_spin_ctrl_double.html) |
+| [WxHyperlinkCtrl](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxHyperlinkCtrl-class.html) | [wxHyperlinkCtrl](https://docs.wxwidgets.org/trunk/classwx_hyperlink_ctrl.html) |
 
 ## Complex control classes
 
 | Dart | C++ |
 | ------------------ | ----------------- |
-| [WxTreeCtrl](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxTreeCtrl-class.html) | [wxTreeCtrl](https://docs.wxwidgets.org/3.3/classwx_tree_ctrl.html) |
-| [WxHeaderCtrl](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxHeaderCtrl-class.html) | [wxHeaderCtrl](https://docs.wxwidgets.org/3.3/classwx_header_ctrl.html) |
-| [WxHtmlWindow](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxHtmlWindow-class.html) | [wxHtmlWindow](https://docs.wxwidgets.org/3.3/classwx_html_window.html) |
+| [WxTreeCtrl](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxTreeCtrl-class.html) | [wxTreeCtrl](https://docs.wxwidgets.org/trunk/classwx_tree_ctrl.html) |
+| [WxHeaderCtrl](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxHeaderCtrl-class.html) | [wxHeaderCtrl](https://docs.wxwidgets.org/trunk/classwx_header_ctrl.html) |
+| [WxHtmlWindow](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxHtmlWindow-class.html) | [wxHtmlWindow](https://docs.wxwidgets.org/trunk/classwx_html_window.html) |
 
 ## wxDataViewCtrl related classes
 
 | Dart | C++ |
 | ------------------ | ----------------- |
-| [WxDataViewCtrl](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDataViewCtrl-class.html) | [wxDataViewCtrl](https://docs.wxwidgets.org/3.3/classwx_data_view_ctrl.html) |
-| [WxDataViewModel](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDataViewModel-class.html) | [wxDataViewModel](https://docs.wxwidgets.org/3.3/classwx_data_view_model.html) |
-| [WxDataViewModelNotifier](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDataViewModelNotifier-class.html) | [wxDataViewModelNotifier](https://docs.wxwidgets.org/3.3/classwx_data_view_model_notifier.html) |
-| [WxDataViewListVirtualModel](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDataViewListVirtualModel-class.html) | [wxDataViewListVirtualModel](https://docs.wxwidgets.org/3.3/classwx_data_view_list_virtual_model.html) |
-| [WxDataViewColumn](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDataViewColumn-class.html) | [wxDataViewColumn](https://docs.wxwidgets.org/3.3/classwx_data_view_Column.html) |
+| [WxDataViewCtrl](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDataViewCtrl-class.html) | [wxDataViewCtrl](https://docs.wxwidgets.org/trunk/classwx_data_view_ctrl.html) |
+| [WxDataViewModel](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDataViewModel-class.html) | [wxDataViewModel](https://docs.wxwidgets.org/trunk/classwx_data_view_model.html) |
+| [WxDataViewModelNotifier](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDataViewModelNotifier-class.html) | [wxDataViewModelNotifier](https://docs.wxwidgets.org/trunk/classwx_data_view_model_notifier.html) |
+| [WxDataViewIndexListModel](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDataViewIndexListModel-class.html) | [wxDataViewIndexListModel](https://docs.wxwidgets.org/trunk/classwx_data_view_index_list_model.html) |
+| [WxDataViewVirtualListModel](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDataViewVirtualListModel-class.html) | [wxDataViewVirtualListModel](https://docs.wxwidgets.org/trunk/classwx_data_view_virtual_list_model.html) |
+| [WxDataViewColumn](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDataViewColumn-class.html) | [wxDataViewColumn](https://docs.wxwidgets.org/trunk/classwx_data_view_Column.html) |
 
 wxDataViewCtrl Renderers
 
 | Dart | C++ |
 | ------------------ | ----------------- |
-| [WxDataViewRenderer](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDataViewRenderer-class.html) | [wxDataViewRenderer](https://docs.wxwidgets.org/3.3/classwx_data_view_renderer.html) |
-| [WxDataViewTextRenderer](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDataViewTextRenderer-class.html) | [wxDataViewTextRenderer](https://docs.wxwidgets.org/3.3/classwx_data_view_text_renderer.html) |
-| [WxDataViewChoiceRenderer](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDataViewChoiceRenderer-class.html) | [wxDataViewChoiceRenderer](https://docs.wxwidgets.org/3.3/classwx_data_view_choice_renderer.html) |
-| [WxDataViewBitmapRenderer](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDataViewBitmapRenderer-class.html) | [wxDataViewBitmapRenderer](https://docs.wxwidgets.org/3.3/classwx_data_view_bitmap_renderer.html) |
-| [WxDataViewProgressRenderer](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDataViewProgressRenderer-class.html) | [wxDataViewProgressRenderer](https://docs.wxwidgets.org/3.3/classwx_data_view_progress_renderer.html) |
-| [WxDataViewToggleRenderer](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDataViewToggleRenderer-class.html) | [wxDataViewToggleRenderer](https://docs.wxwidgets.org/3.3/classwx_data_view_toggle_renderer.html) |
+| [WxDataViewRenderer](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDataViewRenderer-class.html) | [wxDataViewRenderer](https://docs.wxwidgets.org/trunk/classwx_data_view_renderer.html) |
+| [WxDataViewTextRenderer](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDataViewTextRenderer-class.html) | [wxDataViewTextRenderer](https://docs.wxwidgets.org/trunk/classwx_data_view_text_renderer.html) |
+| [WxDataViewChoiceRenderer](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDataViewChoiceRenderer-class.html) | [wxDataViewChoiceRenderer](https://docs.wxwidgets.org/trunk/classwx_data_view_choice_renderer.html) |
+| [WxDataViewBitmapRenderer](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDataViewBitmapRenderer-class.html) | [wxDataViewBitmapRenderer](https://docs.wxwidgets.org/trunk/classwx_data_view_bitmap_renderer.html) |
+| [WxDataViewProgressRenderer](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDataViewProgressRenderer-class.html) | [wxDataViewProgressRenderer](https://docs.wxwidgets.org/trunk/classwx_data_view_progress_renderer.html) |
+| [WxDataViewToggleRenderer](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDataViewToggleRenderer-class.html) | [wxDataViewToggleRenderer](https://docs.wxwidgets.org/trunk/classwx_data_view_toggle_renderer.html) |
 | [WxDataViewTileRenderer](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDataViewTileRenderer-class.html) | Only available in wxDart |
 
 Predefined model and controls for tabular data
 
 | Dart | C++ |
 | ------------------ | ----------------- |
-| [WxDataViewListStore](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDataViewListStore-class.html) | [wxDataViewListStore](https://docs.wxwidgets.org/3.3/classwx_data_view_list_store.html) |
-| [WxDataViewListCtrl](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDataViewListCtrl-class.html) | [wxDataViewListCtrl](https://docs.wxwidgets.org/3.3/classwx_data_view_list_ctrl.html) |
+| [WxDataViewListStore](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDataViewListStore-class.html) | [wxDataViewListStore](https://docs.wxwidgets.org/trunk/classwx_data_view_list_store.html) |
+| [WxDataViewListCtrl](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDataViewListCtrl-class.html) | [wxDataViewListCtrl](https://docs.wxwidgets.org/trunk/classwx_data_view_list_ctrl.html) |
 | [WxDataViewTileListCtrl](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDataViewTileListCtrl-class.html) | Only available in wxDart |
 
 Predefined models and controls for tree data
 
 | Dart | C++ |
 | ------------------ | ----------------- |
-| [WxDataViewTreeStore](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDataViewTreeStore-class.html) | [wxDataViewTreeStore](https://docs.wxwidgets.org/3.3/classwx_data_view_list_store.html) |
-| [WxDataViewTreeCtrl](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDataViewTreeCtrl-class.html) | [wxDataViewTreeCtrl](https://docs.wxwidgets.org/3.3/classwx_data_view_list_ctrl.html) |
+| [WxDataViewTreeStore](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDataViewTreeStore-class.html) | [wxDataViewTreeStore](https://docs.wxwidgets.org/trunk/classwx_data_view_list_store.html) |
+| [WxDataViewTreeCtrl](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDataViewTreeCtrl-class.html) | [wxDataViewTreeCtrl](https://docs.wxwidgets.org/trunk/classwx_data_view_list_ctrl.html) |
 | [WxDataViewBookStore](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDataViewBookStore-class.html) | Only available in wxDart |
 | [WxDataViewChapterRenderer](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDataViewChapterRenderer-class.html) | Only available in wxDart |
 | [WxDataViewChapterCtrl](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDataViewChapterCtrl-class.html) | Only available in wxDart |
 
 ## Layout classes
 
-[WxSizer overview](https://docs.wxwidgets.org/3.3/overview_sizer.html)
+[WxSizer overview](https://docs.wxwidgets.org/trunk/overview_sizer.html)
 
 | Dart | C++ |
 | ------------------ | ----------------- |
-| [WxSizer](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxSizer-class.html) | [wxSizer](https://docs.wxwidgets.org/3.3/classwx_sizer.html) |
-| [WxSizerItem](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxSizerItem-class.html) | [wxSizerItem](https://docs.wxwidgets.org/3.3/classwx_sizer_item.html) |
-| [WxBoxSizer](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxBoxSizer-class.html) | [wxBoxSizer](https://docs.wxwidgets.org/3.3/classwx_box_sizer.html) |
-| [WxStaticBoxSizer](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxStaticBoxSizer-class.html) | [wxStaticBoxSizer](https://docs.wxwidgets.org/3.3/classwx_static_box_sizer.html) |
-| [WxFlexGridSizer](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxFlexGridSizer-class.html) | [wxFlexGridSizer](https://docs.wxwidgets.org/3.3/classwx_flex_grid_sizer.html) |
-| [WxWrapSizer](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxWrapSizer-class.html) | [wxWrapSizer](https://docs.wxwidgets.org/3.3/classwx_wrap_sizer.html) |
+| [WxSizer](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxSizer-class.html) | [wxSizer](https://docs.wxwidgets.org/trunk/classwx_sizer.html) |
+| [WxSizerItem](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxSizerItem-class.html) | [wxSizerItem](https://docs.wxwidgets.org/trunk/classwx_sizer_item.html) |
+| [WxBoxSizer](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxBoxSizer-class.html) | [wxBoxSizer](https://docs.wxwidgets.org/trunk/classwx_box_sizer.html) |
+| [WxStaticBoxSizer](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxStaticBoxSizer-class.html) | [wxStaticBoxSizer](https://docs.wxwidgets.org/trunk/classwx_static_box_sizer.html) |
+| [WxFlexGridSizer](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxFlexGridSizer-class.html) | [wxFlexGridSizer](https://docs.wxwidgets.org/trunk/classwx_flex_grid_sizer.html) |
+| [WxWrapSizer](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxWrapSizer-class.html) | [wxWrapSizer](https://docs.wxwidgets.org/trunk/classwx_wrap_sizer.html) |
 | [WxTileSizer](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxTileSizer-class.html) | Only available in wxDart |
 
 ## Event classes
 
-[Event handling overview](https://docs.wxwidgets.org/3.3/overview_events.html)
+[Event handling overview](https://docs.wxwidgets.org/trunk/overview_events.html)
 
 | Dart | C++ |
 | ------------------ | ----------------- |
-| [WxEvtHandler](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxEvtHandler-class.html) | [wxEvtHandler](https://docs.wxwidgets.org/3.3/classwx_evt_handler.html) |
-| [WxEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxEvent-class.html) | [wxEvent](https://docs.wxwidgets.org/3.3/classwx_event.html) |
+| [WxEvtHandler](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxEvtHandler-class.html) | [wxEvtHandler](https://docs.wxwidgets.org/trunk/classwx_evt_handler.html) |
+| [WxEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxEvent-class.html) | [wxEvent](https://docs.wxwidgets.org/trunk/classwx_event.html) |
 | [WxEventTableEntry](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxEventTableEntry-class.html) | Internal implementation detail. |
 | [WxCommandEventTableEntry](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxCommandEventTableEntry-class.html) | Internal implementation detail. |
 
@@ -294,36 +295,36 @@ System events (deriving from WxEvent directly)
 
 | Dart | C++ |
 | ------------------ | ----------------- |
-| [WxEvtHandler](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxEvtHandler-class.html) | [wxEvtHandler](https://docs.wxwidgets.org/3.3/classwx_evt_handler.html) |
-| [WxPaintEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxPaintEvent-class.html) | [WxPaintEvent](https://docs.wxwidgets.org/3.3/classwx_paint_event.html) |
-| [WxMouseEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxMouseEvent-class.html) | [WxMouseEvent](https://docs.wxwidgets.org/3.3/classwx_mouse_event.html) |
-| [WxKeyEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxKeyEvent-class.html) | [WxKeyEvent](https://docs.wxwidgets.org/3.3/classwx_key_event.html) |
-| [WxSizeEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxSizeEvent-class.html) | [WxSizeEvent](https://docs.wxwidgets.org/3.3/classwx_size_event.html) |
-| [WxShowEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxShowEvent-class.html) | [WxShowEvent](https://docs.wxwidgets.org/3.3/classwx_show_event.html) |
-| [WxIdleEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxIdleEvent-class.html) | [WxIdleEvent](https://docs.wxwidgets.org/3.3/classwx_idle_event.html) |
-| [WxTimerEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxTimerEvent-class.html) | [WxTimerEvent](https://docs.wxwidgets.org/3.3/classwx_timer_event.html) |
-| [WxCloseEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxCloseEvent-class.html) | [WxCloseEvent](https://docs.wxwidgets.org/3.3/classwx_close_event.html) |
-| [WxFocusEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxFocusEvent-class.html) | [WxFocusEvent](https://docs.wxwidgets.org/3.3/classwx_focus_event.html) |
-| [WxScrollWinEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxScrollWinEvent-class.html) | [WxScrollWinEvent](https://docs.wxwidgets.org/3.3/classwx_scroll_win_event.html) |
-| [wxActivateEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/wxActivateEvent-class.html) | [wxActivateEvent](https://docs.wxwidgets.org/3.3/classwx_activate_event.html) |
-| [WxDPIChangedEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDPIChangedEvent-class.html) | [WxDPIChangedEvent](https://docs.wxwidgets.org/3.3/classwx_dpi_changed_event.html) |
-| [WxSysColourChangedEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxSysColourChangedEvent-class.html) | [WxSysColourChangedEvent](https://docs.wxwidgets.org/3.3/classwx_sys_colour_changed_event.html) |
-| [WxInitDialogEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxInitDialogEvent-class.html) | [WxInitDialogEvent](https://docs.wxwidgets.org/3.3/classwx_init_dialog_event.html) |
+| [WxEvtHandler](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxEvtHandler-class.html) | [wxEvtHandler](https://docs.wxwidgets.org/trunk/classwx_evt_handler.html) |
+| [WxPaintEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxPaintEvent-class.html) | [wxPaintEvent](https://docs.wxwidgets.org/trunk/classwx_paint_event.html) |
+| [WxMouseEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxMouseEvent-class.html) | [wxMouseEvent](https://docs.wxwidgets.org/trunk/classwx_mouse_event.html) |
+| [WxKeyEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxKeyEvent-class.html) | [wxKeyEvent](https://docs.wxwidgets.org/trunk/classwx_key_event.html) |
+| [WxSizeEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxSizeEvent-class.html) | [wxSizeEvent](https://docs.wxwidgets.org/trunk/classwx_size_event.html) |
+| [WxShowEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxShowEvent-class.html) | [wxShowEvent](https://docs.wxwidgets.org/trunk/classwx_show_event.html) |
+| [WxIdleEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxIdleEvent-class.html) | [wxIdleEvent](https://docs.wxwidgets.org/trunk/classwx_idle_event.html) |
+| [WxTimerEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxTimerEvent-class.html) | [wxTimerEvent](https://docs.wxwidgets.org/trunk/classwx_timer_event.html) |
+| [WxCloseEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxCloseEvent-class.html) | [wxCloseEvent](https://docs.wxwidgets.org/trunk/classwx_close_event.html) |
+| [WxFocusEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxFocusEvent-class.html) | [wxFocusEvent](https://docs.wxwidgets.org/trunk/classwx_focus_event.html) |
+| [WxScrollWinEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxScrollWinEvent-class.html) | [wxScrollWinEvent](https://docs.wxwidgets.org/trunk/classwx_scroll_win_event.html) |
+| [wxActivateEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/wxActivateEvent-class.html) | [wxActivateEvent](https://docs.wxwidgets.org/trunk/classwx_activate_event.html) |
+| [WxDPIChangedEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDPIChangedEvent-class.html) | [wxDPIChangedEvent](https://docs.wxwidgets.org/trunk/classwx_dpi_changed_event.html) |
+| [WxSysColourChangedEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxSysColourChangedEvent-class.html) | [wxSysColourChangedEvent](https://docs.wxwidgets.org/trunk/classwx_sys_colour_changed_event.html) |
+| [WxInitDialogEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxInitDialogEvent-class.html) | [wxInitDialogEvent](https://docs.wxwidgets.org/trunk/classwx_init_dialog_event.html) |
 | [WxDialogValidateEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDialogValidateEvent-class.html) | Only available in wxDart |
-| [WxMenuEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxMenuEvent-class.html) | [WxMenuEvent](https://docs.wxwidgets.org/3.3/classwx_menu_event.html) |
+| [WxMenuEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxMenuEvent-class.html) | [wxMenuEvent](https://docs.wxwidgets.org/trunk/classwx_menu_event.html) |
 
 Command events (deriving from WxCommandEvent)
 
 | Dart | C++ |
 | ------------------ | ----------------- |
-| [WxCommandEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxCommandEvent-class.html) | [wxCommandEvent](https://docs.wxwidgets.org/3.3/classwx_command_event.html) |
-| [WxUpdateUIEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxUpdateUIEvent-class.html) | [wxUpdateUIEvent](https://docs.wxwidgets.org/3.3/classwx_update_ui_event.html) |
-| [WxNotifyEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxNotifyEvent-class.html) | [wxNotifyEvent](https://docs.wxwidgets.org/3.3/classwx_notify_event.html) |
-| [WxNotebookEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxNotebookEvent-class.html) | [wxNotebookEvent](https://docs.wxwidgets.org/3.3/classwx_notebook_event.html) |
-| [WxTreeEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxTreeEvent-class.html) | [wxTreeEvent](https://docs.wxwidgets.org/3.3/classwx_command_event.html) |
-| [WxSplitterEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxSplitterEvent-class.html) | [wxSplitterEvent](https://docs.wxwidgets.org/3.3/classwx_splitter_event.html) |
-| [WxDataViewEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDataViewEvent-class.html) | [wxDataViewEvent](https://docs.wxwidgets.org/3.3/classwx_data_view_event.html) |
-| [WxHtmlEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxHtmlEvent-class.html) | [wxHtmlEvent](https://docs.wxwidgets.org/3.3/classwx_html_event.html) |
+| [WxCommandEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxCommandEvent-class.html) | [wxCommandEvent](https://docs.wxwidgets.org/trunk/classwx_command_event.html) |
+| [WxUpdateUIEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxUpdateUIEvent-class.html) | [wxUpdateUIEvent](https://docs.wxwidgets.org/trunk/classwx_update_ui_event.html) |
+| [WxNotifyEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxNotifyEvent-class.html) | [wxNotifyEvent](https://docs.wxwidgets.org/trunk/classwx_notify_event.html) |
+| [WxNotebookEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxNotebookEvent-class.html) | [wxNotebookEvent](https://docs.wxwidgets.org/trunk/classwx_notebook_event.html) |
+| [WxTreeEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxTreeEvent-class.html) | [wxTreeEvent](https://docs.wxwidgets.org/trunk/classwx_command_event.html) |
+| [WxSplitterEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxSplitterEvent-class.html) | [wxSplitterEvent](https://docs.wxwidgets.org/trunk/classwx_splitter_event.html) |
+| [WxDataViewEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDataViewEvent-class.html) | [wxDataViewEvent](https://docs.wxwidgets.org/trunk/classwx_data_view_event.html) |
+| [WxHtmlEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxHtmlEvent-class.html) | [wxHtmlEvent](https://docs.wxwidgets.org/trunk/classwx_html_event.html) |
 
 ## Demo
 
@@ -340,7 +341,7 @@ The demo running on Windows 11 in light mode
 The demo running on Windows 11 in dark mode
 ![Windows 11 dark mode](https://wxdesigner-software.com/resources/Windows11DarkSmall.png)
 
-The demo running on Linux Ubuntu in dark mode
+The demo running on Linux Ubuntu in light mode
 ![Linux Ubuntu](https://wxdesigner-software.com/resources/Ubuntu.png)
 
 ## Web app tutorials
@@ -660,10 +661,10 @@ directory of the app package. For Linux, they need to be installed as by the Lin
 ## Layout mechanism
 
 The system for laying out windows or controls on screen in wxWidgets is based on so called sizers deriving from the
-wxSizer base class (see [wxSizer overview](https://docs.wxwidgets.org/3.3/overview_sizer.html)).
+wxSizer base class (see [wxSizer overview](https://docs.wxwidgets.org/trunk/overview_sizer.html)).
 The most often used sizers are wxBoxSizer, wxFlexGridSizer and wxStaticBoxSizer. Flutter
 has its own, very similar system where e.g. a [Row](https://api.flutter.dev/flutter/widgets/Row-class.html)
-corresponds to a [wxBoxSizer(wxHORIZONTAL)](https://docs.wxwidgets.org/3.3/classwx_box_sizer.html) in wxWidgets.
+corresponds to a [wxBoxSizer(wxHORIZONTAL)](https://docs.wxwidgets.org/trunk/classwx_box_sizer.html) in wxWidgets.
 
 Therefore, all wxDart sizer classes have been implemented to internally use the corresponding Flutter classes
 in wxDart Flutter, whereas they use the C++ wxSizer classes in wxDart Native. Both wxDart Flutter and wxDart
@@ -672,7 +673,7 @@ Native lay out the controls automatically when the parent (e.g. a dialog) is sho
 A very subtle difference is that Flutter's layout classes automatically re-layout when they are changed also
 _after_ they have been shown on screen (e.g. by adding a control or by changing text with a different length).
 In wxWidgets, you then need to call 
-[wxDialog::Layout()](https://docs.wxwidgets.org/3.3/classwx_top_level_window.html#adfe7e3f4a32f3ed178968f64431bbfe0)
+[wxDialog::Layout()](https://docs.wxwidgets.org/trunk/classwx_top_level_window.html#adfe7e3f4a32f3ed178968f64431bbfe0)
 for the controls to be laid out correctly again. 
 
 In practice, you should call WxDialog.layout() in wxDart which will do nothing in wxDart Flutter (as Flutter does
@@ -710,7 +711,7 @@ The default is light blue.
 
 ## Event handling
 
-[C++ event handling overview](https://docs.wxwidgets.org/3.3/overview_events.html)
+[C++ event handling overview](https://docs.wxwidgets.org/trunk/overview_events.html)
 
 A key feature of the wxDart event handling system is that it allows you to override
 a base class behaviour as the derived class's event handler will be called first.

@@ -9,6 +9,9 @@ part of '../../wx_dart.dart';
 
 // ------------------------- wxDC ----------------------
 
+const int wxODDEVEN_RULE = 1;
+const int wxWINDING_RULE = 2;
+
 /// Base class for [WxPaintDC] and [WxMemoryDC]. It defines the
 /// standard 2D drawing interface.
 /// 
@@ -20,7 +23,6 @@ part of '../../wx_dart.dart';
 /// yet. Once done, it will use the Direct2D backend under Windows,
 /// CoreGraphics on MacOS, Cairo on Linux and Impeller when using the
 /// Flutter backends.
-
 
 class WxDC extends WxReadOnlyDC {
   WxDC() {
@@ -91,6 +93,32 @@ class WxDC extends WxReadOnlyDC {
     }
   }
 
+  /// Draws a polygon
+  /// 
+  /// ## Constants
+  /// | constant | meaning |
+  /// | -------- | -------- |
+  /// | wxODDEVEN_RULE | 1 |
+  /// | wxWINDING_RULE | 2 |
+  void drawPolygon( List<WxPoint> points, { int xOffset = 0, int yOffset = 0, int fillStyle = wxODDEVEN_RULE } )
+  {
+    if (points.length < 2) return;
+
+    final path = Path();
+    path.moveTo( (points[0].x + xOffset)+0.5, (points[0].y + yOffset)+0.5 ); 
+    for (int i = 1; i < points.length; i++) {
+      path.lineTo( (points[i].x + xOffset)+0.5, (points[i].y + yOffset)+0.5 ); 
+    }
+    path.close();
+
+    if (_currentBrush.isNonTransparent()) {
+      _canvas.drawPath(path, _brushPaint);
+    }
+    if (_currentPen.isNonTransparent()) {
+      _canvas.drawPath(path, _penPaint);
+    }
+  }
+
   /// Draws a spline connecting the [points] using the current [WxPen]
   void drawSpline( List<WxPoint> points )
   {
@@ -112,7 +140,6 @@ class WxDC extends WxReadOnlyDC {
 
       for (int i = 0; i < points.length-2; i++)
       {
-
         x1 = x2;
         y1 = y2;
         x2 = points[i+2].x +0.5;

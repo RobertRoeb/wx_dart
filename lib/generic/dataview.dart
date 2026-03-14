@@ -186,7 +186,7 @@ class WxDataViewColumn extends WxSettableHeaderColumn {
     }
 
     if (!_owner!.isMultiColumnSortAllowed()) {
-      _owner!.resetAllSortColumns();
+      _owner!._resetAllSortColumns();
     }
 
     final idx = _owner!.getColumnIndex(this);
@@ -895,12 +895,9 @@ class WxDataViewTreeNode
           // using model-specific sort order, which can change at any time.
           if ( _branchData!.sortOrder.isNotEqualTo( sortOrder ) || !sortOrder.usesColumn() )
           {
-              /* TODO actual sorting
-              std::sort(m_branchData->children.begin(),
-                        m_branchData->children.end(),
-                        wxGenericTreeModelNodeCmp(window, sortOrder));
-              */
-              _branchData!.sortOrder = sortOrder;
+            final cmp = WxDataViewTreeModelNodeCmp(window, sortOrder);
+            _branchData!.children.sort( (a, b) => cmp.compare(a,b) );
+            _branchData!.sortOrder = sortOrder;
           }
 
           // There may be open child nodes that also need a resort.
@@ -4525,6 +4522,79 @@ class WxDataViewCtrlCachedColWidthInfo {
 /// 
 /// [WxDataViewBook] uses [WxDataViewChapterCtrl] internally.
 /// 
+/// Model interface
+/// * [associateModel]
+/// * [getModel]
+/// 
+/// Visibility interface
+/// * [getCountPerPage]
+/// * [getTopItem]
+/// * [ensureVisibleRowCol]
+/// * [ensureVisible]
+/// * [getItemByRow]
+/// * [getRowByItem]
+/// * [getHeader]
+/// * [getMainWindow]
+/// 
+/// Column interface
+/// * [appendColumn]
+/// * [prependColumn]
+/// * [insertColumn]
+/// * [deleteColumn]
+/// * [clearColumns]
+/// * [getColumn]
+/// * [getColumnAt]
+/// * [getColumnCount]
+/// * [getColumnPosition]
+/// * [setExpanderColumn]
+/// * [setExpanderColumn]
+/// 
+/// Editing interface
+/// * [editItem]
+/// 
+/// Selection interface
+/// * [hasSelection]
+/// * [getSelection]
+/// * [getSelections]
+/// * [getSelectedItemsCount]
+/// * [isSelected]
+/// * [setSelections]
+/// * [select]
+/// * [selectAll]
+/// * [unselect]
+/// * [unselectAll]
+/// 
+/// Sorting interface
+/// * [resort]
+/// * [allowMultiColumnSort]
+/// * [isMultiColumnSortAllowed]
+/// * [useColumnForSorting]
+/// * [dontUseColumnForSorting]
+/// * [toggleSortByColumn]
+/// * [getSortingColumn]
+/// * [getSortingColumns]
+/// * [isColumnSorted]
+/// 
+/// Display interface
+/// * [setRowHeight]
+/// * [setIndent]
+/// * [getIndent]
+/// * [setAlternateRowColour]
+/// * [getAlternateRowColour]
+/// 
+/// Tree interface
+/// * [collapse]
+/// * [expand]
+/// * [expandAncestors]
+/// * [expandChildren]
+/// * [isExpanded]
+/// 
+/// Focus interface
+/// * [setCurrentItem]
+/// * [getCurrentItem]
+/// * [getCurrentColumn]
+/// 
+/// 
 /// Window styles
 /// 
 /// | constant | value (meaning) |
@@ -4534,7 +4604,7 @@ class WxDataViewCtrlCachedColWidthInfo {
 /// | wxDV_NO_HEADER | Don't display a header above the columns | 
 /// | wxDV_HORIZ_RULES | Show a horizontal ruler (thin line) between line | 
 /// | wxDV_VERT_RULES | Show a horizontal ruler (thin line) between columns | 
-/// | wxDV_ROW_LINES | Alternate line colour | 
+/// | wxDV_ROW_LINES | Use alternating line colours | 
 /// | wxDV_VARIABLE_LINE_HEIGHT | Allow lines to have variable height. This can be an expensive option if there are thousands of lines. | 
 /// | wxDV_NO_TWISTER_BUTTONS | Don't show any expander buttons which disables tree expansion by the user | 
 /// | wxDV_NATIVE_EXPANDER | Use the native platform expander (e.g. plus/minus on Windows | 
@@ -4576,7 +4646,7 @@ class WxDataViewCtrl extends WxScrolledWindow {
   WxDataViewHeaderWindow? _headerArea;
   final List<WxDataViewCtrlCachedColWidthInfo> _colsBestWidths = [];
   bool _colsDirty = true;
-  final WxColour _alternateRowColour = WxColour(200, 200, 255);
+  WxColour _alternateRowColour = WxColour(200, 200, 255);
   final List<int> _sortingColumnIdxs = [];
   bool _allowMultiColumnSort = false;
 
@@ -4585,10 +4655,19 @@ class WxDataViewCtrl extends WxScrolledWindow {
     return false;
   }
 
+  /// Sets the alternating background colour. Use with the wxDV_ROW_LINES style.
   WxColour getAlternateRowColour() { 
     return _alternateRowColour;
   }
 
+  /// Sets the background colour. Use with the wxDV_ROW_LINES style. 
+  void setAlternateRowColour( WxColour colour) { 
+    _alternateRowColour = colour;
+  }
+
+  /// Associates the [model] with the control.
+  /// 
+  /// A model can be associated with several controls
   bool associateModel( WxDataViewModel? model )
   {
     if (_model != null) {
@@ -4610,31 +4689,43 @@ class WxDataViewCtrl extends WxScrolledWindow {
     return true;
   }
 
+  /// Returns the associated model, or null
   WxDataViewModel? getModel() {
     return _model;
   }
 
+  /// Returns the item at the top of the visible area
   WxDataViewItem getTopItem( ) {
     return _clientArea.getTopItem();
   }
 
+  /// Returns the number Return the number of items that can fit vertically
+  /// in the visible area of the control.
+  /// 
+  /// Returns -1 if the number of items per page couldn't be determined.
   int getCountPerPage( ) {
     return _clientArea.getCountPerPage();
   }
 
+  /// Sets the indentation per branch depth
   void setIndent( int indent ) {
     _indent = indent;
     _doSetIndent();
   }
 
+  /// Returns the indentation per branch depth
   int getIndent( ) {
     return _indent;
   }
 
+  /// Set the height of a row.
+  /// 
+  /// Has not effect of the wxDV_VARIABLE_LINE_HEIGHT style is used.
   void setRowHeight( int height ) {
     _clientArea.setRowHeight(height);
   }
 
+  /// Collapses the branch identified by [item]
   void collapse( WxDataViewItem item ) {
     final row = _clientArea.getRowByItem( item );
     if (row != -1) {
@@ -4642,11 +4733,13 @@ class WxDataViewCtrl extends WxScrolledWindow {
     }
   }
 
+  /// Expands the branch identified by [item]
   void expand( WxDataViewItem item ) {
     expandAncestors(item);
     _doExpand(item, false);
   }
 
+  /// Expands all ancestor branches of [item]
   void expandAncestors( WxDataViewItem item )
   {
     if (_model == null) return;
@@ -4670,11 +4763,13 @@ class WxDataViewCtrl extends WxScrolledWindow {
     }
   }
 
+  /// Expands all child branches of [item]
   void expandChildren( WxDataViewItem item ) {
     expandAncestors(item);
     _doExpand(item, true);
   }
 
+  /// Returns true if [item] is expanded
   bool isExpanded( WxDataViewItem item ) {
     final row = _clientArea.getRowByItem( item );
     if (row != -1) {
@@ -4683,6 +4778,7 @@ class WxDataViewCtrl extends WxScrolledWindow {
     return false;
   }
 
+  /// Appends the [column] to the control
   bool appendColumn( WxDataViewColumn column ) {
     column.setOwner(this);
     _cols.add( column );
@@ -4691,6 +4787,7 @@ class WxDataViewCtrl extends WxScrolledWindow {
     return true;
   }
 
+  /// Prepends the [column] to the control before all other column
   bool prependColumn( WxDataViewColumn column ) {
     column.setOwner(this);
     _cols.insert( 0, column );
@@ -4699,6 +4796,7 @@ class WxDataViewCtrl extends WxScrolledWindow {
     return true;
   }
 
+  /// Inserts the [column] to the control at [pos]
   bool insertColumn( int pos, WxDataViewColumn column ) {
     column.setOwner(this);
     _cols.insert( pos, column );
@@ -4707,15 +4805,18 @@ class WxDataViewCtrl extends WxScrolledWindow {
     return true;
   }
 
+  /// Sets which column shall contain the tree-like expanders
   void setExpanderColumn( WxDataViewColumn? col ) { 
     _expanderColumn = col ; 
     _doSetExpanderColumn(); 
   }
 
+  /// Returns which column contains the the tree-like expanders, or null
   WxDataViewColumn? getExpanderColumn() { 
     return _expanderColumn; 
   }
 
+  /// Delete all columns
   bool clearColumns( ) {
     setExpanderColumn(null);
     _cols.clear();
@@ -4726,6 +4827,7 @@ class WxDataViewCtrl extends WxScrolledWindow {
     return true;
   }
 
+  /// Deletes [column]
   bool deleteColumn( WxDataViewColumn column ) {
     final idx = getColumnIndex(column);
     if ( idx == wxNOT_FOUND ) return false;
@@ -4738,6 +4840,7 @@ class WxDataViewCtrl extends WxScrolledWindow {
     return true;
   }
 
+  /// Ensures that [row] and [column] are visible by scrolling if needed
   void ensureVisibleRowCol( int row, int column )
   {
     if( row < 0 ) {
@@ -4780,6 +4883,7 @@ class WxDataViewCtrl extends WxScrolledWindow {
     }
   }
 
+  /// Ensures that [item] and [column] are visible by scrolling if needed
   void ensureVisible( WxDataViewItem item, WxDataViewColumn? column )
   {
     expandAncestors( item );
@@ -4797,23 +4901,28 @@ class WxDataViewCtrl extends WxScrolledWindow {
     }
   }
 
+  /// Returns the column at [pos]
   WxDataViewColumn? getColumn( int pos ) {
     return _cols[pos];
   }
 
+  /// Returns the number of columns
   int getColumnCount( ) {
     return _cols.length;
   }
 
+  /// Returns the position of [column]
   int getColumnPosition( WxDataViewColumn column ) {
     return _cols.indexOf( column );
   }
 
+  /// Returns the column that is used fior sorting, or null
   WxDataViewColumn? getSortingColumn() {
     if (_sortingColumnIdxs.isEmpty) return null;
     return getColumn( _sortingColumnIdxs.first );
   }
 
+  /// Returns the columns used for sorting, if any
   List <WxDataViewColumn> getSortingColumns() {
     List <WxDataViewColumn> out = [];
     for (final idx in _sortingColumnIdxs) {
@@ -4822,11 +4931,13 @@ class WxDataViewCtrl extends WxScrolledWindow {
     return out;
   }
 
+  /// Returns the current item
   WxDataViewItem getCurrentItem( ) {
     return hasFlag(wxDV_MULTIPLE) ? _doGetCurrentItem()
                                   : getSelection();
   }
 
+  /// Sets the current item
   void setCurrentItem( WxDataViewItem item ) {
     if (!item.isOk()) return;
     if (hasFlag(wxDV_MULTIPLE) ) {
@@ -4836,14 +4947,17 @@ class WxDataViewCtrl extends WxScrolledWindow {
     }
   }
 
+  /// Starts editing action on [item] in [column], if possible
   void editItem( WxDataViewItem item, WxDataViewColumn column) {
     _clientArea.startEditing( item, column );
   }
 
+  /// Returns true if any item is selected
   bool hasSelection() { 
     return getSelectedItemsCount() != 0;
   }
   
+  /// Returns first selected item, or an invalid item
   WxDataViewItem getSelection( ) {
     if ( getSelectedItemsCount() != 1 ) {
         return WxDataViewItem();
@@ -4854,6 +4968,7 @@ class WxDataViewCtrl extends WxScrolledWindow {
     return selections[0];
   }
 
+  /// Returns list of selected items
   int getSelections( List <WxDataViewItem> sel )
   {
     sel.clear();
@@ -4874,10 +4989,12 @@ class WxDataViewCtrl extends WxScrolledWindow {
     return sel.length;
   } 
 
+  /// Returns number of selected items
   int getSelectedItemsCount( ) {
     return _clientArea.getSelections().getSelectedCount();
   }
 
+  /// Returns true of [item] is selected
   bool isSelected( WxDataViewItem item )
   {
     final row = _clientArea.getRowByItem( item );
@@ -4887,6 +5004,7 @@ class WxDataViewCtrl extends WxScrolledWindow {
     return false;
   }
 
+  /// Set selection to the given list of item in [sel]
   void setSelections( List<WxDataViewItem> sel )
   {
     _clientArea.clearSelection();
@@ -4937,10 +5055,12 @@ class WxDataViewCtrl extends WxScrolledWindow {
     }
   }
 
+  /// Selects all items
   void selectAll( ) {
     _clientArea.selectAllRows();
   }
 
+  /// Unselects [item]
   void unselect( WxDataViewItem item ) {
     final row = _clientArea.getRowByItem( item );
     if (row >= 0) {
@@ -4948,27 +5068,46 @@ class WxDataViewCtrl extends WxScrolledWindow {
     }
   }
 
+  /// Unselects all items
   void unselectAll() {
     _clientArea.unselectAllRows();
   }
 
+  /// Tells control to resort
   void resort() { 
   }
 
-  bool allowMultiColumnSort(bool allow) {
+  /// Allow or disallow sorting with multiple columns, depending on [allow] 
+  void allowMultiColumnSort(bool allow)
+  {
     _allowMultiColumnSort = allow;
-    return false; 
+
+    if (!_allowMultiColumnSort) 
+    {
+      _resetAllSortColumns();
+      if (_model != null) {
+        _model!.resort();
+      }
+    }
   }
 
+  /// Returns true if sorting with multiple columns is allowed
   bool isMultiColumnSortAllowed() {
     return _allowMultiColumnSort;
   }
 
-  void toggleSortByColumn(int column) {
+  /// Toggles sorting by the given column.
+  /// 
+  /// This method should only be used when sorting by multiple columns
+  /// is allowed ([allowMultiColumnSort]) and does nothing otherwise.
+  void toggleSortByColumn(int column)
+  {
+    if (_headerArea != null) {
+      _headerArea!.toggleSortByColumn(column);
+    }
   }
 
-  // --------------- not public API ------------------
-
+  /// Returns the header window
   WxHeaderCtrl? getHeader() {
     return _headerArea;
   }
@@ -5008,28 +5147,39 @@ class WxDataViewCtrl extends WxScrolledWindow {
     return r;
   }
 
+  /// Returns the item in the given row
   WxDataViewItem getItemByRow( int row ) {
     return _clientArea.getItemByRow(row);
   }
 
+  /// Returns the row of the item
   int getRowByItem( WxDataViewItem item ) {
     return _clientArea.getRowByItem(item);
   }
 
+  /// Use this column for sorting
   void useColumnForSorting(int idx) {
     _sortingColumnIdxs.add( idx );
   }
 
+  /// Stop using this column for sorting
   void dontUseColumnForSorting(int idx) {
     _sortingColumnIdxs.removeWhere((value) => value == idx );
   }
 
+  /// Returns true if column is used for sorting
   bool isColumnSorted(int idx) {
     return _sortingColumnIdxs.contains(idx);
   }
 
-  void resetAllSortColumns() {    
+  /// Stops using any columns for sorting
+  void _resetAllSortColumns()
+  {
+    final List<int> tmp = [];
     for (final idx in _sortingColumnIdxs) {
+      tmp.add( idx );
+    }
+    for (final idx in tmp) {
       getColumn(idx)!.unsetAsSortKey();
     }
   }
@@ -5101,10 +5251,12 @@ class WxDataViewCtrl extends WxScrolledWindow {
     _clientArea.onColumnsCountChanged();
   }
 
+  /// Returns the main window
   WxWindow getMainWindow() { 
     return _clientArea;
   }
 
+  /// Returns the position of [column] disregarding potential reordering
   int getColumnIndex( WxDataViewColumn column) {
     final count = _cols.length;
     for ( int n = 0; n < count; n++ ) {
@@ -5113,7 +5265,7 @@ class WxDataViewCtrl extends WxScrolledWindow {
     return wxNOT_FOUND;
   }
 
-  // Return the index of the column having the given model index.
+  /// Returns the index of the column having the given model index.
   int getModelColumnIndex( int modelColumn) {
     final count = _cols.length;
     for ( int index = 0; index < count; index++ ) {
@@ -5123,6 +5275,9 @@ class WxDataViewCtrl extends WxScrolledWindow {
     return wxNOT_FOUND;
   }
 
+  /// Returns the column at [pos] taking column reordering into account
+  /// 
+  /// See [getColumn] that ignores column reordering by the user
   WxDataViewColumn? getColumnAt( int pos) {
     int idx = pos;
     if (_headerArea != null) {
@@ -5132,6 +5287,7 @@ class WxDataViewCtrl extends WxScrolledWindow {
     return getColumn(idx);
   }
 
+  // Returns the current column
   WxDataViewColumn? getCurrentColumn() {
     return _clientArea.getCurrentColumn();
   }

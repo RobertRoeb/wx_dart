@@ -249,6 +249,34 @@ class WxRendererNative extends WxClass {
       dc.drawRectangle(rect.x, rect.height-5, rect.width, 5);
     } 
 
+    if (sortArrow != 0)
+    {
+      final bool up = (sortArrow == wxHDR_SORT_ICON_UP);
+      final int rightBorder = 5;
+      int border = 8;
+      dc.setPen( wxTRANSPARENT_PEN );
+      dc.setBrush( WxBrush( wxTheApp.getSecondaryAccentColour() ) );
+
+
+      final List<WxPoint> points = [];
+      int width = rect.height - 2 * border;
+      if (up) {
+        final int otherBorder = 8;
+        border = 14;
+        points.add( WxPoint( rect.x+rect.width - width ~/ 2 - rightBorder, rect.y+otherBorder) );
+        points.add( WxPoint( rect.x+rect.width - rightBorder, rect.y+rect.height - border ) );
+        points.add( WxPoint( rect.x+rect.width-width - rightBorder, rect.y+rect.height - border ) );
+      } else {
+        final int otherBorder = 12;
+        border = 10;
+        points.add( WxPoint( rect.x+rect.width - width ~/ 2 - rightBorder, rect.y+rect.height-otherBorder) );
+        points.add( WxPoint( rect.x+rect.width - rightBorder, rect.y + border ) );
+        points.add( WxPoint( rect.x+rect.width-width - rightBorder, rect.y + border ) );
+      }
+      dc.drawPolygon(points);
+    }
+
+
     return 32;  // ??
   }
 

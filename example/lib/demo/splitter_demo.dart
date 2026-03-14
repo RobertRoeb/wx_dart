@@ -181,7 +181,6 @@ class MySplitterWindow extends WxSplitterWindow
     final listSizer = WxBoxSizer( wxVERTICAL );
     listSizer.add(listctrl, flag: wxEXPAND, proportion: 1 );
     listPanel.setSizer(listSizer);
-
   
     final listButtonSizer = WxWrapSizer();
     listSizer.addSizer(listButtonSizer);

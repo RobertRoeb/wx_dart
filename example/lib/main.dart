@@ -8,6 +8,7 @@ import 'demo/sizer_demo.dart';
 import 'demo/controls_demo.dart';
 import 'demo/dialogs_demo.dart';
 import 'demo/splitter_demo.dart';
+import 'demo/dataview_demo.dart';
 import 'demo/tiles_demo.dart';
 import 'demo/drawing_demo.dart';
 import 'demo/treebook_demo.dart';
@@ -187,6 +188,8 @@ class MyMainFrame extends WxAdaptiveFrame {
     databook.appendPage( chapter1, null, "Gestures", MyGestureWindow(databook) );
 
     databook.appendPage( chapter1, null, "Tree and list", MySplitterWindow(databook, idSplitter) );
+
+    databook.appendPage( chapter1, null, "Sorted list", MyDataView(databook) );
 
     final panel2 = WxPanel( databook, -1, style: wxTRANSLUCENT_WINDOW );
     final chapter2 = databook.appendChapter( null, "Tutorial", panel2 );

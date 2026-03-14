@@ -144,9 +144,9 @@ class WxDataViewItemAttr
 /// Note that WxDataViewModel does not define the position or index of any item in the control
 /// because different controls might display the same data differently. 
 /// 
-/// (Note: sorting in wxDart is work in progress) WxDataViewModel does/will
-/// provide a [WxDataViewModel.compare] method which the [WxDataViewCtrl] may use to sort the
-/// data either in conjunction with a column header or without (see [WxDataViewModel.hasDefaultCompare]).
+/// WxDataViewModel provides a [WxDataViewModel.compare] method which the [WxDataViewCtrl]
+/// may use to sort the data either in conjunction with a column header or without
+/// (see [WxDataViewModel.hasDefaultCompare]).
 /// 
 /// WxDataViewModel (as indeed the entire WxDataViewCtrl code) is using _dynamic_ to store data and
 /// its type in a generic way. 
@@ -218,10 +218,12 @@ abstract class WxDataViewModel
     return null;
   }
 
+  /// Adds a notifier to the model
   void addNotifier( WxDataViewModelNotifier notifier ) {
     _notifiers.add( notifier );
   }
 
+  /// Removes the [notifier] from the model
   void removeNotifier( WxDataViewModelNotifier notifier ) {
     _notifiers.remove( notifier );
   }
@@ -236,13 +238,74 @@ abstract class WxDataViewModel
     return false;
   }
 
-  /// TBD
+  /// Returns true of model uses the defaul compare method
   bool hasDefaultCompare() {
     return false;
   }
 
-  /// TBD
-  int compare( WxDataViewItem item1, WxDataViewItem item2, int column, bool ascending ) {
+  /// Compare the two items
+  int compare( WxDataViewItem item1, WxDataViewItem item2, int column, bool ascending )
+  {
+    final hasValue1 = hasValue( item1, column );
+    final hasValue2 = hasValue( item2, column );
+    if (!hasValue1 && !hasValue2) return 0;
+    if (!hasValue1) return ascending ? 1 : -1;
+    if (!hasValue2) return ascending ? -1 : 1;
+
+    dynamic value1 = getValue( item1, column );
+    dynamic value2 = getValue( item2, column );
+
+    if (!ascending) {
+      final temp = value1;
+      value1 = value2;
+      value2 = temp;
+    }
+
+    if (value1 is int)
+    {
+      int l1 = value1;
+      int l2 = value2 as int;
+        if (l1 < l2) {
+            return -1;
+        }
+        else if (l1 > l2) {
+            return 1;
+        } else {
+          return 0;
+        }
+    }
+
+    if (value1 is double)
+    {
+      double l1 = value1;
+      double l2 = value2 as double;
+        if (l1 < l2) {
+            return -1;
+        }
+        else if (l1 > l2) {
+            return 1;
+        } else {
+          return 0;
+        }
+    }
+
+    if (value1 is bool)
+    {
+      bool b1 = value1;
+      bool b2 = value2 as bool;
+
+      if (b1 != b2) {        
+        return b1 ? 1 : -1;
+      }
+      return 0;
+    }
+
+    if (value1 is String)
+    {
+      String l2 = value2 as String;
+      return value1.compareTo( l2 );
+    }
+
     return 0;
   }
 
@@ -267,7 +330,7 @@ abstract class WxDataViewModel
     return false;
   }
 
-  // Change the value of the given item and update the control to reflect it
+  /// Change the value of the given item and update the control to reflect it
   bool changeValue( dynamic value, WxDataViewItem item, int column ) {
     if (setValue(value, item, column)) {
       valueChanged(item, column);
@@ -380,13 +443,6 @@ abstract class WxDataViewListModel extends WxDataViewModel {
   /// Needs to be overridden to set the value in [row],[col]
   bool setValueByRow( dynamic value, int row, int col);
 
-    /*virtual bool
-    GetAttrByRow(unsigned WXUNUSED(row), unsigned WXUNUSED(col),
-                 wxDataViewItemAttr &WXUNUSED(attr)) const
-    {
-        return false;
-    } */
-
   /// Needs to be overridden to return false if [row],[col] is disabled
   bool isEnabledByRow( int row, int col ) {
     return true;
@@ -446,9 +502,181 @@ abstract class WxDataViewListModel extends WxDataViewModel {
   }
 }
 
+// ------------------- wxDataViewIndexListModel -------------------
+
+/// Base class for non-virtual [WxDataViewListModel] in which a [WxDataViewItem]
+/// is persistent. Therefore, a [WxDataViewCtrl] can sort the items in such a model.
+/// 
+/// See [WxDataViewListStore] for a concrete implementation, used by [WxDataViewListCtrl].
+/// 
+/// Need to override
+/// * [getValueByRow]
+/// * [setValueByRow]
+/// * [setValue]
+/// * [getValue]
+
+abstract class WxDataViewIndexListModel extends WxDataViewListModel {
+  WxDataViewIndexListModel( int initialSize )
+  {
+    for (int i = 0; i < initialSize; i++) {
+      _hash.add( WxDataViewItem( id: i ) );
+    }
+    _nextFreeID = initialSize;
+  }  
+
+  final List<WxDataViewItem> _hash = [];
+  bool _ordered = true;
+  int _nextFreeID = 0;
+
+  void reset( int newSize )
+  {
+      // wxDataViewModel::  BeforeReset();
+
+      _hash.clear();
+
+      // IDs are ordered until an item gets deleted or inserted
+      _ordered = true;
+
+      // build initial index
+      for (int i = 0; i < newSize; i++) {
+        _hash.add( WxDataViewItem( id: i ) );
+      }
+
+      _nextFreeID = newSize;
+
+      // wxDataViewModel:: AfterReset();
+  }
+
+  /// Returns the number of items in the list
+  @override
+  int getCount() {
+    return _hash.length;
+  }
+
+  /// Informs model that an item has been prepended (before the first item)
+  void rowPrepended()
+  {
+      _ordered = false;
+
+      final id = _nextFreeID;
+      _nextFreeID++;
+
+      final item = WxDataViewItem( id: id );
+      _hash.insert( 0, item );
+      itemAdded( WxDataViewItem(), item );
+  }
+
+  /// Informs model that an item has been insert before the item in row [before]
+  void rowInserted( int before )
+  {
+      _ordered = false;
+
+      final id = _nextFreeID;
+      _nextFreeID++;
+
+      final item = WxDataViewItem( id: id );
+      _hash.insert( before, item );
+      itemAdded( WxDataViewItem(), item );
+  }
+
+  /// Informs model that an item has been appended (to the end)
+  void rowAppended()
+  {
+    final id = _nextFreeID;
+    _nextFreeID++;
+
+    final item = WxDataViewItem( id: id );
+    _hash.add( item );
+    itemAdded( WxDataViewItem(), item );
+  }
+
+  /// Informs model that the item given in [row] has been deleted
+  void rowDeleted( int row )
+  {
+    _ordered = false;
+
+    final item = _hash[row];
+    _hash.removeAt( row );
+      /* wxDataViewModel:: */ itemDeleted( WxDataViewItem(), item );
+  }
+
+  /// Informs model that the items given in [rows] have been deleted
+  void rowsDeleted( List<int> rows )
+  {
+    _ordered = false;
+
+    final List<WxDataViewItem> array = [];
+    for (int i = 0; i < rows.length; i++)
+    {
+      final item = _hash[rows[i]];
+      array.add( item );
+    }
+
+    //  wxArrayInt sorted = rows;
+    //  sorted.Sort( my_sort );
+    for (int i = 0; i < rows.length; i++) {
+      _hash.removeAt( rows[i] );
+    }
+
+    /* wxDataViewModel:: */ itemsDeleted( WxDataViewItem(), array );
+  }
+
+  /// Informs model that the item given in [row] has changed (new data)
+  void rowChanged( int row )
+  {
+      /* wxDataViewModel:: */ itemChanged( getItem(row) );
+  }
+
+  /// Informs model that the field given in [row] and [col] has changed (new data)
+  void rowValueChanged( int row, int col )
+  {
+      /* wxDataViewModel:: */ valueChanged( getItem(row), col );
+  }
+
+  /// Returns the row of the given [item]
+  @override
+  int getRow( WxDataViewItem item ) 
+  {
+      if (_ordered) {
+          return item.getID();
+      }
+
+      return _hash.indexOf( item );
+  }
+
+  /// Returns the [WxDataViewItem] representing [row] 
+  WxDataViewItem getItem( int row )
+  {
+      if ((row < 0) || (row >= _hash.length)) {
+        wxLogError( "invalid row index in WxDataViewIndexListModel.getItem()" );
+        return WxDataViewItem();
+      }
+      return _hash[row];
+  }
+
+  /// Returns all items in the list model if [item] is the invalid
+  /// root item, otherwise returns an empty list.
+
+  @override
+  List<WxDataViewItem> getChildren( WxDataViewItem item )
+  {
+    if (item.isOk()) return [];
+
+    return _hash;
+  }
+}
+
 // ------------------- wxDataViewVirtualListModel -------------------
 
-/// Abstract model of virtual tabular data (based on rows).
+/// Abstract model of virtual tabular data (based on rows) deriving from [WxDataViewListModel]
+/// 
+/// Use this model if you need to show hundreds of thousands of items. A limitation
+/// of a virtual model is that the [WxDataViewCtrl] that displays it cannot sort the
+/// items in the model. 
+/// 
+/// The key difference to [WxDataViewIndexListModel] is that the [WxDataViewItem]
+/// values are not persistent, they refer to a given row. If a row above is deleted,
+/// the the [WxDataViewItem] will point to different row than before.
 
 abstract class WxDataViewVirtualListModel extends WxDataViewListModel {
   WxDataViewVirtualListModel( { int initalSize = 0 } ) {
@@ -482,7 +710,8 @@ abstract class WxDataViewVirtualListModel extends WxDataViewListModel {
   }
 
   /// Informs model that the items given in [rows] have been deleted
-  void rowsDeleted( List<int> rows ) {
+  void rowsDeleted( List<int> rows )
+  {
     _size -= rows.length;
 
     final sorted = List<int>.from(rows);
@@ -521,8 +750,13 @@ abstract class WxDataViewVirtualListModel extends WxDataViewListModel {
     return WxDataViewItem( index: row );
   }
 
+  /// Comparison function for the two items in a virtual list. Compares exclusively
+  /// based on the row index, not based on values (because this is a virtual list model).
+  /// 
+  /// For a list that can be sorted based on data, see [WxDataViewIndexListModel].
   @override
-  int compare(  WxDataViewItem item1, WxDataViewItem item2, int column, bool ascending ) {
+  int compare(  WxDataViewItem item1, WxDataViewItem item2, int column, bool ascending )
+  {
     final pos1 = item1.index;  
     final pos2 = item2.index;  
 
@@ -533,6 +767,7 @@ abstract class WxDataViewVirtualListModel extends WxDataViewListModel {
     }
   }
 
+  /// Returns true, although sorting is not based on content of items
   @override
   bool hasDefaultCompare() {
     return true;
@@ -544,6 +779,7 @@ abstract class WxDataViewVirtualListModel extends WxDataViewListModel {
     return [];
   }
 
+  /// Returns the size of the virtual list
   @override
   int getCount()  { 
     return _size;
@@ -562,8 +798,9 @@ abstract class WxDataViewVirtualListModel extends WxDataViewListModel {
 /// 
 /// Used internally by [WxDataViewListCtrl].
 
-class WxDataViewListStore extends WxDataViewVirtualListModel
-{
+class WxDataViewListStore extends WxDataViewIndexListModel {
+  WxDataViewListStore() : super( 0 );
+
   final List<List> _modelData = [];
   final List<String> _columns = [];
 
@@ -582,14 +819,14 @@ class WxDataViewListStore extends WxDataViewVirtualListModel
 
   @override
   bool setValue( dynamic value, WxDataViewItem item, int column ) {
-    final List rowData = _modelData[item.index];
+    final List rowData = _modelData[item.getID()];
     rowData[column] = value;
     return true;
   }
 
   @override
   dynamic getValue( WxDataViewItem item, int column ) {
-    final List rowData = _modelData[item.index];
+    final List rowData = _modelData[item.getID()];
     return rowData[column];
   }
 }
