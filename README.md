@@ -22,7 +22,7 @@ A cross-platform GUI library to build native desktop apps, web apps and mobile a
     - [Layout classes](#layout-classes)
     - [Event classes](#event-classes)
 * [Live web demo](#demo)
-* [More screenshot](#screenshots)
+* [More screenshots](#screenshots)
 * [Live tutorial apps](#web-app-tutorials)
 * [Screencasts from desktops](#screencasts-from-the-demo)
 * [Hello World](#hello-world)
@@ -341,8 +341,14 @@ The demo running on Windows 11 in light mode
 The demo running on Windows 11 in dark mode
 ![Windows 11 dark mode](https://wxdesigner-software.com/resources/Windows11DarkSmall.png)
 
-The demo running on Linux Ubuntu in light mode
-![Linux Ubuntu](https://wxdesigner-software.com/resources/Ubuntu.png)
+The demo running on Linux Ubuntu in light and dark mode
+![Linux Ubuntu](https://wxdesigner-software.com/resources/UbuntuLightDarkSmall.png)
+
+For completeness: the demo running in on Android
+![Android](https://wxdesigner-software.com/resources/Android.png)
+
+wxDart Native and wxDart Flutter showing a WxDataViewListCtrl on the desktop
+![Native vs Flutter](https://wxdesigner-software.com/resources/NativeVsFlutter.png)
 
 ## Web app tutorials
 
