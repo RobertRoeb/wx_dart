@@ -26,7 +26,6 @@ A cross-platform GUI library to build native desktop apps, web apps and mobile a
 * [Live tutorial apps](#web-app-tutorials)
 * [Screencasts from desktops](#screencasts-from-the-demo)
 * [Hello World](#hello-world)
-* [Who is doing all this?](#who)
 * [Full Licence](#license-of-wxdart-flutter)
 * [Design overview](#design-overview)
     - [Nomenclature](#nomenclature)
@@ -320,7 +319,7 @@ Command events (deriving from WxCommandEvent)
 | [WxCommandEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxCommandEvent-class.html) | [wxCommandEvent](https://docs.wxwidgets.org/trunk/classwx_command_event.html) |
 | [WxUpdateUIEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxUpdateUIEvent-class.html) | [wxUpdateUIEvent](https://docs.wxwidgets.org/trunk/classwx_update_ui_event.html) |
 | [WxNotifyEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxNotifyEvent-class.html) | [wxNotifyEvent](https://docs.wxwidgets.org/trunk/classwx_notify_event.html) |
-| [WxNotebookEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxNotebookEvent-class.html) | [wxNotebookEvent](https://docs.wxwidgets.org/trunk/classwx_notebook_event.html) |
+| [WxNotebookEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxNotebookEvent-class.html) | [wxNotebookEvent](https://docs.wxwidgets.org/trunk/classwx_book_ctrl_event.html) |
 | [WxTreeEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxTreeEvent-class.html) | [wxTreeEvent](https://docs.wxwidgets.org/trunk/classwx_command_event.html) |
 | [WxSplitterEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxSplitterEvent-class.html) | [wxSplitterEvent](https://docs.wxwidgets.org/trunk/classwx_splitter_event.html) |
 | [WxDataViewEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDataViewEvent-class.html) | [wxDataViewEvent](https://docs.wxwidgets.org/trunk/classwx_data_view_event.html) |
@@ -431,9 +430,6 @@ void main()
   myApp.dispose();
 }
 ```
-
-## Developer
-This package is developed by wxDesigner Software.
 
 ## License of wxDart Flutter
 ```
