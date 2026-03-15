@@ -7,6 +7,7 @@ A cross-platform GUI library to build native desktop apps, web apps and mobile a
 * [Introduction](#wxdart-flutter-and-wxdart-native)
 * [Screenshot](#screenshot)
 * [Installation](#installation-of-wxdart-flutter)
+* [Tutorial with samples](#tutorial-with-samples)
 * [Licence](#licence)
 * [Classes by Category](#classes-by-category)
     - [Core data classes](#core-data-classes)
@@ -66,6 +67,11 @@ and running natively on macOS Tahoe (wxDart Native, in dark mode). There are mor
 ![Web vs macOS](https://wxdesigner-software.com/resources/macOS_Web.png)
 
 ## Installation of wxDart Flutter
+
+wxDart Flutter has been published as wx_dart on [pub.dev](https://pub.dev), the central repository for most Dart and
+Flutter packages and pub.dev also hosts the documentation. Click
+[here](https://pub.dev/packages/wx_dart) to go there.
+
 To use wxDart Flutter, add wx_dart as a dependency in your pubspec.yaml file.
 ```console
 flutter pub add wx_dart
@@ -75,11 +81,19 @@ Import the package into your Dart file:
 ```dart
 import 'package:wx_dart/wx_dart.dart';
 ```
+## Tutorial with samples
+
+The demo app includes a number of samples that can be used as a tutorial. You can also have a look
+at the samples directly in the [tutorial folder](https://github.com/RobertRoeb/wx_dart/tree/main/example/lib/assets/tut)
+on GitHub.
+
+You can see some of these tutorials live embedded into HTML 
+[here](https://wxdesigner-software.com/tutorial01).
 
 ## Installation of wxDart Native
 
 wxDart Native can be downloaded from [here](https://wxdesigner-software.com). It consists of the wxDart Native
-library and the three bridge libraries (the Windows .dll, macOS .dynlib and Linux .so) as
+library and the three bridge libraries (the Windows .dll, macOS .dylib and Linux .so) as
 the interface to the respective platforms.
 
 ## Licence
