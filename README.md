@@ -343,7 +343,7 @@ The demo running on Windows 11 in dark mode
 The demo running on Linux Ubuntu in light and dark mode
 ![Linux Ubuntu](https://wxdesigner-software.com/resources/UbuntuLightDarkSmall.png)
 
-For completeness: the demo running in on Android
+For completeness: the demo running in the Android emulator
 ![Android](https://wxdesigner-software.com/resources/Android.png)
 
 wxDart Native and wxDart Flutter showing a WxDataViewListCtrl on the desktop
