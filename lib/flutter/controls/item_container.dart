@@ -131,6 +131,27 @@ class WxItemContainer extends WxItemContainerImmutable {
     _items[index].data = data;
   }
 
+  void _resort()
+  {
+    if ((this is WxListBox) && hasFlag(wxLB_SORT)) {
+      _items.sort(  (a,b)=>a.text.compareTo(b.text) ); 
+    } else
+    if ((this is WxComboBox) && hasFlag(wxCB_SORT)) {
+      _items.sort(  (a,b)=>a.text.compareTo(b.text) ); 
+    } else
+    if ((this is WxChoice) && hasFlag(wxCB_SORT)) {
+      _items.sort(  (a,b)=>a.text.compareTo(b.text) ); 
+    }
+  }
+
+  /// Set text at position [index] to [str]
+  @override
+  void setString( int index, String str ) {
+    _items[index].text = str;
+    _resort();
+    _setState();
+  }
+
   /// Clears the list of elements and replaces it with a new list.
   /// Optionally, adds a list of client data to the items. The number
   /// of elements in [data] must be the same as in [items].
@@ -146,6 +167,7 @@ class WxItemContainer extends WxItemContainerImmutable {
       _items.add( _WxItem( str, data: data == null ? null : data[count]  ) );
       count++;
     }
+    _resort();
     _setState();
   }
 
@@ -153,6 +175,7 @@ class WxItemContainer extends WxItemContainerImmutable {
   /// the client [data] to it.
   void append( String item, { dynamic data } ) {
     _items.add( _WxItem( item, data: data ) );
+    _resort();
     _setState();
   }
 
@@ -170,12 +193,14 @@ class WxItemContainer extends WxItemContainerImmutable {
       _items.add( _WxItem( str, data: data == null ? null : data[count] ) );
       count++;
     }
+    _resort();
     _setState();
   }
 
   /// Inserts an element at position [pos] with optional client [data].
   void insert( String item, int pos, { dynamic data } ) {
     _items.insert( pos, _WxItem( item, data: data ) );
+    _resort();
     _setState();
   }
 
@@ -191,6 +216,7 @@ class WxItemContainer extends WxItemContainerImmutable {
       _items.insert( pos+count, _WxItem( str, data: data == null ? null : data[count] ) );
       count++;
     }
+    _resort();
     _setState();
   }
 }

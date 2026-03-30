@@ -52,10 +52,10 @@ const int wxLB_HSCROLL = wxHSCROLL;
 /// # Window styles
 /// | constant | meaning |
 /// | -------- | -------- |
-/// | wxLB_SORT | 0x0010 (currently wxDart Native only) |
-/// | wxLB_SINGLE | 0x0020 |
-/// | wxLB_MULTIPLE | 0x0040 |
-/// | wxLB_EXTENDED | 0x0080 |
+/// | wxLB_SORT | 0x0010 sort items |
+/// | wxLB_SINGLE | 0x0020 allow only 1 item to be selected|
+/// | wxLB_MULTIPLE | 0x0040 multiple selection allowed |
+/// | wxLB_EXTENDED | 0x0080  |
 /// | wxLB_ALWAYS_SB | 0x0200 |
 /// | wxLB_NO_SB | 0x0400 |
 /// | wxLB_HSCROLL | wxHSCROLL |
@@ -70,7 +70,7 @@ class WxListBox extends WxItemContainer {
       }
     }
     _selection = 0;
-
+    _resort();
   }
 
   final WxSelectionStore _selectionStore = WxSelectionStore();

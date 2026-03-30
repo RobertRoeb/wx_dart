@@ -70,8 +70,7 @@ const int wxCB_DROPDOWN = 0x0020;
 
 
 class WxComboBox extends WxItemContainer {
-  WxComboBox( WxWindow parent, int id, { String value = '', WxPoint pos = wxDefaultPosition, WxSize size = wxDefaultSize, List<String>? choices, int style = 0 } ) 
-  : super(parent, id, pos: pos, size: size, style: style ) 
+  WxComboBox( super.parent, super.id, { String value = '', super.pos, super.size, List<String>? choices, super.style } ) 
   {
     _textEditingController = TextEditingController();
     _textEditingController.text = value;
@@ -92,6 +91,7 @@ class WxComboBox extends WxItemContainer {
       }
     }
     _selection = 0;
+    _resort();
   }
 
   late TextEditingController _textEditingController;
@@ -179,14 +179,17 @@ class WxComboBox extends WxItemContainer {
 
   // distinction between the two base classes
 
+  /// Returns true if list is empty
   bool isListEmpty( ) {
     return super.isEmpty();
   }
 
+  /// Returns true if textfield is empty
   bool isTextEmpty( ) {
     return _textEditingController.text.isEmpty;
   }
 
+  /// Returns current selection in list, or -1
   int getCurrentSelection() {
     return super.getSelection();
   }
@@ -200,12 +203,14 @@ class WxComboBox extends WxItemContainer {
     processEvent(event);
   }
 
+  /// Appends [text] to text field
   void appendText( String text ) {
     String value = _textEditingController.text;
     value += text;
     _textEditingController.text = value;
   }
 
+  /// Overwrites selection with [text]
   void writeText( String text ) {
     int pos = _textEditingController.selection.baseOffset;
     _textEditingController.text.replaceRange(pos, pos, text );
@@ -214,6 +219,9 @@ class WxComboBox extends WxItemContainer {
     _sendTextEvent( _textEditingController.text );
   }
 
+  /// Set value of text field
+  /// 
+  /// same as [setValue]
   void changeValue( String text ) {
     TextEditingValue value = TextEditingValue( text: text );
     _textEditingController.value = value;
@@ -242,42 +250,50 @@ class WxComboBox extends WxItemContainer {
     return _textEditingController.text.substring( from, to );
   }
 
+  /// Remove text in given range
   void remove( int from, int to ) {
     _textEditingController.text.replaceRange(from, to, "" );
     _setState();
     _sendTextEvent( _textEditingController.text );
   }
 
+  /// Remove text in given range with [value]
   void replace( int from, int to, String value ) {
     _textEditingController.text.replaceRange(from, to, value );
     _setState();
     _sendTextEvent( _textEditingController.text );
   }
 
+  /// Sets control to being editable or not, depending on [editable]
   void setEditable( bool editable ) {
     _editable = editable;
     _setState();
   }
 
+  /// Sets max length of text field
   void setMaxLength( int len ) {
     _maxLength = len;
     _setState();
   }
 
+  /// Returns insertion point
   int getInsertionPoint() {
     return _textEditingController.selection.base.offset;
   }
 
+  /// Sets insertion point to [pos]
   void setInsertionPoint( int pos ) {
     _textEditingController.selection =
       TextSelection.collapsed(offset: pos );
   }
 
+  /// Sets insertion point to the end of the text field
   void setInsertionPointEnd( ) {
     _textEditingController.selection =
       TextSelection.collapsed(offset: _textEditingController.text.length);
   }
 
+  /// Clears control and list
   @override
   void clear( ) {
     super.clear();
@@ -285,12 +301,14 @@ class WxComboBox extends WxItemContainer {
     _sendTextEvent( "" );
   }
 
+  /// Copies selected string to clipboard
   void copy( ) {
     final text = getStringSelection();
     if (text.isEmpty) return;
     Clipboard.setData(ClipboardData(text: text ));
   }
 
+  /// Copies selected string to clipboard and cuts it out
   void cut( ) {
     final text = getStringSelection();
     if (text.isEmpty) return;
@@ -329,28 +347,35 @@ class WxComboBox extends WxItemContainer {
     return false;
   }
 
+  /// Set value of text field
   void setValue( String value ) {
     _textEditingController.text = value;
-    _sendTextEvent( value );
+    // _sendTextEvent( value );
   }
 
+  /// Returns the value of the text field
   String getValue( ) {
     return _textEditingController.text;
   }
 
+  /// Sets the hint of the text field
   void setHint( String hint ) {
     _hint = hint;
     _setState();
   }
 
+  /// Returns hint of the text field
   String getHint( ) {
     return _hint;
   }
 
+  /// Returns true if text field is empty
+  @override  
   bool isEmpty( ) {
     return _textEditingController.text.isEmpty;
   }
 
+  /// Returns true if text field is editable
   bool isEditable( ) {
     return _editable;
   }

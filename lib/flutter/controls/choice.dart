@@ -42,7 +42,7 @@ extension ChoiceEventBinder on WxEvtHandler {
 /// # Window style
 /// | constant | meaning |
 /// | -------- | -------- |
-/// | wxCB_SORT | 0x0008 (not yet in wxDart Flutter) |
+/// | wxCB_SORT | 0x0008 (sort items) |
 
 
 class WxChoice extends WxItemContainer {
@@ -55,6 +55,7 @@ class WxChoice extends WxItemContainer {
       }
     }
     _selection = 0;
+    _resort();
   }
 
   bool _ignoreNextKillEvent = false;
@@ -70,7 +71,7 @@ class WxChoice extends WxItemContainer {
 
   /// returns true if items are sorted by the control
   bool isSorted( ) {
-    return false;
+    return hasFlag(wxCB_SORT);
   }
 
   @override
