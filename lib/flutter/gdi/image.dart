@@ -45,13 +45,13 @@ part of '../../wx_dart.dart';
 ///    }
 /// ```
 
+class WxImage extends WxObject {
 /// Creates an image with given [width] and [height] and clears it to black
 /// depending on the [clear] parameter. 
 /// 
 /// If [clear] is false, then the initial state is undefined.
 /// 
 /// The image is created with no alpha channel. Call [initAlpha] to create one.
-class WxImage extends WxObject {
   WxImage( int width, int height, { bool clear=true } ) {
     _width = width;
     _height = height;
@@ -73,7 +73,7 @@ class WxImage extends WxObject {
     return _height; 
   }
 
-  /// Create an alpha channel for the image and initialize it to
+  /// Creates an alpha channel for the image and initialize it to
   /// be opaque (alpha value of 255)
   void initAlpha() {
     if (_hasMask) {
