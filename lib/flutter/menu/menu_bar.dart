@@ -261,7 +261,7 @@ class WxMenuBar extends WxEvtHandler {
             return subitem;
           }
         }
-        if (item.id == id) {
+        if (item.getId() == id) {
           return item;
         }
       }
@@ -353,7 +353,7 @@ class WxMenuBar extends WxEvtHandler {
             {
               shortcuts[ SingleActivator( item._shortcut!, alt: item.hasAlt, control: item.hasCtrl )] 
                 = VoidCallbackIntent(() {
-                  WxCommandEvent event = WxCommandEvent( wxGetMenuEventType(), item.id );
+                  WxCommandEvent event = WxCommandEvent( wxGetMenuEventType(), item.getId() );
                   if (item.isCheckable()) {
                     event.setInt( item.isChecked() ? 0 : 1 );
                   }

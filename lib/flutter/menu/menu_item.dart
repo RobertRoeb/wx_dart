@@ -21,10 +21,17 @@ part of '../../wx_dart.dart';
 /// is no copy-on-write.
 
 class WxMenuItem extends WxObject {
-  WxMenuItem( WxMenu? parent, { this.id = wxID_SEPARATOR, this.text="", this.help = "", this.kind = wxITEM_NORMAL, WxMenu? subMenu } ) {
-    label = text;
+  WxMenuItem( WxMenu? parent, { int id = wxID_SEPARATOR, String text="", this.help = "", int kind = wxITEM_NORMAL, WxMenu? subMenu } )
+  {
+    _id = id;
+    if (_id == wxID_ANY) {
+      _id = _wxNewControlId();
+    }
+    _text = text;
+    _label = _text;
     _subMenu = subMenu;
     _parent = parent;
+    _kind = kind;
     int indexOfAnd = text.indexOf("&");
     if (indexOfAnd >= 0) {
       text = "${text.substring(0,indexOfAnd)}${text.substring(indexOfAnd+1,text.length)}";
@@ -57,12 +64,12 @@ class WxMenuItem extends WxObject {
     hasShift = modifier.contains("Shift");
   }
  
-  int kind;
+  late int _kind;
   WxMenu? _parent;
   WxMenu? _subMenu;
-  int id;
-  String text;
-  String label = "";
+  late int _id;
+  late String _text;
+  String _label = "";
   bool hasAlt = false;
   bool hasCtrl = false;
   bool hasShift = false;
@@ -78,12 +85,12 @@ class WxMenuItem extends WxObject {
 
   /// Returns the ID
   int getId() {
-    return id;
+    return _id;
   }
 
   /// Returns the item's text
   String getText() {
-    return text;
+    return _text;
   }
 
 /// Returns the kind of the item
@@ -96,7 +103,7 @@ class WxMenuItem extends WxObject {
 /// | wxITEM_CHECK | 1 |
 /// | wxITEM_RADIO | 2 |
   int getKind() {
-    return kind;
+    return _kind;
   }
 
   /// Returns true if item is a sub menu
@@ -106,12 +113,12 @@ class WxMenuItem extends WxObject {
 
   /// Returns true if item is a radio item
   bool isRadio() {
-    return kind == wxITEM_RADIO;
+    return _kind == wxITEM_RADIO;
   }
 
   /// Returns true if item is a check item
   bool isCheck() {
-    return kind == wxITEM_CHECK;
+    return _kind == wxITEM_CHECK;
   }
 
   /// Returns true if item is a check or radio item
@@ -121,7 +128,7 @@ class WxMenuItem extends WxObject {
 
   /// Returns true if item is a menu separator (line)
   bool isSeparator() {
-    return kind == wxITEM_SEPARATOR;
+    return _kind == wxITEM_SEPARATOR;
   }
 
   /// Enable or disble menu item depending on [enable]
@@ -178,11 +185,11 @@ class WxMenuItem extends WxObject {
 
   /// Returns entire label (with key short cuts)
   String getItemLabel() {
-    return label;
+    return _label;
   }
 
   /// Returns the pure text part of the label (without key short cuts)
   String getItemLabelText() {
-    return text;
+    return _text;
   }
 }

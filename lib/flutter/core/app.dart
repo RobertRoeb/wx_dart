@@ -503,15 +503,36 @@ class WxApp extends WxEvtHandler
     }
   }
 
+  /// Returns the accent colour set by [setAccentColour] ignoring whether or
+  /// not the app is in dark or light mode
+  /// 
+  /// See [getPrimaryAccentColour] and [getSecondaryAccentColour]
+  /// 
+  /// Only available in Dart Flutter
   WxColour getAccentColour() {
     return _primaryAccent;
   }
+
+  /// Returns the unchanged accent colour in light mode and a darkened tone
+  /// of it in dark mode
+  /// 
+  /// See  [getSecondaryAccentColour]
+  /// 
+  /// Only available in Dart Flutter
   WxColour getPrimaryAccentColour() {
     return (_isDark) ? _secondaryAccent : _primaryAccent;
   }
+
+  /// Returns a darkened tone of the accent colour in light mode and the unchanged accent
+  /// colour in dark mode
+  /// 
+  /// See  [getPrimaryAccentColour]
+  /// 
+  /// Only available in Dart Flutter
   WxColour getSecondaryAccentColour() {
     return (!_isDark) ? _secondaryAccent : _primaryAccent;
   }
+
   Color _getSeedColor() {
     return _seedColour;
   }

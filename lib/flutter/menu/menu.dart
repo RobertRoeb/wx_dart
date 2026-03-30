@@ -315,7 +315,7 @@ class WxMenu extends WxEvtHandler {
             return subitem;
           }
         }
-        if (item.id == id) {
+        if (item.getId() == id) {
           return item;
         }
     }
@@ -447,7 +447,7 @@ class WxMenu extends WxEvtHandler {
   /// 
   /// Returns true if found
   bool deleteItem( int id ) {
-    int index = _items.indexWhere( (item) => item.id == id );
+    int index = _items.indexWhere( (item) => item.getId() == id );
     if (index >= 0) {
       _items.removeAt(index);
       return true;
@@ -467,7 +467,7 @@ class WxMenu extends WxEvtHandler {
 
   /// Enable or disable the menu item with the [id]
   void enableItem( int id, { bool enable = true } ) {
-    int index = _items.indexWhere( (item) => item.id == id );
+    int index = _items.indexWhere( (item) => item.getId() == id );
     if (index < 0) return;
     WxMenuItem item = _items[index];
     item._enabled = enable;
@@ -507,7 +507,7 @@ class WxMenu extends WxEvtHandler {
           width: double.infinity,
           child: Row( 
             children: [
-              SizedBox( width: 175, child: Text( item.text ) ),
+              SizedBox( width: 175, child: Text( item.getText() ) ),
               Text( ">" ),
             ])
         );
@@ -518,7 +518,7 @@ class WxMenu extends WxEvtHandler {
             enabled: item.isEnabled(),
             height: wxTheApp.isTouch()
               ? kMinInteractiveDimension
-              : owner.getTextExtent(item.text).y + 10.0,
+              : owner.getTextExtent(item.getText()).y + 10.0,
             child: PopupMenuButton(
               popUpAnimationStyle: 
                 wxTheApp.isTouch()
@@ -539,18 +539,18 @@ class WxMenu extends WxEvtHandler {
           width: 150,
           child: Row( 
             children: [
-              SizedBox( width: 150, child: Text( item.text ) ),
+              SizedBox( width: 150, child: Text( item.getText() ) ),
               Text( item._shortcutText ),
             ])
         );
 
       } else {
-        label = Text( item.text );
+        label = Text( item.getText() );
       }
-      if ((item.kind == wxITEM_NORMAL) || (item.kind == wxITEM_CHECK) || (item.kind == wxITEM_RADIO))
+      if ((item._kind == wxITEM_NORMAL) || (item._kind == wxITEM_CHECK) || (item._kind == wxITEM_RADIO))
       {
         late Widget widget;
-        if (item.kind == wxITEM_NORMAL)
+        if (item._kind == wxITEM_NORMAL)
         {
           if (item._bitmap != null) {
             widget = Row(
@@ -566,7 +566,7 @@ class WxMenu extends WxEvtHandler {
             widget = label;
           }
         } 
-        else if (item.kind == wxITEM_CHECK)
+        else if (item._kind == wxITEM_CHECK)
         {
           widget = Row(
             children: [
@@ -580,7 +580,7 @@ class WxMenu extends WxEvtHandler {
             ]
           );
         }
-        else if (item.kind == wxITEM_RADIO)
+        else if (item._kind == wxITEM_RADIO)
         {
           widget = Row(
             children: [
@@ -600,9 +600,9 @@ class WxMenu extends WxEvtHandler {
           enabled: item.isEnabled(),
           height: wxTheApp.isTouch()
              ? kMinInteractiveDimension
-             : owner.getTextExtent(item.text).y + 10.0,
+             : owner.getTextExtent(item.getText()).y + 10.0,
           onTap: () {
-            final event = WxCommandEvent( wxGetMenuEventType(), item.id );
+            final event = WxCommandEvent( wxGetMenuEventType(), item.getId() );
             event.setInt( item.isChecked() ? 0 : 1 );
             event.setEventObject( this ); 
             owner.processEvent(event); // or send to menu directly?
@@ -610,14 +610,14 @@ class WxMenu extends WxEvtHandler {
           child: 
           MouseRegion(
             onEnter: (_) {
-              final event = WxMenuEvent( wxGetMenuHighlightEventType(), item.id, menu: this );
+              final event = WxMenuEvent( wxGetMenuHighlightEventType(), item.getId(), menu: this );
               event.setEventObject( this ); 
               processEvent(event);
             },
             child: widget,
            ) ) );
       } 
-      else if (item.kind == wxITEM_SEPARATOR)
+      else if (item._kind == wxITEM_SEPARATOR)
       {
         flutterItems.add( PopupMenuDivider() );
       } 
@@ -636,20 +636,20 @@ class WxMenu extends WxEvtHandler {
         final menu = item.getSubMenu();
         items.add( SubmenuButton(
           menuChildren: menu!._build( context, owner ),
-          child: Text( item.text ),
+          child: Text( item.getText() ),
           onOpen: () {
-                final event = WxMenuEvent( wxGetMenuOpenEventType(), item.id, menu: menu );
+                final event = WxMenuEvent( wxGetMenuOpenEventType(), item.getId(), menu: menu );
                 event.setEventObject( this ); 
                 menu.processEvent(event);
           },
           onClose: () {
-                final event = WxMenuEvent( wxGetMenuCloseEventType(), item.id, menu: menu );
+                final event = WxMenuEvent( wxGetMenuCloseEventType(), item.getId(), menu: menu );
                 event.setEventObject( this ); 
                 menu.processEvent(event);
           },
           onFocusChange: (value) {
             if (value) {
-                final event = WxMenuEvent( wxGetMenuHighlightEventType(), item.id, menu: this );
+                final event = WxMenuEvent( wxGetMenuHighlightEventType(), item.getId(), menu: this );
                 event.setEventObject( this ); 
                 processEvent(event);
             }
@@ -699,16 +699,16 @@ class WxMenu extends WxEvtHandler {
         shortcut: item.key.isEmpty ? null : SingleActivator(_translateKeyToKey(item.key), 
            control: item.hasCtrl, meta: item.hasMeta, alt: item.hasAlt, shift: item.hasShift ),
         leadingIcon: leading,
-        child: Text( item.text ),
+        child: Text( item.getText() ),
         onFocusChange: (value) {
           if (value) {
-              final event = WxMenuEvent( wxGetMenuHighlightEventType(), item.id, menu: this );
+              final event = WxMenuEvent( wxGetMenuHighlightEventType(), item.getId(), menu: this );
               event.setEventObject( this ); 
               processEvent(event);
           }
         },
         onPressed: () {
-          WxCommandEvent event = WxCommandEvent( wxGetMenuEventType(), item.id );
+          WxCommandEvent event = WxCommandEvent( wxGetMenuEventType(), item.getId() );
           event.setInt( item.isChecked() ? 0 : 1 );
           event.setEventObject( this );
           processEvent( event );

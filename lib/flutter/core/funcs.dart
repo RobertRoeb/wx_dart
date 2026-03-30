@@ -64,6 +64,20 @@ bool wxIsIOS() {
     }
 }
 
+// ------------------------- wxNewWindowId ----------------------
+
+const int _wxFirstWindowID = -10;
+int _wxLastWindowID = _wxFirstWindowID;
+
+/// Use this to register a new window id. This will get called automatically
+/// by windows, menu items and toolbar items given the the ID wxID_ANY (-1)
+/// 
+/// The function returns a unique negative window ID 
+int _wxNewControlId() {
+  _wxLastWindowID--;
+  return _wxLastWindowID;
+}
+
 // --------------- dynamic type to variantType -----------------
 
 /// Returns the wxVariant type name from for a given dynamic type in Dart

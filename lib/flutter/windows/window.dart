@@ -213,6 +213,10 @@ class WxWindow extends WxEvtHandler {
       }
     }
     _initialSize = _size;
+
+    if (_id == wxID_ANY) {
+      _id = _wxNewControlId();
+    }
   }
 
   final GlobalKey _widgetKey = GlobalKey();
