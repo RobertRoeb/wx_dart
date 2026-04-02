@@ -32,14 +32,14 @@ class WxMenuItem extends WxObject {
     _subMenu = subMenu;
     _parent = parent;
     _kind = kind;
-    int indexOfAnd = text.indexOf("&");
+    int indexOfAnd = _text.indexOf("&");
     if (indexOfAnd >= 0) {
-      text = "${text.substring(0,indexOfAnd)}${text.substring(indexOfAnd+1,text.length)}";
+      _text = "${_text.substring(0,indexOfAnd)}${_text.substring(indexOfAnd+1,_text.length)}";
     }
-    int indexOfT = text.indexOf("\t");
+    int indexOfT = _text.indexOf("\t");
     if (indexOfT >= 0) {
-      _shortcutText = text.substring(indexOfT+1,text.length);
-      text = text.substring( 0, indexOfT );
+      _shortcutText = _text.substring(indexOfT+1,_text.length);
+      _text = _text.substring( 0, indexOfT );
     }
     if (_shortcutText.isEmpty) return;
 
