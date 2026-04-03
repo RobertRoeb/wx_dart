@@ -20,7 +20,7 @@ part of '../../wx_dart.dart';
 ///
 /// A WxImage cannot be drawn directly to a [WxDC]. Instead, a platform-specific
 /// [WxBitmap] object must be created from it using [WxBitmap.fromImage]. This
-/// is an exensive operation and should not be done in the paint event handler.
+/// is an expensive operation and should not be done in the paint event handler.
 /// This bitmap can then be drawn in a device context, using [WxDC.drawBitmap].
 /// 
 /// Here is how you create an image and set pixels and alpha channel values:
