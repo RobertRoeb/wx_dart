@@ -8,7 +8,7 @@ const int wxDART_MAJOR_VERSION = 0;
 /// wxDart minor version
 const int wxDART_MINOR_VERSION = 9;
 /// wxDart micro version
-const int wxDART_MICRO_VERSION = 0;
+const int wxDART_MICRO_VERSION = 1;
 
 
 // ------------- constants that don't belong to a single class ------------
