@@ -1,6 +1,39 @@
 
 import 'package:wx_dart/wx_dart.dart';
 
+// ------------------------- MyGraphicsWindow ----------------------
+
+class MyGraphicsWindow extends WxScrolledWindow {
+  MyGraphicsWindow( WxWindow parent, int style, bool background ) : super( parent, -1, pos: wxDefaultPosition, size: WxSize( 200, 200) )
+  {
+    if (background) {
+      setBackgroundColour( wxYELLOW );
+    }
+
+    setVirtualSize(WxSize(600,400));
+    setScrollRate(10, 10);
+
+    bindPaintEvent( onPaint );
+  }
+
+  void onPaint( WxPaintEvent event )
+  {
+    final dc = WxPaintDC( this );
+
+    final gc = WxGraphicsContext.fromDC(dc);
+
+    doPrepareDC(dc);
+    gc.setPen(wxRED_PEN);
+    gc.drawRectangle(2, 2, 48, 48 );
+
+    dc.setPen(wxBLACK_PEN);
+    dc.drawRectangle(4, 4, 44, 4);
+
+    // still draws red
+    gc.drawRectangle(50, 2, 48, 48 );
+  }
+}
+
 // ------------------------- MyLinesWindow ----------------------
 
 class MyLinesWindow extends WxWindow {
@@ -359,6 +392,10 @@ class MyDrawingWindow extends WxScrolledWindow {
     sbs = WxStaticBoxSizer(wxVERTICAL, this, "Simple lines, wxBORDER_SIMPLE" );
     mainSizer.addSizer(sbs, flag: wxEXPAND|wxALL, border: 5 );
     sbs.add( MyLinesWindow(sbs.getStaticBox(), wxSIMPLE_BORDER, true), flag: wxEXPAND|wxALL, border: 5 );
+
+    sbs = WxStaticBoxSizer(wxVERTICAL, this, "WxGraphicsContext" );
+    mainSizer.addSizer(sbs, flag: wxEXPAND|wxALL, border: 5 );
+    sbs.add( MyGraphicsWindow(sbs.getStaticBox(), wxSIMPLE_BORDER, true), flag: wxEXPAND|wxALL, border: 5 );
 
     sbs = WxStaticBoxSizer(wxVERTICAL, this, "Filled and unfilled shapes" );
     mainSizer.addSizer(sbs, flag: wxEXPAND|wxALL, border: 5 );
