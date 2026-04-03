@@ -99,7 +99,7 @@ class MyControlsWindow extends WxScrolledWindow {
 
   void createComboBoxPage( WxStaticBoxSizer sizer, WxWindow parent )
   {
-    final combo = WxComboBox( parent, -1, choices: ['Choice #1','Choice #2','Choice #3'], size: WxSize(200, -1) );
+    final combo = WxComboBox( parent, -1, choices: ['Choice #3','Choice #2','Choice #1'], size: WxSize(200, -1), style: wxCB_SORT );
     sizer.add( combo, flag: wxALL, border: 5 );
 
     const idSelectTwo = 100;
