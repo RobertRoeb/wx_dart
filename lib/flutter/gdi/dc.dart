@@ -16,13 +16,14 @@ const int wxWINDING_RULE = 2;
 /// standard 2D drawing interface.
 /// 
 /// wxDart currently uses the original drawing API from the wxDC
-/// group of classes.
+/// (device context = drawing API) group of classes.
 /// 
 /// wxWidgets has support for a modern path based drawing API from the
-/// wxGraphicsContext group of classes. These are not available in wxDart
-/// yet. Once done, it will use the Direct2D backend under Windows,
+/// [WxGraphicsContext] group of classes. These are currently being 
+/// implemented in wxDart Native and wxDart Flutter.
+/// Once done, it will use the Direct2D backend under Windows,
 /// CoreGraphics on MacOS, Cairo on Linux and Impeller when using the
-/// Flutter backends.
+/// Flutter backend.
 
 class WxDC extends WxReadOnlyDC {
   WxDC() {
@@ -55,7 +56,9 @@ class WxDC extends WxReadOnlyDC {
     super._recalcMatrix();
     _canvas.restore();
     _canvas.save();
-    _canvas.translate( (_deviceOriginX + _deviceLocalOriginX).toDouble(), (_deviceOriginY + _deviceLocalOriginY).toDouble());
+    // Since we use native scrolling in wxDart Flutter,‚ deviceOrigin
+    // and deviceLocalOrigin always become 0
+    // _canvas.translate( (_deviceOriginX + _deviceLocalOriginX).toDouble(), (_deviceOriginY + _deviceLocalOriginY).toDouble());
     _canvas.scale(_scaleX*_signX, _scaleY*_signY );
   }
 
