@@ -1,5 +1,6 @@
 
 import 'package:wx_dart/wx_dart.dart';
+import 'dart:math';
 
 // ------------------------- MyGraphicsWindow ----------------------
 
@@ -13,8 +14,37 @@ class MyGraphicsWindow extends WxScrolledWindow {
     setVirtualSize(WxSize(600,400));
     setScrollRate(10, 10);
 
+
+    final image = WxImage( 80, 120 );
+    image.initAlpha();
+    for (int y = 0; y < 120; y++) {
+        for (int x = 0; x < 80; x++) {
+          // same colour everywhere
+          image.setRGB(x, y, 100, 100, 255 );
+
+          // increase transparency downwards
+          image.setAlpha(x, y, 255 - y*2 );  
+        }
+    }
+
+    // create bitmap from image
+    bitmap = WxBitmap.fromImage( image ); 
+
+    // create graphics context for build optimize graphics bitmaps
+    final gc = WxGraphicsContext();
+
+    // build WxGraphicsBitmap from image
+    bitmapFromImage = gc.createBitmapFromImage( image );
+
+    // build WxGraphicsBitmap from bitmap
+    bitmapFromBitmap = gc.createBitmap( bitmap );
+
     bindPaintEvent( onPaint );
   }
+
+  late WxBitmap bitmap;
+  late WxGraphicsBitmap bitmapFromImage;
+  late WxGraphicsBitmap bitmapFromBitmap;
 
   void onPaint( WxPaintEvent event )
   {
@@ -31,6 +61,42 @@ class MyGraphicsWindow extends WxScrolledWindow {
 
     // still draws red
     gc.drawRectangle(50, 2, 48, 48 );
+
+    dc.drawText("dc.drawBitmap", 20, 100 );
+    dc.drawBitmap(bitmap, 20, 50 );
+
+    // still draws red around
+    gc.drawRectangle(19, 49, 82, 122 );
+
+    dc.setBrush(wxTRANSPARENT_BRUSH);
+    dc.drawRectangle(21, 51, 78, 118 );
+
+    dc.drawText("gc.drawBitmap", 120, 100 );
+    gc.drawBitmap(bitmapFromImage, 120, 50, 80, 120 );
+
+    gc.pushState();
+
+    // scale everything
+    gc.scale(1.1,1.1);
+    // translate right
+    gc.translate(100,0);
+    // rotate
+    gc.rotate(0.1);
+
+    gc.drawBitmap(bitmapFromImage, 120, 50, 80, 120 );
+
+    gc.popState();
+    
+    dc.drawText("rotated + scaled", 220, 100 );
+
+    dc.drawText("rotated back", 350, 100 );
+
+    // translate right
+    gc.translate(200,0);
+    gc.rotate(-0.1);
+
+    // draw again, but not scaled
+    gc.drawBitmap(bitmapFromBitmap, 120, 50, 80, 120 );
   }
 }
 

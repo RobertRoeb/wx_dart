@@ -590,12 +590,13 @@ wxDart currently uses the original drawing API from the wxDC group of classes an
 uses the GDI backend under Windows which provides fastest drawing for simple geometries
 and text.
 
-wxWidgets has support for a modern path based drawing API from the wxGraphicsContext
-group of classes. These are not available in wxDart yet. Once done, it will use the
-Direct2D backend under Windows, CoreGraphics on MacOS, Cairo on Linux and Impellar
-when using the Flutter backend.
+wxDart now has initial support for a modern path based drawing API from the
+WxGraphicsContext group of classes in both wxDart Native and wxDart Flutter.
+It uses Direct2D under Windows, CoreGraphics on MacOS, Cairo on Linux and
+Impeller when using the Flutter backend.
 
-There is no 3D support in wxDart yet. Ideal would be a port of ThreeJS on all platforms.
+There is no 3D support in wxDart yet. The plan is to support OpenGL ES and WebGL.
+Ideal would be a port of ThreeJS on all platforms.
 
 ## Main loop
 

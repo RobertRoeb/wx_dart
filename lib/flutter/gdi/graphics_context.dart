@@ -16,17 +16,58 @@ class WxGraphicsObject extends WxObject {
   WxGraphicsObject();
 }
 
+// ------------------------- wxGraphicsBitmap ----------------------
+
+/// Opaque object representing an image or bitmap optimized for GPU based drawing
+/// with [WxGraphicsContext.drawBitmap]. These objects should be created
+/// outside of a paint event handler.
+/// 
+/// See [WxGraphicsContext.createBitmap] and [WxGraphicsContext.createBitmapFromImage]
+/// 
+///```dart
+/// final image = WxImage( 80, 120 );
+/// image.initAlpha();
+/// 
+/// // do something with the image here
+///
+/// // create graphics context to build optimized graphics bitmaps
+/// final gc = WxGraphicsContext();
+///
+/// // build WxGraphicsBitmap from image
+///  final bitmap = gc.createBitmapFromImage( image );
+///```
+
+class WxGraphicsBitmap extends WxGraphicsObject {
+  WxGraphicsBitmap( );
+
+  WxBitmap? _bitmap;
+}
+
 // ------------------------- wxGraphicsContext ----------------------
 
-/// wxDart currently uses the original drawing API from the [WxDC]
-/// (device context = drawing API) group of classes.
+const int wxCOMPOSITION_INVALID = -1;
+const int wxCOMPOSITION_CLEAR = 0;
+const int wxCOMPOSITION_SOURCE = 1;
+const int wxCOMPOSITION_OVER = 2;
+const int wxCOMPOSITION_IN = 3;
+const int wxCOMPOSITION_OUT = 4;
+const int wxCOMPOSITION_ATOP = 5;
+const int wxCOMPOSITION_DEST = 6;
+const int wxCOMPOSITION_DEST_OVER = 7;
+const int wxCOMPOSITION_DEST_IN = 8;
+const int wxCOMPOSITION_DEST_OUT = 9;
+const int wxCOMPOSITION_DEST_ATOP = 10;
+const int wxCOMPOSITION_XOR = 11;
+const int wxCOMPOSITION_ADD = 12;
+const int wxCOMPOSITION_DIFF = 13;
+
+/// Internally, both wxWidgets and wxDart mostly use the original drawing API from
+/// the [WxDC] (device context = drawing API) group of classes.
 /// 
-/// wxWidgets has support for a modern path based drawing API from the
-/// [WxGraphicsContext] group of classes. These are currently being 
-/// implemented in wxDart Native and wxDart Flutter.
-/// Once done, it will use the Direct2D backend under Windows,
-/// CoreGraphics on MacOS, Cairo on Linux and Impeller when using the
-/// Flutter backend.
+/// wxDart now has initial support for a modern path based drawing API from the
+/// [WxGraphicsContext] group of classes in both wxDart Native and wxDart Flutter.
+/// It uses Direct2D under Windows, CoreGraphics on MacOS, Cairo on Linux and
+/// Impeller when using the Flutter backend.
 /// 
 /// [WxGraphicsContext] uses _double_ values for coordinates, not _int_
 /// values like [WxDC]
@@ -73,9 +114,9 @@ class WxGraphicsObject extends WxObject {
 
 class WxGraphicsContext extends WxGraphicsObject {
 
-  /// Creates lightweigt graphics context for measuring metric (of text) and
-  /// for creating a WxGraphicsBitmap from a WxBitmap (TODO) outside of a 
-  /// paint event handler.
+  /// Creates lightweight graphics context for measuring metric (of text) and
+  /// for creating a [WxGraphicsBitmap] from a [WxBitmap] or a [WxImage] outside
+  /// of a paint event handler.
   WxGraphicsContext()
   {
     _initGC();
@@ -86,6 +127,7 @@ class WxGraphicsContext extends WxGraphicsObject {
   {
     _canvas = dc._canvas;
     _initGC();
+    _owner = dc._window;
   }
 
   void _initGC()
@@ -103,12 +145,101 @@ class WxGraphicsContext extends WxGraphicsObject {
   }
 
   Canvas? _canvas;
+  WxWindow? _owner;
   late Paint _penPaint;
   late Paint _brushPaint;
   WxPen _currentPen = wxBLACK_PEN;
   late WxBrush _currentBrush;
   WxColour _currentTextForeground = wxBLACK;
 
+  /// Pushes current state to the stack. You can restore it with [popState].
+  void pushState( ) {
+    if (_canvas == null) {
+      wxLogError("No valid canvas for graphics context" );
+      return;
+    }
+    _canvas!.save();
+  }
+
+  /// Restores the current state of the grapics context from the stack
+  /// 
+  /// See [pushState]
+  
+  void popState( ) {
+    if (_canvas == null) {
+      wxLogError("No valid canvas for graphics context" );
+      return;
+    }
+    _canvas!.restore();
+  }
+
+  /// Rotates the current matrix by [angle] in radians
+  void rotate( double angle ) {
+    if (_canvas == null) {
+      wxLogError("No valid canvas for graphics context" );
+      return;
+    }
+    _canvas!.rotate(angle);
+  }
+
+  /// Rotates the current matrix by [x] and [y]
+  void translate( double x, double y ) {
+    if (_canvas == null) {
+      wxLogError("No valid canvas for graphics context" );
+      return;
+    }
+    _canvas!.translate(x,y);
+  }
+
+  /// Scales the current matrix by [xScale] and [yScale]
+  void scale( double xScale, double yScale ) {
+    if (_canvas == null) {
+      wxLogError("No valid canvas for graphics context" );
+      return;
+    }
+    _canvas!.scale(xScale,yScale);
+  }
+
+  /// Creates a GPU optimized representation of the bitmap for 
+  /// drawing with [drawBitmap]
+  /// 
+  /// See [WxGraphicsBitmap], [createBitmapFromImage]
+  WxGraphicsBitmap createBitmap( WxBitmap bitmap ) {
+    final gb = WxGraphicsBitmap();
+    gb._bitmap = bitmap;
+    return gb;
+  }
+
+  /// Creates a GPU optimized representation of the image for 
+  /// drawing with [drawBitmap]
+  /// 
+  /// See [WxGraphicsBitmap], [createBitmap]
+  WxGraphicsBitmap createBitmapFromImage( WxImage image ) {
+    final gb = WxGraphicsBitmap();
+    gb._bitmap = WxBitmap.fromImage(image);
+    return gb;
+  }
+
+  /// Draws [bitmap] at position [x],[y] with given dimensions
+  /// 
+  /// See [WxGraphicsBitmap]
+  void drawBitmap( WxGraphicsBitmap bitmap, double x, double y, double width, double height )
+  {
+    if (bitmap._bitmap == null) return;
+    if (_canvas == null) {
+      wxLogError("No valid canvas for graphics context" );
+      return;
+    }
+    if (bitmap._bitmap!.isOk())
+    {
+      // TODO scale
+      _canvas!.drawImage(bitmap._bitmap!._image!, Offset( x, y ), _penPaint );
+    } else {
+      if (_owner != null) {
+        bitmap._bitmap!._addListener(_owner!);
+      }
+    }
+  }
 
   /// Sets current [WxPen] for all drawing operations. Set it to [wxTRANSPARENT_PEN]
   /// to not draw anything
@@ -150,6 +281,9 @@ class WxGraphicsContext extends WxGraphicsObject {
     _brushPaint.color = Color.fromARGB( brush.colour.alpha, brush.colour.red, 
       brush.colour.green, brush.colour.blue );
   }
+
+  /// Draws a rectangle [x],[y] with the [width] and [height] using the
+  /// current [WxPen] 
 
   void drawRectangle( double x, double y, double width, double height )
   {

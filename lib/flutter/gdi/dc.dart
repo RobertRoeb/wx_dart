@@ -18,12 +18,10 @@ const int wxWINDING_RULE = 2;
 /// wxDart currently uses the original drawing API from the wxDC
 /// (device context = drawing API) group of classes.
 /// 
-/// wxWidgets has support for a modern path based drawing API from the
-/// [WxGraphicsContext] group of classes. These are currently being 
-/// implemented in wxDart Native and wxDart Flutter.
-/// Once done, it will use the Direct2D backend under Windows,
-/// CoreGraphics on MacOS, Cairo on Linux and Impeller when using the
-/// Flutter backend.
+/// wxDart now has initial support for a modern path based drawing API from the
+/// [WxGraphicsContext] group of classes in both wxDart Native and wxDart Flutter.
+/// It uses Direct2D under Windows, CoreGraphics on MacOS, Cairo on Linux and
+/// Impeller when using the Flutter backend.
 
 class WxDC extends WxReadOnlyDC {
   WxDC() {
