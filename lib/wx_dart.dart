@@ -105,6 +105,7 @@ part 'flutter/gdi/paint_dc.dart';
 part 'flutter/gdi/memory_dc.dart';
 part 'flutter/gdi/info_dc.dart';
 part 'flutter/gdi/graphics_context.dart';
+part 'flutter/gdi/graphics_path.dart';
 part 'flutter/books/notebook.dart';
 part 'flutter/books/book_ctrl_base.dart';
 part 'flutter/books/treebook.dart';

@@ -140,7 +140,7 @@ class WxGraphicsContext extends WxGraphicsObject {
     _brushPaint.style = PaintingStyle.fill;
     setBrush( wxWHITE_BRUSH );
     if (wxTheApp.isDark()) {
-      _currentTextForeground = wxWHITE;
+      _currentColour = wxWHITE;
     }
   }
 
@@ -150,7 +150,7 @@ class WxGraphicsContext extends WxGraphicsObject {
   late Paint _brushPaint;
   WxPen _currentPen = wxBLACK_PEN;
   late WxBrush _currentBrush;
-  WxColour _currentTextForeground = wxBLACK;
+  WxColour _currentColour = wxBLACK;
 
   /// Pushes current state to the stack. You can restore it with [popState].
   void pushState( ) {
@@ -200,6 +200,18 @@ class WxGraphicsContext extends WxGraphicsObject {
     _canvas!.scale(xScale,yScale);
   }
 
+  /// Sets a clipping area to the specified rectangle
+  /// 
+  /// See [resetClip]
+  void clip( double x, double y, double width, double height ) {
+  }
+
+  /// Resets clipping addRectangle
+  /// 
+  /// See [clip]
+  void resetClip( ) {
+  }
+
   /// Creates a GPU optimized representation of the bitmap for 
   /// drawing with [drawBitmap]
   /// 
@@ -241,6 +253,68 @@ class WxGraphicsContext extends WxGraphicsObject {
     }
   }
 
+  /// Returns an empty path
+  WxGraphicsPath createPath( ) {
+    return WxGraphicsPath();
+  }
+
+  /// Draws the given [path] with the current pen
+  void strokePath( WxGraphicsPath path ) {
+    if (_canvas == null) {
+      wxLogError("No valid canvas for graphics context" );
+      return;
+    }
+    if (_currentPen.isNonTransparent()) {
+      _canvas!.drawPath( path._path, _penPaint );
+    }
+  }
+
+  /// Draws a line from [x1],[y1] to [x2],[y2] with the current pen
+  void strokeLine( double x1, double y1, double x2, double y2 ) {
+  }
+
+  /// Draws a rectangle [x],[y] with the [width] and [height] using the
+  /// current [WxPen] 
+  void drawRectangle( double x, double y, double width, double height )
+  {
+    if (_canvas == null) {
+      wxLogError("No valid canvas for graphics context" );
+      return;
+    }
+    if (_currentPen.isNonTransparent()) {
+      _canvas!.drawRect( Rect.fromPoints(
+          Offset( x+0.5, y+0.5 ),
+          Offset( x+width+0.5, y+height+0.5 ) ),
+      _penPaint );
+    }
+  }
+
+  /// Draws a rounded rectangle from [x],[y] with the dimenssion [width],[height] and [radius] with the current pen
+  void drawRoundedRectangle( double x, double y, double width, double height, double radius )
+  {
+    if (_canvas == null) {
+      wxLogError("No valid canvas for graphics context" );
+      return;
+    }
+    if (_currentPen.isNonTransparent())
+    {
+      final Rect rect = Rect.fromPoints(
+          Offset( x+0.5, y+0.5 ),
+          Offset( x+width+0.5, y+height+0.5 ) );
+      final rrect = RRect.fromRectAndRadius( rect, Radius.circular(radius) );
+      _canvas!.drawRRect( rrect, _penPaint );
+    }
+  }
+
+  /// Draws a [text] at [x],[y] with the current pen
+  void drawText( String text, double x, double y )
+  {
+      if (_canvas == null) {
+      wxLogError("No valid canvas for graphics context" );
+      return;
+    }
+}
+
   /// Sets current [WxPen] for all drawing operations. Set it to [wxTRANSPARENT_PEN]
   /// to not draw anything
   /// 
@@ -280,23 +354,6 @@ class WxGraphicsContext extends WxGraphicsObject {
     _currentBrush = brush;
     _brushPaint.color = Color.fromARGB( brush.colour.alpha, brush.colour.red, 
       brush.colour.green, brush.colour.blue );
-  }
-
-  /// Draws a rectangle [x],[y] with the [width] and [height] using the
-  /// current [WxPen] 
-
-  void drawRectangle( double x, double y, double width, double height )
-  {
-    if (_canvas == null) {
-      wxLogError("No valid canvas for graphics context" );
-      return;
-    }
-    if (_currentPen.isNonTransparent()) {
-      _canvas!.drawRect( Rect.fromPoints(
-          Offset( x+0.5, y+0.5 ),
-          Offset( x+width+0.5, y+height+0.5 ) ),
-      _penPaint );
-    }
   }
 }
 

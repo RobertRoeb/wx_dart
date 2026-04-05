@@ -2,6 +2,61 @@
 import 'package:wx_dart/wx_dart.dart';
 import 'dart:math';
 
+// ------------------------- MyGraphicsPathWindow ----------------------
+
+class MyGraphicsPathWindow extends WxScrolledWindow {
+  MyGraphicsPathWindow( WxWindow parent, int style ) : super( parent, -1, pos: wxDefaultPosition, size: WxSize( 200, 200) )
+  {
+    setVirtualSize(WxSize(600,400));
+    setScrollRate(10, 10);
+
+    bindPaintEvent( onPaint );
+  }
+
+
+  void onPaint( WxPaintEvent event )
+  {
+    final dc = WxPaintDC( this );
+    doPrepareDC(dc);
+
+    final gc = WxGraphicsContext.fromDC(dc);
+
+    gc.setPen(wxRED_PEN);
+
+    dc.drawRectangle(0,0, 100, 100);
+
+    dc.drawRectangle(120,0, 2, 2);
+    dc.drawRectangle(120,10, 3, 3);
+    dc.drawRectangle(120,20, 4, 4);
+
+    gc.drawRectangle(130,0, 2, 2);
+    gc.drawRectangle(130,10, 3, 3);
+    gc.drawRectangle(130,20, 4, 4);
+
+    dc.drawRectangle(24,24, 53, 53);
+    final path = gc.createPath();
+        path.addCircle( 50.0, 50.0, 50.0 );
+        path.moveTo(0.0, 50.0);
+        path.addLineTo(100.0, 50.0);
+        path.moveTo(50.0, 0.0);
+        path.addLineTo(50.0, 100.0 );
+        path.closeSubpath();
+        path.addRectangle(25.0, 25.0, 50.0, 50.0); 
+    gc.strokePath(path);    
+
+    // scale everything
+    gc.scale(1.1,1.1);
+    // translate right
+    gc.translate(100,0);
+    // rotate
+    gc.rotate(0.1);
+
+    // draw again
+    gc.setPen(wxGREEN_PEN);
+    gc.strokePath(path);    
+  }
+}
+
 // ------------------------- MyGraphicsWindow ----------------------
 
 class MyGraphicsWindow extends WxScrolledWindow {
@@ -49,10 +104,10 @@ class MyGraphicsWindow extends WxScrolledWindow {
   void onPaint( WxPaintEvent event )
   {
     final dc = WxPaintDC( this );
+    doPrepareDC(dc);
 
     final gc = WxGraphicsContext.fromDC(dc);
 
-    doPrepareDC(dc);
     gc.setPen(wxRED_PEN);
     gc.drawRectangle(2, 2, 48, 48 );
 
@@ -459,9 +514,13 @@ class MyDrawingWindow extends WxScrolledWindow {
     mainSizer.addSizer(sbs, flag: wxEXPAND|wxALL, border: 5 );
     sbs.add( MyLinesWindow(sbs.getStaticBox(), wxSIMPLE_BORDER, true), flag: wxEXPAND|wxALL, border: 5 );
 
-    sbs = WxStaticBoxSizer(wxVERTICAL, this, "WxGraphicsContext" );
+    sbs = WxStaticBoxSizer(wxVERTICAL, this, "WxGraphicsBitmap" );
     mainSizer.addSizer(sbs, flag: wxEXPAND|wxALL, border: 5 );
     sbs.add( MyGraphicsWindow(sbs.getStaticBox(), wxSIMPLE_BORDER, true), flag: wxEXPAND|wxALL, border: 5 );
+
+    sbs = WxStaticBoxSizer(wxVERTICAL, this, "WxGraphicsPath" );
+    mainSizer.addSizer(sbs, flag: wxEXPAND|wxALL, border: 5 );
+    sbs.add( MyGraphicsPathWindow(sbs.getStaticBox(), wxSIMPLE_BORDER ), flag: wxEXPAND|wxALL, border: 5 );
 
     sbs = WxStaticBoxSizer(wxVERTICAL, this, "Filled and unfilled shapes" );
     mainSizer.addSizer(sbs, flag: wxEXPAND|wxALL, border: 5 );

@@ -279,7 +279,7 @@ class WxDC extends WxReadOnlyDC {
       final Rect rect = Rect.fromPoints(
           Offset( x.toDouble(), y.toDouble() ),
           Offset( (x+width-1).toDouble(), (y+height-1).toDouble() ) );
-      final rrect = RRect.fromRectAndRadius( rect, Radius.circular(radius*_scaleX) );
+      final rrect = RRect.fromRectAndRadius( rect, Radius.circular(radius) );
       _canvas.drawRRect( rrect, _brushPaint );      
     }
     if (_currentPen.isNonTransparent())
@@ -287,7 +287,7 @@ class WxDC extends WxReadOnlyDC {
       final Rect rect = Rect.fromPoints(
           Offset( x+0.5, y+0.5 ),
           Offset( (x+width-1)+0.5, (y+height-1)+0.5 ) );
-      final rrect = RRect.fromRectAndRadius( rect, Radius.circular(radius*_scaleX) );
+      final rrect = RRect.fromRectAndRadius( rect, Radius.circular(radius) );
       _canvas.drawRRect( rrect, _penPaint );
     }
   }
