@@ -67,7 +67,51 @@ const int wxCB_DROPDOWN = 0x0020;
 /// | wxCB_READONLY | 0x0010 |
 /// | wxCB_DROPDOWN | 0x0020 |
 /// | wxTE_PROCESS_ENTER | 0x0400 |
-
+///
+/// Setting text interface
+/// * [setValue]
+/// * [changeValue] (same as [setValue] in wxDart)
+/// * [appendText]
+/// * [writeText] (at insertion point, overwriting selection)
+/// * [clear]
+/// * [remove]
+/// * [replace]
+/// 
+/// Getting value interface
+/// * [getValue]
+/// * [isTextEmpty]
+/// 
+/// Insertion point interface
+/// * [setInsertionPoint]
+/// * [getInsertionPoint]
+/// * [setInsertionPointEnd]
+/// 
+/// Configuration
+/// * [setEditable]
+/// * [isEditable]
+/// * [setMaxLength]
+/// 
+/// Hint interface
+/// * [setHint]
+/// * [getHint]
+/// 
+/// Selection interface
+/// * [selectAll]
+/// * [selectNone]
+/// * [setTextSelection]
+/// * [getStringSelection]
+/// 
+/// Clipboard/undo/redo interface
+/// * [copy]
+/// * [cut]
+/// * [paste]
+/// * [undo]
+/// * [redo]
+/// * [canCopy]
+/// * [canCut]
+/// * [canPaste]
+/// * [canUndo]
+/// * [canRedo]
 
 class WxComboBox extends WxItemContainer {
   WxComboBox( super.parent, super.id, { String value = '', super.pos, super.size, List<String>? choices, super.style } ) 
@@ -238,6 +282,7 @@ class WxComboBox extends WxItemContainer {
     _setState();
   }
 
+  /// Sets selection in text field 
   void setTextSelection( int from, int to ) {
     _textEditingController.selection = TextSelection(baseOffset: from, extentOffset: to+1 );
     _setState();
@@ -250,14 +295,14 @@ class WxComboBox extends WxItemContainer {
     return _textEditingController.text.substring( from, to );
   }
 
-  /// Remove text in given range
+  /// Removes text in given range
   void remove( int from, int to ) {
     _textEditingController.text.replaceRange(from, to, "" );
     _setState();
     _sendTextEvent( _textEditingController.text );
   }
 
-  /// Remove text in given range with [value]
+  /// Removes text in given range with [value]
   void replace( int from, int to, String value ) {
     _textEditingController.text.replaceRange(from, to, value );
     _setState();

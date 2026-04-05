@@ -41,6 +41,19 @@ extension TextEventEnterBinder on WxEvtHandler {
 
 /// Creates a single-line or multi-line text field.
 /// 
+/// Example usage for multiline text field
+/// ```dart
+///  final multi = WxTextCtrl(this, -1, value: 'Initial text', size: WxSize(-1, 100), style: wxTE_MULTILINE|wxTE_PROCESS_ENTER);
+///
+///  multi.bindTextEnterEvent((event) {
+///    // user hit <ENTER>, now do something
+///  },-1);
+///  multi.bindTextEvent((event) {
+///    final text = event.getString();
+///    // do something
+///  },-1);
+/// ```
+/// 
 /// # Events emitted
 /// [Text](/wxdart/wxGetTextEventType.html) event gets sent when the user enters text. |
 /// | ----------------- |
@@ -59,6 +72,60 @@ extension TextEventEnterBinder on WxEvtHandler {
 /// | wxTE_PROCESS_TAB | 0x0040 (Catch and process TAB) |
 /// | wxTE_PROCESS_ENTER | 0x0400 (Catch and process ENTER) |
 /// | wxTE_PASSWORD | 0x0800 (Hide content visually) |
+/// 
+/// Setting text interface
+/// * [setValue]
+/// * [changeValue] (same as [setValue] in wxDart)
+/// * [appendText]
+/// * [writeText] (at insertion point, overwriting selection)
+/// * [clear]
+/// * [remove]
+/// * [replace]
+/// 
+/// Getting value interface
+/// * [getValue]
+/// * [isEmpty]
+/// * [isModified]
+/// * [markDirty]
+/// 
+/// Insertion point interface
+/// * [setInsertionPoint]
+/// * [getInsertionPoint]
+/// * [setInsertionPointEnd]
+/// 
+/// Configuration
+/// * [setEditable]
+/// * [isEditable]
+/// * [setMaxLength]
+/// 
+/// Multiline interface
+/// * [isMultiLine]
+/// * [getNumberOfLines]
+/// * [getLineLength]
+/// * [getLineText]
+/// 
+/// Hint interface
+/// * [setHint]
+/// * [getHint]
+/// 
+/// Selection interface
+/// * [selectAll]
+/// * [selectNone]
+/// * [setSelection]
+/// * [getStringSelection]
+/// 
+/// Clipboard/undo/redo interface
+/// * [copy]
+/// * [cut]
+/// * [paste]
+/// * [undo]
+/// * [redo]
+/// * [canCopy]
+/// * [canCut]
+/// * [canPaste]
+/// * [canUndo]
+/// * [canRedo]
+
 
 class WxTextCtrl extends WxTextEntry {
   /// Creates the control

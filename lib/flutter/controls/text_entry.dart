@@ -9,7 +9,55 @@ part of '../../wx_dart.dart';
 
 // ------------------------ wxTextEntry ----------------------
 
+/// Base class for controls allowing text entry, mostly [WxTextCtrl] and [WxComboBox]
+/// 
+/// Setting text interface
+/// * [setValue]
+/// * [changeValue] (same as [setValue] in wxDart)
+/// * [appendText]
+/// * [writeText] (at insertion point, overwriting selection)
+/// * [clear]
+/// 
+/// Getting value interface
+/// * [getValue]
+/// * [isEmpty]
+/// 
+/// Insertion point interface
+/// * [setInsertionPoint]
+/// * [getInsertionPoint]
+/// * [setInsertionPointEnd]
+/// 
+/// Configuration
+/// * [setEditable]
+/// * [isEditable]
+/// * [setMaxLength]
+/// 
+/// Hint interface
+/// * [setHint]
+/// * [getHint]
+/// 
+/// Selection interface
+/// * [selectAll]
+/// * [selectNone]
+/// * [setSelection]
+/// * [getStringSelection]
+/// 
+/// Clipboard/undo/redo interface
+/// * [copy]
+/// * [cut]
+/// * [paste]
+/// * [undo]
+/// * [redo]
+/// * [canCopy]
+/// * [canCut]
+/// * [canPaste]
+/// * [canUndo]
+/// * [canRedo]
+
+
+
 abstract class WxTextEntry extends WxControl {
+
   WxTextEntry( super._parent, super._id, { String value = "", super.pos = wxDefaultPosition, super.size = wxDefaultSize, super.style = 0 } ) {
     _textEditingController = TextEditingController();
     _textEditingController.text = value;
@@ -83,6 +131,7 @@ abstract class WxTextEntry extends WxControl {
     _sendTextEvent( _textEditingController.text );
   }
 
+  /// Makes the control editable
   void setEditable( bool editable ) {
     _editable = editable;
     _setState();
@@ -138,9 +187,12 @@ abstract class WxTextEntry extends WxControl {
   void paste( ) {
   }
 
+  /// Redo a change that was previously undone (if supported)
   void redo( ) {
+    // TODO, add UndoHistoryController.
   }
 
+  /// Undo a change (if supported)
   void undo( ) {
   }
 
