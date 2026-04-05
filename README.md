@@ -189,6 +189,8 @@ of the Dart classes as well as the C++ classes which wxDart Native uses internal
 | [WxSize](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxSize-class.html) | [wxSize](https://docs.wxwidgets.org/trunk/classwx_size.html) |
 | [WxRect](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxRect-class.html) | [wxRect](https://docs.wxwidgets.org/trunk/classwx_rect.html) |
 | [WxGraphicsContext](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxGraphicsContext-class.html) | [wxDC](https://docs.wxwidgets.org/trunk/classwx_graphics_context.html) |
+| [WxGraphicsPath](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxGraphicsPath-class.html) | [wxDC](https://docs.wxwidgets.org/trunk/classwx_graphics_path.html) |
+| [WxGraphicsBitmap](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxGraphicsBitmap-class.html) | [wxDC](https://docs.wxwidgets.org/trunk/classwx_graphics_bitmap.html) |
 | [WxReadOnlyDC](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxReadOnlyDC-class.html) | [wxReadOnlyDC](https://docs.wxwidgets.org/trunk/classwx_read_only_dc.html) |
 | [WxDC](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDC-class.html) | [wxDC](https://docs.wxwidgets.org/trunk/classwx_dc.html) |
 | [WxPaintDC](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxPaintDC-class.html) | [wxPaintDC](https://docs.wxwidgets.org/trunk/classwx_paint_dc.html) |

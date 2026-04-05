@@ -1,6 +1,8 @@
 ## 0.9.2
 
 * Further work on WxGraphicsBitmap and WxGraphicsContext
+* Added WxGraphicsPath, related drawing functions and tests for both
+* Documentation updates
 
 ## 0.9.1
 
