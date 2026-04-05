@@ -44,6 +44,19 @@ const int wxLB_HSCROLL = wxHSCROLL;
 
 /// Allows the user to select an item from a list.
 /// 
+/// Example usage:
+///```dart
+///    // Create the control
+///    final listbox = WxListBox( parent, -1, choices: ['Choice #1','Choice #2','Choice #3'], 
+///      size: WxSize( 200, wxTheApp.isTouch() ? 120 : 80) );
+/// 
+///    // bind to event when user selects an item
+///    listbox.bindListboxEvent((event) {
+///      final index = event.getInt();
+///      final text = event.getString();
+///    }, -1 );
+///```
+///
 /// [Listbox](/wxdart/wxGetListboxEventType.html) event gets sent when the user selects an item. |
 /// | ----------------- |
 /// | void bindListboxEvent( void function( [WxCommandEvent] event ) ) |
@@ -79,7 +92,7 @@ class WxListBox extends WxItemContainer {
 
   /// Returns true if sorted
   bool isSorted( ) {
-    return false;
+    return hasFlag(wxLB_SORT);
   }
 
   /// Returns the list of selected items

@@ -17,6 +17,8 @@ part of '../../wx_dart.dart';
 /// * [appendText]
 /// * [writeText] (at insertion point, overwriting selection)
 /// * [clear]
+/// * [remove]
+/// * [replace]
 /// 
 /// Getting value interface
 /// * [getValue]

@@ -125,6 +125,7 @@ class WxTreeEvent extends WxNotifyEvent {
 
 // ------------------------ wxTreeCtrl -----------------------
 
+/// @nodoc
 
 class WxTreeItemNode {
   WxTreeItemNode( this.label, this.image, this.selImage, this.data );
