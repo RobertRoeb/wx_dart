@@ -201,7 +201,7 @@ Future<ui.Image> _buildAsset(String path, int height, int width) async
   /// not supported on all platforms.
   WxBitmap.fromSize( int width, int height, { int depth = 24 } )
   {
-    final rgba = Uint8List.fromList( List.filled(width * height * 4, 0) );
+    final rgba = Uint8List( width * height * 4 );
     final ByteData byteData = rgba.buffer.asByteData();
     for (int i = 0; i < width*height; i++) {
       byteData.setUint8(  i*4 + 3, 255 ); // fully opaque

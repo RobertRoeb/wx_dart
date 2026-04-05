@@ -55,12 +55,10 @@ class WxImage extends WxObject {
   WxImage( int width, int height, { bool clear=true } ) {
     _width = width;
     _height = height;
-    if (clear) {
-      _rgb = Uint8List.fromList( List.filled(width * height * 3, 0) );
-    } else {
-      // cannot find a way not to initiaĺize it
-      _rgb = Uint8List.fromList( List.filled(width * height * 3, 0) );
-    }
+
+    // There is no way not to initiaĺize the memory
+    // if (clear)
+    _rgb = Uint8List(width * height * 3);
   }
 
   /// Returns width of the image
@@ -77,7 +75,7 @@ class WxImage extends WxObject {
   /// be opaque (alpha value of 255)
   void initAlpha() {
     if (_hasMask) {
-      _alpha = Uint8List.fromList( List.filled(_width * _height, 0) );
+      _alpha = Uint8List( _width * _height );  // gets zeroed
     } else {
       _alpha = Uint8List.fromList( List.filled(_width * _height, 255) );
     }
