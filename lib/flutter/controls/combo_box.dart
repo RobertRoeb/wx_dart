@@ -141,6 +141,8 @@ const int wxCB_DROPDOWN = 0x0020;
 /// * [canRedo]
 
 class WxComboBox extends WxItemContainer {
+
+  /// Creates a combobox control with an initial [value] in the text field and [choices] as a drop down list
   WxComboBox( super.parent, super.id, { String value = '', super.pos, super.size, List<String>? choices, super.style } ) 
   {
     _textEditingController = TextEditingController();

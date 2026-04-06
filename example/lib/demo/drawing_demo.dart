@@ -44,6 +44,8 @@ class MyGraphicsPathWindow extends WxScrolledWindow {
         path.addRectangle(25.0, 25.0, 50.0, 50.0); 
     gc.strokePath(path);    
 
+    gc.pushState();
+
     // scale everything
     gc.scale(1.1,1.1);
     // translate right
@@ -54,6 +56,16 @@ class MyGraphicsPathWindow extends WxScrolledWindow {
     // draw again
     gc.setPen(wxGREEN_PEN);
     gc.strokePath(path);    
+
+    gc.popState();
+
+    // translate right
+    gc.translate(200,0);
+    // rotate
+    gc.rotate(0.3);
+
+    gc.setFont(WxFont.fromPixelSize( WxSize(0,15), weight: wxFONTWEIGHT_BOLD, family: wxFONTFAMILY_ROMAN  ), wxBLUE );
+    gc.drawText("Rotated blue bold Roman text", 20, 20 );
   }
 }
 

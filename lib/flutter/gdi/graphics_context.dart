@@ -140,7 +140,7 @@ class WxGraphicsContext extends WxGraphicsObject {
     _brushPaint.style = PaintingStyle.fill;
     setBrush( wxWHITE_BRUSH );
     if (wxTheApp.isDark()) {
-      _currentColour = wxWHITE;
+      _textColour = wxWHITE;
     }
   }
 
@@ -150,7 +150,8 @@ class WxGraphicsContext extends WxGraphicsObject {
   late Paint _brushPaint;
   WxPen _currentPen = wxBLACK_PEN;
   late WxBrush _currentBrush;
-  WxColour _currentColour = wxBLACK;
+  WxFont? _font;
+  WxColour _textColour = wxBLACK;
 
   /// Pushes current state to the stack. You can restore it with [popState].
   void pushState( ) {
@@ -204,12 +205,18 @@ class WxGraphicsContext extends WxGraphicsObject {
   /// 
   /// See [resetClip]
   void clip( double x, double y, double width, double height ) {
+    if (_canvas == null) {
+      wxLogError("No valid canvas for graphics context" );
+      return;
+    }
+    _canvas!.clipRect( Rect.fromLTWH(x+.5,y+0.5,width+0.5,height+0.5) );
   }
 
-  /// Resets clipping addRectangle
+  /// Resets clipping addRectangle. Not supported in wxDart Flutter - use [pushState] and [popState] instead.
   /// 
   /// See [clip]
   void resetClip( ) {
+      wxLogError("Not supported in wxDart Flutter" );
   }
 
   /// Creates a GPU optimized representation of the bitmap for 
@@ -271,6 +278,16 @@ class WxGraphicsContext extends WxGraphicsObject {
 
   /// Draws a line from [x1],[y1] to [x2],[y2] with the current pen
   void strokeLine( double x1, double y1, double x2, double y2 ) {
+    if (_canvas == null) {
+      wxLogError("No valid canvas for graphics context" );
+      return;
+    }
+    if (_currentPen.isNonTransparent()) {
+      _canvas!.drawLine( 
+        Offset( x1+0.5, y1+0.5 ), 
+        Offset( x2+0.5, y2+0.5 ), 
+        _penPaint);
+    }
   }
 
   /// Draws a rectangle [x],[y] with the [width] and [height] using the
@@ -306,6 +323,25 @@ class WxGraphicsContext extends WxGraphicsObject {
     }
   }
 
+  /// Sets the font currently and text colour
+  void setFont( WxFont? font, WxColour colour ) {
+    _font = font;
+    _textColour = colour;
+  }
+
+  /// Returns the size in pixels of [text] using the current font
+  WxSize getTextExtent( String text )
+  {
+    TextPainter textPainter = TextPainter(
+        text: TextSpan(
+            text: text, 
+            style: _convertTextStyle(null, _font)), 
+            maxLines: 1, 
+            textDirection: TextDirection.ltr)
+      ..layout(minWidth: 0, maxWidth: double.infinity);
+    return WxSize( textPainter.size.width.floor(), textPainter.size.height.floor() );
+  }
+
   /// Draws a [text] at [x],[y] with the current pen
   void drawText( String text, double x, double y )
   {
@@ -313,6 +349,17 @@ class WxGraphicsContext extends WxGraphicsObject {
       wxLogError("No valid canvas for graphics context" );
       return;
     }
+    TextPainter textPainter = TextPainter(
+        text: TextSpan(
+            text: text, 
+            style: _convertTextStyle(_textColour, _font)), 
+            maxLines: 1, 
+            textDirection: TextDirection.ltr)
+      ..layout(minWidth: 0, maxWidth: double.infinity);
+
+
+    Offset offset = Offset( x+0.5, y+0.5 );
+    textPainter.paint(_canvas!, offset);    
 }
 
   /// Sets current [WxPen] for all drawing operations. Set it to [wxTRANSPARENT_PEN]
