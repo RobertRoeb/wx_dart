@@ -11,15 +11,19 @@ part of '../../wx_dart.dart';
 
 /// Device context (drawing class) that draws into a [WxBitmap]. 
 /// 
-/// The bitmap created in [getBitmap] and you cannot draw into
+/// The bitmap is created in [getBitmap] and you cannot draw into
 /// the [WxMemoryDC] after retrieving that bitmap.
 /// 
 /// ```dart
+///  // Create memory dc
 ///  final dc = WxMemoryDC(100, 100);
+/// 
+///  // Draw into it
 ///  dc.setPen( wxTRANSPARENT_PEN );
 ///  dc.setPen( wxRED_PEN );
 ///  dc.drawCircle( 50, 50, 20 ); 
-///  // create bitmap from it
+/// 
+///  // Create bitmap from it
 ///  final bitmap = dc.getBitmap();
 /// ```
 
