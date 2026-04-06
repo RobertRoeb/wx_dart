@@ -29,7 +29,8 @@ class MyFireworksWindow extends WxWindow {
   double timeSinceStart = 0.0;
   late WxFont myFont; 
 
-  void drawFirework(WxDC dc, int cx, int cy, double radius, WxColour color) {
+  void drawFirework(WxDC dc, int cx, int cy, double radius, WxColour color)
+  {
     dc.setPen(WxPen(color, width: 2));
     const int rays = 24;
         for (int i = 0; i < rays; i++) {
@@ -86,26 +87,26 @@ class MyFireworksWindow extends WxWindow {
       dc.drawText("wxDart", 10 + (start*w/10).floor(), baseY - 50 - diffY );
     }
 
+    // Stars
+    dc.setPen(WxPen(WxColour(255, 255, 255), width: 2));
+    for (int i = 0; i < 80; i++) {
+      dc.drawPoint(seed % w, seed % (h ~/2));
+    }
 
-        dc.setPen(WxPen(WxColour(255, 255, 255), width: 2));
-        for (int i = 0; i < 80; i++) {
-            dc.drawPoint(seed % w, seed % (h ~/2));
-        }
+    // Hanging cables
+    dc.setPen(WxPen(WxColour(160, 160, 180) ));
+    for (int x = 0; x <= w; x += w ~/30) {
+      dc.drawLine(x, topY + 10, x, baseY);
+    }
 
-        // Hanging cables
-        dc.setPen(WxPen(WxColour(160, 160, 180) ));
-        for (int x = 0; x <= w; x += w ~/30) {
-            dc.drawLine(x, topY + 10, x, baseY);
-        }
+    // Main cables
+    dc.setBrush(WxBrush(WxColour(10, 10, 30)));
+    dc.setPen(WxPen(WxColour(180, 180, 200), width: 2));
+    dc.drawEllipticArc(-leftX+towerWidth~/4, topY-towerHeight, 2*leftX-towerWidth~/2, 2*towerHeight, 270, 360);
+    dc.drawEllipticArc(rightX, topY-towerHeight, 2*leftX, 2*towerHeight, 180, 270);
+    dc.drawEllipticArc(w~/2 - w~/2, topY-w+(w~/10), w, w, 240, 300 ); 
 
-        // Main cables
-        dc.setBrush(WxBrush(WxColour(10, 10, 30)));
-        dc.setPen(WxPen(WxColour(180, 180, 200), width: 2));
-        dc.drawEllipticArc(-leftX+towerWidth~/4, topY-towerHeight, 2*leftX-towerWidth~/2, 2*towerHeight, 270, 360);
-        dc.drawEllipticArc(rightX, topY-towerHeight, 2*leftX, 2*towerHeight, 180, 270);
-        dc.drawEllipticArc(w~/2 - w~/2, topY-w+(w~/10), w, w, 240, 300 ); 
-
-
+    // Firework animations
         drawFirework(dc, (w * 0.35).floor(), (h * 0.15).floor(), 60*radius1, WxColour(255, 180, 80));
         drawFirework(dc, (w * 0.55).floor(), (h * 0.10).floor(), 40*radius2, WxColour(80, 200, 255));
         drawFirework(dc, (w * 0.75).floor(), (h * 0.18).floor(), 50*radius3, WxColour(255, 90, 170));
@@ -117,6 +118,7 @@ class MyFireworksWindow extends WxWindow {
         drawFirework(dc, (w * 0.40).floor(), (h * 0.30).floor(), 50*radius9, WxColour(85, 100, 255));
         drawFirework(dc, (w * 0.60).floor(), (h * 0.18).floor(), 50*radius10, WxColour(255, 200, 170));
 
+    // Main bridge
         dc.setBrush(WxBrush(WxColour(60, 60, 90)));
         dc.setPen(WxPen(WxColour(200, 200, 220), width: 2));
         dc.drawRectangle(leftX - towerWidth~/2,  topY, towerWidth, towerHeight);
@@ -168,21 +170,18 @@ class MyFireworksWindow extends WxWindow {
 class MyFireworksFrame extends WxAdaptiveFrame {
   MyFireworksFrame( WxFrame? parent) : super( parent, -1, "Fireworks!", size: WxSize(900, 700) ) 
   {
-    // Create a Touch and a Desktop interface.
-    // wxApp.isTouch() decides which one to show.
-    // Experimental, but very cool.
+    // AppBar, similar to a toolbar
+    final appBar = createAppBar("wxDart demo");
 
-    // Touch interface
+    // Add "Fireworks" action with text button
+    appBar.addAction( idFire, "Start Fireworks!" );
 
-      // AppBar, similar to a toolbar
-      final appBar = createAppBar("wxDart demo");
-      // add "Fireworks" action with text button
-      appBar.addAction( idFire, "Start Fireworks!" );
-      // add action with text button
-      appBar.addAction( idAbout, "About" );
+    // add action with text button
+    appBar.addAction( idAbout, "About" );
 
-      final button = createFloatingActionButton("Fire!", idFire, WxBitmapBundle.fromMaterialIcon( WxMaterialIcon.fireplace, WxSize(32, 32)) );
-      button.setBackgroundColour(wxWHITE);
+    // add floating action button
+    final button = createFloatingActionButton("Fire!", idFire, WxBitmapBundle.fromMaterialIcon( WxMaterialIcon.fireplace, WxSize(32, 32)) );
+    button.setBackgroundColour(wxWHITE);
 
     // Insert one single window into the client area
     // of the frame. That way, the frame will always 
@@ -190,10 +189,12 @@ class MyFireworksFrame extends WxAdaptiveFrame {
     // area.  
     firewindow = MyFireworksWindow( this, -1 );
 
+    // bind to menu entries
     bindMenuEvent((_) => startFirework(), idFire );
     bindMenuEvent((_) => showMessage(), idAbout );
     bindButtonEvent((_) => startFirework(), idFire );
 
+    // Close window and app
     bindMenuEvent( (_) => close(false), wxID_EXIT );
     bindCloseWindowEvent( (event) =>  destroy() );
   }
@@ -209,7 +210,9 @@ class MyFireworksFrame extends WxAdaptiveFrame {
 
   void startFirework()
   {
-      final anim = WxUIAnimation( (bigvalue) {
+      // animation for 30 sec
+      final anim = WxUIAnimation( (bigvalue)
+      {
         double value = bigvalue * 20;
         firewindow.radius1 = (value-0.5).clamp(0,1);
         firewindow.radius2 = (value-2.5).clamp(0,1);
@@ -235,8 +238,9 @@ class MyFireworksFrame extends WxAdaptiveFrame {
         firewindow.refresh();
         firewindow.timeSinceStart = bigvalue * 30;
       }, 30000 );
-      anim.start();
 
+      // start animation
+      anim.start();
   }
 }
 
@@ -252,8 +256,9 @@ class MyApp extends WxApp {
     return true;
   }
 
+  // always use touch interface, also on big screens
   @override
-  bool isTouch() {return true; }
+  bool isTouch() { return true; }
 }
 
 void main()
