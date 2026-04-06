@@ -18,6 +18,12 @@ const int wxGA_TEXT = 0x0040;
 /// 
 /// Call [pulse] to set the control in indeterminate mode.
 /// 
+/// Example code:
+/// ```dart
+///  final gauge = WxGauge(parent, -1, 100, size: WxSize(150,-1) );
+///  gauge.setValue( 30 );
+/// ```
+/// 
 /// # Window styles
 /// | constant | meaning |
 /// | -------- | -------- |
@@ -25,6 +31,13 @@ const int wxGA_TEXT = 0x0040;
 /// | wxGA_VERTICAL | wxVERTICAL (wxDart Native only) |
 /// | wxGA_SMOOTH | 0x0020 |
 /// | wxGA_TEXT | 0x0040 |
+/// 
+/// Main interface
+/// * [setValue]
+/// * [getValue]
+/// * [setRange]
+/// * [getRange]
+/// * [pulse]
 
 class WxGauge extends WxControl {
   /// Creates the gauge with the given [range]

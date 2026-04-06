@@ -17,6 +17,35 @@ const int wxAC_DEFAULT_STYLE = wxBORDER_NONE;
 /// 
 /// Not to be mixed up the the [WxUIAnimation] class used to time
 /// any animation on screen.
+/// 
+/// Example usage:
+/// ```dart
+///  // Get path to asset
+///  String assetPath = wxGetStandardPaths().getResourcesDir( useLocalDirOnLinuxAndWindows: true );
+///
+///  // Add forward slash (or backward slash on wxMSW in wxDart Native)
+///  if (wxIsMSW() && !wxUsesFlutter()) {
+///    assetPath += "\\JumpingBird.gif";
+///  } else {
+///    assetPath += "/JumpingBird.gif";
+///  }
+///
+///  // Create animation control
+///  final ani = WxAnimationCtrl(parent, -1, WxAnimation(path) );
+///
+///  // Somewhere else in your code
+///  if (ani.isPlaying()) {
+///    ani.stop();
+///  } else {
+///    ani.play();
+///  }
+/// ```
+/// 
+/// Main interface
+/// * [play]
+/// * [stop]
+/// * [isPlaying]
+/// * [setInactiveBitmap]
 
 class WxAnimationCtrl extends WxControl {
   WxAnimationCtrl( super.parent, super.id, WxAnimation animation, {  super.pos = wxDefaultPosition, super.size = wxDefaultSize, super.style = wxAC_DEFAULT_STYLE } ) {

@@ -42,6 +42,15 @@ const int wxCHK_UNDETERMINED = 2;
 /// | wxCHK_2STATE | 0x4000 (2 state checkbox, the default) |
 /// | wxCHK_3STATE | 0x1000 (supports intermediate state, but only programmatically) |
 /// | wxCHK_ALLOW_3RD_STATE_FOR_USER | 0x2000 (supports intermediate state by the user) |
+///
+/// Main interface
+/// * [setValue]
+/// * [getValue]
+/// * [isChecked]
+/// * [is3rdStateAllowedForUser]
+/// * [is3State]
+/// * [set3StateValue]
+/// * [get3StateValue]
 
 class WxCheckBox extends WxControl {
   WxCheckBox( super.parent, super.id, this.label, { super.pos = wxDefaultPosition, super.size = wxDefaultSize, super.style = 0 } );

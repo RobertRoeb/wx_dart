@@ -10,6 +10,37 @@ part of '../../wx_dart.dart';
 // ------------------------- wxGraphicsPath ----------------------
 
 /// Represents a path to be drawn by a [WxGraphicsContext]
+/// 
+/// Example usage in a paint event handler of a [WxScrolledWindow]:
+/// ```dart
+///  void onPaint( WxPaintEvent event )
+///  {
+///    // create paint dc
+///    final dc = WxPaintDC( this );
+///
+///    // adapt to scrolling
+///    doPrepareDC(dc);
+///
+///    // create graphics context from paint dc
+///    final gc = WxGraphicsContext.fromDC(dc);
+///
+///    // use red pen
+///    gc.setPen(wxRED_PEN);
+///
+///    // create path
+///    final path = gc.createPath();
+///        path.addCircle( 50.0, 50.0, 50.0 );
+///        path.moveTo(0.0, 50.0);
+///        path.addLineTo(100.0, 50.0);
+///        path.moveTo(50.0, 0.0);
+///        path.addLineTo(50.0, 100.0 );
+///        path.closeSubpath();
+///        path.addRectangle(25.0, 25.0, 50.0, 50.0); 
+///
+///    // draw path
+///    gc.strokePath(path);    
+///  }
+/// ```
 class WxGraphicsPath extends WxGraphicsObject {
 
   /// Creates a [WxGraphicsPath]. Called internally by [WxGraphicsContext.createPath]

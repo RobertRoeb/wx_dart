@@ -66,13 +66,31 @@ class WxHtmlLinkEvent extends WxCommandEvent {
 
 // ------------------------- wxHtmlWindow ----------------------
 
-/// A window that shows HTML text. This only supports a small subset of HTML and
+/// A window that shows HTML text. This only supports a subset of HTML and
 /// is not designed to be a browser.
+/// 
+/// Example usage loading an HTML from a resource in lib/assets/README.html
+/// ```dart
+///  final html = WxHtmlWindow(parent, -1);
+///  wxLoadStringFromResource( "README.html", (text) {
+///    html.setPage( text );
+///  });
+/// 
+///  // Actually launch links
+///  bindHtmlLinkClickEvent((event) {
+///    final url = event.getHref();
+///    wxLaunchDefaultBrowser(url);
+///  }, -1);
+/// ```
 /// 
 /// [HtmlLinkClick](/wxdart/wxGetHtmlLinkClickEventType.html) event gets sent when the user clicks on a link |
 /// | ----------------- |
 /// | void bindHtmlLinkClickEvent( OnHtmlLinkEventFunc ) |
 /// | void unbindHtmlLinkClickEvent() |
+/// 
+/// Main interface
+/// * [setPage]
+/// * [loadPage]
 
 class WxHtmlWindow extends WxControl {
   /// Creates the HTML window

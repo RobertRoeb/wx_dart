@@ -31,6 +31,15 @@ extension ButtonEventBinder on WxEvtHandler {
 /// or [wxID_APPLY] in a [WxDialog] will automatically close the dialog
 /// using event handlers in [WxDialog]. See also [WxDialog.setAffirmativeId].
 /// 
+/// Example usage
+/// ```dart
+///  final myButton = WxButton( parent, -1, "Start it!");
+///  myButton.bindButtonEvent((_)
+///  {
+///    // actually start something!
+///  }, -1);
+///```
+///
 /// # Events emitted
 /// [Button](/wxdart/wxGetButtonEventType.html) event gets sent when the button is pressed. |
 /// | ----------------- |

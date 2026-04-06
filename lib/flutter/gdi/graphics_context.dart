@@ -64,7 +64,7 @@ const int wxCOMPOSITION_DIFF = 13;
 /// Internally, both wxWidgets and wxDart mostly use the original drawing API from
 /// the [WxDC] (device context = drawing API) group of classes.
 /// 
-/// wxDart now has initial support for a modern path based drawing API from the
+/// wxDart also supports a modern path based drawing API from the
 /// [WxGraphicsContext] group of classes in both wxDart Native and wxDart Flutter.
 /// It uses Direct2D under Windows, CoreGraphics on MacOS, Cairo on Linux and
 /// Impeller when using the Flutter backend.
