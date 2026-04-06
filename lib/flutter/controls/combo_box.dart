@@ -68,6 +68,33 @@ const int wxCB_DROPDOWN = 0x0020;
 /// | wxCB_DROPDOWN | 0x0020 |
 /// | wxTE_PROCESS_ENTER | 0x0400 |
 ///
+/// Main iten list interface
+/// * [getCount]
+/// * [isEmpty]
+/// * [setString]
+/// * [getString]
+/// * [getStrings]
+/// * [findString]
+/// 
+/// Item selection interface
+/// * [setSelection]
+/// * [getCurrentSelection]
+/// * [select] same as [setSelection]
+/// * [setStringSelection]
+/// 
+/// Items interface
+/// * [clear]
+/// * [delete]
+/// * [set]
+/// * [append]
+/// * [appendList]
+/// * [insert]
+/// * [insertList]
+/// 
+/// Item client data interface
+/// * [setClientData]
+/// * [getClientData]
+/// 
 /// Setting text interface
 /// * [setValue]
 /// * [changeValue] (same as [setValue] in wxDart)
@@ -77,7 +104,7 @@ const int wxCB_DROPDOWN = 0x0020;
 /// * [remove]
 /// * [replace]
 /// 
-/// Getting value interface
+/// Getting text field value interface
 /// * [getValue]
 /// * [isTextEmpty]
 /// 
@@ -95,7 +122,7 @@ const int wxCB_DROPDOWN = 0x0020;
 /// * [setHint]
 /// * [getHint]
 /// 
-/// Selection interface
+/// Text field selection interface
 /// * [selectAll]
 /// * [selectNone]
 /// * [setTextSelection]

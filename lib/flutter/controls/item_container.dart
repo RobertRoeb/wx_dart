@@ -19,6 +19,21 @@ class _WxItem {
 // ------------------------- wxItemContainerImmutable ----------------------
 
 /// Base class for controls with several items
+/// 
+/// Main interface
+/// * [getCount]
+/// * [isEmpty]
+/// * [setString]
+/// * [getString]
+/// * [getStrings]
+/// * [findString]
+/// 
+/// Selection interface
+/// * [setSelection]
+/// * [getSelection]
+/// * [select] same as [setSelection]
+/// * [setStringSelection]
+/// * [getStringSelection]
 
 class WxItemContainerImmutable extends WxControl {
   WxItemContainerImmutable( super.parent, super.id, { super.pos = wxDefaultPosition, super.size = wxDefaultSize, super.style = 0 } );
@@ -105,6 +120,19 @@ class WxItemContainerImmutable extends WxControl {
 // ------------------------- wxItemContainer ----------------------
 
 /// Base class for controls with several items that can be changed
+/// 
+/// Items interface
+/// * [clear]
+/// * [delete]
+/// * [set]
+/// * [append]
+/// * [appendList]
+/// * [insert]
+/// * [insertList]
+/// 
+/// Client data interface
+/// * [setClientData]
+/// * [getClientData]
 
 class WxItemContainer extends WxItemContainerImmutable {
   WxItemContainer( super.parent, super.id, { super.pos = wxDefaultPosition, super.size = wxDefaultSize, super.style = 0 } );

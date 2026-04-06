@@ -72,6 +72,34 @@ const int wxLB_HSCROLL = wxHSCROLL;
 /// | wxLB_ALWAYS_SB | 0x0200 |
 /// | wxLB_NO_SB | 0x0400 |
 /// | wxLB_HSCROLL | wxHSCROLL |
+/// 
+/// Main interface
+/// * [getCount]
+/// * [isEmpty]
+/// * [setString]
+/// * [getString]
+/// * [getStrings]
+/// * [findString]
+/// 
+/// Selection interface
+/// * [setSelection]
+/// * [getSelection]
+/// * [select] same as [setSelection]
+/// * [setStringSelection]
+/// * [getStringSelection]
+/// 
+/// Items interface
+/// * [clear]
+/// * [delete]
+/// * [set]
+/// * [append]
+/// * [appendList]
+/// * [insert]
+/// * [insertList]
+/// 
+/// Client data interface
+/// * [setClientData]
+/// * [getClientData]
 
 class WxListBox extends WxItemContainer {  
   WxListBox( super.parent, super.id, 

@@ -160,6 +160,42 @@ class WxToolBarToolBase extends WxObject {
 /// | wxTB_NOICONS | 0x0080 |
 /// | wxTB_TEXT | 0x0100 |
 /// | wxTB_DEFAULT_STYLE | wxHORIZONTAL |
+/// 
+/// Main interface
+/// 
+/// * [realize] Don't forget to call this after creating or changing the toolbar
+/// 
+/// Adding items
+/// * [addTool]
+/// * [addSeparator]
+/// * [addStretchableSpace]
+/// * [addCheckTool]
+/// * [addRadioTool]
+/// * [addControl]
+/// * [insertTool]
+/// * [insertSeparator]
+/// * [insertStretchableSpace]
+/// * [insertControl]
+/// 
+/// Other
+/// * [clearTools]
+/// * [deleteTool]
+/// * [findControl]
+/// * [findById]
+/// * [getToolByPos]
+/// 
+/// Configuration interface
+/// * [setToolSeparation]
+/// * [setToolPacking]
+/// 
+/// Dropdown menu
+/// * [setDropdownMenu]
+/// 
+/// Item state interface
+/// * [enableTool]
+/// * [getToolEnabled]
+/// * [toggleTool]
+/// * [getToolState]
 
 class WxToolBar extends WxControl {
 

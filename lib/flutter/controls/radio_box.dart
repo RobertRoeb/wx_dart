@@ -31,6 +31,18 @@ const int wxRA_VERTICAL = wxVERTICAL;
 /// Lets users choose one of several items. Selecting one item automatically
 /// deselects the others. 
 /// 
+/// Example usage:
+///```dart
+///    // Create the control
+///    final radiobox = WxRadiobox( parent, -1, "You choose", wxDefaultPosition, wxDefaultSize, ['Choice #1','Choice #2','Choice #3'] );
+/// 
+///    // bind to event when user selects an item
+///    radiobox.bindRadioboxEvent((event) {
+///      final index = event.getInt();
+///      final text = event.getString();
+///    }, -1 );
+///```
+///
 /// See also [WxRadioButton] that achieves the same with individual controls
 /// 
 /// # Event emitted
@@ -48,6 +60,21 @@ const int wxRA_VERTICAL = wxVERTICAL;
 /// | wxRA_SPECIFY_ROWS | wxVERTICAL |
 /// | wxRA_HORIZONTAL | wxHORIZONTAL |
 /// | wxRA_VERTICAL | wxVERTICAL |
+/// 
+/// Main interface
+/// * [getCount]
+/// * [isEmpty]
+/// * [setString]
+/// * [getString]
+/// * [getStrings]
+/// * [findString]
+/// 
+/// Selection interface
+/// * [setSelection]
+/// * [getSelection]
+/// * [select] same as [setSelection]
+/// * [setStringSelection]
+/// * [getStringSelection]
 
 class WxRadioBox extends WxItemContainerImmutable {
   WxRadioBox( super.parent, super.id, String label, WxPoint pos, WxSize size, List<String> choices, 

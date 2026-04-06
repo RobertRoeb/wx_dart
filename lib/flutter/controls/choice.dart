@@ -43,6 +43,39 @@ extension ChoiceEventBinder on WxEvtHandler {
 /// | constant | meaning |
 /// | -------- | -------- |
 /// | wxCB_SORT | 0x0008 (sort items) |
+/// 
+/// Main interface
+/// * [getCount]
+/// * [isEmpty]
+/// * [setString]
+/// * [getString]
+/// * [getStrings]
+/// * [findString]
+/// 
+/// Selection interface
+/// * [setSelection]
+/// * [getSelection]
+/// * [select] same as [setSelection]
+/// * [setStringSelection]
+/// * [getStringSelection]
+/// 
+/// Items interface
+/// * [clear]
+/// * [delete]
+/// * [set]
+/// * [append]
+/// * [appendList]
+/// * [insert]
+/// * [insertList]
+/// 
+/// Client data interface
+/// * [setClientData]
+/// * [getClientData]
+/// 
+/// Configuration
+/// * [isSorted]
+/// * [setColumns]
+/// * [getColumns]
 
 
 class WxChoice extends WxItemContainer {
