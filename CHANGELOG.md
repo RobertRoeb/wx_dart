@@ -1,8 +1,10 @@
 ## 0.9.2
 
 * Further work on WxGraphicsBitmap and WxGraphicsContext
-* Added WxGraphicsPath, related drawing functions and tests for both
-* Documentation updates
+* Added WxGraphicsPath
+* Added WxGraphicsContext clip, drawText, setFont, stokeLine and more
+* Documentation updates for item containers
+* Added lots of sample code to documentation
 
 ## 0.9.1
 
