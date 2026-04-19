@@ -1,3 +1,8 @@
+## 0.9.3
+
+* Further work WxGraphicsContext
+* Added linear and radial colour gradients and complex filled paths
+
 ## 0.9.2
 
 * Further work on WxGraphicsBitmap and WxGraphicsContext
