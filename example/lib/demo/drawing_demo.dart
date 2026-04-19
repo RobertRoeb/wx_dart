@@ -54,9 +54,20 @@ class MyGraphicsPathWindow extends WxScrolledWindow {
     gc.rotate(0.1);
 
     // draw again
-    gc.setPen(wxGREEN_PEN);
+    // gc.setPen(wxGREEN_PEN);
+    gc.setPenWithLinearGradient(0, 0, 100, 100, wxGREEN, wxBLUE, width: 2.5 ); 
     gc.strokePath(path);    
 
+    final rect = gc.createPath();
+      rect.moveTo(120, 20);
+      rect.addLineTo(180, 20);
+      rect.addLineTo(180, 80);
+      rect.addLineTo(120, 80);
+      rect.closeSubpath();
+    gc.setPen(wxBLACK_PEN);
+    gc.setBrush(wxGREY_BRUSH);
+    gc.drawPath(rect);
+    
     gc.popState();
 
     // translate right

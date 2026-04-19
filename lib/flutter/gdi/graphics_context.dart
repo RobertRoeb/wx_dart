@@ -276,6 +276,28 @@ class WxGraphicsContext extends WxGraphicsObject {
     }
   }
 
+  /// Fills the given [path] with the current brush
+  void fillPath( WxGraphicsPath path ) {
+    if (_canvas == null) {
+      wxLogError("No valid canvas for graphics context" );
+      return;
+    }
+    _canvas!.drawPath( path._path, _brushPaint );
+  }
+
+  /// Fills the given [path] with the current brush and then
+  /// stokes it with the current pen
+  void drawPath( WxGraphicsPath path ) {
+    if (_canvas == null) {
+      wxLogError("No valid canvas for graphics context" );
+      return;
+    }
+    _canvas!.drawPath( path._path, _brushPaint );
+    if (_currentPen.isNonTransparent()) {
+      _canvas!.drawPath( path._path, _penPaint );
+    }
+  }
+
   /// Draws a line from [x1],[y1] to [x2],[y2] with the current pen
   void strokeLine( double x1, double y1, double x2, double y2 ) {
     if (_canvas == null) {
@@ -362,11 +384,54 @@ class WxGraphicsContext extends WxGraphicsObject {
     textPainter.paint(_canvas!, offset);    
 }
 
+/// Sets the composition mode for drawing operations
+/// 
+/// ## Mode constants
+/// | constant | meaning |
+/// | -------- | -------- |
+/// | wxCOMPOSITION_CLEAR | 0 |
+/// | wxCOMPOSITION_SOURCE | 1 |
+/// | wxCOMPOSITION_OVER | 2 |
+/// | wxCOMPOSITION_IN | 3 |
+/// | wxCOMPOSITION_OUT | 4 |
+/// | wxCOMPOSITION_ATOP | 5 |
+/// | wxCOMPOSITION_DEST | 6 |
+/// | wxCOMPOSITION_DEST_OVER | 7 |
+/// | wxCOMPOSITION_DEST_IN | 8 |
+/// | wxCOMPOSITION_DEST_OUT | 9 |
+/// | wxCOMPOSITION_DEST_ATOP | 10 |
+/// | wxCOMPOSITION_XOR | 11 |
+/// | wxCOMPOSITION_ADD | 12 |
+/// | wxCOMPOSITION_DIFF | 13 |
+  bool setCompositionMode( int mode )
+  {
+    switch (mode) {
+      case wxCOMPOSITION_CLEAR: _penPaint.blendMode = BlendMode.clear; break;
+      case wxCOMPOSITION_SOURCE: _penPaint.blendMode = BlendMode.src; break;
+      case wxCOMPOSITION_OVER: _penPaint.blendMode = BlendMode.overlay; break;
+      case wxCOMPOSITION_IN: _penPaint.blendMode = BlendMode.srcIn; break;
+      case wxCOMPOSITION_OUT: _penPaint.blendMode = BlendMode.srcOut; break;
+      case wxCOMPOSITION_ATOP: _penPaint.blendMode = BlendMode.srcATop; break;
+      case wxCOMPOSITION_DEST: _penPaint.blendMode = BlendMode.dst; break;
+      case wxCOMPOSITION_DEST_OVER: _penPaint.blendMode = BlendMode.dstOver; break;
+      case wxCOMPOSITION_DEST_IN: _penPaint.blendMode = BlendMode.dstIn; break;
+      case wxCOMPOSITION_DEST_ATOP: _penPaint.blendMode = BlendMode.dstATop; break;
+      case wxCOMPOSITION_XOR: _penPaint.blendMode = BlendMode.xor; break;
+      case wxCOMPOSITION_ADD: _penPaint.blendMode = BlendMode.plus; break;
+      case wxCOMPOSITION_DIFF: _penPaint.blendMode = BlendMode.difference; break;
+      default: _penPaint.blendMode = BlendMode.srcOver; break;
+    }
+
+    return true;
+  }
+
   /// Sets current [WxPen] for all drawing operations. Set it to [wxTRANSPARENT_PEN]
   /// to not draw anything
   /// 
   /// See [WxDC.setPen]
-  void setPen( WxPen pen ) {
+  void setPen( WxPen pen )
+  {
+    _penPaint.shader = null;
     _currentPen = pen;
     _penPaint.color = Color.fromARGB(pen.colour.alpha, pen.colour.red, 
        pen.colour.green, pen.colour.blue);
@@ -382,6 +447,108 @@ class WxGraphicsContext extends WxGraphicsObject {
         _penPaint.strokeCap = StrokeCap.round;
     }
     switch (pen.joinStyle) {
+      case wxJOIN_MITER: 
+        _penPaint.strokeJoin = StrokeJoin.miter;
+        break;
+      case wxJOIN_BEVEL: 
+        _penPaint.strokeJoin = StrokeJoin.bevel;
+        break;
+      default:
+        _penPaint.strokeJoin = StrokeJoin.round;
+    }
+  }
+
+  /// Sets current pen to given values for all drawing operations. Same as 
+  /// [setPen] but using a double for defining the width
+  void setPenWithConstantColour( WxColour colour, { double width = 1.0, int style = wxPENSTYLE_SOLID, int cap = wxCAP_ROUND, int join = wxJOIN_MITER } )
+  {
+    _penPaint.shader = null;
+    _penPaint.color = Color.fromARGB(colour.alpha, colour.red, 
+       colour.green, colour.blue);
+    _penPaint.strokeWidth = width;
+    switch (cap) {
+      case wxCAP_BUTT: 
+        _penPaint.strokeCap = StrokeCap.butt;
+        break;
+      case wxCAP_PROJECTING: 
+        _penPaint.strokeCap = StrokeCap.square;
+        break;
+      default:
+        _penPaint.strokeCap = StrokeCap.round;
+    }
+    switch (join) {
+      case wxJOIN_MITER: 
+        _penPaint.strokeJoin = StrokeJoin.miter;
+        break;
+      case wxJOIN_BEVEL: 
+        _penPaint.strokeJoin = StrokeJoin.bevel;
+        break;
+      default:
+        _penPaint.strokeJoin = StrokeJoin.round;
+    }
+  }
+
+  /// Sets current pen to have a linear colour gradient with the given values for all drawing operations.
+  void setPenWithLinearGradient( double x1, double y1, double x2, double y2, WxColour colour1, WxColour colour2, { double width = 1.0, int style = wxPENSTYLE_SOLID, int cap = wxCAP_ROUND, int join = wxJOIN_MITER } )
+  {
+    _penPaint.shader = ui.Gradient.linear
+    (
+        Offset(x1, y1),
+        Offset(x2, y2),
+        [
+         Color.fromARGB(colour1.alpha, colour1.red, colour1.green, colour1.blue),
+         Color.fromARGB(colour2.alpha, colour2.red, colour2.green, colour2.blue),
+        ],
+        [0.0, 1.0],
+      );
+    _penPaint.strokeWidth = width;
+    switch (cap) {
+      case wxCAP_BUTT: 
+        _penPaint.strokeCap = StrokeCap.butt;
+        break;
+      case wxCAP_PROJECTING: 
+        _penPaint.strokeCap = StrokeCap.square;
+        break;
+      default:
+        _penPaint.strokeCap = StrokeCap.round;
+    }
+    switch (join) {
+      case wxJOIN_MITER: 
+        _penPaint.strokeJoin = StrokeJoin.miter;
+        break;
+      case wxJOIN_BEVEL: 
+        _penPaint.strokeJoin = StrokeJoin.bevel;
+        break;
+      default:
+        _penPaint.strokeJoin = StrokeJoin.round;
+    }
+  }
+
+  /// Sets current pen to have a radial colour gradient with the given values for all drawing operations.
+  void setPenWithRadialGradient( double startX, double startY, double endX, double endY, double radius, WxColour outerColour, WxColour innerColour, { double width = 1.0, int style = wxPENSTYLE_SOLID, int cap = wxCAP_ROUND, int join = wxJOIN_MITER } )
+  {
+    _penPaint.shader = ui.Gradient.radial
+    (
+        Offset((startX+endX)/2, (startY+endY)/2),
+        radius,
+        [
+         Color.fromARGB(innerColour.alpha, innerColour.red, innerColour.green, innerColour.blue),
+         Color.fromARGB(outerColour.alpha, outerColour.red, outerColour.green, outerColour.blue),
+        ],
+        [0.0, 1.0],
+      );
+    _penPaint.strokeWidth = width;
+    switch (cap) {
+      case wxCAP_BUTT: 
+        _penPaint.strokeCap = StrokeCap.butt;
+        break;
+      case wxCAP_PROJECTING: 
+        _penPaint.strokeCap = StrokeCap.square;
+        break;
+      default:
+        _penPaint.strokeCap = StrokeCap.round;
+    }
+    switch (join) {
       case wxJOIN_MITER: 
         _penPaint.strokeJoin = StrokeJoin.miter;
         break;
