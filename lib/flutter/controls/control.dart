@@ -68,3 +68,20 @@ abstract class WxControl extends WxWindow {
       }   ) );
   }
 }
+
+// ------------------------- wxNativeWindow ----------------------
+
+/// Base class to allow adding native Flutter widgets to wxDart Flutter
+
+abstract class WxNativeWindow extends WxControl {
+/// Creates window with given parent and id
+  WxNativeWindow( super.parent, super.id, { super.pos = wxDefaultPosition, super.size = wxDefaultSize, super.style = 0 } );
+
+/// Override this to return the Flutter widget
+  Widget buildWidget( BuildContext context );
+
+  @override
+  Widget _build( BuildContext context ) {
+    return _buildControl( context, buildWidget(context ) );
+  }
+}
