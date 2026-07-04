@@ -46,23 +46,23 @@ class WxEvent extends WxObject {
     _id = id;
   }
 
-  // Returns the event type
+  /// Returns the event type
   int getEventType() {
     return _eventType;
   }
 
-  // Sets the event type. Rarely used by user code to reinterpret
-  // an event on the fly.
+  /// Sets the event type. Rarely used by user code to reinterpret
+  /// an event on the fly.
   void setEventType( int type ) {
     _eventType = type;
   }
 
-  // Gets ID from the window from which the event orignates
+  /// Gets ID from the window from which the event orignates
   int getId() {
     return _id;
   }
 
-  // Sets ID from the window from which the event orignates
+  /// Sets ID from the window from which the event orignates
   void setId( int id ) {
     _id = id;
   }
