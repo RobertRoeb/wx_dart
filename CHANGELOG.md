@@ -1,3 +1,8 @@
+## 0.9.4
+
+* Added WxNativeWindow to allow using native Flutter widgets in wxDart Flutter
+* Doc updates
+
 ## 0.9.3
 
 * Further work WxGraphicsContext
