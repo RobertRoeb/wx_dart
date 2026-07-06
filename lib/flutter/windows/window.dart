@@ -1270,7 +1270,7 @@ class WxWindow extends WxEvtHandler {
               return KeyEventResult.handled;
             }
           } else 
-          if (event is KeyDownEvent)
+          if (event is KeyUpEvent)
           {
             final wxevent = WxKeyEvent(wxGetKeyUpEventType());
             wxevent.setEventObject(this);

@@ -1,3 +1,8 @@
+## 0.9.5
+
+* Corrected/added key up events
+* Documented WxKeyEvent and key code constants
+
 ## 0.9.4
 
 * Added WxNativeWindow to allow using native Flutter widgets in wxDart Flutter

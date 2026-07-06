@@ -8,7 +8,7 @@ const int wxDART_MAJOR_VERSION = 0;
 /// wxDart minor version
 const int wxDART_MINOR_VERSION = 9;
 /// wxDart micro version
-const int wxDART_MICRO_VERSION = 4;
+const int wxDART_MICRO_VERSION = 5;
 
 
 // ------------- constants that don't belong to a single class ------------
@@ -534,6 +534,33 @@ const int  WXK_NUMPAD_DIVIDE    = 392;
 const int  WXK_WINDOWS_LEFT     = 393;
 const int  WXK_WINDOWS_RIGHT    = 394;
 const int  WXK_WINDOWS_MENU     = 395;
+
+const int  WXK_A     = 65;
+const int  WXK_B     = 66;
+const int  WXK_C     = 67;
+const int  WXK_D     = 68;
+const int  WXK_E     = 69;
+const int  WXK_F     = 70;
+const int  WXK_G     = 71;
+const int  WXK_H     = 72;
+const int  WXK_I     = 73;
+const int  WXK_J     = 74;
+const int  WXK_K     = 75;
+const int  WXK_L     = 76;
+const int  WXK_M     = 77;
+const int  WXK_N     = 78;
+const int  WXK_O     = 79;
+const int  WXK_P     = 80;
+const int  WXK_Q     = 81;
+const int  WXK_R     = 82;
+const int  WXK_S     = 83;
+const int  WXK_T     = 84;
+const int  WXK_U     = 85;
+const int  WXK_V     = 86;
+const int  WXK_W     = 87;
+const int  WXK_X     = 88;
+const int  WXK_Y     = 89;
+const int  WXK_Z     = 90;
 
 /* This enum contains bit mask constants used in wxKeyEvent */
 // enum wxKeyModifier

@@ -188,6 +188,24 @@ class MyLinesWindow extends WxWindow {
     }
 
     bindPaintEvent( onPaint );
+
+    bindSetFocusEvent( (_) {
+      eventMessage = "OnSetFocus";
+      refresh();
+    } );
+    bindKillFocusEvent( (_) {
+      eventMessage = "OnKillFocus";
+      refresh();
+    } );
+
+    bindKeyDownEvent( (event) {
+      eventMessage = "OnKeyDown";
+      refresh();
+    });
+    bindKeyUpEvent( (event) {
+      eventMessage = "OnKeyUp";
+      refresh();
+    });
   }
 
   void onPaint( WxPaintEvent event )
@@ -202,7 +220,11 @@ class MyLinesWindow extends WxWindow {
 
     dc.gradientFillLinear(WxRect(250, 10, 100, 100), wxGREEN, wxBLUE );
     dc.gradientFillConcentric(WxRect(351, 10, 100, 100), wxGREEN, wxBLUE );
+
+    dc.drawText( "Event received: $eventMessage", 10, 80 );
   }
+
+  String eventMessage = "Click here and press a key";
 }
 
 // ------------------------- MyShapesWindow ----------------------

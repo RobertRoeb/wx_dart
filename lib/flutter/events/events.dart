@@ -1405,6 +1405,95 @@ class WxKeyEventTableEntry extends WxEventTableEntry {
   }
 }
 
+/// Event sent out for keyboard key events.
+/// 
+/// Example ussage:
+/// ```dart
+/// // Derive new class from WxWindow
+/// class MyWindow extends WxWindow {
+/// 
+///   MyWindow( WxWindow parent, int id ) : super( parent, id, wxDefaultPosition, wxDefaultSize, 0 )
+///   {
+///     // Bind to key down event
+///     bindKeyDownEvent( onKeyDown );
+/// 
+///     // Bind to key up event
+///     bindKeyUpEvent( onKeyUp );
+///   }
+/// 
+///   // define key down event handler
+///   void onKeyDown( WxKeyEvent event )
+///   {
+///     switch (event.getKeyode()) {
+///       case WXK_ENTER: doSomething(); break;
+///       default: break;
+///     }
+///   }
+/// 
+///   // define key up event handler
+///   void onKeyUp( WxKeyEvent event )
+///   {
+///     switch (event.getKeyode()) {
+///       case WXK_ENTER: doSomethingElse(); break;
+///       default: break;
+///     }
+///   }
+/// }
+/// ```
+///
+/// # Supported key code constants in wxDart Flutter and wxDart Native
+/// | arrowUp | WXK_UP |
+/// | arrowDown | WXK_DOWN |
+/// | arrowRight | WXK_RIGHT |
+/// | arrowLeft: | WXK_LEFT |
+/// | space | WXK_SPACE |
+/// | enter | WXK_RETURN |
+/// | numpadEnter | WXK_RETURN |
+/// | home | WXK_HOME |
+/// | end | WXK_END |
+/// | pageUp | WXK_PAGEUP |
+/// | pageDown | WXK_PAGEDOWN |
+/// | add | WXK_ADD |
+/// | minus | WXK_SUBTRACT |
+/// | escape | WXK_ESCAPE |
+/// | backspace | WXK_BACK |
+/// | f1 | WXK_F1 |
+/// | ... | ... |
+/// | f12 | WXK_F12 |
+/// | tab | WXK_TAB |
+/// | delete | WXK_DELETE |
+/// | insert | WXK_INSERT |
+/// | alt | WXK_ALT |
+/// | shift | WXK_SHIFT |
+/// | control | WXK_CONTROL |
+/// | exclamation | 33 |
+/// | numberSign | 35 |
+/// | dollar | 36 |
+/// | percent | 37 |
+/// | quoteSingle | 39 |
+/// | backslash | 92 |
+/// | braceLeft | 123 |
+/// | braceRight | 125 |
+/// | tilde | 126 |
+/// | bracketLeft | 91 |
+/// | bracketRight | 93 |
+/// | comma | 44 |
+/// | quote | 45 |
+/// | period | 46 |
+/// | digit0 | 48 | 
+/// | ... | ... | 
+/// | digit9 | 57 | 
+/// | colon | 58 |
+/// | semicolon | 59 |
+/// | less | 60 |
+/// | equal | 61 |
+/// | greater | 62 |
+/// | question | 63 |
+/// | at | 64 |
+/// | keyA | WXK_A |
+/// | ... | ... |
+/// | keyZ | WXK_Z |
+
 class WxKeyEvent extends WxEvent {
   WxKeyEvent( int eventType ) : super (eventType,-1) {
       final keyboard = HardwareKeyboard.instance;
@@ -1414,47 +1503,65 @@ class WxKeyEvent extends WxEvent {
       _shiftDown = keyboard.isShiftPressed;
   }
 
+  /// Returns the key code (that often is not the actual character). E.g. when pressing the a key,
+  /// it will return WXK_A which happens is the ascii code of the capitalized a. If this will
+  /// result in the character a or A depends on other keys being pressed.
+  /// 
+  /// See [getUnicodeKey]
   int getKeyCode( ) {
     return _keyCode;
   }
+  /// Used internally
   void setKeyCode( int keyCode ) {
     _keyCode = keyCode;
   }
 
+  /// Returns the Unicode key (currently wxDart Native only)
   int getUnicodeKey( ) {
     return _unicode;
   }
 
+  /// Return true of the control key is currently pressed
   bool controlDown() {
     return _controlDown;
   }
+  /// Return true of the command key is currently pressed
   bool cmdDown() {
     return controlDown();
   }
+  /// Used internally
   void setControlDown( bool down ) {
     _controlDown = down;
   }
+  /// Return true of the meta key is currently pressed
   bool metaDown() {
     return _metaDown;
   }
+  /// Used internally
   void setMetaDown( bool down ) {
     _metaDown = down;
   }
+  /// Return true of the alt key is currently pressed
   bool altDown() {
     return _altDown;
   }
+  /// Used internally
   void setAltDown( bool down ) {
     _altDown = down;
   }
+  /// Return true of the shift key is currently pressed
   bool shiftDown() {
     return _shiftDown;
   }
+  /// Used internally
   void setShiftDown( bool down ) {
     _shiftDown = down;
   }
+  /// Return true of the control key or the alt key is currently pressed
   bool hasModifiers( ) {
     return _controlDown || _altDown;
   }
+  /// Return true of the any modifier currently pressed
   bool hasAnyModifiers( ) {
     return _controlDown || _altDown || _shiftDown || _metaDown;
   }
