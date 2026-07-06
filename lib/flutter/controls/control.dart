@@ -80,6 +80,16 @@ abstract class WxNativeWindow extends WxControl {
 /// Override this to return the Flutter widget
   Widget buildWidget( BuildContext context );
 
+/// Use this to let control generate key and focus events
+  Widget doBuildSystemEventHandlers( BuildContext context, Widget child ) {
+    return _doBuildSystemEventHandlers( context, child ); 
+  }
+
+/// Use this to let control generate mouse events
+  Widget doBuildMouseEventHandler( BuildContext context, Widget child ) {
+    return _doBuildMouseEventHandler( context, child ); 
+  }
+
   @override
   Widget _build( BuildContext context ) {
     return _buildControl( context, buildWidget(context ) );

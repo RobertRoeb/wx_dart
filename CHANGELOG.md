@@ -1,3 +1,7 @@
+## 0.9.6
+
+* Allow a WxNativeWindow to generate key, mouse and focus events
+
 ## 0.9.5
 
 * Corrected/added key up events

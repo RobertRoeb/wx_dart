@@ -1442,6 +1442,8 @@ class WxKeyEventTableEntry extends WxEventTableEntry {
 /// ```
 ///
 /// # Supported key code constants in wxDart Flutter and wxDart Native
+/// | key | constant |
+/// | -------- | -------- |
 /// | arrowUp | WXK_UP |
 /// | arrowDown | WXK_DOWN |
 /// | arrowRight | WXK_RIGHT |
@@ -1504,8 +1506,8 @@ class WxKeyEvent extends WxEvent {
   }
 
   /// Returns the key code (that often is not the actual character). E.g. when pressing the a key,
-  /// it will return WXK_A which happens is the ascii code of the capitalized a. If this will
-  /// result in the character a or A depends on other keys being pressed.
+  /// it will return WXK_A which is the ascii code of the capitalized a. If this will
+  /// result in the character a or A depends on shift being pressed.
   /// 
   /// See [getUnicodeKey]
   int getKeyCode( ) {

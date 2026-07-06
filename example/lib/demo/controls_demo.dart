@@ -8,7 +8,9 @@ class MyNativeWindow extends WxNativeWindow {
 
   @override
   Widget buildWidget(BuildContext context) {
-    return Text( 'This is a native Flutter window.' );
+    return 
+      doBuildSystemEventHandlers(context, 
+        Text( 'This is a native Flutter window.' ) );
   }
 }
 
