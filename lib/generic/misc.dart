@@ -216,12 +216,13 @@ class WxSelectionStore
 
     final List <int> _itemsSel = [];
 
-
+/*
     void printList() {
       for (final end in _itemsSel) {
         print( "$end");
       }
     }
+*/
 }
 
 // ------------------------- wxHeightCache ----------------------
@@ -324,6 +325,7 @@ class WxHeightCache
     */
     final List <int> _ends = [];   
 
+/*
     void printList() {
       for (int i = 0; i < _ends.length; i++) {
         print( "Height of #$i: ${getLineHeight(i)}" );
@@ -334,6 +336,7 @@ class WxHeightCache
       // print( "line at 49px: ${getLineAt(49)}" );
       // print( "line at 50px: ${getLineAt(50)}" );
     }
+*/
 }
 
 // ----------------------------------------------------------------------------
