@@ -214,6 +214,7 @@ abstract class WxHeaderCtrlBase extends WxWindow {
   WxHeaderCtrlBase( WxWindow parent,  int id, { WxPoint pos = wxDefaultPosition, WxSize size = wxDefaultSize, int style = 0 } ) : 
     super( parent, id, pos, size, style ) 
   {
+    setCanFocus( false );
     bindHeaderCtrlSeparatorDClickEvent( onSeparatorDClick, wxID_ANY );
     bindHeaderCtrlRightClickEvent( onRClick, wxID_ANY );
   }

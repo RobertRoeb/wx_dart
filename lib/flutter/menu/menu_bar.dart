@@ -34,6 +34,8 @@ class WxMenubarAnimationTimer extends WxTimer {
 class WxRealMenuBar extends WxWindow {
   WxRealMenuBar( WxWindow parent, this._owner ) : super( null, -1, wxDefaultPosition, WxSize(200,34), 0 ) 
   {
+    setCanFocus(false);
+    
     bindPaintEvent(onPaint);
     bindLeaveWindowEvent( (event) {
       _hover = -1;
