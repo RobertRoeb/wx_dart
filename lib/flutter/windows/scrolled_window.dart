@@ -183,12 +183,18 @@ class WxScrolledWindow extends WxWindow {
   {
     if (_onlyVerticalScrolling())
     {
+      final pixels = _verticalController.position.pixels;
+      if (pixels.isNaN || pixels.isInfinite) return pt;
       return WxPoint(
         pt.x, 
         pt.y-_verticalController.offset.floor() );
     }
     else
     {
+      final vpixels = _verticalController.position.pixels;
+      if (vpixels.isNaN || vpixels.isInfinite) return pt; 
+      final hpixels = _horizontalController.position.pixels;
+      if (hpixels.isNaN || hpixels.isInfinite) return pt; 
       return WxPoint(
         pt.x-_horizontalController.offset.floor(), 
         pt.y-_verticalController.offset.floor() );
@@ -200,12 +206,18 @@ class WxScrolledWindow extends WxWindow {
   {
     if (_onlyVerticalScrolling())
     {
+      final pixels = _verticalController.position.pixels;
+      if (pixels.isNaN || pixels.isInfinite) return pt;
       return WxPoint(
         pt.x, 
         pt.y+_verticalController.offset.floor() );
     }
     else
     {
+      final vpixels = _verticalController.position.pixels;
+      if (vpixels.isNaN || vpixels.isInfinite) return pt; 
+      final hpixels = _horizontalController.position.pixels;
+      if (hpixels.isNaN || hpixels.isInfinite) return pt; 
       return WxPoint(
         pt.x+_horizontalController.offset.floor(), 
         pt.y+_verticalController.offset.floor() );
@@ -222,12 +234,18 @@ class WxScrolledWindow extends WxWindow {
   {
     if (_onlyVerticalScrolling())
     {
+      final pixels = _verticalController.position.pixels;
+      if (pixels.isNaN || pixels.isInfinite) return; 
       dc.setDeviceOrigin(
         0,
         -_verticalController.offset.floor() );
     }
     else
     {
+      final vpixels = _verticalController.position.pixels;
+      if (vpixels.isNaN || vpixels.isInfinite) return; 
+      final hpixels = _horizontalController.position.pixels;
+      if (hpixels.isNaN || hpixels.isInfinite) return; 
       dc.setDeviceOrigin(
         -_horizontalController.offset.floor(), 
         -_verticalController.offset.floor() );
@@ -241,6 +259,8 @@ class WxScrolledWindow extends WxWindow {
     if (_blockScrollEvents) return;
     if (_onlyVerticalScrolling()) return; // can this happen?
     if (getVirtualSize().x < 2) return;
+    final pixels = _horizontalController.position.pixels;
+    if (pixels.isNaN || pixels.isInfinite) return; 
     final offset = _horizontalController.offset;
     int hPos = (offset / _pixelsPerUnitX).floor();
     WxScrollWinEvent event = WxScrollWinEvent(wxGetScrollWinThumbTrackEventType(), 
@@ -253,6 +273,8 @@ class WxScrolledWindow extends WxWindow {
   {
     if (_blockScrollEvents) return;
     if (getVirtualSize().y < 2) return;
+    final pixels = _verticalController.position.pixels;
+    if (pixels.isNaN || pixels.isInfinite) return; 
     final offset = _verticalController.offset;
     int vPos = (offset / _pixelsPerUnitY).floor();
     WxScrollWinEvent event = WxScrollWinEvent(wxGetScrollWinThumbTrackEventType(), 
@@ -272,6 +294,8 @@ class WxScrolledWindow extends WxWindow {
     if (_onlyVerticalScrolling()) {
       return 0;
     }
+    final pixels = _horizontalController.position.pixels;
+    if (pixels.isNaN || pixels.isInfinite) return 0;
     return _horizontalController.offset.floor();
   }
 
@@ -282,6 +306,8 @@ class WxScrolledWindow extends WxWindow {
       if (_useInitialScrollPos) {
       return _initialScrollPosY;
     }
+    final pixels = _verticalController.position.pixels;
+    if (pixels.isNaN || pixels.isInfinite) return 0;
     return _verticalController.offset.floor();
   }
 
