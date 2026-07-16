@@ -74,6 +74,7 @@ part 'flutter/controls/radio_box.dart';
 part 'flutter/controls/listbox.dart';
 part 'flutter/controls/choice.dart';
 part 'flutter/controls/combo_box.dart';
+part 'flutter/controls/bitmap_combo_box.dart';
 part 'flutter/controls/text_entry.dart';
 part 'flutter/controls/text_ctrl.dart';
 part 'flutter/controls/slider.dart';

@@ -10,7 +10,7 @@ part of '../../wx_dart.dart';
 // ------------------------------- _WxItem -----------------------------
 
 class _WxItem {
-  _WxItem( this.text, { this.data } );
+  _WxItem( this.text, { this.data, this.bitmap } );
   String text = "";
   dynamic data;
   WxBitmap? bitmap; 

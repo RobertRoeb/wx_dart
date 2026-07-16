@@ -1,7 +1,8 @@
 ## 0.9.7
 
-* Implement control of focus behaviour (disable focus, child window focus)
-* Update function category documentation for the wxWindow class
+* Implemented control of focus behaviour (disable focus, child window focus)
+* Updated function category documentation for the wxWindow class
+* Added wxBitmapComboBox
 
 ## 0.9.6
 

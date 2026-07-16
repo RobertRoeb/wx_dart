@@ -118,6 +118,21 @@ class MyControlsWindow extends WxScrolledWindow {
 
   void createComboBoxPage( WxStaticBoxSizer sizer, WxWindow parent )
   {
+    sizer.add( WxStaticText(parent, -1, "WxBitmapComboBox:"), flag: wxALL, border: 5 );
+    final bitmapCombo = WxBitmapComboBox(parent, -1, size: WxSize(300,-1) );
+
+    final bitmap1 = WxBitmapBundle.fromMaterialIcon( WxMaterialIcon.fit_screen, WxSize(24, 24), );
+    final bitmap2 = WxBitmapBundle.fromMaterialIcon( WxMaterialIcon.play_arrow, WxSize(24, 24) );
+    final bitmap3 = WxBitmapBundle.fromMaterialIcon( WxMaterialIcon.pause, WxSize(24, 24) );
+    bitmapCombo.appendWithBitmap("fit_screen", bitmap1 );
+    bitmapCombo.append("no image" );
+    bitmapCombo.appendWithBitmap("play_arrow", bitmap2 );
+    bitmapCombo.appendWithBitmap("pause", bitmap3 );
+    sizer.add( bitmapCombo, flag: wxALL, border: 5 );
+
+    sizer.addSpacer(10);
+
+    sizer.add( WxStaticText(parent, -1, "WxComboBox:"), flag: wxALL, border: 5 );
     final combo = WxComboBox( parent, -1, choices: ['Choice #3','Choice #2','Choice #1'], size: WxSize(200, -1), style: wxCB_SORT );
     sizer.add( combo, flag: wxALL, border: 5 );
 
