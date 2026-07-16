@@ -54,6 +54,7 @@ class WxSizer extends WxObject {
   WxSizer();
 
   final List<WxSizerItem> _items = [];
+  WxWindow? _owningWindow;
 
   WxPoint _position = wxDefaultPosition;
   WxSize _size = wxDefaultSize;
@@ -95,6 +96,31 @@ class WxSizer extends WxObject {
     return _size;
   }
 
+  void _testParentWindow()
+  {
+    if (_owningWindow == null) return;
+    for (final item in _items) {
+      if (item._kind == WxSizerKind.window) {
+        if (item._window!.getParent() != _owningWindow) {
+          wxLogError( "sizer has ${item._window!.runtimeType} owned by wrong parent window" );
+          return;
+        }
+        else if (item._kind == WxSizerKind.sizer)
+        {
+          for (final subitem in item._sizer!._items) {
+            if (subitem._kind == WxSizerKind.window) 
+            {
+              if (subitem._window!.getParent() != _owningWindow) {
+                wxLogError( "sizer has ${subitem._window!.runtimeType} owned by wrong parent window" );
+                return;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
   void _testIfSizerAlreadyInList( WxSizer sizer )
   {
     for (final item in _items) {
@@ -115,7 +141,7 @@ class WxSizer extends WxObject {
           wxLogError( "window aleady added" );
           return;
         }
-      }
+      } 
     }
   }
 
@@ -124,6 +150,7 @@ class WxSizer extends WxObject {
     _testIfWindowAlreadyInList( window );
     WxSizerItem item = WxSizerItem.asWindow(window, proportion, flag, border);
     _items.add( item );
+    _testParentWindow();
     return item;
   }
 

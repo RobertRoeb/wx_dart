@@ -1583,6 +1583,8 @@ class WxWindow extends WxEvtHandler {
   /// Associate [sizer] with this window
   void setSizer( WxSizer sizer ) {
     _sizer = sizer;
+    sizer._owningWindow = this;
+    sizer._testParentWindow();
   }
 
   /// Returns the [WxSizer] currently associated with this window, or null
