@@ -65,12 +65,9 @@ class WxCustomPainter extends CustomPainter {
     final rect = Rect.fromLTWH(0, 0, size.width, size.height);
     canvas.clipRect(rect);
     window._canvas = canvas;
-    window._canvasSize = size;
-    window._context = context;
     WxPaintEvent event = WxPaintEvent(window);
     window.processEvent(event);
     window._canvas = null;
-    window._context = null;
     canvas.restore();
   }
 
@@ -195,8 +192,77 @@ const int wxTOUCH_RAW_EVENTS = 0x0020;
 /// | wxBG_STYLE_SYSTEM | 1 (disabled in wxDart) |
 /// | wxBG_STYLE_PAINT | 2 (the default in wxDart|
 /// | wxBG_STYLE_TRANSPARENT | 3 (chosen for translucent windows) |
+///
+/// Showing and enabling interface
+/// * [show]
+/// * [hide]
+/// * [isShown]
+/// * [enable]
+/// * [disable]
+/// * [isEnabled]
+/// 
+/// Refresh/update display
+/// * [refresh]
+/// * [freeze]
+/// * [thaw]
+/// 
+/// Close/destroy/delete interface
+/// * [destroy]
+/// 
+/// Position, sizing and hints
+/// * [setSize]
+/// * [getSize]
+/// * [getMinSize]
+/// * [setPosition]
+/// * [getPosition]
+/// * [getClientSize]
+/// * [getVirtualSize]
+/// * [setVirtualSize]
+/// 
+/// Child window interface
+/// * [getParent]
+/// * [findWindow]
+/// * [destroyChildren]
+/// 
+/// Mouse capture
+/// * [captureMouse]
+/// * [releaseMouse]
+/// * [hasCapture]
+/// 
+/// Cursor 
+/// * [setCursor]
+/// * [getCursor]
+/// 
+/// Sizer
+/// * [setSizer]
+/// * [setSizerAndFit]
+/// * [getSizer]
+/// * [layout]
+/// 
+/// Focus
+/// * [setFocus]
+/// * [hasFocus]
+/// * [acceptsFocusFromKeyboard]
+/// * [acceptsFocus]
+/// * [setCanFocus]
+/// * [disableFocusFromKeyboard]
+/// * [acceptsFocusRecursively]
+/// * [isFocusable]
+/// * [canAcceptFocusFromKeyboard]
+/// * [canAcceptFocus]
+/// 
+/// Font and colour
+/// * [setFont]
+/// * [getTextExtent]
+/// * [setForegroundColour]
+/// * [getForegroundColour]
+/// * [useForegroundColour]
+/// * [setBackgroundColour]
+/// * [getBackgroundColour]
+/// * [useBackgroundColour]
 
 class WxWindow extends WxEvtHandler {
+  /// Creates a custom window with given parent, id, size and style
   WxWindow( this._parent, this._id, this._position, this._size, this._style )
   {
     if (_parent != null)
@@ -228,8 +294,6 @@ class WxWindow extends WxEvtHandler {
   final WxWindow? _parent;
   WxScrolledWindow? _scrollOwnerWindow;
   Canvas? _canvas;        // only valid during OnPaint();
-  BuildContext? _context; // only valid during OnPaint();
-  Size _canvasSize = Size.zero;
 
   List <WxEvtHandler>? _eventHandlers;
 
@@ -255,9 +319,9 @@ class WxWindow extends WxEvtHandler {
   bool _hasRecentlyClicked = false;
   bool _hasFocus2 = false; // 2 in order to avoid accidentally overriding it
   FocusNode? _focusNode;
+  bool _disableAcceptsFocusFromKeyboard = false;
+  bool _acceptsFocus = true;
   bool _lastButtonWasright = false;
-  bool _isTwoDimensionalScrollView = false;
-  int _counter = 0;
   WxWindow? _sliverView;
 
   @override
@@ -573,7 +637,6 @@ class WxWindow extends WxEvtHandler {
       }
       else
       {
-        _isTwoDimensionalScrollView = true;
         child = 
         NotificationListener<ScrollMetricsNotification>(
           onNotification: _handleScrollMetricsNotification,
@@ -1706,19 +1769,50 @@ class WxWindow extends WxEvtHandler {
     return _hasFocus2;
   }
 
-  /// Not implemented in wxDart yet
-  bool isFocusable() {
-    return acceptsFocus();
-  }
-
-  /// Not implemented in wxDart yet
+  /// Indicates if the control can receive the focus from keyboard. Cannot be overridden in wxDart yet.
+  /// 
+  /// Use [disableFocusFromKeyboard], [setCanFocus], [isFocusable] and [canAcceptFocus]
   bool acceptsFocusFromKeyboard() { 
-    return acceptsFocus();
+    return acceptsFocus() && !_disableAcceptsFocusFromKeyboard;
+  }
+
+  /// Indicates if the control can receive the focus. Cannot be overridden in wxDart yet.
+  /// 
+  /// Use [setCanFocus], [isFocusable] and [canAcceptFocus]
+  bool acceptsFocus() {
+    return _acceptsFocus;
+  }
+
+  /// Indicate that this window or control cannot received the focus.
+  /// 
+  /// Use [acceptsFocus], [isFocusable] and [canAcceptFocus]
+  void setCanFocus( bool canFocus ) {
+    _acceptsFocus = canFocus;
+  }
+
+  void disableFocusFromKeyboard( ) {
+    _disableAcceptsFocusFromKeyboard = true;
   }
 
   /// Not implemented in wxDart yet
-  bool acceptsFocus() {
+  /// 
+  bool acceptsFocusRecursively( ) {
     return true;
+  }
+
+  /// Returns true if this window/control can accept focus, is shown and is enabled
+  bool isFocusable() {
+    return acceptsFocus() && isShown() && isEnabled();
+  }
+
+  /// Returns true if this window/control can accept focus from keyboard navigation, is shown and is enabled
+  bool canAcceptFocusFromKeyboard( ) {
+    return acceptsFocusFromKeyboard() && isShown() && isEnabled();
+  }
+
+  /// Returns true if this window or one of its child windows can accept focus, is shown and is enabled
+  bool canAcceptFocus( ) {
+    return acceptsFocusRecursively() && isShown() && isEnabled();
   }
 
   void _sendFocusEvents( bool enter ) 
