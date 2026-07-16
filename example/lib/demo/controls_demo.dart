@@ -1,7 +1,8 @@
 
-import 'package:flutter/material.dart';
 import 'package:wx_dart/wx_dart.dart';
 
+/*
+import 'package:flutter/material.dart';
 
 class MyNativeWindow extends WxNativeWindow {
   MyNativeWindow( WxWindow parent ) : super( parent, -1 );
@@ -13,6 +14,7 @@ class MyNativeWindow extends WxNativeWindow {
         Text( 'This is a native Flutter window.' ) );
   }
 }
+*/
 
 class MyControlsWindow extends WxScrolledWindow {
   MyControlsWindow( WxWindow parent ) : super( parent, -1, style: wxVSCROLL )
@@ -25,9 +27,10 @@ class MyControlsWindow extends WxScrolledWindow {
     mainSizer.add( WxStaticText(this, -1, "The boxes below show various controls", style: wxST_WRAP), 
         flag: wxALL|wxALIGN_CENTER_HORIZONTAL, border: 10 );
 
+/*
     mainSizer.add( MyNativeWindow(this), 
         flag: wxALL|wxALIGN_CENTER_HORIZONTAL, border: 10 );
-
+*/
 
     sbs = WxStaticBoxSizer(wxVERTICAL, this, "WxStaticText" );
     mainSizer.addSizer( sbs, flag: wxEXPAND|wxALL, border: 10 );

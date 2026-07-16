@@ -6,6 +6,7 @@ import 'package:markdown/markdown.dart' as md;
 
 import 'demo/sizer_demo.dart';
 import 'demo/controls_demo.dart';
+import 'demo/focus_demo.dart';
 import 'demo/dialogs_demo.dart';
 import 'demo/splitter_demo.dart';
 import 'demo/dataview_demo.dart';
@@ -180,6 +181,8 @@ class MyMainFrame extends WxAdaptiveFrame {
     databook.appendPage( chapter1, null, "Text controls", MyLoggingWindow(databook) );
 
     databook.appendPage( chapter1, null, "Other controls", MyControlsWindow(databook) );
+
+    databook.appendPage( chapter1, null, "Focus tests", MyFocusWindow(databook) );
 
     databook.appendPage( chapter1, null, "Tiles", MyTileDataView(databook) );
 
