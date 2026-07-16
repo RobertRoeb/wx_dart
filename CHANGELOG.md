@@ -1,3 +1,8 @@
+## 0.9.7
+
+* Implement control of focus behaviour (disable focus, child window focus)
+* Update function category documentation for the wxWindow class
+
 ## 0.9.6
 
 * Allow a WxNativeWindow to generate key, mouse and focus events
