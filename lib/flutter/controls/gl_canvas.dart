@@ -572,19 +572,23 @@ abstract class WxGLContext extends WxObject {
     return [];
   }
 
-  String getString(int key) {
-    switch (key) {
-      case GL_EXTENSIONS: 
+  String getString(int key)
+  {
+    if (key == EXTENSIONS) { 
         return 'unknown';
-      case GL_VENDOR:
+    } else 
+    if (key == VENDOR) { 
         return 'Google';
-      case GL_RENDERER:
+    } else
+    if (key == RENDERER) { 
         return 'ANGLE';
-      case GL_VERSION:
+    } else
+    if (key == VERSION) { 
         return '3.3 ES';
-      case GL_SHADING_LANGUAGE_VERSION:
+    } else
+    if (key == SHADING_LANGUAGE_VERSION) { 
         return 'GLSL 3.3 ES';
-    }
+    } 
     return "unnamed";
   }
 
@@ -601,7 +605,7 @@ abstract class WxGLContext extends WxObject {
   }
 
   void bindTexture2(WxGlTexture texture) {
-    _gl!.bindTexture( GL_TEXTURE_2D, texture );
+    _gl!.bindTexture( TEXTURE_2D, texture );
   }
 
   void activeTexture(int v0) {
@@ -620,7 +624,8 @@ abstract class WxGLContext extends WxObject {
 
   void texImage2D_NOSIZE(
       int target, int level, int internalformat, int format, int type, TypedData? pixels) {
-    _gl!.texImage2D_NOSIZE( target, level, internalformat, format, type, pixels );
+    wxLogError( "texImage2D_NOSIZE not implemented" );
+    // _gl!.texImage2D_NOSIZE( target, level, internalformat, format, type, pixels );
   }
 
   void texImage3D(int target, int level, int internalformat, int width,
@@ -810,7 +815,7 @@ abstract class WxGLContext extends WxObject {
     _gl!.framebufferTexture2D( target, attachment, textarget, texture, level );
   }
 
-  void readPixels(int x, int y, int width, int height, int format, int type, TypedData? pixels ) {
+  void readPixels(int x, int y, int width, int height, int format, int type, TypedData pixels ) {
     _gl!.readPixels(x, y, width, height, format, type, pixels );
   }
 
@@ -970,8 +975,9 @@ abstract class WxGLContext extends WxObject {
     return _gl!.getShaderParameter( v0, v1 );
   }
 
-  String? getShaderSource(int v0) {
-    return _gl!.getShaderSource( v0 );
+  String? getShaderSource(WxGlShader v0) {
+    return null;
+    // return _gl!.getShaderSource( v0.getId() );
   }
 
   WxGlUniformLocation getAttribLocation(WxGlProgram program, String name) {
