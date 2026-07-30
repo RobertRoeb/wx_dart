@@ -595,7 +595,7 @@ complex background depending on the system, user setting, dark vs. light mode an
 particular window. You can overwrite this with e.g. pure white, a colour gradient or a 
 bitmap in the paint handler.
 
-## 2D and 3D drawing support
+## 2D and OpenGL drawing support
 
 wxDart currently uses the original drawing API from the wxDC group of classes and it
 uses the GDI backend under Windows which provides fastest drawing for simple geometries
@@ -606,7 +606,12 @@ WxGraphicsContext group of classes in both wxDart Native and wxDart Flutter.
 It uses Direct2D under Windows, CoreGraphics on MacOS, Cairo on Linux and
 Impeller when using the Flutter backend.
 
-There is no 3D support in wxDart yet. The plan is to support OpenGL ES and WebGL.
+wxDart supports OpenGL (ES) through the native OpenGL API in wxDart Native
+and using the flutter_angle project in wxDart Flutter. flutter_angle uses 
+the ANGLE library on desktop platforms, OpenGL ES on mobile platforms and
+WebGL on the Web. For maximum portability, a core OpenGL 4.1 (for macOS)
+and OpenGL ES 3.1 and WebGL 2 API should be used.
+
 Ideal would be a port of ThreeJS on all platforms.
 
 ## Main loop
