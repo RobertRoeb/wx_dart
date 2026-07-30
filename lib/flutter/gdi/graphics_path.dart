@@ -43,7 +43,7 @@ part of '../../wx_dart.dart';
 /// ```
 class WxGraphicsPath extends WxGraphicsObject {
 
-  /// Creates a [WxGraphicsPath]. Called internally by [WxGraphicsContext.createPath]
+  /// Don't call this: use [WxGraphicsContext.createPath] to create a path.
   WxGraphicsPath( ) {
     _path = Path();
   }
@@ -82,7 +82,7 @@ class WxGraphicsPath extends WxGraphicsObject {
 
   /// Adds closed subpath with circle specified by [x],[y] and [radius]
   void addCircle( double x, double y, double radius ) {
-    _path.addOval( Rect.fromLTWH(x+0.5-radius,y+0.5-radius,x+0.5+radius,y+0.5+radius) );
+    _path.addOval( Rect.fromLTWH(x+0.5-radius,y+0.5-radius,2*radius,2*radius) );
   }
 
   /// Adds closed subpath with ellipse specified by [x],[y],[width],[height]
