@@ -220,6 +220,8 @@ const int wxTOUCH_RAW_EVENTS = 0x0020;
 /// * [setVirtualSize]
 /// 
 /// Child window interface
+/// * [getChildCount]
+/// * [getChild]
 /// * [getParent]
 /// * [findWindow]
 /// * [destroyChildren]
@@ -340,6 +342,22 @@ class WxWindow extends WxEvtHandler {
     }
     dispose();
     return true;
+  }
+
+  /// Returns the number of child windows
+  /// 
+  /// see [getChild]
+  int getChildCount( ) {
+    return _children.length;
+  }
+
+  /// Returns the nth child window
+  /// 
+  /// see [getChildCount]
+  WxWindow? getChild( int index ) {
+    if (index< 0) return null;
+    if (index >= _children.length) return null;
+    return _children[index]; 
   }
 
   /// Returns window with given [id] or null if not found
@@ -1605,8 +1623,7 @@ class WxWindow extends WxEvtHandler {
     return _parent;
   }
 
-  /// Returns the list of child window of this window
-  List<WxWindow> getChildren() {
+  List<WxWindow> _getChildren() {
     return _children;
   }
 

@@ -119,7 +119,7 @@ class WxTopLevelWindow extends WxNonOwnedWindow {
 
   void _recursiveSendSysColourChangedEvent( WxWindow current )
   {
-    for (final child in current.getChildren()) {
+    for (final child in current._getChildren()) {
       if (child is WxTopLevelWindow) continue;
       final event = WxSysColourChangedEvent( id: child.getId() );
       event.setEventObject( child );
@@ -420,7 +420,7 @@ class WxTopLevelWindow extends WxNonOwnedWindow {
 
   void _callRecursiveOnInternalIdle( WxWindow window )
   {
-    for (final child in window.getChildren()) {
+    for (final child in window._getChildren()) {
       if (child is! WxTopLevelWindow) {
         _callRecursiveOnInternalIdle(child);
       }

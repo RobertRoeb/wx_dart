@@ -489,7 +489,7 @@ class WxApp extends WxEvtHandler
   void _recursiveUpdateTheme( WxWindow current )
   {
     current._updateTheme();
-    for (final child in current.getChildren()) {
+    for (final child in current._getChildren()) {
       _recursiveUpdateTheme( child );
     }
   }
