@@ -1,6 +1,6 @@
 name: wx_dart
 description: "Flutter backend of wxDart"
-version: 0.9.7
+version: 0.9.8
 homepage: https://github.com/RobertRoeb/wx_dart
 
 environment:
@@ -24,6 +24,8 @@ dependencies:
   file_picker: ^10.3.10
   path_provider: ^2.1.5
   desktop_window: ^0.4.2
+  ffi: ^2.2.0
+  flutter_angle: ^0.4.1
 
 dev_dependencies:
   flutter_test:

@@ -1,3 +1,11 @@
+## 0.9.8
+
+Added WxGLCanvas and WxGLContext for OpenGL (ES) support on all platforms
+Added WxWindow.getChildCount() and WxWindow.getChild(index) as we don't
+  have a GetChildren() accessor like in C++
+Added WxRealPoint for conveniance
+Corrected WxGraphicsPath.addCircle()
+
 ## 0.9.7
 
 * Implemented control of focus behaviour (disable focus, child window focus)
