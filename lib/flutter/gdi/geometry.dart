@@ -43,6 +43,8 @@ const wxDefaultSize = WxSize( -1, -1 );
 /// 
 /// This class is constant.
 /// 
+/// see also [WxRealPoint]
+/// 
 /// # Global objects 
 /// | Object | value |
 /// | -------- | -------- |
@@ -57,6 +59,23 @@ class WxPoint {
 
 /// Constant describing the default position, or no position at all
 const wxDefaultPosition = WxPoint( -1, -1 );
+
+// ------------------------- wxRealPoint ----------------------
+
+/// Represents a position using double values. WxRealPoint is currently
+/// not used in any API, but it is handy to store coordinated for 
+/// drawing with drawing operation using [WxGraphicsContext]
+/// 
+/// This class is constant.
+/// 
+/// see [WxPoint], [WxGraphicsContext]
+
+class WxRealPoint {
+  const WxRealPoint( this.x, this.y );
+  static WxRealPoint zero = WxRealPoint(0, 0);
+  final double x;
+  final double y;
+}
 
 // ------------------------- wxRect ----------------------
 
