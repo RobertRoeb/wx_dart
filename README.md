@@ -186,6 +186,7 @@ of the Dart classes as well as the C++ classes which wxDart Native uses internal
 | Dart | C++ |
 | ------------------ | ----------------- |
 | [WxPoint](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxPoint-class.html) | [wxPoint](https://docs.wxwidgets.org/trunk/classwx_point.html) |
+| [WxRealPoint](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxRealPoint-class.html) | [wxRealPoint](https://docs.wxwidgets.org/trunk/classwx_real_point.html) |
 | [WxSize](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxSize-class.html) | [wxSize](https://docs.wxwidgets.org/trunk/classwx_size.html) |
 | [WxRect](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxRect-class.html) | [wxRect](https://docs.wxwidgets.org/trunk/classwx_rect.html) |
 | [WxGraphicsContext](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxGraphicsContext-class.html) | [wxGraphicsContext](https://docs.wxwidgets.org/trunk/classwx_graphics_context.html) |
@@ -226,12 +227,20 @@ of the Dart classes as well as the C++ classes which wxDart Native uses internal
 | [WxRadioButton](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxRadioButton-class.html) | [wxRadioButton](https://docs.wxwidgets.org/trunk/classwx_radio_button.html) |
 | [WxRadioBox](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxRadioBox-class.html) | [wxRadioBox](https://docs.wxwidgets.org/trunk/classwx_radio_box.html) |
 | [WxComboBox](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxComboBox-class.html) | [wxComboBox](https://docs.wxwidgets.org/trunk/classwx_combo_box.html) |
+| [WxBitmapComboBox](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxBitmapComboBox-class.html) | [wxBitmapComboBox](https://docs.wxwidgets.org/trunk/classwx_bitmap_combo_box.html) |
 | [WxListBox](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxListBox-class.html) | [wxListBox](https://docs.wxwidgets.org/trunk/classwx_list_box.html) |
 | [WxSlider](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxSlider-class.html) | [wxSlider](https://docs.wxwidgets.org/trunk/classwx_slider.html) |
 | [WxGauge](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxGauge-class.html) | [wxGauge](https://docs.wxwidgets.org/trunk/classwx_gauge.html) |
 | [WxSpinCtrl](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxSpinCtrl-class.html) | [wxSpinCtrl](https://docs.wxwidgets.org/trunk/classwx_spin_ctrl.html) |
 | [WxSpinCtrlDouble](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxSpinCtrlDouble-class.html) | [wxSpinCtrlDouble](https://docs.wxwidgets.org/trunk/classwx_spin_ctrl_double.html) |
 | [WxHyperlinkCtrl](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxHyperlinkCtrl-class.html) | [wxHyperlinkCtrl](https://docs.wxwidgets.org/trunk/classwx_hyperlink_ctrl.html) |
+
+## OpenGL (ES) classes
+
+| Dart | C++ |
+| ------------------ | ----------------- |
+| [WxGLCanvas](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxGLCanvas-class.html) | [wxGLCanvas](https://docs.wxwidgets.org/trunk/classwx_g_l_canvas.html) |
+| [WxGLContext](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxGLContext-class.html) | [wxGLContext](https://docs.wxwidgets.org/trunk/classwx_g_l_context.html) |
 
 ## Complex control classes
 

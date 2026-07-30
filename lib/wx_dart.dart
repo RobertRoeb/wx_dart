@@ -1,6 +1,8 @@
 
 library;
 
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/rendering.dart';
@@ -24,6 +26,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:desktop_window/desktop_window.dart';
+import 'package:flutter_angle/flutter_angle.dart';
 part 'enums.dart';
 part 'flutter/core/app.dart';
 part 'flutter/core/event.dart';
@@ -86,6 +89,7 @@ part 'flutter/controls/spin_ctrl.dart';
 part 'flutter/controls/spin_ctrl_double.dart';
 part 'flutter/controls/animation_ctrl.dart';
 part 'flutter/controls/hyperlink_ctrl.dart';
+part 'flutter/controls/gl_canvas.dart';
 part 'flutter/events/events.dart';
 part 'flutter/events/command_event.dart';
 part 'flutter/gdi/geometry.dart';
