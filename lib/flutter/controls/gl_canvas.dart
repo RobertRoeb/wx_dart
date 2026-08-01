@@ -121,10 +121,11 @@ FlutterAngle? _flutterGlPlugin;
 /// 
 ///   void updateCamera()
 ///   {
+///     // Render into this canvas from now on
+///     setCurrent(_glContext);
+/// 
 ///     final size = getClientSize();
 ///     _glContext.viewport( 0, 0, size.x, size.y );
-/// 
-///     setCurrent(_glContext);
 /// 
 ///     // draw something
 ///     _glContext.render();
@@ -155,15 +156,13 @@ class WxGLCanvas extends WxWindow {
       return; 
     }
 
-    if (_gl != null) return;
+    if (_gl == null) return;
     // push all changes to the FBO
     _gl!.finish();
 
     if (_texture == null) return;
-
     _flutterGlPlugin!.updateTexture(_texture!).then( (_) {
-        print( "Texture updated" );
-        // _setState();
+        //print( "#2 Texture updated" );
     });
   }
 
@@ -173,13 +172,18 @@ class WxGLCanvas extends WxWindow {
     if (_gl != null) {
       _context!._gl = _gl!;
     }
+    if (_texture != null) {
+      _texture!.activate();
+    }
   }
 
   void _setupPlugin() async
   {
-    _flutterGlPlugin ??= FlutterAngle();
-
-    await _flutterGlPlugin!.init();
+    if (_flutterGlPlugin == null) 
+    {
+      _flutterGlPlugin = FlutterAngle();
+      await _flutterGlPlugin!.init();
+    }
 
     WxSize size = getSize();
 
@@ -440,6 +444,7 @@ class WxGlShaderPrecisionFormat extends ShaderPrecisionFormat {
 ///   late WxGlProgram _glProgram;
 ///   late WxGlBuffer _triangleVertexBuffer;
 ///   late WxGlUniformLocation _vertexLocation;
+///   late WxGlVertexArrayObject _vao;
 /// 
 ///   @override
 ///   void onPrepare()
@@ -491,8 +496,8 @@ class WxGlShaderPrecisionFormat extends ShaderPrecisionFormat {
 ///       0, 0.5, 0, // Vertice #1
 ///     ]);
 /// 
-///     final vao = gl.createVertexArray();
-///     gl.bindVertexArray( vao );
+///     _vao = gl.createVertexArray();
+///     gl.bindVertexArray( _vao );
 /// 
 ///     _triangleVertexBuffer = gl.createBuffer();
 ///     gl.bindBuffer(gl.ARRAY_BUFFER, _triangleVertexBuffer); 
@@ -506,12 +511,23 @@ class WxGlShaderPrecisionFormat extends ShaderPrecisionFormat {
 ///   {
 ///     final gl = this;
 /// 
-///     gl.clearColor(0.2, 0.2, 0.2, 1.0);
-///     gl.clear(gl.COLOR_BUFFER_BIT);
-///     
+///     // bind to VAO
+///     gl.bindVertexArray( _vao );
+///  
+///     // use program   
+///     gl.useProgram(_glProgram);
+/// 
+///     // Set up canvas
+///     gl.clearColor(0, 0, 0, 1.0);
+///     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT );
+///     gl.enable(gl.DEPTH_TEST);
+///     gl.disable(gl.BLEND);
+/// 
+///     // bind to vertex buffer
 ///     gl.bindBuffer(gl.ARRAY_BUFFER, _triangleVertexBuffer );
 ///     gl.vertexAttribPointer(_vertexLocation.getId(), 3, gl.FLOAT, false, 0, 0);
-///     gl.useProgram(_glProgram);
+/// 
+///     // draw triagle
 ///     gl.drawArrays(gl.TRIANGLES, 0, 3);
 /// 
 ///     gl.flush();
@@ -600,7 +616,7 @@ abstract class WxGLContext extends WxObject {
     return WxGlTexture( _gl!.createTexture().id );
   }
 
-  void bindTexture(int type, WxGlTexture texture) {
+  void bindTexture(int type, WxGlTexture? texture) {
     _gl!.bindTexture( type, texture );
   }
 
@@ -763,7 +779,7 @@ abstract class WxGLContext extends WxObject {
   }
 
   WxGlUniformLocation getUniformLocation(WxGlProgram program, String name) {
-    return WxGlUniformLocation( _gl!.getUniformLocation( program, name ) );
+    return WxGlUniformLocation( _gl!.getUniformLocation( program, name ).id );
   }
 
   void clear(int v0) {
@@ -987,7 +1003,8 @@ abstract class WxGLContext extends WxObject {
   // Single int
 
   void uniform1i(WxGlUniformLocation location, int x) {
-    _gl!.uniform1i( location, x );
+    int id = location.getId();
+    _gl!.uniform1i( UniformLocation( id ), x );
   }
 
   // Single floats
