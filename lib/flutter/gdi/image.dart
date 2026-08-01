@@ -9,8 +9,6 @@ part of '../../wx_dart.dart';
 
 // ------------------------- wxImage ----------------------
 
-import 'package:wx_dart/wx_dart.dart';
-
 /// This class encapsulates a platform-independent image.
 ///
 /// An image can be created directly from data or from a file in a
