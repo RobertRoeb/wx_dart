@@ -10,10 +10,11 @@ part of '../../wx_dart.dart';
 // ------------------------- wxBitmap ----------------------
 
 const int wxBITMAP_TYPE_BMP = 1;
-const int wxBITMAP_TYPE_GIF = 16;
-const int wxBITMAP_TYPE_PNG = 18;
-const int wxBITMAP_TYPE_JPEG = 20;
-const int wxBITMAP_TYPE_WEBP = 35;
+const int wxBITMAP_TYPE_GIF = 13;
+const int wxBITMAP_TYPE_PNG = 15;
+const int wxBITMAP_TYPE_JPEG = 17;
+const int wxBITMAP_TYPE_WEBP = 32;
+const int wxBITMAP_TYPE_ANY = 50;
 
 /// Represents a platform-dependent bitmap which is optimized for 
 /// drawing directly into a window.
@@ -99,10 +100,11 @@ const int wxBITMAP_TYPE_WEBP = 35;
 /// | constant | meaning |
 /// | -------- | -------- |
 /// | wxBITMAP_TYPE_BMP | 1 |
-/// | wxBITMAP_TYPE_GIF | 16 |
-/// | wxBITMAP_TYPE_PNG | 18 |
-/// | wxBITMAP_TYPE_JPEG | 20 |
-/// | wxBITMAP_TYPE_WEBP | 35 |
+/// | wxBITMAP_TYPE_GIF | 13 |
+/// | wxBITMAP_TYPE_PNG | 15 |
+/// | wxBITMAP_TYPE_JPEG | 17 |
+/// | wxBITMAP_TYPE_WEBP | 32 |
+/// | wxBITMAP_TYPE_ANY | 50 |
 
 class WxBitmap extends WxObject {
 
@@ -114,10 +116,11 @@ class WxBitmap extends WxObject {
 /// | constant | meaning/value |
 /// | -------- | -------- |
 /// | wxBITMAP_TYPE_BMP | 1 |
-/// | wxBITMAP_TYPE_GIF | 16 |
-/// | wxBITMAP_TYPE_PNG | 18 |
-/// | wxBITMAP_TYPE_JPEG | 20 |
-/// | wxBITMAP_TYPE_WEBP | 35 |
+/// | wxBITMAP_TYPE_GIF | 13 |
+/// | wxBITMAP_TYPE_PNG | 15 |
+/// | wxBITMAP_TYPE_JPEG | 17 |
+/// | wxBITMAP_TYPE_WEBP | 32 |
+/// | wxBITMAP_TYPE_ANY | 50 |
   WxBitmap( String path, int format )
   {
     _buildAsset(path,-1,-1).then( (image ) {
@@ -157,7 +160,7 @@ Future<ui.Image> _buildAsset(String path, int height, int width) async
     final height = image.getHeight();
     final rgba = Uint8List.fromList( List.filled(width * height * 4, 255) );
     final bitmapByteData = rgba.buffer.asByteData();
-    final imageByteData = image.getData();
+    final imageByteData = image.getData().buffer.asByteData();
     int bitmapOffset = 0;
     int imageOffset = 0;
     for (int y = 0; y < height; y++) {
@@ -175,8 +178,9 @@ Future<ui.Image> _buildAsset(String path, int height, int width) async
         bitmapOffset++;
       }
     }
-    final alphaByteData = image.getAlphaData();
-    if (alphaByteData != null) {
+    if (image.getAlphaData() != null)
+    {
+      final alphaByteData = image.getAlphaData()!.buffer.asByteData();
       int bitmapOffset = 3;
       int alphaOffset = 0;
       for (int y = 0; y < height; y++) {
