@@ -9,6 +9,8 @@ part of '../../wx_dart.dart';
 
 // ------------------------- wxImage ----------------------
 
+import 'package:wx_dart/wx_dart.dart';
+
 /// This class encapsulates a platform-independent image.
 ///
 /// An image can be created directly from data or from a file in a
@@ -39,10 +41,20 @@ part of '../../wx_dart.dart';
 /// to that directly:
 /// ```dart
 ///    // make top 20 rows white
-///    final data = image.getData();
+///    final rgb = image.getData();
+///    final data = rgb.buffer.asByteData();
 ///    for (int i = 0; i < 100*20*3; i++) {
 ///        data.setUint8(i, 255);
 ///    }
+/// ```
+/// 
+/// See [wxLoadImageFromResource] loading a [WxImage] directly from
+/// resources/assets:
+/// 
+/// ```dart
+///   wxLoadImageFromResource( "myimage.png", (image) {
+///     // do something with image ...
+///   }
 /// ```
 
 class WxImage extends WxObject {
@@ -61,6 +73,13 @@ class WxImage extends WxObject {
     _rgb = Uint8List(width * height * 3);
   }
 
+  /// Only implemented in wxDart Native. Load an image directly from a file.
+  /// 
+  /// Use [wxLoadImageFromResource] for the same effect in wxDart Flutter and
+  /// wxDart Native.
+  WxImage.fromFile( String file, int format, { int index = -1 } ) {
+    wxLogError( "Not implemented in wxDart Flutter. Use wxLoadImageFromResource()." );
+  }
   /// Returns width of the image
   int getWidth() {
     return _width;
@@ -87,13 +106,14 @@ class WxImage extends WxObject {
 /// 
 /// ```dart
 ///    // make top 20 rows white
-///    final data = image.getData();
+///    final rgb = image.getData();
+///    final data = rgb.buffer.asByteData();
 ///    for (int i = 0; i < image.getWidth()*20*3; i++) {
 ///        data.setUint8(i, 255);
 ///    }
 /// ```
-  ByteData getData() {
-    return _rgb.buffer.asByteData();
+  Uint8List getData() {
+    return _rgb;
   }
 
 /// Returns reference to alpha channel allowing you to write to the 
@@ -102,14 +122,14 @@ class WxImage extends WxObject {
 /// 
 /// ```dart
 ///    // make top 20 rows transparent
-///    final data = image.getAlphaData();
+///    final alpha = image.getAlphaData();
+///    final data = alpha.buffer.asByteData();
 ///    for (int i = 0; i < image.getWidth()*20; i++) {
 ///        data.setUint8(i, 0);
 ///    }
 /// ```
-  ByteData? getAlphaData() {
-    if (_alpha == null) return null;
-    return _alpha!.buffer.asByteData();
+  Uint8List? getAlphaData() {
+    return _alpha;
   }
 
 /// Set colour of pixel at [x],[y] to given RGB. Checks before
