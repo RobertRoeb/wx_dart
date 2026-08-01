@@ -1,10 +1,19 @@
+## 0.9.9
+
+* Added wxLoadImageFromResource
+* Change return type from WxImage.getData() to Uint8List
+* Change return type from WxImage.getAlphaData() to Uint8List
+* Enabled Textures in OpenGL code
+* Numerous OpenGl bug fixes
+* Documented the wxDart-Native-only WxImage.fromFile() constructor
+* Corrected wxBITMAP_TYPE_XXX constants
+
 ## 0.9.8
 
-Added WxGLCanvas and WxGLContext for OpenGL (ES) support on all platforms
-Added WxWindow.getChildCount() and WxWindow.getChild(index) as we don't
-  have a GetChildren() accessor like in C++
-Added WxRealPoint for conveniance
-Corrected WxGraphicsPath.addCircle()
+* Added WxGLCanvas and WxGLContext for OpenGL (ES) support on all platforms
+* Added WxWindow.getChildCount() and WxWindow.getChild(index) as we don't have a GetChildren() accessor like in C++
+* Added WxRealPoint for conveniance
+* Corrected WxGraphicsPath.addCircle()
 
 ## 0.9.7
 
