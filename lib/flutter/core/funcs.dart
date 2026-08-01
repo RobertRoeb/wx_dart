@@ -158,6 +158,74 @@ void wxLoadStringFromResource( String filename, void Function( String data ) ret
   });
 }
 
+// ------------------ wxLoadImageFromResource -------------------
+
+/// Read an image from file or asset and returns the image in the callback.
+/// This will occur synchronously in wxDart Native and asynchronously in
+/// wxDart Flutter.
+/// [filename] is the filename relative to the directory returned from 
+/// [WxStandardPaths.getResourcesDir]. If the file is located in
+/// lib/assets/myimage.png then use this
+/// 
+/// ```dart
+/// wxLoadImageFromResource( "myimage.png", (image) {
+///   // do something with image ...
+/// }
+/// ```
+/// [subdir] indicates a subdirectory where the file is located.
+
+void wxLoadImageFromResource( String filename, void Function( WxImage image ) returnImage, { int format = wxBITMAP_TYPE_PNG, String subdir = "" } ) 
+{
+    String path = "lib/assets";
+    if (subdir.isNotEmpty) {
+      path = "$path/$subdir"; 
+    }
+    path = "$path/$filename";
+    rootBundle.load(path).then( (data) async {   
+      final codec = await ui.instantiateImageCodec( data.buffer.asUint8List() );
+      final uiImage = (await codec.getNextFrame()).image;
+      final sizeRGBA = uiImage.width * uiImage.height * 4;
+      final byteData = await uiImage.toByteData();
+      if (byteData == null) {
+        wxLogError( "Failed to decode image in $path" );
+        returnImage( WxImage(0,0) );
+      }
+      if (byteData!.lengthInBytes != sizeRGBA) {
+        wxLogError( "Image data of $path not available as RGBA and cannot be converted to WxImage" );
+        returnImage( WxImage(0,0) );
+      }
+      final image = WxImage( uiImage.width, uiImage.height );
+      image.initAlpha();
+      final rgba = byteData.buffer.asUint8List();
+      final rgb = image.getData();
+      final alpha = image.getAlphaData()!;
+      int rgbaIndex = 0;
+      int rgbIndex = 0;
+      int alphaIndex = 0;
+      for (int y = 0; y < uiImage.height; y++) {
+        for (int x = 0; x < uiImage.width; x++) {
+          rgb[rgbIndex] = rgba[rgbaIndex];
+          rgbaIndex++;
+          rgbIndex++;
+          rgb[rgbIndex] = rgba[rgbaIndex];
+          rgbaIndex++;
+          rgbIndex++;
+          rgb[rgbIndex] = rgba[rgbaIndex];
+          rgbaIndex++;
+          rgbIndex++;
+          alpha[alphaIndex] = rgba[rgbaIndex];
+          rgbaIndex++;
+          alphaIndex++;
+        }
+      }
+      returnImage( image );
+
+    }).catchError((error) {
+      wxLogError( "Asset file $path not found, error: $error" );
+  });
+}
+
+
 // ------------------ wxLoadSVGFromResource -------------------
 
 WxBitmapBundle wxLoadSVGFromResource( String filename, WxSize size, { String subdir = "" } ) 
