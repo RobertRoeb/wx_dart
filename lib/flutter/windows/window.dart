@@ -1360,7 +1360,7 @@ class WxWindow extends WxEvtHandler {
               return KeyEventResult.handled;
             }
           } if (event is KeyRepeatEvent) {
-            final wxevent = WxKeyEvent(wxGetCharEventType());
+            final wxevent = WxKeyEvent(wxGetKeyDownEventType());
             wxevent.setEventObject(this);
             wxevent.setKeyCode( _getKeyCodeFromKeyEvent( event ) );
             if (processEvent(wxevent)) {
