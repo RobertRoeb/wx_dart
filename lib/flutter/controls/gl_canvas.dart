@@ -99,6 +99,15 @@ FlutterAngle? _flutterGlPlugin;
 /// 
 /// Sample code:
 ///```dart
+///   // in parent window's constructor
+///   {
+///     final attr = WxGLAttributes();
+///     attr.defaults();
+///     attr.doubleBuffer();
+///     attr.endList();
+///     _glCanvas = MyGLCanvas(this,attr);
+///   }
+///
 /// class MyGLCanvas extends WxGLCanvas
 /// {
 ///   MyGLCanvas( WxWindow parent, WxGLAttributes attr ) : super( parent, attr, -1 )
@@ -106,9 +115,8 @@ FlutterAngle? _flutterGlPlugin;
 ///     final attrs = WxGLContextAttrs();
 ///     // Use OpenGL 4.1 on macOS in wxDart Native
 ///     attrs.forwardCompatible();
-///     attrs.coreProfile();/// 
-///     // Use OpenGL ES where possible
-///     attrs.ES2();
+///     attrs.coreProfile();
+///     // attrs.ES2();
 ///     attrs.endList();
 ///     
 ///     // Create GL context
@@ -141,12 +149,37 @@ class WxGLCanvas extends WxWindow {
   : super( parent, id, pos, size, style )
   {
     _setupPlugin();
+  }
 
+  @override
+  void onInternalIdle() 
+  {
+    final size = getSize();
+      if ((_texture != null) && (_flutterGlPlugin != null))
+      {
+        if ((size.x != _oldSize.x) || (size.y != _oldSize.y))
+        {
+          final options = AngleOptions(
+            width: size.x, 
+            height: size.y, 
+            dpr: 1.0,
+            antialias: true,
+            useSurfaceProducer: true
+          );
+          _flutterGlPlugin!.resize( _texture!, options ).then( (_) {
+            _oldSize = size;
+            final event = WxSizeEvent( size, id: getId() );
+            processEvent( event );
+          } );
+        }
+      }
+    super.onInternalIdle();
   }
 
   WxGLContext? _context;
   RenderingContext? _gl;
   FlutterAngleTexture? _texture;
+  WxSize _oldSize = wxDefaultSize;
 
   /// Swap buffers after drawing is completed
   void swapBuffers()
@@ -188,7 +221,7 @@ class WxGLCanvas extends WxWindow {
     WxSize size = getSize();
 
     final options = AngleOptions(
-        width: size.x < 2 ? 800 : size.x, 
+        width: size.x < 2 ? 300 : size.x, 
         height: size.y < 2 ? 600 : size.y, 
         dpr: 1.0,
         antialias: true,
@@ -223,8 +256,8 @@ class WxGLCanvas extends WxWindow {
     }
     
     return 
-      _doBuildSizeEventHandler(context, 
-        Builder(builder: (BuildContext context) {
+        _doBuildSizeEventHandler(context, 
+          Builder(builder: (BuildContext context) {
               if (kIsWeb) {
                 return HtmlElementView( viewType: _texture!.textureId.toString() );
               } else {
@@ -570,8 +603,8 @@ abstract class WxGLContext extends WxObject {
     _gl!.scissor(x,y,z,w);
   }
 
-  void viewport(int x, int y, int z, int w) {
-    _gl!.viewport(x,y,z,w);
+  void viewport(int x, int y, int width, int height) {
+    _gl!.viewport(x,y,width,height);
   }
 
   WxGlShaderPrecisionFormat getShaderPrecisionFormat() {
