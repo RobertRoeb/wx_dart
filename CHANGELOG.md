@@ -7,6 +7,7 @@
 * Numerous OpenGl bug fixes
 * Documented the wxDart-Native-only WxImage.fromFile() constructor
 * Corrected wxBITMAP_TYPE_XXX constants
+* Corrected event type for repeated key down events
 
 ## 0.9.8
 
