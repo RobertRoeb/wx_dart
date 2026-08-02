@@ -20,6 +20,7 @@ import 'demo/info_demo.dart';
 import 'demo/drawer_demo.dart';
 import 'demo/gesture_demo.dart';
 import 'demo/fireworks_demo.dart';
+import 'demo/gl_demo.dart';
 
 
 // ------------------------- Ids ----------------------
@@ -163,6 +164,8 @@ class MyMainFrame extends WxAdaptiveFrame {
 
     final panel1 = MyInfoPage(databook);
     final chapter1 = databook.appendChapter( null, "Start", panel1 );
+
+    databook.appendPage( chapter1, null, "OpenGL", MyGLPage(databook) );
 
     final design = WxHtmlWindow(databook, -1);
     databook.appendPage( chapter1, null, "Overview", design );

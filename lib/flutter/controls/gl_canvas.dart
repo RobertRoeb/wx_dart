@@ -180,6 +180,7 @@ class WxGLCanvas extends WxWindow {
   RenderingContext? _gl;
   FlutterAngleTexture? _texture;
   WxSize _oldSize = wxDefaultSize;
+  bool _buildingTexture = false;
 
   /// Swap buffers after drawing is completed
   void swapBuffers()
@@ -217,7 +218,11 @@ class WxGLCanvas extends WxWindow {
       _flutterGlPlugin = FlutterAngle();
       await _flutterGlPlugin!.init();
     }
+  }
 
+  void _setupTexture() async
+  {
+    _buildingTexture = true;
     WxSize size = getSize();
 
     final options = AngleOptions(
@@ -231,16 +236,15 @@ class WxGLCanvas extends WxWindow {
     _flutterGlPlugin!.createTexture( options ).then( (texture) {
       _texture = texture;
       _gl = _texture!.getContext();
+      _buildingTexture = false;
 
       if (_context != null) {
         _context!.setCurrent(this);
+        _texture!.activate();
         _context!.onPrepare();
       }
       _setState();
-    } );
-  }
-
-
+    } );  }
 
   @override
   Widget _build( BuildContext context )
@@ -248,11 +252,14 @@ class WxGLCanvas extends WxWindow {
     if (_flutterGlPlugin == null) {
       return Text( "No GL plugin created" );
     }
+    if (_texture == null) {
+      if (!_buildingTexture) {
+        _setupTexture();
+      }
+      return Text( "Building defaultFramebufferTexture..." );
+    }
     if (_gl == null) {
       return Text( "GL context not set up yet" );
-    }
-    if (_texture == null) {
-     return Text( "No defaultFramebufferTexture" );
     }
     
     return 

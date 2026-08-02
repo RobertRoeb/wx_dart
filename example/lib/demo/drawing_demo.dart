@@ -365,7 +365,7 @@ class MyImageWindow extends WxWindow {
     // make top 20 rows white
     final data = image.getData();
     for (int i = 0; i < 100*20*3; i++) {
-        data.setUint8(i, 255);
+        data[i] = 255;
     }
     bitmap = WxBitmap.fromImage( image ); 
 
