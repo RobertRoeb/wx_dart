@@ -1,3 +1,7 @@
+## 0.9.10
+
+* Corrected filled WxGraphicsContext.drawRectangle() etc. if a brush is used
+
 ## 0.9.9
 
 * Added wxLoadImageFromResource

@@ -292,7 +292,9 @@ class WxGraphicsContext extends WxGraphicsObject {
       wxLogError("No valid canvas for graphics context" );
       return;
     }
-    _canvas!.drawPath( path._path, _brushPaint );
+    if (_currentBrush.isNonTransparent()) {
+      _canvas!.drawPath( path._path, _brushPaint );
+    }
     if (_currentPen.isNonTransparent()) {
       _canvas!.drawPath( path._path, _penPaint );
     }
@@ -320,6 +322,12 @@ class WxGraphicsContext extends WxGraphicsObject {
       wxLogError("No valid canvas for graphics context" );
       return;
     }
+    if (_currentBrush.isNonTransparent()) {
+      _canvas!.drawRect( Rect.fromPoints(
+          Offset( x+0.5, y+0.5 ),
+          Offset( x+width+0.5, y+height+0.5 ) ),
+      _brushPaint );
+    }
     if (_currentPen.isNonTransparent()) {
       _canvas!.drawRect( Rect.fromPoints(
           Offset( x+0.5, y+0.5 ),
@@ -334,6 +342,14 @@ class WxGraphicsContext extends WxGraphicsObject {
     if (_canvas == null) {
       wxLogError("No valid canvas for graphics context" );
       return;
+    }
+    if (_currentBrush.isNonTransparent())
+    {
+      final Rect rect = Rect.fromPoints(
+          Offset( x+0.5, y+0.5 ),
+          Offset( x+width+0.5, y+height+0.5 ) );
+      final rrect = RRect.fromRectAndRadius( rect, Radius.circular(radius) );
+      _canvas!.drawRRect( rrect, _brushPaint );
     }
     if (_currentPen.isNonTransparent())
     {
