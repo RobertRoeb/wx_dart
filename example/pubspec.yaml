@@ -68,6 +68,7 @@ flutter:
      - lib/assets/DesignOverview.md
      - lib/assets/Splash.jpg
      - lib/assets/wxWidgets.png
+     - lib/assets/horse.png
      - lib/assets/flutter.png
      - lib/assets/flutter.svg
      - lib/assets/test.txt
