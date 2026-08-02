@@ -33,7 +33,7 @@ A cross-platform GUI library to build native desktop apps, web apps and mobile a
     - [WxPoint and WxSize](#wxpoint-and-wxsize)
     - [Deriving from wxWindow and wxSizer](#deriving-from-wxwindow-and-wxsizer)
     - [Double buffering and background erasure](#double-buffering-and-background-erasure)
-    - [2D and 3D drawing support](#2d-and-3d-drawing-support)
+    - [2D and OpenGL drawing support](#2d-and-opengl-drawing-support)
     - [Modal dialogs](#modal-dialogs)
     - [Resources or assets](#resources-or-assets)
     - [Layout mechanism](#layout-mechanism)
@@ -597,11 +597,11 @@ bitmap in the paint handler.
 
 ## 2D and OpenGL drawing support
 
-wxDart currently uses the original drawing API from the wxDC group of classes and it
+wxDart internally uses the original drawing API from the wxDC group of classes and it
 uses the GDI backend under Windows which provides fastest drawing for simple geometries
 and text.
 
-wxDart now has initial support for a modern path based drawing API from the
+wxDart also supports the modern path based drawing API from the
 WxGraphicsContext group of classes in both wxDart Native and wxDart Flutter.
 It uses Direct2D under Windows, CoreGraphics on MacOS, Cairo on Linux and
 Impeller when using the Flutter backend.
@@ -667,14 +667,14 @@ uses callbacks (which might get called sooner or later).
 
 In wxDart, resource or asset files need to be in the lib/assets directory and the
 Flutter build system needs to be informed about them by adding them to the project's
-pubspec.yaml file. If README.md and flutter.svg need to be used, they have to be
+pubspec.yaml file. If README.md and flutter.png need to be used, they have to be
 declared in the pubspec.yaml file of your project like this:
 
 ```yaml
   # To add assets to your application, add an assets section, like this:
   assets:
      - lib/assets/README.md
-     - lib/assets/flutter.svg
+     - lib/assets/flutter.png
 ```
 
 Such code is then needed to load the text file:
@@ -685,6 +685,17 @@ Such code is then needed to load the text file:
     wxLoadStringFromResource( "README.md", (text) {
       // here is the text
       final readme = text;
+    } );
+  }
+```
+and likewise for an image
+
+```dart
+  void loadReadMe()
+  {
+    wxLoadImageFromResource( "flutter.png", (image) {
+      // here is the WxImage
+      final flutterImage = image;
     } );
   }
 ```
