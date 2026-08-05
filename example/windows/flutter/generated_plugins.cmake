@@ -4,7 +4,7 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   desktop_window
-  flutter_gl_windows
+  flutter_angle
   url_launcher_windows
 )
 
