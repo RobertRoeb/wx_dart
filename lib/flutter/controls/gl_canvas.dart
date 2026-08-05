@@ -166,7 +166,10 @@ class WxGLCanvas extends WxWindow {
             antialias: true,
             useSurfaceProducer: true
           );
+
           _flutterGlPlugin!.resize( _texture!, options ).then( (_) {
+            // Does not get here in WebGL mode
+            // wxLogStatus( wxTheApp.getTopWindow() as WxFrame, "texture size changed to: ${size.x},${size.y}" );
             _oldSize = size;
             final event = WxSizeEvent( size, id: getId() );
             processEvent( event );
@@ -201,14 +204,18 @@ class WxGLCanvas extends WxWindow {
   }
 
   /// Makes [context] use this canvas to draw into
-  void setCurrent( WxGLContext context ) {
+  /// 
+  /// return true on success
+  bool setCurrent( WxGLContext context ) {
     _context = context;
     if (_gl != null) {
       _context!._gl = _gl!;
     }
     if (_texture != null) {
       _texture!.activate();
+      return true;
     }
+    return false;
   }
 
   void _setupPlugin() async
@@ -226,8 +233,8 @@ class WxGLCanvas extends WxWindow {
     WxSize size = getSize();
 
     final options = AngleOptions(
-        width: size.x < 2 ? 300 : size.x, 
-        height: size.y < 2 ? 600 : size.y, 
+        width: size.x < 2 ? 600 : size.x, 
+        height: size.y < 2 ? 500 : size.y, 
         dpr: 1.0,
         antialias: true,
         useSurfaceProducer: true
@@ -238,9 +245,10 @@ class WxGLCanvas extends WxWindow {
       _gl = _texture!.getContext();
       _buildingTexture = false;
 
-      if (_context != null) {
-        _context!.setCurrent(this);
+      if (_context != null)
+      {
         _texture!.activate();
+        _context!.setCurrent(this);
         _context!.onPrepare();
       }
       _setState();
@@ -308,7 +316,7 @@ class WxGlTexture extends WebGLTexture {
   WxGlTexture(super.id);
 
   /// Returns ID of the texture
-  int getId() { return id; }
+  dynamic getId() { return id; }
 }
 
 /// Helper class to hold the reference to an OpenGL vertex array object
@@ -319,7 +327,7 @@ class WxGlVertexArrayObject extends VertexArrayObject {
   WxGlVertexArrayObject(super.id);
 
   /// Returns ID of the vertex array object
-  int getId() { return id; }
+  dynamic getId() { return id; }
 }
 
 /// Helper class to hold the reference to an OpenGL program
@@ -330,7 +338,7 @@ class WxGlProgram extends Program {
   WxGlProgram(super.id);
 
   /// Returns ID of the GL program
-  int getId() { return id; }
+  dynamic getId() { return id; }
 }
 
 /// Helper class to hold the reference to an OpenGL shader
@@ -341,7 +349,7 @@ class WxGlShader extends WebGLShader {
   WxGlShader(super.id);
 
   /// Returns ID of the shader
-  int getId() { return id; }
+  dynamic getId() { return id; }
 }
 
 /// Helper class to hold the reference to an OpenGL frame buffer
@@ -352,7 +360,7 @@ class WxGlFramebuffer extends Framebuffer {
   WxGlFramebuffer(super.id);
 
   /// Returns ID of the frame buffer
-  int getId() { return id; }
+  dynamic getId() { return id; }
 }
 
 /// Helper class to hold the reference to an OpenGL location
@@ -363,7 +371,7 @@ class WxGlUniformLocation extends UniformLocation {
   WxGlUniformLocation(super.id);
 
   /// Returns ID of the location
-  int getId() { return id; }
+  dynamic getId() { return id; }
 }
 
 /// Helper class to hold the reference to an OpenGL transform feedback
@@ -374,7 +382,7 @@ class WxGlTransformFeedback extends TransformFeedback {
   WxGlTransformFeedback(super.id);
 
   /// Returns ID of the transform feedback
-  int getId() { return id; }
+  dynamic getId() { return id; }
 }
 
 /// Helper class to hold the reference to an OpenGL active info structure
@@ -580,6 +588,7 @@ abstract class WxGLContext extends WxObject {
   /// a [WxGLCanvas]
   WxGLContext( WxGLCanvas canvas, WxGLContextAttrs attr ) {
     _gl = canvas._gl;
+    canvas._context = this;
   }
 
   RenderingContext? _gl;
@@ -595,10 +604,12 @@ abstract class WxGLContext extends WxObject {
     return _gl != null;
   }
 
-  /// Makes this context the current context 
-  void setCurrent( WxGLCanvas canvas ) {
+  /// Makes this context the current context
+  /// 
+  /// return true on success
+  bool setCurrent( WxGLCanvas canvas ) {
     _gl = canvas._gl;
-    canvas.setCurrent( this );
+    return canvas.setCurrent( this );
   }
 
 
@@ -1043,7 +1054,7 @@ abstract class WxGLContext extends WxObject {
   // Single int
 
   void uniform1i(WxGlUniformLocation location, int x) {
-    int id = location.getId();
+    dynamic id = location.getId();
     _gl!.uniform1i( UniformLocation( id ), x );
   }
 

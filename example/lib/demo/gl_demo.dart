@@ -68,7 +68,6 @@ class CubeGLContext extends MatrixContext
 {
   CubeGLContext( MyCubeWindow canvas, WxGLContextAttrs attrs ) : super( canvas, attrs )
   {
-    setCurrent(canvas);
     _cubeWindow = canvas;
   }
 
@@ -94,6 +93,7 @@ class CubeGLContext extends MatrixContext
     final gl = this;
     gl.viewport( 0, 0, width, height ); 
     _aspect = width / height;
+    // wxLogStatus( wxTheApp.getTopWindow() as WxFrame, "OpenGL surface size: $width,$height" );
   }
 
   @override
@@ -143,6 +143,9 @@ class CubeGLContext extends MatrixContext
     initVertices();
 
     _onPrepareDone = true;
+    if (_dataLoaded) {
+      _cubeWindow.updateCamera();
+    }
   }
 
   void checkError( String operation )
@@ -231,18 +234,18 @@ class CubeGLContext extends MatrixContext
     gl.shaderSource(vertexShader, vsSource);
     gl.compileShader(vertexShader);
     checkError("compile vertex shader" );
-    if (vertexShader.getId() < 1) {
-      wxLogError( "vertexShader not compiled" );
-    }
+    // if (vertexShader.getId() < 1) {
+    //   wxLogError( "vertexShader not compiled" );
+    // }
 
     // Compile fragment shader
     final fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
     gl.shaderSource(fragmentShader, fsSource);
     gl.compileShader(fragmentShader);
     checkError("compile fragment shader" );
-    if (fragmentShader.getId() < 1) {
-      wxLogError( "fragmentShader not compiled" );
-    }
+    // if (fragmentShader.getId() < 1) {
+    //   wxLogError( "fragmentShader not compiled" );
+    // }
 
     // Create program
     _glProgram = gl.createProgram();
@@ -281,7 +284,7 @@ class CubeGLContext extends MatrixContext
 
     if (!_dataLoaded) return;
 
-    pMatrix = Matrix4.perspective(45.0, _aspect, 0.1, 100.0);
+    pMatrix = Matrix4.perspective(65.0, _aspect, 0.1, 100.0);
 
     // First stash the current model view matrix before we start moving around.
     mvPushMatrix();

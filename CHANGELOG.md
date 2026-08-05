@@ -1,6 +1,8 @@
 ## 0.9.10
 
 * Corrected filled WxGraphicsContext.drawRectangle() etc. if a brush is used
+* Adapted OpenGL/WxGLCanvas/WxGLContext code for Flutter Web / WebGL
+* Adapted OpenGl to run on the Web and on Linux native as well
 
 ## 0.9.9
 
