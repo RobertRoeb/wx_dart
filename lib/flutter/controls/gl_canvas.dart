@@ -167,16 +167,36 @@ class WxGLCanvas extends WxWindow {
             useSurfaceProducer: true
           );
 
-          _flutterGlPlugin!.resize( _texture!, options ).then( (_) {
-            // Does not get here in WebGL mode
-            // wxLogStatus( wxTheApp.getTopWindow() as WxFrame, "texture size changed to: ${size.x},${size.y}" );
-            _oldSize = size;
-            final event = WxSizeEvent( size, id: getId() );
-            processEvent( event );
-          } );
+          if (wxIsWeb())
+          {
+            // this is needed to due a bug in flutter_angle on the web
+            _webglTextureResize( size.x, size.y ).then( (_) {
+              _oldSize = size;
+              final event = WxSizeEvent( size, id: getId() );
+              processEvent( event );
+            }  );
+          } else {
+            _flutterGlPlugin!.resize( _texture!, options ).then( (_) {
+              // Does not get here in WebGL mode
+              _oldSize = size;
+              final event = WxSizeEvent( size, id: getId() );
+              processEvent( event );
+            } );
+          }
+          
         }
       }
     super.onInternalIdle();
+  }
+
+  Future<void> _webglTextureResize( int width, int height ) async
+  {
+    /*
+      final dynamic surfaceID = _texture!.surfaceId;
+      final element = surfaceID as html.HTMLCanvasElement;
+      element.width = width;
+      element.height = height;
+    */
   }
 
   WxGLContext? _context;
