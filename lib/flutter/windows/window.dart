@@ -1254,7 +1254,9 @@ class WxWindow extends WxEvtHandler {
       key: _widgetKey,
       child: child, 
       onSizeChange: (size) {
-        _setSizeInternal( WxSize(size.width.floor(),size.height.floor()) );
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _setSizeInternal( WxSize(size.width.floor(),size.height.floor()) );
+        } );
       } 
     );
   }
