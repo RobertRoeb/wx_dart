@@ -146,6 +146,7 @@ class WxTopLevelWindow extends WxNonOwnedWindow {
   bool _isTouch = false;
   bool _isFullScreen = false;
   int _fullScreenFlags = 0;
+  static bool _hasSentInitialIdleEvent = false;
 
   /// Shows window, or hides it if [show] is false.
   @override
@@ -403,6 +404,13 @@ class WxTopLevelWindow extends WxNonOwnedWindow {
   }
 
   Widget _buildTLW( BuildContext context, Widget child ) {
+    if (!_hasSentInitialIdleEvent) {
+      _hasSentInitialIdleEvent = true;
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _callRecursiveOnInternalIdle( this );
+        } );
+    }
+
     final finalWidget = IdleDetector(
       onIdle: () {
         _hasRequestedMoreIdleEvents = false;
