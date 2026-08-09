@@ -14,7 +14,7 @@ class Cube {
 
   Cube(this.gl){
     positionBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+    gl.bindBuffer(WebGL.ARRAY_BUFFER, positionBuffer);
     vertices ??= Float32List.fromList([
       // Front face
       -1.0, -1.0, 1.0,
@@ -53,13 +53,13 @@ class Cube {
       -1.0, 1.0, -1.0
     ]);
     gl.bufferData(
-      gl.ARRAY_BUFFER,
+      WebGL.ARRAY_BUFFER,
       vertices!,
-      gl.STATIC_DRAW,
+      WebGL.STATIC_DRAW,
     );
 
     normalBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, normalBuffer);
+    gl.bindBuffer(WebGL.ARRAY_BUFFER, normalBuffer);
     vertexNormals ??= Float32List.fromList([
       // Front face
       0.0, 0.0, 1.0,
@@ -98,13 +98,13 @@ class Cube {
       -1.0, 0.0, 0.0,
     ]);
     gl.bufferData(
-      gl.ARRAY_BUFFER,
+      WebGL.ARRAY_BUFFER,
       vertexNormals!,
-      gl.STATIC_DRAW,
+      WebGL.STATIC_DRAW,
     );
 
     textureCoordBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, textureCoordBuffer);
+    gl.bindBuffer(WebGL.ARRAY_BUFFER, textureCoordBuffer);
     textureCoords = Float32List.fromList([
       // Front face
       0.0, 0.0,
@@ -143,9 +143,9 @@ class Cube {
       0.0, 1.0,
     ]);
     gl.bufferData(
-      gl.ARRAY_BUFFER,
+      WebGL.ARRAY_BUFFER,
       textureCoords!,
-      gl.STATIC_DRAW,
+      WebGL.STATIC_DRAW,
     );
     indxes ??= Uint16List.fromList([
       0, 1, 2, 0, 2, 3, // Front face
@@ -156,38 +156,38 @@ class Cube {
       20, 21, 22, 20, 22, 23 // Left face
     ]);
     indexBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
+    gl.bindBuffer(WebGL.ELEMENT_ARRAY_BUFFER, indexBuffer);
     gl.bufferData(
-      gl.ELEMENT_ARRAY_BUFFER,
+      WebGL.ELEMENT_ARRAY_BUFFER,
       indxes!,
-      gl.STATIC_DRAW
+      WebGL.STATIC_DRAW
     );
   }
 
   void draw({int? vertex, int? normal, int? coord, int? color, void Function()? setUniforms}) {
     if (vertex != null) {
-      gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-      gl.vertexAttribPointer(vertex, 3, gl.FLOAT, false, 0, 0);
+      gl.bindBuffer(WebGL.ARRAY_BUFFER, positionBuffer);
+      gl.vertexAttribPointer(vertex, 3, WebGL.FLOAT, false, 0, 0);
     }
 
     if (normal != null) {
-      gl.bindBuffer(gl.ARRAY_BUFFER, normalBuffer);
-      gl.vertexAttribPointer(normal, 3, gl.FLOAT, false, 0, 0);
+      gl.bindBuffer(WebGL.ARRAY_BUFFER, normalBuffer);
+      gl.vertexAttribPointer(normal, 3, WebGL.FLOAT, false, 0, 0);
     }
 
     if (coord != null) {
-      gl.bindBuffer(gl.ARRAY_BUFFER, textureCoordBuffer);
-      gl.vertexAttribPointer(coord, 2, gl.FLOAT, false, 0, 0);
+      gl.bindBuffer(WebGL.ARRAY_BUFFER, textureCoordBuffer);
+      gl.vertexAttribPointer(coord, 2, WebGL.FLOAT, false, 0, 0);
     }
 
     if (color != null) {
-      gl.bindBuffer(gl.ARRAY_BUFFER, this.color.colorBuffer);
-      gl.vertexAttribPointer(color, 4, gl.FLOAT, false, 0, 0);
+      gl.bindBuffer(WebGL.ARRAY_BUFFER, this.color.colorBuffer);
+      gl.vertexAttribPointer(color, 4, WebGL.FLOAT, false, 0, 0);
     }
 
     if (setUniforms != null) setUniforms();
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
-    gl.drawElements(gl.TRIANGLES, 36, gl.UNSIGNED_SHORT, 0);
+    gl.bindBuffer(WebGL.ELEMENT_ARRAY_BUFFER, indexBuffer);
+    gl.drawElements(WebGL.TRIANGLES, 36, WebGL.UNSIGNED_SHORT, 0);
   }
 
   late CubeColor color;
@@ -214,7 +214,7 @@ class CubeColor {
   Float32List? unpackedColors; 
   CubeColor(WxGLContext gl) {
     colorBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+    gl.bindBuffer(WebGL.ARRAY_BUFFER, colorBuffer);
 
     /// HARD CODED :'(
     List<List<double>> colors = [
@@ -234,9 +234,9 @@ class CubeColor {
       }
     }
     gl.bufferData(
-      gl.ARRAY_BUFFER,
+      WebGL.ARRAY_BUFFER,
       unpackedColors!,
-      gl.STATIC_DRAW,
+      WebGL.STATIC_DRAW,
     );
   }
 

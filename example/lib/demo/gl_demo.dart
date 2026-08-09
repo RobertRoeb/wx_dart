@@ -101,7 +101,7 @@ class CubeGLContext extends MatrixContext
   {
     final gl = this;
 
-    final version = gl.getString( gl.SHADING_LANGUAGE_VERSION );
+    final version = gl.getString( WebGL.SHADING_LANGUAGE_VERSION );
     // print( "wxGlCanvas with GLSL version: $version" );
     wxLogStatus( wxTheApp.getTopWindow() as WxFrame, "wxGlCanvas with GLSL version: $version" );
 
@@ -143,6 +143,8 @@ class CubeGLContext extends MatrixContext
     initVertices();
 
     _onPrepareDone = true;
+    // In wxDart Native, wxLoadImageFromResource() is synchonous and has
+    // finished by now. Update the OpenGL surface if we have everything.
     if (_dataLoaded) {
       _cubeWindow.updateCamera();
     }
@@ -152,7 +154,7 @@ class CubeGLContext extends MatrixContext
   {
     final gl = this;
     final err = gl.getError();
-    if (err != gl.NO_ERROR) {
+    if (err != WebGL.NO_ERROR) {
       wxLogError( "$operation: error no: $err" );
     }
   }
@@ -172,32 +174,35 @@ class CubeGLContext extends MatrixContext
     wxLoadImageFromResource("horse.png", ((image)
     {
       // TODO: do we have to call these?
-      // gl.bindVertexArray( _vao );
       // makeCurrent() 
+      // gl.bindVertexArray( _vao );
 
       neheTexture = createTexture();
-      gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
-      gl.bindTexture(gl.TEXTURE_2D, neheTexture! );
+      gl.pixelStorei(WebGL.UNPACK_ALIGNMENT, 1);
+      gl.bindTexture(WebGL.TEXTURE_2D, neheTexture! );
       checkError("bindTexture" );
 
-      gl.texImage2D( gl.TEXTURE_2D, 0, gl.RGB, 200, 200, 0, gl.RGB, gl.UNSIGNED_BYTE, image.getData() );
+      gl.texImage2D( WebGL.TEXTURE_2D, 0, WebGL.RGB, 200, 200, 0, WebGL.RGB, WebGL.UNSIGNED_BYTE, image.getData() );
       checkError("texImage2D" );
 
       gl.texParameteri(
-          gl.TEXTURE_2D,
-          gl.TEXTURE_MAG_FILTER,
-          gl.NEAREST,
+          WebGL.TEXTURE_2D,
+          WebGL.TEXTURE_MAG_FILTER,
+          WebGL.NEAREST,
         );
       gl.texParameteri(
-          gl.TEXTURE_2D,
-          gl.TEXTURE_MIN_FILTER,
-          gl.NEAREST,
+          WebGL.TEXTURE_2D,
+          WebGL.TEXTURE_MIN_FILTER,
+          WebGL.NEAREST,
         );
-      gl.bindTexture(gl.TEXTURE_2D, null);
+      gl.bindTexture(WebGL.TEXTURE_2D, null);
       checkError("bindTexture null" );
       _dataLoaded = true;
 
       if (_onPrepareDone) {
+        // In wxDart Flutter, wxLoadImageFromResource() is asynchonous and can
+        // finish after onPrepare(). Update the OpenGL surface if we have 
+        // everything.
         _cubeWindow.updateCamera();
       }
     }) );
@@ -230,7 +235,7 @@ class CubeGLContext extends MatrixContext
     gl.getError();
 
     // Compile vertex shader
-    final vertexShader = gl.createShader(gl.VERTEX_SHADER);
+    final vertexShader = gl.createShader(WebGL.VERTEX_SHADER);
     gl.shaderSource(vertexShader, vsSource);
     gl.compileShader(vertexShader);
     checkError("compile vertex shader" );
@@ -239,7 +244,7 @@ class CubeGLContext extends MatrixContext
     // }
 
     // Compile fragment shader
-    final fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
+    final fragmentShader = gl.createShader(WebGL.FRAGMENT_SHADER);
     gl.shaderSource(fragmentShader, fsSource);
     gl.compileShader(fragmentShader);
     checkError("compile fragment shader" );
@@ -268,21 +273,24 @@ class CubeGLContext extends MatrixContext
   {
     final gl = this;
 
+    // Clear canvas
+    gl.clearColor(0.2, 0.2, 0.2, 1.0);
+    gl.clear(WebGL.COLOR_BUFFER_BIT | WebGL.DEPTH_BUFFER_BIT );
+
+    gl.enable(WebGL.DEPTH_TEST);
+    gl.disable(WebGL.BLEND);
+    // checkError("disable(gl.CULL_FACE" );
+
+    // render() may have been called from a size event handler
+    // before the data has been loaded. Indeed, the data may
+    // never be loaded if the connection goes down.
+    if (!_dataLoaded) return;
+
     gl.bindVertexArray( _vao );
     checkError("bindVertexArray" );
     
     gl.useProgram(_glProgram);
     checkError("useProgram" );
-
-    // Clear canvas
-    gl.clearColor(0.2, 0.2, 0.2, 1.0);
-    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT );
-
-    gl.enable(gl.DEPTH_TEST);
-    gl.disable(gl.BLEND);
-    // checkError("disable(gl.CULL_FACE" );
-
-    if (!_dataLoaded) return;
 
     pMatrix = Matrix4.perspective(65.0, _aspect, 0.1, 100.0);
 
@@ -295,9 +303,9 @@ class CubeGLContext extends MatrixContext
       ..rotateY(radians(_yRot))
       ..rotateZ(radians(_zRot));
 
-    gl.activeTexture(gl.TEXTURE0);
+    gl.activeTexture(WebGL.TEXTURE0);
     checkError("activeTexture" );
-    gl.bindTexture(gl.TEXTURE_2D, neheTexture);
+    gl.bindTexture(WebGL.TEXTURE_2D, neheTexture);
     checkError("bindTexture" );
     gl.uniform1i( _uSamplerLocation, 0);
     checkError("uniform1i" );
@@ -346,17 +354,18 @@ class MyCubeWindow extends WxGLCanvas
 {
   MyCubeWindow( WxPanel parent, WxGLAttributes attr ) : super( parent, attr, -1 )
   {
-    _mainWindow = parent;
-
     final attrs = WxGLContextAttrs();
-    attrs.forwardCompatible();
-    attrs.coreProfile();
-//     attrs.ES2();
+    if (wxIsMac() && !wxUsesFlutter()) {
+      // enable OpenGL 4.1 on macOS
+      attrs.forwardCompatible();
+      attrs.coreProfile();
+    }
     attrs.endList();
     _glContext = CubeGLContext(this,attrs);
 
-    // bindSetFocusEvent( (_) => _mainWindow.setFocusToMapWindow() );
-
+    // Update the surface after a resize. Note that a size
+    // event may get sent before the WxGLContext is properly
+    // set up, so test this in WxGLContext (_dataLoaded).
     bindSizeEvent( (_) => updateCamera() );
   }
 
@@ -382,13 +391,15 @@ class MyCubeWindow extends WxGLCanvas
 
   void updateCamera()
   {
-    setCurrent(_glContext);
+    // setCurrent() can fail - typically when called too soon
+    // in window creation process
+    if (!setCurrent(_glContext)) {
+      return;
+    }
     final size = getClientSize();
     _glContext.setViewport( size.x, size.y );
 
     _glContext.render();
     swapBuffers();
   }
-
-  late WxPanel _mainWindow;
 }

@@ -149,14 +149,19 @@ class WxGLCanvas extends WxWindow {
   : super( parent, id, pos, size, style )
   {
     _setupPlugin();
+    bindWindowCreateEvent( (_) {
+      onInternalIdle();
+      //final size = getSize();
+      //print( "window create: ${size.x},${size.y}" );
+    }, -1);
   }
 
   @override
   void onInternalIdle() 
   {
     final size = getSize();
-      if ((_texture != null) && (_flutterGlPlugin != null))
-      {
+    if ((_texture != null) && (_flutterGlPlugin != null))
+    {
         if ((size.x != _oldSize.x) || (size.y != _oldSize.y))
         {
           final options = AngleOptions(
@@ -177,7 +182,6 @@ class WxGLCanvas extends WxWindow {
             }  );
           } else {
             _flutterGlPlugin!.resize( _texture!, options ).then( (_) {
-              // Does not get here in WebGL mode
               _oldSize = size;
               final event = WxSizeEvent( size, id: getId() );
               processEvent( event );
@@ -185,7 +189,7 @@ class WxGLCanvas extends WxWindow {
           }
           
         }
-      }
+    }
     super.onInternalIdle();
   }
 
@@ -226,13 +230,20 @@ class WxGLCanvas extends WxWindow {
   /// Makes [context] use this canvas to draw into
   /// 
   /// return true on success
-  bool setCurrent( WxGLContext context ) {
+  bool setCurrent( WxGLContext context )
+  {
+    if (_flutterGlPlugin == null) {
+      wxLogError( "Angle not initalized" );
+      return false; 
+    }
+
     _context = context;
     if (_gl != null) {
       _context!._gl = _gl!;
     }
     if (_texture != null) {
-      _texture!.activate();
+//       _flutterGlPlugin!.activateTexture(_texture!);
+        _texture!.activate();
       return true;
     }
     return false;
@@ -290,7 +301,8 @@ class WxGLCanvas extends WxWindow {
       return Text( "GL context not set up yet" );
     }
     
-    return 
+    return
+      _doBuildSystemEventHandlers(context,
         _doBuildSizeEventHandler(context, 
           Builder(builder: (BuildContext context) {
               if (kIsWeb) {
@@ -300,7 +312,7 @@ class WxGLCanvas extends WxWindow {
                     scaleY: -1, 
                     child: Texture(textureId: _texture!.textureId ) );
               }
-            } ) );
+            } ) ) );
   }
 }
 
@@ -485,7 +497,7 @@ class WxGlShaderPrecisionFormat extends ShaderPrecisionFormat {
 /// {
 ///     final gl = this;  // WxGlContext
 ///     gl.useProgram(_glProgram);
-///     gl.drawArrays(gl.TRIANGLES, 0, 3);
+///     gl.drawArrays(WebGL.TRIANGLES, 0, 3);
 ///     gl.flush();
 /// }
 ///```
@@ -519,7 +531,7 @@ class WxGlShaderPrecisionFormat extends ShaderPrecisionFormat {
 ///   {
 ///     final gl = this;
 /// 
-///     final version = gl.getString( gl.SHADING_LANGUAGE_VERSION );
+///     final version = gl.getString( WebGL.SHADING_LANGUAGE_VERSION );
 ///     final versionString = version.contains("ES") ? "300 es" : "150";
 /// 
 ///     final vs = """#version $versionString
@@ -541,12 +553,12 @@ class WxGlShaderPrecisionFormat extends ShaderPrecisionFormat {
 ///     """;
 /// 
 ///     // Compile vertex shader
-///     final vertexShader = gl.createShader(gl.VERTEX_SHADER);
+///     final vertexShader = gl.createShader(WebGL.VERTEX_SHADER);
 ///     gl.shaderSource(vertexShader, vsSource);
 ///     gl.compileShader(vertexShader);
 /// 
 ///     // Compile fragment shader ...
-///     final fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
+///     final fragmentShader = gl.createShader(WebGL.FRAGMENT_SHADER);
 ///     gl.shaderSource(fragmentShader, fsSource);
 ///     gl.compileShader(fragmentShader);
 /// 
@@ -569,7 +581,7 @@ class WxGlShaderPrecisionFormat extends ShaderPrecisionFormat {
 /// 
 ///     _triangleVertexBuffer = gl.createBuffer();
 ///     gl.bindBuffer(gl.ARRAY_BUFFER, _triangleVertexBuffer); 
-///     gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+///     gl.bufferData(gl.ARRAY_BUFFER, vertices, WebGL.STATIC_DRAW);
 /// 
 ///     _vertexLocation = gl.getAttribLocation( _glProgram, "a_Position" );
 ///     gl.enableVertexAttribArray(_vertexLocation.getId());
@@ -587,16 +599,16 @@ class WxGlShaderPrecisionFormat extends ShaderPrecisionFormat {
 /// 
 ///     // Set up canvas
 ///     gl.clearColor(0, 0, 0, 1.0);
-///     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT );
-///     gl.enable(gl.DEPTH_TEST);
-///     gl.disable(gl.BLEND);
+///     gl.clear(WebGL.COLOR_BUFFER_BIT | WebGL.DEPTH_BUFFER_BIT );
+///     gl.enable(WebGL.DEPTH_TEST);
+///     gl.disable(WebGL.BLEND);
 /// 
 ///     // bind to vertex buffer
-///     gl.bindBuffer(gl.ARRAY_BUFFER, _triangleVertexBuffer );
-///     gl.vertexAttribPointer(_vertexLocation.getId(), 3, gl.FLOAT, false, 0, 0);
+///     gl.bindBuffer(WebGL.ARRAY_BUFFER, _triangleVertexBuffer );
+///     gl.vertexAttribPointer(_vertexLocation.getId(), 3, WebGL.FLOAT, false, 0, 0);
 /// 
 ///     // draw triagle
-///     gl.drawArrays(gl.TRIANGLES, 0, 3);
+///     gl.drawArrays(WebGL.TRIANGLES, 0, 3);
 /// 
 ///     gl.flush();
 ///   }
@@ -624,6 +636,16 @@ abstract class WxGLContext extends WxObject {
     return _gl != null;
   }
 
+  int getWidth() {
+    if (_gl == null) return -1;
+    return _gl!.width;
+  }
+
+  int getHeight() {
+    if (_gl == null) return -1;
+    return _gl!.height;
+  }
+
   /// Makes this context the current context
   /// 
   /// return true on success
@@ -645,35 +667,36 @@ abstract class WxGLContext extends WxObject {
     _gl!.viewport(x,y,width,height);
   }
 
-  WxGlShaderPrecisionFormat getShaderPrecisionFormat() {
-    final res = _gl!.getShaderPrecisionFormat(0,0);
+  WxGlShaderPrecisionFormat getShaderPrecisionFormat( int shaderType, int precisionType) {
+    final res = _gl!.getShaderPrecisionFormat(shaderType,precisionType);
     return WxGlShaderPrecisionFormat( res.precision, res.rangeMin, res.rangeMax );
   }
 
-  List<String> getExtension(String key) {
+  Object? getExtension(String key) {
     final res = _gl!.getExtension(key);
-    return [];
+    return res;
   }
 
-  List<String> getExtensionDesktop(String key) {
-    return [];
+  Object? getExtensionDesktop(String key) {
+    final res = _gl!.getExtension(key);
+    return res;
   }
 
   String getString(int key)
   {
-    if (key == EXTENSIONS) { 
+    if (key == WebGL.EXTENSIONS) { 
         return 'unknown';
     } else 
-    if (key == VENDOR) { 
+    if (key == WebGL.VENDOR) { 
         return 'Google';
     } else
-    if (key == RENDERER) { 
+    if (key == WebGL.RENDERER) { 
         return 'ANGLE';
     } else
-    if (key == VERSION) { 
+    if (key == WebGL.VERSION) { 
         return '3.3 ES';
     } else
-    if (key == SHADING_LANGUAGE_VERSION) { 
+    if (key == WebGL.SHADING_LANGUAGE_VERSION) { 
         return 'GLSL 3.3 ES';
     } 
     return "unnamed";
@@ -692,7 +715,7 @@ abstract class WxGLContext extends WxObject {
   }
 
   void bindTexture2(WxGlTexture texture) {
-    _gl!.bindTexture( TEXTURE_2D, texture );
+    _gl!.bindTexture( WebGL.TEXTURE_2D, texture );
   }
 
   void activeTexture(int v0) {
@@ -741,7 +764,7 @@ abstract class WxGLContext extends WxObject {
     _gl!.blendEquation( v0);
   }
 
-  void useProgram(WxGlProgram program) {
+  void useProgram(WxGlProgram? program) {
     _gl!.useProgram( program );
   }
 
@@ -807,6 +830,12 @@ abstract class WxGLContext extends WxObject {
       width, height, border, data );
   }
 
+  void compressedTexImage3D(int target, int level, int internalformat,
+      int width, int height, int depth, int border, TypedData? data) {
+    _gl!.compressedTexImage3D( target, level, internalformat,
+      width, height, depth, border, data );
+  }
+
   void generateMipmap(int v0) { 
     _gl!.generateMipmap( v0 );
   }
@@ -839,6 +868,14 @@ abstract class WxGLContext extends WxObject {
     return WxGlParameter( _gl!.getProgramParameter( program, pname).id );
   }
 
+  int getUniformBlockIndex( WxGlProgram program, String name ) {
+    return _gl!.getUniformBlockIndex( program, name );
+  }
+
+  void uniformBlockBinding( WxGlProgram program, int uniformBlockIndex, int uniformBlockBinding ) {
+    _gl!.uniformBlockBinding( program, uniformBlockIndex, uniformBlockBinding );
+  }
+
   WxGlActiveInfo getActiveUniform(WxGlProgram program, int v1) {
     final info = _gl!.getActiveUniform( program, v1 );
     return WxGlActiveInfo( info.type, info.name, info.size );
@@ -865,12 +902,24 @@ abstract class WxGLContext extends WxObject {
     _gl!.deleteBuffer( v0 );
   }
 
-  void bindBuffer(int v0, WxGlBuffer v1) {
+  void bindBuffer(int v0, WxGlBuffer? v1) {
     _gl!.bindBuffer( v0, v1 );
   }
 
   void bufferData(int target, TypedData data, int? usage) {
     _gl!.bufferData( target, data, usage );
+  }
+
+  void bufferDataSize(int target, int size, int? usage) {
+    _gl!.bufferData( target, size, usage );
+  }
+
+  void clearBufferiv( int buffer, int drawbuffer, int value ) {
+    _gl!.clearBufferiv( buffer, drawbuffer, value );
+  }
+
+  void clearBufferuiv( int buffer, int drawbuffer, int value ) {
+    _gl!.clearBufferuiv( buffer, drawbuffer, value );
   }
 
   void bufferSubData(int target, int dstByteOffset, TypedData data ) {
@@ -902,6 +951,10 @@ abstract class WxGLContext extends WxObject {
     _gl!.framebufferTexture2D( target, attachment, textarget, texture, level );
   }
 
+  void framebufferTextureLayer(int target, int attachment, WxGlTexture? texture, int level, int layer) {
+    _gl!.framebufferTextureLayer( target, attachment, texture, level, layer );
+  }
+
   void readPixels(int x, int y, int width, int height, int format, int type, TypedData pixels ) {
     _gl!.readPixels(x, y, width, height, format, type, pixels );
   }
@@ -910,8 +963,20 @@ abstract class WxGLContext extends WxObject {
     _gl!.copyTexImage2D( target, level, internalformat, x, y, width, height, border );
   }
 
+  void copyTexSubImage2D(int target, int level, int xOffset, int yOffset, int x, int y, int width, int height) {
+    _gl!.copyTexSubImage2D( target, level, xOffset, yOffset, x, y, width, height );
+  }
+
+  void copyTexSubImage3D(int target, int level, int xOffset, int yOffset, int zOffset, int x, int y, int width, int height) {
+    _gl!.copyTexSubImage3D( target, level, xOffset, yOffset, zOffset, x, y, width, height );
+  }
+
   void texSubImage2D(int target, int level, int x, int y, int width, int height, int format, int type, TypedData? pixels) {
     _gl!.texSubImage2D( target, level, x, y, width, height, format, type, pixels );
+  }
+
+  void texSubImage2D_NOSIZE(int target, int level, int x, int y, int format, int type, TypedData? pixels) {
+    _gl!.texSubImage2D_NOSIZE( target, level, x, y, format, type, pixels );
   }
 
   void texSubImage3D(int target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth,
@@ -922,6 +987,11 @@ abstract class WxGLContext extends WxObject {
   void compressedTexSubImage2D(int target, int level, int xoffset, int yoffset, int width, int height,
       int format, TypedData? pixels) {
     _gl!.compressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, pixels );
+  }
+
+  void compressedTexSubImage3D(int target, int level, int xoffset, int yoffset, int zoffset, 
+      int width, int height, int depth, int format, TypedData? pixels) {
+    _gl!.compressedTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, pixels );
   }
 
   void bindRenderbuffer(int target, WxGlRenderbuffer? buffer) {
@@ -1074,8 +1144,7 @@ abstract class WxGLContext extends WxObject {
   // Single int
 
   void uniform1i(WxGlUniformLocation location, int x) {
-    dynamic id = location.getId();
-    _gl!.uniform1i( UniformLocation( id ), x );
+    _gl!.uniform1i( location, x );
   }
 
   // Single floats
@@ -1146,6 +1215,30 @@ abstract class WxGLContext extends WxObject {
     _gl!.uniform4iv( location, values );
   }
 
+  // Single Uint
+
+  void uniform1ui(WxGlUniformLocation location, int value) {
+    _gl!.uniform1ui( location, value );
+  }
+
+  // Uint lists
+
+  void uniform1uiv(WxGlUniformLocation location, Uint32List values ) {
+    _gl!.uniform1uiv( location, values );
+  }
+
+  void uniform2uiv(WxGlUniformLocation location, Uint32List values ) {
+    _gl!.uniform2uiv( location, values );
+  }
+
+  void uniform3uiv(WxGlUniformLocation location, Uint32List values) {
+    _gl!.uniform3uiv( location, values );
+  }
+
+  void uniform4uiv(WxGlUniformLocation location, Uint32List values) {
+    _gl!.uniform4uiv( location, values );
+  }
+
   void vertexAttribDivisor(int index, int divisor) {
     _gl!.vertexAttribDivisor( index, divisor );
   }
@@ -1213,622 +1306,5 @@ abstract class WxGLContext extends WxObject {
     _gl!.invalidateFramebuffer( target, attachments );
   }
 
-
-  // OpenGL 2.0
-  int ACTIVE_ATTRIBUTES = 35721;
-  int ACTIVE_ATTRIBUTE_MAX_LENGTH = 35722;
-  int ACTIVE_TEXTURE = 34016;
-  int ACTIVE_UNIFORMS = 35718;
-  int ACTIVE_UNIFORM_MAX_LENGTH = 35719;
-  int ALIASED_LINE_WIDTH_RANGE = 33902;
-  int ALIASED_POINT_SIZE_RANGE = 33901;
-  int ALPHA = 6406;
-  int ALPHA_BITS = 3413;
-  int ALWAYS = 519;
-  int ARRAY_BUFFER = 34962;
-  int ARRAY_BUFFER_BINDING = 34964;
-  int ATTACHED_SHADERS = 35717;
-  int BACK = 1029;
-  int BLEND = 3042;
-  int BLEND_COLOR = 32773;
-  int BLEND_DST_ALPHA = 32970;
-  int BLEND_DST_RGB = 32968;
-  int BLEND_EQUATION = 32777;
-  int BLEND_EQUATION_ALPHA = 34877;
-  int BLEND_EQUATION_RGB = 32777;
-  int BLEND_SRC_ALPHA = 32971;
-  int BLEND_SRC_RGB = 32969;
-  int BLUE_BITS = 3412;
-  int BOOL = 35670;
-  int BOOL_VEC2 = 35671;
-  int BOOL_VEC3 = 35672;
-  int BOOL_VEC4 = 35673;
-  int BUFFER_SIZE = 34660;
-  int BUFFER_USAGE = 34661;
-  int BYTE = 5120;
-  int CCW = 2305;
-  int CLAMP_TO_EDGE = 33071;
-  int COLOR_ATTACHMENT0 = 36064;
-  int COLOR_BUFFER_BIT = 16384;
-  int COLOR_CLEAR_VALUE = 3106;
-  int COLOR_WRITEMASK = 3107;
-  int COMPILE_STATUS = 35713;
-  int COMPRESSED_TEXTURE_FORMATS = 34467;
-  int CONSTANT_ALPHA = 32771;
-  int CONSTANT_COLOR = 32769;
-  int CULL_FACE = 2884;
-  int CULL_FACE_MODE = 2885;
-  int CURRENT_PROGRAM = 35725;
-  int CURRENT_VERTEX_ATTRIB = 34342;
-  int CW = 2304;
-  int DECR = 7683;
-  int DECR_WRAP = 34056;
-  int DELETE_STATUS = 35712;
-  int DEPTH_ATTACHMENT = 36096;
-  int DEPTH_BITS = 3414;
-  int DEPTH_BUFFER_BIT = 256;
-  int DEPTH_CLEAR_VALUE = 2931;
-  int DEPTH_COMPONENT = 6402;
-  int DEPTH_COMPONENT16 = 33189;
-  int DEPTH_FUNC = 2932;
-  int DEPTH_RANGE = 2928;
-  int DEPTH_TEST = 2929;
-  int DEPTH_WRITEMASK = 2930;
-  int DITHER = 3024;
-  int DONT_CARE = 4352;
-  int DST_ALPHA = 772;
-  int DST_COLOR = 774;
-  int DYNAMIC_DRAW = 35048;
-  int ELEMENT_ARRAY_BUFFER = 34963;
-  int ELEMENT_ARRAY_BUFFER_BINDING = 34965;
-  int EQUAL = 514;
-  int EXTENSIONS = 7939;
-  int FALSE = 0;
-  int FASTEST = 4353;
-  int FIXED = 5132;
-  int FLOAT = 5126;
-  int FLOAT_MAT2 = 35674;
-  int FLOAT_MAT3 = 35675;
-  int FLOAT_MAT4 = 35676;
-  int FLOAT_VEC2 = 35664;
-  int FLOAT_VEC3 = 35665;
-  int FLOAT_VEC4 = 35666;
-  int FRAGMENT_SHADER = 35632;
-  int FRAMEBUFFER = 36160;
-  int FRAMEBUFFER_ATTACHMENT_OBJECT_NAME = 36049;
-  int FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE = 36048;
-  int FRAMEBUFFER_ATTACHMENT_TEXTURE_CUBE_MAP_FACE = 36051;
-  int FRAMEBUFFER_ATTACHMENT_TEXTURE_LEVEL = 36050;
-  int FRAMEBUFFER_BINDING = 36006;
-  int FRAMEBUFFER_COMPLETE = 36053;
-  int FRAMEBUFFER_INCOMPLETE_ATTACHMENT = 36054;
-  int FRAMEBUFFER_INCOMPLETE_DIMENSIONS = 36057;
-  int FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT = 36055;
-  int FRAMEBUFFER_UNSUPPORTED = 36061;
-  int FRONT = 1028;
-  int FRONT_AND_BACK = 1032;
-  int FRONT_FACE = 2886;
-  int FUNC_ADD = 32774;
-  int FUNC_REVERSE_SUBTRACT = 32779;
-  int FUNC_SUBTRACT = 32778;
-  int GENERATE_MIPMAP_HINT = 33170;
-  int GEQUAL = 518;
-  int GREATER = 516;
-  int GREEN_BITS = 3411;
-  int HIGH_FLOAT = 36338;
-  int HIGH_INT = 36341;
-  int IMPLEMENTATION_COLOR_READ_FORMAT = 35739;
-  int IMPLEMENTATION_COLOR_READ_TYPE = 35738;
-  int INCR = 7682;
-  int INCR_WRAP = 34055;
-  int INFO_LOG_LENGTH = 35716;
-  int INT = 5124;
-  int INT_VEC2 = 35667;
-  int INT_VEC3 = 35668;
-  int INT_VEC4 = 35669;
-  int INVALID_ENUM = 1280;
-  int INVALID_FRAMEBUFFER_OPERATION = 1286;
-  int INVALID_OPERATION = 1282;
-  int INVALID_VALUE = 1281;
-  int INVERT = 5386;
-  int KEEP = 7680;
-  int LEQUAL = 515;
-  int LESS = 513;
-  int LINEAR = 9729;
-  int LINEAR_MIPMAP_LINEAR = 9987;
-  int LINEAR_MIPMAP_NEAREST = 9985;
-  int LINES = 1;
-  int LINE_LOOP = 2;
-  int LINE_STRIP = 3;
-  int LINE_WIDTH = 2849;
-  int LINK_STATUS = 35714;
-  int LOW_FLOAT = 36336;
-  int LOW_INT = 36339;
-  int LUMINANCE = 6409;
-  int LUMINANCE_ALPHA = 6410;
-  int MAX_COMBINED_TEXTURE_IMAGE_UNITS = 35661;
-  int MAX_CUBE_MAP_TEXTURE_SIZE = 34076;
-  int MAX_FRAGMENT_UNIFORM_VECTORS = 36349;
-  int MAX_RENDERBUFFER_SIZE = 34024;
-  int MAX_TEXTURE_IMAGE_UNITS = 34930;
-  int MAX_TEXTURE_SIZE = 3379;
-  int MAX_VARYING_VECTORS = 36348;
-  int MAX_VERTEX_ATTRIBS = 34921;
-  int MAX_VERTEX_TEXTURE_IMAGE_UNITS = 35660;
-  int MAX_VERTEX_UNIFORM_VECTORS = 36347;
-  int MAX_VIEWPORT_DIMS = 3386;
-  int MEDIUM_FLOAT = 36337;
-  int MEDIUM_INT = 36340;
-  int MIRRORED_REPEAT = 33648;
-  int NEAREST = 9728;
-  int NEAREST_MIPMAP_LINEAR = 9986;
-  int NEAREST_MIPMAP_NEAREST = 9984;
-  int NEVER = 512;
-  int NICEST = 4354;
-  int NONE = 0;
-  int NOTEQUAL = 517;
-  int NO_ERROR = 0;
-  int NUM_COMPRESSED_TEXTURE_FORMATS = 34466;
-  int NUM_SHADER_BINARY_FORMATS = 36345;
-  int ONE = 1;
-  int ONE_MINUS_CONSTANT_ALPHA = 32772;
-  int ONE_MINUS_CONSTANT_COLOR = 32770;
-  int ONE_MINUS_DST_ALPHA = 773;
-  int ONE_MINUS_DST_COLOR = 775;
-  int ONE_MINUS_SRC_ALPHA = 771;
-  int ONE_MINUS_SRC_COLOR = 769;
-  int OUT_OF_MEMORY = 1285;
-  int PACK_ALIGNMENT = 3333;
-  int POINTS = 0;
-  int POLYGON_OFFSET_FACTOR = 32824;
-  int POLYGON_OFFSET_FILL = 32823;
-  int POLYGON_OFFSET_UNITS = 10752;
-  int RED_BITS = 3410;
-  int RENDERBUFFER = 36161;
-  int RENDERBUFFER_ALPHA_SIZE = 36179;
-  int RENDERBUFFER_BINDING = 36007;
-  int RENDERBUFFER_BLUE_SIZE = 36178;
-  int RENDERBUFFER_DEPTH_SIZE = 36180;
-  int RENDERBUFFER_GREEN_SIZE = 36177;
-  int RENDERBUFFER_HEIGHT = 36163;
-  int RENDERBUFFER_INTERNAL_FORMAT = 36164;
-  int RENDERBUFFER_RED_SIZE = 36176;
-  int RENDERBUFFER_STENCIL_SIZE = 36181;
-  int RENDERBUFFER_WIDTH = 36162;
-  int RENDERER = 7937;
-  int REPEAT = 10497;
-  int REPLACE = 7681;
-  int RGB = 6407;
-  int RGB565 = 36194;
-  int RGB5_A1 = 32855;
-  int RGBA = 6408;
-  int RGBA4 = 32854;
-  int SAMPLER_2D = 35678;
-  int SAMPLER_CUBE = 35680;
-  int SAMPLES = 32937;
-  int SAMPLE_ALPHA_TO_COVERAGE = 32926;
-  int SAMPLE_BUFFERS = 32936;
-  int SAMPLE_COVERAGE = 32928;
-  int SAMPLE_COVERAGE_INVERT = 32939;
-  int SAMPLE_COVERAGE_VALUE = 32938;
-  int SCISSOR_BOX = 3088;
-  int SCISSOR_TEST = 3089;
-  int SHADER_BINARY_FORMATS = 36344;
-  int SHADER_COMPILER = 36346;
-  int SHADER_SOURCE_LENGTH = 35720;
-  int SHADER_TYPE = 35663;
-  int SHADING_LANGUAGE_VERSION = 35724;
-  int SHORT = 5122;
-  int SRC_ALPHA = 770;
-  int SRC_ALPHA_SATURATE = 776;
-  int SRC_COLOR = 768;
-  int STATIC_DRAW = 35044;
-  int STENCIL_ATTACHMENT = 36128;
-  int STENCIL_BACK_FAIL = 34817;
-  int STENCIL_BACK_FUNC = 34816;
-  int STENCIL_BACK_PASS_DEPTH_FAIL = 34818;
-  int STENCIL_BACK_PASS_DEPTH_PASS = 34819;
-  int STENCIL_BACK_REF = 36003;
-  int STENCIL_BACK_VALUE_MASK = 36004;
-  int STENCIL_BACK_WRITEMASK = 36005;
-  int STENCIL_BITS = 3415;
-  int STENCIL_BUFFER_BIT = 1024;
-  int STENCIL_CLEAR_VALUE = 2961;
-  int STENCIL_FAIL = 2964;
-  int STENCIL_FUNC = 2962;
-
-  /** @deprecated */
-  int STENCIL_INDEX = 6401;
-  int STENCIL_INDEX8 = 36168;
-  int STENCIL_PASS_DEPTH_FAIL = 2965;
-  int STENCIL_PASS_DEPTH_PASS = 2966;
-  int STENCIL_REF = 2967;
-  int STENCIL_TEST = 2960;
-  int STENCIL_VALUE_MASK = 2963;
-  int STENCIL_WRITEMASK = 2968;
-  int STREAM_DRAW = 35040;
-  int SUBPIXEL_BITS = 3408;
-  int TEXTURE = 5890;
-  int TEXTURE0 = 33984;
-  int TEXTURE1 = 33985;
-  int TEXTURE10 = 33994;
-  int TEXTURE11 = 33995;
-  int TEXTURE12 = 33996;
-  int TEXTURE13 = 33997;
-  int TEXTURE14 = 33998;
-  int TEXTURE15 = 33999;
-  int TEXTURE16 = 34000;
-  int TEXTURE17 = 34001;
-  int TEXTURE18 = 34002;
-  int TEXTURE19 = 34003;
-  int TEXTURE2 = 33986;
-  int TEXTURE20 = 34004;
-  int TEXTURE21 = 34005;
-  int TEXTURE22 = 34006;
-  int TEXTURE23 = 34007;
-  int TEXTURE24 = 34008;
-  int TEXTURE25 = 34009;
-  int TEXTURE26 = 34010;
-  int TEXTURE27 = 34011;
-  int TEXTURE28 = 34012;
-  int TEXTURE29 = 34013;
-  int TEXTURE3 = 33987;
-  int TEXTURE30 = 34014;
-  int TEXTURE31 = 34015;
-  int TEXTURE4 = 33988;
-  int TEXTURE5 = 33989;
-  int TEXTURE6 = 33990;
-  int TEXTURE7 = 33991;
-  int TEXTURE8 = 33992;
-  int TEXTURE9 = 33993;
-  int TEXTURE_2D = 3553;
-  int TEXTURE_BINDING_2D = 32873;
-  int TEXTURE_BINDING_CUBE_MAP = 34068;
-  int TEXTURE_CUBE_MAP = 34067;
-  int TEXTURE_CUBE_MAP_NEGATIVE_X = 34070;
-  int TEXTURE_CUBE_MAP_NEGATIVE_Y = 34072;
-  int TEXTURE_CUBE_MAP_NEGATIVE_Z = 34074;
-  int TEXTURE_CUBE_MAP_POSITIVE_X = 34069;
-  int TEXTURE_CUBE_MAP_POSITIVE_Y = 34071;
-  int TEXTURE_CUBE_MAP_POSITIVE_Z = 34073;
-  int TEXTURE_MAG_FILTER = 10240;
-  int TEXTURE_MIN_FILTER = 10241;
-  int TEXTURE_WRAP_S = 10242;
-  int TEXTURE_WRAP_T = 10243;
-  int TRIANGLES = 4;
-  int TRIANGLE_FAN = 6;
-  int TRIANGLE_STRIP = 5;
-  int TRUE = 1;
-  int UNPACK_ALIGNMENT = 3317;
-  int UNSIGNED_BYTE = 5121;
-  int UNSIGNED_INT = 5125;
-  int UNSIGNED_SHORT = 5123;
-  int UNSIGNED_SHORT_4_4_4_4 = 32819;
-  int UNSIGNED_SHORT_5_5_5_1 = 32820;
-  int UNSIGNED_SHORT_5_6_5 = 33635;
-  int VALIDATE_STATUS = 35715;
-  int VENDOR = 7936;
-  int VERSION = 7938;
-  int VERTEX_ATTRIB_ARRAY_BUFFER_BINDING = 34975;
-  int VERTEX_ATTRIB_ARRAY_ENABLED = 34338;
-  int VERTEX_ATTRIB_ARRAY_NORMALIZED = 34922;
-  int VERTEX_ATTRIB_ARRAY_POINTER = 34373;
-  int VERTEX_ATTRIB_ARRAY_SIZE = 34339;
-  int VERTEX_ATTRIB_ARRAY_STRIDE = 34340;
-  int VERTEX_ATTRIB_ARRAY_TYPE = 34341;
-  int VERTEX_SHADER = 35633;
-  int VIEWPORT = 2978;
-  int ZERO = 0;
-
-  // OpenGL 3.0
-  int ACTIVE_UNIFORM_BLOCKS = 35382;
-  int ACTIVE_UNIFORM_BLOCK_MAX_NAME_LENGTH = 35381;
-  int ALREADY_SIGNALED = 37146;
-  int ANY_SAMPLES_PASSED = 35887;
-  int ANY_SAMPLES_PASSED_CONSERVATIVE = 36202;
-  int BLUE = 6405;
-  int BUFFER_ACCESS_FLAGS = 37151;
-  int BUFFER_MAPPED = 35004;
-  int BUFFER_MAP_LENGTH = 37152;
-  int BUFFER_MAP_OFFSET = 37153;
-  int BUFFER_MAP_POINTER = 35005;
-  int COLOR = 6144;
-  int COLOR_ATTACHMENT1 = 36065;
-  int COLOR_ATTACHMENT10 = 36074;
-  int COLOR_ATTACHMENT11 = 36075;
-  int COLOR_ATTACHMENT12 = 36076;
-  int COLOR_ATTACHMENT13 = 36077;
-  int COLOR_ATTACHMENT14 = 36078;
-  int COLOR_ATTACHMENT15 = 36079;
-  int COLOR_ATTACHMENT2 = 36066;
-  int COLOR_ATTACHMENT3 = 36067;
-  int COLOR_ATTACHMENT4 = 36068;
-  int COLOR_ATTACHMENT5 = 36069;
-  int COLOR_ATTACHMENT6 = 36070;
-  int COLOR_ATTACHMENT7 = 36071;
-  int COLOR_ATTACHMENT8 = 36072;
-  int COLOR_ATTACHMENT9 = 36073;
-  int COMPARE_REF_TO_TEXTURE = 34894;
-  int COMPRESSED_R11_EAC = 37488;
-  int COMPRESSED_RG11_EAC = 37490;
-  int COMPRESSED_RGB8_ETC2 = 37492;
-  int COMPRESSED_RGB8_PUNCHTHROUGH_ALPHA1_ETC2 = 37494;
-  int COMPRESSED_RGBA8_ETC2_EAC = 37496;
-  int COMPRESSED_SIGNED_R11_EAC = 37489;
-  int COMPRESSED_SIGNED_RG11_EAC = 37491;
-  int COMPRESSED_SRGB8_ALPHA8_ETC2_EAC = 37497;
-  int COMPRESSED_SRGB8_ETC2 = 37493;
-  int COMPRESSED_SRGB8_PUNCHTHROUGH_ALPHA1_ETC2 = 37495;
-  int CONDITION_SATISFIED = 37148;
-  int COPY_READ_BUFFER = 36662;
-  int COPY_READ_BUFFER_BINDING = 36662;
-  int COPY_WRITE_BUFFER = 36663;
-  int COPY_WRITE_BUFFER_BINDING = 36663;
-  int CURRENT_QUERY = 34917;
-  int DEPTH = 6145;
-  int DEPTH24_STENCIL8 = 35056;
-  int DEPTH32F_STENCIL8 = 36013;
-  int DEPTH_COMPONENT24 = 33190;
-  int DEPTH_COMPONENT32F = 36012;
-  int DEPTH_STENCIL = 34041;
-  int DEPTH_STENCIL_ATTACHMENT = 33306;
-  int DRAW_BUFFER0 = 34853;
-  int DRAW_BUFFER1 = 34854;
-  int DRAW_BUFFER10 = 34863;
-  int DRAW_BUFFER11 = 34864;
-  int DRAW_BUFFER12 = 34865;
-  int DRAW_BUFFER13 = 34866;
-  int DRAW_BUFFER14 = 34867;
-  int DRAW_BUFFER15 = 34868;
-  int DRAW_BUFFER2 = 34855;
-  int DRAW_BUFFER3 = 34856;
-  int DRAW_BUFFER4 = 34857;
-  int DRAW_BUFFER5 = 34858;
-  int DRAW_BUFFER6 = 34859;
-  int DRAW_BUFFER7 = 34860;
-  int DRAW_BUFFER8 = 34861;
-  int DRAW_BUFFER9 = 34862;
-  int DRAW_FRAMEBUFFER = 36009;
-  int DRAW_FRAMEBUFFER_BINDING = 36006;
-  int DYNAMIC_COPY = 35050;
-  int DYNAMIC_READ = 35049;
-  int FLOAT_32_UNSIGNED_INT_24_8_REV = 36269;
-  int FLOAT_MAT2x3 = 35685;
-  int FLOAT_MAT2x4 = 35686;
-  int FLOAT_MAT3x2 = 35687;
-  int FLOAT_MAT3x4 = 35688;
-  int FLOAT_MAT4x2 = 35689;
-  int FLOAT_MAT4x3 = 35690;
-  int FRAGMENT_SHADER_DERIVATIVE_HINT = 35723;
-  int FRAMEBUFFER_ATTACHMENT_ALPHA_SIZE = 33301;
-  int FRAMEBUFFER_ATTACHMENT_BLUE_SIZE = 33300;
-  int FRAMEBUFFER_ATTACHMENT_COLOR_ENCODING = 33296;
-  int FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE = 33297;
-  int FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE = 33302;
-  int FRAMEBUFFER_ATTACHMENT_GREEN_SIZE = 33299;
-  int FRAMEBUFFER_ATTACHMENT_RED_SIZE = 33298;
-  int FRAMEBUFFER_ATTACHMENT_STENCIL_SIZE = 33303;
-  int FRAMEBUFFER_ATTACHMENT_TEXTURE_LAYER = 36052;
-  int FRAMEBUFFER_DEFAULT = 33304;
-  int FRAMEBUFFER_INCOMPLETE_MULTISAMPLE = 36182;
-  int FRAMEBUFFER_UNDEFINED = 33305;
-  int GREEN = 6404;
-  int HALF_FLOAT = 5131;
-  int INTERLEAVED_ATTRIBS = 35980;
-  int INT_2_10_10_10_REV = 36255;
-  int INT_SAMPLER_2D = 36298;
-  int INT_SAMPLER_2D_ARRAY = 36303;
-  int INT_SAMPLER_3D = 36299;
-  int INT_SAMPLER_CUBE = 36300;
-  int INVALID_INDEX = -1;
-  int MAJOR_VERSION = 33307;
-  int MAP_FLUSH_EXPLICIT_BIT = 16;
-  int MAP_INVALIDATE_BUFFER_BIT = 8;
-  int MAP_INVALIDATE_RANGE_BIT = 4;
-  int MAP_READ_BIT = 1;
-  int MAP_UNSYNCHRONIZED_BIT = 32;
-  int MAP_WRITE_BIT = 2;
-  int MAX = 32776;
-  int MAX_3D_TEXTURE_SIZE = 32883;
-  int MAX_ARRAY_TEXTURE_LAYERS = 35071;
-  int MAX_COLOR_ATTACHMENTS = 36063;
-  int MAX_COMBINED_FRAGMENT_UNIFORM_COMPONENTS = 35379;
-  int MAX_COMBINED_UNIFORM_BLOCKS = 35374;
-  int MAX_COMBINED_VERTEX_UNIFORM_COMPONENTS = 35377;
-  int MAX_DRAW_BUFFERS = 34852;
-  int MAX_ELEMENTS_INDICES = 33001;
-  int MAX_ELEMENTS_VERTICES = 33000;
-  int MAX_ELEMENT_INDEX = 36203;
-  int MAX_FRAGMENT_INPUT_COMPONENTS = 37157;
-  int MAX_FRAGMENT_UNIFORM_BLOCKS = 35373;
-  int MAX_FRAGMENT_UNIFORM_COMPONENTS = 35657;
-  int MAX_PROGRAM_TEXEL_OFFSET = 35077;
-  int MAX_SAMPLES = 36183;
-  int MAX_SERVER_WAIT_TIMEOUT = 37137;
-  int MAX_TEXTURE_LOD_BIAS = 34045;
-  int MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS = 35978;
-  int MAX_TRANSFORM_FEEDBACK_SEPARATE_ATTRIBS = 35979;
-  int MAX_TRANSFORM_FEEDBACK_SEPARATE_COMPONENTS = 35968;
-  int MAX_UNIFORM_BLOCK_SIZE = 35376;
-  int MAX_UNIFORM_BUFFER_BINDINGS = 35375;
-  int MAX_VARYING_COMPONENTS = 35659;
-  int MAX_VERTEX_OUTPUT_COMPONENTS = 37154;
-  int MAX_VERTEX_UNIFORM_BLOCKS = 35371;
-  int MAX_VERTEX_UNIFORM_COMPONENTS = 35658;
-  int MIN = 32775;
-  int MINOR_VERSION = 33308;
-  int MIN_PROGRAM_TEXEL_OFFSET = 35076;
-  int NUM_EXTENSIONS = 33309;
-  int NUM_PROGRAM_BINARY_FORMATS = 34814;
-  int NUM_SAMPLE_COUNTS = 37760;
-  int OBJECT_TYPE = 37138;
-  int PACK_ROW_LENGTH = 3330;
-  int PACK_SKIP_PIXELS = 3332;
-  int PACK_SKIP_ROWS = 3331;
-  int PIXEL_PACK_BUFFER = 35051;
-  int PIXEL_PACK_BUFFER_BINDING = 35053;
-  int PIXEL_UNPACK_BUFFER = 35052;
-  int PIXEL_UNPACK_BUFFER_BINDING = 35055;
-  int PRIMITIVE_RESTART_FIXED_INDEX = 36201;
-  int PROGRAM_BINARY_FORMATS = 34815;
-  int PROGRAM_BINARY_LENGTH = 34625;
-  int PROGRAM_BINARY_RETRIEVABLE_HINT = 33367;
-  int QUERY_RESULT = 34918;
-  int QUERY_RESULT_AVAILABLE = 34919;
-  int R11F_G11F_B10F = 35898;
-  int R16F = 33325;
-  int R16I = 33331;
-  int R16UI = 33332;
-  int R32F = 33326;
-  int R32I = 33333;
-  int R32UI = 33334;
-  int R8 = 33321;
-  int R8I = 33329;
-  int R8UI = 33330;
-  int R8_SNORM = 36756;
-  int RASTERIZER_DISCARD = 35977;
-  int READ_BUFFER = 3074;
-  int READ_FRAMEBUFFER = 36008;
-  int READ_FRAMEBUFFER_BINDING = 36010;
-  int RED = 6403;
-  int RED_INTEGER = 36244;
-  int RENDERBUFFER_SAMPLES = 36011;
-  int RG = 33319;
-  int RG16F = 33327;
-  int RG16I = 33337;
-  int RG16UI = 33338;
-  int RG32F = 33328;
-  int RG32I = 33339;
-  int RG32UI = 33340;
-  int RG8 = 33323;
-  int RG8I = 33335;
-  int RG8UI = 33336;
-  int RG8_SNORM = 36757;
-  int RGB10_A2 = 32857;
-  int RGB10_A2UI = 36975;
-  int RGB16F = 34843;
-  int RGB16I = 36233;
-  int RGB16UI = 36215;
-  int RGB32F = 34837;
-  int RGB32I = 36227;
-  int RGB32UI = 36209;
-  int RGB8 = 32849;
-  int RGB8I = 36239;
-  int RGB8UI = 36221;
-  int RGB8_SNORM = 36758;
-  int RGB9_E5 = 35901;
-  int RGBA16F = 34842;
-  int RGBA16I = 36232;
-  int RGBA16UI = 36214;
-  int RGBA32F = 34836;
-  int RGBA32I = 36226;
-  int RGBA32UI = 36208;
-  int RGBA8 = 32856;
-  int RGBA8I = 36238;
-  int RGBA8UI = 36220;
-  int RGBA8_SNORM = 36759;
-  int RGBA_INTEGER = 36249;
-  int RGB_INTEGER = 36248;
-  int RG_INTEGER = 33320;
-  int SAMPLER_2D_ARRAY = 36289;
-  int SAMPLER_2D_ARRAY_SHADOW = 36292;
-  int SAMPLER_2D_SHADOW = 35682;
-  int SAMPLER_3D = 35679;
-  int SAMPLER_BINDING = 35097;
-  int SAMPLER_CUBE_SHADOW = 36293;
-  int SEPARATE_ATTRIBS = 35981;
-  int SIGNALED = 37145;
-  int SIGNED_NORMALIZED = 36764;
-  int SRGB = 35904;
-  int SRGB8 = 35905;
-  int SRGB8_ALPHA8 = 35907;
-  int STATIC_COPY = 35046;
-  int STATIC_READ = 35045;
-  int STENCIL = 6146;
-  int STREAM_COPY = 35042;
-  int STREAM_READ = 35041;
-  int SYNC_CONDITION = 37139;
-  int SYNC_FENCE = 37142;
-  int SYNC_FLAGS = 37141;
-  int SYNC_FLUSH_COMMANDS_BIT = 1;
-  int SYNC_GPU_COMMANDS_COMPLETE = 37143;
-  int SYNC_STATUS = 37140;
-  int TEXTURE_2D_ARRAY = 35866;
-  int TEXTURE_3D = 32879;
-  int TEXTURE_BASE_LEVEL = 33084;
-  int TEXTURE_BINDING_2D_ARRAY = 35869;
-  int TEXTURE_BINDING_3D = 32874;
-  int TEXTURE_COMPARE_FUNC = 34893;
-  int TEXTURE_COMPARE_MODE = 34892;
-  int TEXTURE_IMMUTABLE_FORMAT = 37167;
-  int TEXTURE_IMMUTABLE_LEVELS = 33503;
-  int TEXTURE_MAX_LEVEL = 33085;
-  int TEXTURE_MAX_LOD = 33083;
-  int TEXTURE_MIN_LOD = 33082;
-  int TEXTURE_SWIZZLE_A = 36421;
-  int TEXTURE_SWIZZLE_B = 36420;
-  int TEXTURE_SWIZZLE_G = 36419;
-  int TEXTURE_SWIZZLE_R = 36418;
-  int TEXTURE_WRAP_R = 32882;
-  int TIMEOUT_EXPIRED = 37147;
-  int TIMEOUT_IGNORED = -1;
-  int TRANSFORM_FEEDBACK = 36386;
-  int TRANSFORM_FEEDBACK_ACTIVE = 36388;
-  int TRANSFORM_FEEDBACK_BINDING = 36389;
-  int TRANSFORM_FEEDBACK_BUFFER = 35982;
-  int TRANSFORM_FEEDBACK_BUFFER_BINDING = 35983;
-  int TRANSFORM_FEEDBACK_BUFFER_MODE = 35967;
-  int TRANSFORM_FEEDBACK_BUFFER_SIZE = 35973;
-  int TRANSFORM_FEEDBACK_BUFFER_START = 35972;
-  int TRANSFORM_FEEDBACK_PAUSED = 36387;
-  int TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN = 35976;
-  int TRANSFORM_FEEDBACK_VARYINGS = 35971;
-  int TRANSFORM_FEEDBACK_VARYING_MAX_LENGTH = 35958;
-  int UNIFORM_ARRAY_STRIDE = 35388;
-  int UNIFORM_BLOCK_ACTIVE_UNIFORMS = 35394;
-  int UNIFORM_BLOCK_ACTIVE_UNIFORM_INDICES = 35395;
-  int UNIFORM_BLOCK_BINDING = 35391;
-  int UNIFORM_BLOCK_DATA_SIZE = 35392;
-  int UNIFORM_BLOCK_INDEX = 35386;
-  int UNIFORM_BLOCK_NAME_LENGTH = 35393;
-  int UNIFORM_BLOCK_REFERENCED_BY_FRAGMENT_SHADER = 35398;
-  int UNIFORM_BLOCK_REFERENCED_BY_VERTEX_SHADER = 35396;
-  int UNIFORM_BUFFER = 35345;
-  int UNIFORM_BUFFER_BINDING = 35368;
-  int UNIFORM_BUFFER_OFFSET_ALIGNMENT = 35380;
-  int UNIFORM_BUFFER_SIZE = 35370;
-  int UNIFORM_BUFFER_START = 35369;
-  int UNIFORM_IS_ROW_MAJOR = 35390;
-  int UNIFORM_MATRIX_STRIDE = 35389;
-  int UNIFORM_NAME_LENGTH = 35385;
-  int UNIFORM_OFFSET = 35387;
-  int UNIFORM_SIZE = 35384;
-  int UNIFORM_TYPE = 35383;
-  int UNPACK_IMAGE_HEIGHT = 32878;
-  int UNPACK_ROW_LENGTH = 3314;
-  int UNPACK_SKIP_IMAGES = 32877;
-  int UNPACK_SKIP_PIXELS = 3316;
-  int UNPACK_SKIP_ROWS = 3315;
-  int UNSIGNALED = 37144;
-  int UNSIGNED_INT_10F_11F_11F_REV = 35899;
-  int UNSIGNED_INT_24_8 = 34042;
-  int UNSIGNED_INT_2_10_10_10_REV = 33640;
-  int UNSIGNED_INT_5_9_9_9_REV = 35902;
-  int UNSIGNED_INT_SAMPLER_2D = 36306;
-  int UNSIGNED_INT_SAMPLER_2D_ARRAY = 36311;
-  int UNSIGNED_INT_SAMPLER_3D = 36307;
-  int UNSIGNED_INT_SAMPLER_CUBE = 36308;
-  int UNSIGNED_INT_VEC2 = 36294;
-  int UNSIGNED_INT_VEC3 = 36295;
-  int UNSIGNED_INT_VEC4 = 36296;
-  int UNSIGNED_NORMALIZED = 35863;
-  int VERTEX_ARRAY_BINDING = 34229;
-  int VERTEX_ATTRIB_ARRAY_DIVISOR = 35070;
-  int VERTEX_ATTRIB_ARRAY_INTEGER = 35069;
-  int WAIT_FAILED = 37149;
-
-  int UNPACK_FLIP_Y_WEBGL = 0x9240;
-  int UNPACK_PREMULTIPLY_ALPHA_WEBGL = 0x9241;
-  int UNPACK_COLORSPACE_CONVERSION_WEBGL = 0x9243;
 }
 
