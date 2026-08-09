@@ -158,6 +158,82 @@ void wxLoadStringFromResource( String filename, void Function( String data ) ret
   });
 }
 
+/// Returns the pure RGBA data from an [WxImage]
+Uint8List wxRGBAFromImage( WxImage image )
+{
+  // TODO this is terribly inefficient
+        final rgba = Uint8List( image.getWidth() * image.getHeight() * 4 );
+        final rgb = image.getData();
+        final alpha = image.getAlphaData();
+        int rgbIndex = 0;
+        int rgbaIndex = 0;
+        int alphaIndex = 0;
+        for (int y = 0; y < image.getHeight(); y++) {
+          for (int x = 0; x < image.getWidth(); x++) {
+            rgba[rgbaIndex] = rgb[rgbIndex];
+            rgbaIndex++;
+            rgbIndex++;
+            rgba[rgbaIndex] = rgb[rgbIndex];
+            rgbaIndex++;
+            rgbIndex++;
+            rgba[rgbaIndex] = rgb[rgbIndex];
+            rgbaIndex++;
+            rgbIndex++;
+            if (alpha != null) {
+              rgba[rgbaIndex] = alpha[alphaIndex];
+              alphaIndex++;
+            } else {
+              rgba[rgbaIndex] = 255;
+            }
+            rgbaIndex++;
+          }
+        }
+        return rgba;
+}
+
+/// Read an image from file or asset and returns the RGBA data in the callback.
+/// This will occur synchronously in wxDart Native and asynchronously in
+/// wxDart Flutter.
+/// [filename] is the filename relative to the directory returned from 
+/// [WxStandardPaths.getResourcesDir]. If the file is located in
+/// lib/assets/myimage.png then use this
+/// 
+/// ```dart
+/// wxLoadRGBAFromResource( "myimage.png", (RGBA, width, height) {
+///   // do something with RGBA data ...
+/// }
+/// ```
+/// [subdir] indicates a subdirectory where the file is located.
+
+void wxLoadRGBAFromResource( String filename, void Function( Uint8List rgba, int width, int height ) returnRGBA,
+ { int format = wxBITMAP_TYPE_PNG, String subdir = "" } )
+{
+    String path = "lib/assets";
+    if (subdir.isNotEmpty) {
+      path = "$path/$subdir"; 
+    }
+    path = "$path/$filename";
+    rootBundle.load(path).then( (data) async {   
+      final codec = await ui.instantiateImageCodec( data.buffer.asUint8List() );
+      final uiImage = (await codec.getNextFrame()).image;
+      final sizeRGBA = uiImage.width * uiImage.height * 4;
+      final byteData = await uiImage.toByteData();
+      if (byteData == null) {
+        wxLogError( "Failed to decode image in $path" );
+        return;
+      }
+      if (byteData!.lengthInBytes != sizeRGBA) {
+        wxLogError( "Image data of $path not available as RGBA" );
+        return;
+      }
+      final rgba = byteData.buffer.asUint8List();
+      returnRGBA( rgba, uiImage.width, uiImage.height );
+
+    }).catchError((error) {
+      wxLogError( "Asset file $path not found, error: $error" );
+  });
+}
+
 // ------------------ wxLoadImageFromResource -------------------
 
 /// Read an image from file or asset and returns the image in the callback.
@@ -188,11 +264,11 @@ void wxLoadImageFromResource( String filename, void Function( WxImage image ) re
       final byteData = await uiImage.toByteData();
       if (byteData == null) {
         wxLogError( "Failed to decode image in $path" );
-        returnImage( WxImage(0,0) );
+        return;
       }
       if (byteData!.lengthInBytes != sizeRGBA) {
         wxLogError( "Image data of $path not available as RGBA and cannot be converted to WxImage" );
-        returnImage( WxImage(0,0) );
+        return;
       }
       final image = WxImage( uiImage.width, uiImage.height );
       image.initAlpha();
@@ -224,7 +300,6 @@ void wxLoadImageFromResource( String filename, void Function( WxImage image ) re
       wxLogError( "Asset file $path not found, error: $error" );
   });
 }
-
 
 // ------------------ wxLoadSVGFromResource -------------------
 
