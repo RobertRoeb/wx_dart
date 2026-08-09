@@ -70,6 +70,7 @@ int wxGetSysColourChangedEventType()  { return 163; }
 
 int wxGetInitDialogEventType()      { return 170; }
 int wxGetDialogValidateEventType()  { return 171; }
+int wxGetWindowCreateEventType()    { return 172; }
 
 int wxGetButtonEventType()          { return 200; }
 int wxGetCheckboxEventType()        { return 201; }
@@ -280,6 +281,65 @@ class WxZoomGestureEvent extends WxGestureEvent {
   /// Returns zoom factor relative to the beginning of the zoom gesture.
   double getZoomFactor( ) {
     return _zoom;
+  }
+}
+
+// ------------------------- WxWindowCreateEvent ----------------------
+
+typedef OnWindowCreateEventFunc = void Function( WxWindowCreateEvent event );
+
+/// @nodoc
+
+class WxWindowCreateEventTableEntry extends WxEventTableEntry {
+  WxWindowCreateEventTableEntry( super.eventType, super.id, this.func );
+  final OnWindowCreateEventFunc func;
+
+  @override
+  bool matches( int eventTypeTested, int idTested ) {
+    return (eventType == eventTypeTested) && ((id == wxID_ANY) || (id == idTested));
+  }
+
+  @override
+  void doCallFunction( WxEvent event ) {
+    if (event is WxWindowCreateEvent) {
+      func( event );
+    }
+  }
+}
+
+/// Indicated that the window has been created (and not just the class
+/// representing it). Certain actions require a window to be created
+/// before they can be done. 
+/// 
+/// The is a [WxCommandEvent] and such gets sent to parent windows if
+/// not consumed.
+///
+/// [WindowCreate](/wxdart/wxGetWindowCreateEventType.html) event gets sent when a window was created by or in the system |
+/// | ----------------- |
+/// | void bindWindowCreateEvent( OnWindowCreateEventFunc ) |
+/// | void unbindWindowCreateEvent() |
+/// 
+class WxWindowCreateEvent extends WxCommandEvent {
+  WxWindowCreateEvent( WxWindow? win ) : super( wxGetWindowCreateEventType(), win != null ? win.getId() : 0 ) {
+    _window = win;
+  }
+
+  /// Returns the window that was created
+  WxWindow? getWindow( ) {
+    return _window;
+  }
+  WxWindow? _window;
+}
+
+/// @nodoc
+
+extension WindowCreateEventBinder on WxEvtHandler {
+  void bindWindowCreateEvent( OnWindowCreateEventFunc func, int id ) {
+    _eventTable.add( WxWindowCreateEventTableEntry(wxGetWindowCreateEventType(), id, func));
+  }
+
+  void unbindWindowCreateEvent(int id) {
+    _eventTable.removeWhere( (entry) => entry.matches(wxGetWindowCreateEventType(), id));
   }
 }
 

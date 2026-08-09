@@ -325,6 +325,7 @@ class WxWindow extends WxEvtHandler {
   bool _acceptsFocus = true;
   bool _lastButtonWasright = false;
   WxWindow? _sliverView;
+  bool _hasSentWindowCreateEvent = false;
 
   @override
   void dispose() {
@@ -1256,6 +1257,14 @@ class WxWindow extends WxEvtHandler {
       onSizeChange: (size) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           _setSizeInternal( WxSize(size.width.floor(),size.height.floor()) );
+          // The window must have been created if it received a size
+          // from the layout algorithm
+          if (!_hasSentWindowCreateEvent) {
+            _hasSentWindowCreateEvent = true;
+            final event = WxWindowCreateEvent( this );
+            event.setEventObject(this);
+            processEvent(event);
+          }
         } );
       } 
     );
