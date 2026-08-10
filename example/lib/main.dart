@@ -596,6 +596,8 @@ class MyApp extends WxApp {
       myFrame.show();
     } else {
       WxFrame myFrame = MyMainFrame(null);
+//      WxFrame myFrame = WxFrame(null,-1,"MyFrame");
+//      MyGLPage( myFrame );
       myFrame.show();
 /*
       if (!wxUsesFlutter())
