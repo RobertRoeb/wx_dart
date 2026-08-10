@@ -103,7 +103,7 @@ FlutterAngle? _flutterGlPlugin;
 ///   {
 ///     final attr = WxGLAttributes();
 ///     attr.defaults();
-///     attr.doubleBuffer();
+///     // attr.doubleBuffer();
 ///     attr.endList();
 ///     _glCanvas = MyGLCanvas(this,attr);
 ///   }
@@ -113,10 +113,11 @@ FlutterAngle? _flutterGlPlugin;
 ///   MyGLCanvas( WxWindow parent, WxGLAttributes attr ) : super( parent, attr, -1 )
 ///   {
 ///     final attrs = WxGLContextAttrs();
-///     // Use OpenGL 4.1 on macOS in wxDart Native
-///     attrs.forwardCompatible();
-///     attrs.coreProfile();
-///     // attrs.ES2();
+///     if (wxIsMac() && !wxUsesFlutter()) {
+///       // enable OpenGL 4.1 on macOS in wxDart Native
+///       attrs.forwardCompatible();
+///       attrs.coreProfile();
+///     }
 ///     attrs.endList();
 ///     
 ///     // Create GL context
@@ -129,8 +130,12 @@ FlutterAngle? _flutterGlPlugin;
 /// 
 ///   void updateCamera()
 ///   {
-///     // Render into this canvas from now on
-///     setCurrent(_glContext);
+///     // Render into this canvas from now on, but test
+///     // for failure - typically when called too soon
+///     // in window creation process
+///     if (!setCurrent(_glContext)) {
+///       return;
+///     }
 /// 
 ///     final size = getClientSize();
 ///     _glContext.viewport( 0, 0, size.x, size.y );
@@ -446,7 +451,7 @@ class WxGlParameter extends WebGLParameter {
   WxGlParameter(super.id);
 
   /// Returns ID of the parameter
-  int getId() { return id; }
+  dynamic getId() { return id; }
 }
 
 /// Helper class to hold the reference to an OpenGL shader precision format
