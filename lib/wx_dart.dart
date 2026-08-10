@@ -27,6 +27,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:desktop_window/desktop_window.dart';
 import 'package:flutter_angle/flutter_angle.dart';
+part 'webgl_constants.dart';
 part 'enums.dart';
 part 'flutter/core/app.dart';
 part 'flutter/core/event.dart';

@@ -952,7 +952,9 @@ abstract class WxGLContext extends WxObject {
   }
 
   void framebufferTextureLayer(int target, int attachment, WxGlTexture? texture, int level, int layer) {
-    _gl!.framebufferTextureLayer( target, attachment, texture, level, layer );
+    // TODO This currently does not compile on web, I think because of a wrong
+    // function signature in flutter_angle
+    //_gl!.framebufferTextureLayer( target, attachment, texture, level, layer );
   }
 
   void readPixels(int x, int y, int width, int height, int format, int type, TypedData pixels ) {
