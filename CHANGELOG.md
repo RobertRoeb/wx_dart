@@ -3,6 +3,12 @@
 * Corrected filled WxGraphicsContext.drawRectangle() etc. if a brush is used
 * Adapted OpenGL/WxGLCanvas/WxGLContext code for Flutter Web / WebGL
 * Adapted OpenGl to run on the Web and on Linux native as well
+* Synthesize idle event after main window resize
+* Defer sending WxSizeEvent to next Flutter frame
+* Added WxWindowCreateEvent
+* Changed OpenGL constants to WebGL.DRAW_TRIANGLES notation
+* Added all missing WxGLContext to run ThreeJS (three_js_dart) on it
+* Added wxLoadRGBAFromResource to load the RGBA raw data from an asset or file
 
 ## 0.9.9
 
