@@ -9,6 +9,9 @@
 * Changed OpenGL constants to WebGL.DRAW_TRIANGLES notation
 * Added all missing WxGLContext to run ThreeJS (three_js_dart) on it
 * Added wxLoadRGBAFromResource to load the RGBA raw data from an asset or file
+* Added WxImage.getRGBA()
+* Added WxImage.isOK()
+* Removed hacks due to issues in flutter_angle 0.4.1 on web
 
 ## 0.9.9
 
@@ -16,7 +19,7 @@
 * Change return type from WxImage.getData() to Uint8List
 * Change return type from WxImage.getAlphaData() to Uint8List
 * Enabled Textures in OpenGL code
-* Numerous OpenGl bug fixes
+* Numerous OpenGL bug fixes
 * Documented the wxDart-Native-only WxImage.fromFile() constructor
 * Corrected wxBITMAP_TYPE_XXX constants
 * Corrected event type for repeated key down events
