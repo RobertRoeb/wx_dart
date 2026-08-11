@@ -177,35 +177,15 @@ class WxGLCanvas extends WxWindow {
             useSurfaceProducer: true
           );
 
-          if (wxIsWeb())
-          {
-            // this is needed to due a bug in flutter_angle on the web
-            _webglTextureResize( size.x, size.y ).then( (_) {
-              _oldSize = size;
-              final event = WxSizeEvent( size, id: getId() );
-              processEvent( event );
-            }  );
-          } else {
             _flutterGlPlugin!.resize( _texture!, options ).then( (_) {
               _oldSize = size;
               final event = WxSizeEvent( size, id: getId() );
               processEvent( event );
             } );
-          }
           
         }
     }
     super.onInternalIdle();
-  }
-
-  Future<void> _webglTextureResize( int width, int height ) async
-  {
-    /*
-      final dynamic surfaceID = _texture!.surfaceId;
-      final element = surfaceID as html.HTMLCanvasElement;
-      element.width = width;
-      element.height = height;
-    */
   }
 
   WxGLContext? _context;
@@ -585,8 +565,8 @@ class WxGlShaderPrecisionFormat extends ShaderPrecisionFormat {
 ///     gl.bindVertexArray( _vao );
 /// 
 ///     _triangleVertexBuffer = gl.createBuffer();
-///     gl.bindBuffer(gl.ARRAY_BUFFER, _triangleVertexBuffer); 
-///     gl.bufferData(gl.ARRAY_BUFFER, vertices, WebGL.STATIC_DRAW);
+///     gl.bindBuffer(WebGL.ARRAY_BUFFER, _triangleVertexBuffer); 
+///     gl.bufferData(WebGL.ARRAY_BUFFER, vertices, WebGL.STATIC_DRAW);
 /// 
 ///     _vertexLocation = gl.getAttribLocation( _glProgram, "a_Position" );
 ///     gl.enableVertexAttribArray(_vertexLocation.getId());
@@ -957,9 +937,7 @@ abstract class WxGLContext extends WxObject {
   }
 
   void framebufferTextureLayer(int target, int attachment, WxGlTexture? texture, int level, int layer) {
-    // TODO This currently does not compile on web, I think because of a wrong
-    // function signature in flutter_angle
-    //_gl!.framebufferTextureLayer( target, attachment, texture, level, layer );
+    _gl!.framebufferTextureLayer( target, attachment, texture, level, layer );
   }
 
   void readPixels(int x, int y, int width, int height, int format, int type, TypedData pixels ) {
