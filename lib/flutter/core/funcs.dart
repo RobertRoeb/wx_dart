@@ -158,39 +158,6 @@ void wxLoadStringFromResource( String filename, void Function( String data ) ret
   });
 }
 
-/// Returns the pure RGBA data from an [WxImage]
-Uint8List wxRGBAFromImage( WxImage image )
-{
-  // TODO this is terribly inefficient
-        final rgba = Uint8List( image.getWidth() * image.getHeight() * 4 );
-        final rgb = image.getData();
-        final alpha = image.getAlphaData();
-        int rgbIndex = 0;
-        int rgbaIndex = 0;
-        int alphaIndex = 0;
-        for (int y = 0; y < image.getHeight(); y++) {
-          for (int x = 0; x < image.getWidth(); x++) {
-            rgba[rgbaIndex] = rgb[rgbIndex];
-            rgbaIndex++;
-            rgbIndex++;
-            rgba[rgbaIndex] = rgb[rgbIndex];
-            rgbaIndex++;
-            rgbIndex++;
-            rgba[rgbaIndex] = rgb[rgbIndex];
-            rgbaIndex++;
-            rgbIndex++;
-            if (alpha != null) {
-              rgba[rgbaIndex] = alpha[alphaIndex];
-              alphaIndex++;
-            } else {
-              rgba[rgbaIndex] = 255;
-            }
-            rgbaIndex++;
-          }
-        }
-        return rgba;
-}
-
 /// Read an image from file or asset and returns the RGBA data in the callback.
 /// This will occur synchronously in wxDart Native and asynchronously in
 /// wxDart Flutter.

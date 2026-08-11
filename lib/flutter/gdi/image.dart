@@ -15,6 +15,10 @@ part of '../../wx_dart.dart';
 /// variety of formats. Functions are available to set and get image
 /// bits, so it can be used for basic image manipulation.
 /// 
+/// WxImage stores the image data as pure RGB with a separate
+/// data block containing the alpha data (if any). If you need the
+/// RGBA data as a single block, call [getRGBA].
+/// 
 /// The various image manipulation functions of the wxWidgets C++
 /// library like _blur_ and _resize_ are not yet available in wxDart. 
 ///
@@ -40,9 +44,8 @@ part of '../../wx_dart.dart';
 /// ```dart
 ///    // make top 20 rows white
 ///    final rgb = image.getData();
-///    final data = rgb.buffer.asByteData();
 ///    for (int i = 0; i < 100*20*3; i++) {
-///        data.setUint8(i, 255);
+///        data[i] = 255;
 ///    }
 /// ```
 /// 
@@ -69,6 +72,11 @@ class WxImage extends WxObject {
     // There is no way not to initiaĺize the memory
     // if (clear)
     _rgb = Uint8List(width * height * 3);
+  }
+
+  /// Returns true of the image has been built correctly
+  bool isOk() {
+    return _width * _height * 3 == _rgb.lengthInBytes;
   }
 
   /// Only implemented in wxDart Native. Load an image directly from a file.
@@ -129,6 +137,40 @@ class WxImage extends WxObject {
   Uint8List? getAlphaData() {
     return _alpha;
   }
+
+/// Creates a pure RGBA data from an [WxImage]. This is an expansive
+/// operation as the entire data needs to be copied in both wxDart
+/// Flutter and wxDart Native.
+Uint8List getRGBA()
+{
+  final rgba = Uint8List( getWidth() * getHeight() * 4 );
+  final rgb = getData();
+  final alpha = getAlphaData();
+  int rgbIndex = 0;
+  int rgbaIndex = 0;
+  int alphaIndex = 0;
+  for (int y = 0; y < getHeight(); y++) {
+    for (int x = 0; x < getWidth(); x++) {
+      rgba[rgbaIndex] = rgb[rgbIndex];
+      rgbaIndex++;
+      rgbIndex++;
+      rgba[rgbaIndex] = rgb[rgbIndex];
+      rgbaIndex++;
+      rgbIndex++;
+      rgba[rgbaIndex] = rgb[rgbIndex];
+      rgbaIndex++;
+      rgbIndex++;
+      if (alpha != null) {
+        rgba[rgbaIndex] = alpha[alphaIndex];
+        alphaIndex++;
+      } else {
+        rgba[rgbaIndex] = 255;
+      }
+      rgbaIndex++;
+      }
+    }
+  return rgba;
+}
 
 /// Set colour of pixel at [x],[y] to given RGB. Checks before
 /// if [x],[y] are on the image.
