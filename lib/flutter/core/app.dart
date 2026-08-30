@@ -367,8 +367,21 @@ class WxApp extends WxEvtHandler
   void run()
   {
     if (theTLW != null) {
-        _appWidget = WxDartAppWidget();
-        runApp( _appWidget! );
+      _appWidget = WxDartAppWidget();
+      runApp( _appWidget! );
+    
+/*
+   //  it's all in, behind a flutter config --enable-windowing feature flag:
+      runWidget(MultiWindowApp(initialWindows: [
+        (BuildContext context) => createRegular(
+            context: context,
+            size: const Size(640, 480),
+            builder: (BuildContext context) {
+              _appWidget = WxDartAppWidget();
+              return const _appWidget;
+            })
+      ]));
+*/
     }
   }
 

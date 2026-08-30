@@ -13,7 +13,7 @@ dependencies:
   single_child_two_dimensional_scroll_view: ^0.0.3
   url_launcher: ^6.3.2
   multi_split_view: ^3.6.1
-  tabbed_view: ^2.0.0
+  tabbed_view: ^3.1.0
   idle_detector_wrapper: ^1.2.1
   flutter_svg: ^2.2.2
   gif_view: ^1.0.3

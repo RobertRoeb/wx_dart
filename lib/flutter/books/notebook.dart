@@ -242,6 +242,7 @@ void _recreateTabbedViewController()
   List<TabData> tabs = [];
   for (WxPageItem item in _pages) {
       tabs.add( TabData(
+         id: item, 
          text: item.text,
          closable: false
       ) );
@@ -249,22 +250,22 @@ void _recreateTabbedViewController()
 
   _controller = TabbedViewController(
       tabs,
-      onTabReorder: (int oldIndex, int newIndex) {
+      onTabReordered: (int oldIndex, int newIndex) {
       },
-      onTabSelection: (index, tabData) {
-        if (index == null) return;
-        _currentSelection = index;
+      onTabSelected: (selection) {
+        if (selection == null) return;
+        _currentSelection = selection.index;
         if (!_blockEvents)
         {
           final event = WxNotebookEvent( eventType:  wxGetNotebookPageChangedEventType(), id: getId(), 
-            sel: index, oldSel: _oldSelection ); 
+            sel: selection.index, oldSel: _oldSelection ); 
           event.setEventObject( this );
           processEvent( event );
         }
         _blockEvents = false;
-        _oldSelection = index;
+        _oldSelection = selection.index;
       },
-      onTabRemove: (tabData) {},
+      onTabRemoved: (tabData) {},
     );
 }
 
@@ -338,13 +339,13 @@ Widget _buildTabbedView( BuildContext context)
       child: 
         TabbedView(
           controller: _controller!,
-          contentBuilder: (context, index) {
-            final item = _pages[index];
+          viewBuilder: (context, tabdata) {
+            final item = tabdata.id as WxPageItem;
             return item.page._build( context );
           }, 
           tabsAreaVisible: true,
           tabReorderEnabled: false,
-          onDraggableBuild: (controller, value, data) {
+          onDraggableBuild: (value, data) {
             final drag = DraggableConfig( canDrag: false );
             return drag;
           },
