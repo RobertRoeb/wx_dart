@@ -178,6 +178,8 @@ part of '../../wx_dart.dart';
 /// | wxSTRETCH_MASK | 0x7000 |
 
 class WxBoxSizer extends WxSizer {
+
+  /// Creates a box sizer with the given orientation
   WxBoxSizer( int orientation ) {
     _orientation = orientation;
   }
@@ -228,7 +230,7 @@ class WxBoxSizer extends WxSizer {
               key: item._spacerWidgetKey,
               width: item._width.toDouble()), 
               onSizeChange: (size) { 
-              item.spacerSize = WxSize(size.width.floor(),size.height.floor());
+              item._spacerSize = WxSize(size.width.floor(),size.height.floor());
             } 
           );
           // finalWidget = SizedBox(height: item.height.toDouble());
@@ -317,7 +319,7 @@ class WxBoxSizer extends WxSizer {
               key: item._spacerWidgetKey,
             child: SizedBox(height: item._height.toDouble()), 
             onSizeChange: (size) {
-              item.spacerSize = WxSize(size.width.floor(),size.height.floor());
+              item._spacerSize = WxSize(size.width.floor(),size.height.floor());
             }
           );
         } else 

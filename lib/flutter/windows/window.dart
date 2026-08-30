@@ -1603,10 +1603,10 @@ class WxWindow extends WxEvtHandler {
   /// 
   /// The window or dialog will perform a layout when initially shown, but
   /// when something changes _after_ the window was shown, then you need
-  /// to call layout in wxDart Native. In wxDart Flutter, the window layout
-  /// will get updated automatically and this function will not do anything.
+  /// to call layout. In wxDart Flutter, the window layout will get updated
+  /// automatically eventually but calling [layout] will do it immediatly.
   void layout() {
-    // do nothing
+    _setState();
   }
 
   /// Associate [sizer] with this window

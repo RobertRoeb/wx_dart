@@ -91,7 +91,7 @@ class WxGridSizer extends WxSizer {
                 key: item._spacerWidgetKey,
               child: SizedBox(height: item._height.toDouble()), 
               onSizeChange: (size) {
-                item.spacerSize = WxSize(size.width.floor(),size.height.floor());
+                item._spacerSize = WxSize(size.width.floor(),size.height.floor());
               }
             );
           }
