@@ -227,7 +227,6 @@ class WxGLCanvas extends WxWindow {
       _context!._gl = _gl!;
     }
     if (_texture != null) {
-//       _flutterGlPlugin!.activateTexture(_texture!);
         _texture!.activate();
       return true;
     }
