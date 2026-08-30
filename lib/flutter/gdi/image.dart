@@ -57,6 +57,37 @@ part of '../../wx_dart.dart';
 ///     // do something with image ...
 ///   }
 /// ```
+/// 
+/// Constructors
+/// * [WxImage]
+/// * [WxImage.fromFile] (wxDart Native only)
+/// * [WxImage.fromRGB]
+/// * [WxImage.fromRGBA]
+/// 
+/// Get access to raw data
+/// * [getData]
+/// * [getAlphaData]
+/// 
+/// Convert to RGBA
+/// * [getRGBA]
+/// 
+/// Basic checks
+/// * [isOk]
+/// * [getWidth]
+/// * [getHeight]
+/// 
+/// Alpha channel
+/// * [initAlpha]
+/// * [hasAlpha]
+/// * [clearAlpha]
+/// 
+/// Setting and getting values with range checks
+/// * [setRGB]
+/// * [setAlpha]
+/// * [getRed]
+/// * [getGreen]
+/// * [getBlue]
+/// * [getAlpha]
 
 class WxImage extends WxObject {
 /// Creates an image with given [width] and [height] and clears it to black
@@ -72,6 +103,49 @@ class WxImage extends WxObject {
     // There is no way not to initiaĺize the memory
     // if (clear)
     _rgb = Uint8List(width * height * 3);
+  }
+
+/// Creates an image with given [width] and [height] and copies
+/// the data from an [rgb] buffer. 
+/// 
+/// The image is created with no alpha channel.
+  WxImage.fromRGB( int width, int height, Uint8List rgb ) {
+    _width = width;
+    _height = height;
+
+    _rgb = Uint8List(width * height * 3);
+    for (int i = 0; i < width * height * 3; i++) {
+      _rgb[i] = rgb[i];
+    }
+  }
+
+/// Creates an image with given [width] and [height] and copies
+/// the data from an [rgba] buffer. 
+  WxImage.fromRGBA( int width, int height, Uint8List rgba ) {
+    _width = width;
+    _height = height;
+
+    _rgb = Uint8List(width * height * 3);
+    _alpha = Uint8List(width * height);
+    int rgbaIndex = 0;
+    int rgbIndex = 0;
+    int alphaIndex = 0;
+    for (int y = 0; y < _height; y++) {
+      for (int x = 0; x < _width; x++) {
+          _rgb[rgbIndex] = rgba[rgbaIndex];
+          rgbaIndex++;
+          rgbIndex++;
+          _rgb[rgbIndex] = rgba[rgbaIndex];
+          rgbaIndex++;
+          rgbIndex++;
+          _rgb[rgbIndex] = rgba[rgbaIndex];
+          rgbaIndex++;
+          rgbIndex++;
+          _alpha![alphaIndex] = rgba[rgbaIndex];
+          rgbaIndex++;
+          alphaIndex++;
+      }
+    }
   }
 
   /// Returns true of the image has been built correctly
@@ -94,6 +168,16 @@ class WxImage extends WxObject {
   /// Returns height of the image
   int getHeight() {
     return _height; 
+  }
+
+  /// Returns true if the image has an alpha channel
+  bool hasAlpha() {
+    return _alpha != null;
+  }
+
+  /// Clears the alpha channel if any is present
+  void clearAlpha() {
+    _alpha = null;
   }
 
   /// Creates an alpha channel for the image and initialize it to
