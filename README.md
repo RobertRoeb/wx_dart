@@ -19,6 +19,7 @@ A cross-platform GUI library to build native desktop apps, web apps and mobile a
     - [Graphics classes](#graphics-classes)
     - [Control classes](#control-classes)
     - [Complex control classes](#complex-control-classes)
+    - [OpenGL/WebGL classes](#opengl-and-webgl-classes)
     - [wxDataViewCtrl related classes](#wxdataviewctrl-related-classes)
     - [Layout classes](#layout-classes)
     - [Event classes](#event-classes)
@@ -28,25 +29,26 @@ A cross-platform GUI library to build native desktop apps, web apps and mobile a
 * [Screencasts from desktops](#screencasts-from-the-demo)
 * [Hello World](#hello-world)
 * [Full Licence](#license-of-wxdart-flutter)
-* [Design overview](#design-overview)
-    - [Nomenclature](#nomenclature)
-    - [WxPoint and WxSize](#wxpoint-and-wxsize)
-    - [Deriving from wxWindow and wxSizer](#deriving-from-wxwindow-and-wxsizer)
-    - [Double buffering and background erasure](#double-buffering-and-background-erasure)
-    - [2D and OpenGL drawing support](#2d-and-opengl-drawing-support)
-    - [Modal dialogs](#modal-dialogs)
-    - [Resources or assets](#resources-or-assets)
-    - [Layout mechanism](#layout-mechanism)
-    - [WxBitmapBundle](#wxbitmapbundle)
-    - [Material icons](#material-icons)
-    - [Dark and Light mode and accent colour](#dark-and-light-mode-and-accent-colour)
-    - [Event handling](#event-handling)
 
 ## wxDart Flutter and wxDart Native
 
 wxDart consists of two separate libraries which offer the same API and can be used independently. 
 * 'wxDart Flutter' uses the [Flutter](https://flutter.dev) libary as its backend and is written in pure Dart.
 * 'wxDart Native' uses the [wxWidgets](https://wxwidgets.org) C++ GUI library as its backend using FFI calls.
+
+Since version 0.9.11, both wxDart Flutter and wxDart Native support
+* Asynchronous code using the async await paradigm
+* The Flutter assets system (used in many Dart libraries)
+* An extensive list of controls from menus to animations
+* WxDataViewCtrl to display and edit complex and large table and tree data
+* Dark and light mode on all platforms
+* Image formats including SVG, PNG and JPG
+* Over 2000 Material icons built-in
+* A path based modern 2D drawing API
+* An OpenGL/WebGL based 3D canvas
+* ThreeJS Dart through its own renderer using WxGLContext and WxGLCanvas
+
+Only wxDart Flutter supports mobile devices (iOS and Android) and the web.
 
 Note that both wxDart Native and wxDart Flutter support the main desktop architectures (Windows, macOS and Linux).
 When using wxDart Flutter (this package), your applications will have an identical look and feel across all desktop
@@ -235,7 +237,7 @@ of the Dart classes as well as the C++ classes which wxDart Native uses internal
 | [WxSpinCtrlDouble](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxSpinCtrlDouble-class.html) | [wxSpinCtrlDouble](https://docs.wxwidgets.org/trunk/classwx_spin_ctrl_double.html) |
 | [WxHyperlinkCtrl](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxHyperlinkCtrl-class.html) | [wxHyperlinkCtrl](https://docs.wxwidgets.org/trunk/classwx_hyperlink_ctrl.html) |
 
-## OpenGL (ES) classes
+## OpenGL and WebGL classes
 
 | Dart | C++ |
 | ------------------ | ----------------- |
@@ -343,6 +345,7 @@ Command events (deriving from WxCommandEvent)
 | Dart | C++ |
 | ------------------ | ----------------- |
 | [WxCommandEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxCommandEvent-class.html) | [wxCommandEvent](https://docs.wxwidgets.org/trunk/classwx_command_event.html) |
+| [WxWindowCreateEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxWindowCreateEvent-class.html) | [wxWindowCreateEvent](https://docs.wxwidgets.org/trunk/classwx_window_create_event.html) |
 | [WxUpdateUIEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxUpdateUIEvent-class.html) | [wxUpdateUIEvent](https://docs.wxwidgets.org/trunk/classwx_update_ui_event.html) |
 | [WxNotifyEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxNotifyEvent-class.html) | [wxNotifyEvent](https://docs.wxwidgets.org/trunk/classwx_notify_event.html) |
 | [WxNotebookEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxNotebookEvent-class.html) | [wxNotebookEvent](https://docs.wxwidgets.org/trunk/classwx_book_ctrl_event.html) |
@@ -511,327 +514,3 @@ wxWindows Library Licence, Version 3.1
   If you do not wish that, you must delete the exception notice from such
   code and/or adjust the licensing conditions notice accordingly.
 ```
-## Design overview
-
-## Nomenclature
-
-Overall, wxDart uses the exact API and nomenclature of the wxWidgets C++ GUI library. Since Dart demands that all class names start with a capital letter, all wxDart related classes use the capitalized prefix "Wx": 
-* wxWindow becomes WxWindow
-* wxBitmap becomes WxBitmap
-
-All primitive types are matched to their respective equivalents in Dart.
-* `wxString` is mapped to `String`
-* `bool` remains `bool`
-* `double` remains `double`
-* all integer types are mapped to `int`
-* `wxArrayInt` is mapped to `List<int>`
-* `wxArrayString` is mapped to `List<String>`
-* `wxClientDataObject` and `wxTreeItemData` are mapped to `dynamic`
-* `wxVariant` is mapped to `dynamic` (not actually used yet)
-* `wxVector<wxVariant>` is mapped to `List` (not actually used yet)
-* `wxPointList` is mapped to `List<WxPoint>`
-
-All constants and enums are mapped to "const int" with a non-capitalized prefix "wx". That - unfortunately - loses 
-run-time type checking, but this cannot be avoided since wxWidgets uses enumns with concrete values.
-* wxALIGN_RIGHT stays wxALIGN_RIGHT
-* *wxBLUE becomes wxBLUE
-* *wxBLUE_PEN becomes wxBLUE_PEN
-* *wxNORMAL_FONT becomes wxNORMAL_FONT
-* wxID_OK stays wxID_OK
-* xxx::NO_IMAGE becomes wxNO_IMAGE
-* wxNullCursor becomes null
-* wxNullBitmap becomes null
-* wxNullFont becomes null
-* wxDefaultPosition and wxDefaultSize remain the same
-* wxTheApp stays wxTheApp
-
-Some factory creators have become global functions
-* wxStandardPaths::Get() becomes wxGetStandardPaths()
-* wxRendererNative::Get() becomes wxGetRendererNative()
-* wxSystemSettings::Get() becomes wxGetSystemSettings()
-
-The wxWidgets logging functions have been mapped to
-* wxLogError( String text );
-* wxLogWarning( String text );
-* wxLogMessage( String text );
-* wxLogStatus( WxFrame frame, String text );
-* setLogTarget( WxTextCtrl? textCtrl );
-
-## WxPoint and WxSize
-
-WxPoint and WxSize are implemented as const classes, so their values cannot be changed. This allows the
-use of wxDefaultPosition and wxDefaultSize in constructors as it is widely done in wxWidgets. 
-
-WxRect, however, is not a constant class and can be used and changed like its C++ counterpart.
-A noteworthy difference - valid for all of wxDart - is that Dart does reference counting for
-every instance of every class. Use WxRect.fromRect() to create a deep copy. 
-
-## Deriving from wxWindow and wxSizer
-
-wxDart Native and wxDart Flutter allow the use of 'generic' classes, i.e. classes written 
-neither using the Flutter backend nor the C++ backend, but written in pure wxDart. 
-The entire wxDataViewCtrl group of classes is inplemented in pure wxDart, including its
-events, the data models, the header controls and the main control.
-
-Such generic controls can then be used with both wxDart Flutter and wxDart Native - 
-like it is done with wxDataViewCtrl.
-
-Likewise, wxDart allows the creation of generic sizers by composing existing ones. The
-WxTileSizer is a simple example of this and works with both wxDart Native and wxDart Flutter.
-
-## Double buffering and background erasure
-
-The wxWidgets C++ library was created many years ago when double buffering of window 
-content to avoid flicker was an expensive operation. In particular the Windows port
-still can show redraw flicker when not using a double buffering mechanism. 
-
-wxDart hides this and provides built-in double buffering on all platforms (Windows, macOS,
-Linux and Flutter). As a consequence of that, wxDart does not need a separate event or
-function to clear the background (like it is done in the C++ library with the wxEraseEvent).
-
-When drawing in an paint event handler, the background (i.e. the backing store) gets
-automatically cleared to the window background. This may be a single colour or a more
-complex background depending on the system, user setting, dark vs. light mode and the
-particular window. You can overwrite this with e.g. pure white, a colour gradient or a 
-bitmap in the paint handler.
-
-## 2D and OpenGL drawing support
-
-wxDart internally uses the original drawing API from the wxDC group of classes and it
-uses the GDI backend under Windows which provides fastest drawing for simple geometries
-and text.
-
-wxDart also supports the modern path based drawing API from the
-WxGraphicsContext group of classes in both wxDart Native and wxDart Flutter.
-It uses Direct2D under Windows, CoreGraphics on MacOS, Cairo on Linux and
-Impeller when using the Flutter backend.
-
-wxDart supports OpenGL (ES) through the native OpenGL API in wxDart Native
-and using the flutter_angle project in wxDart Flutter. flutter_angle uses 
-the ANGLE library on desktop platforms, OpenGL ES on mobile platforms and
-WebGL on the Web. For maximum portability, a core OpenGL 4.1 (for macOS)
-and OpenGL ES 3.1 and WebGL 2 API should be used.
-
-Ideal would be a port of ThreeJS on all platforms.
-
-## Main loop
-
-A key technical difference between wxDart Native and wxDart Flutter is that wxDart
-Native uses the native system's main event loop while wxDart Flutter uses a specialized
-hybrid Dart/native main loop. This makes no difference when executing synchronous code, 
-but using the native event loop in wxDart Native means that you cannot run any asynchronous
-Dart code in wxDart Native. Put differently, wxDart Flutter supports the async await paradigm,
-but wxDart Native currently does not.
-
-Eventually, the goal is to enable asynchronous code execution in wxDart Native, as well, but
-currently no asynchronous Dart operations are supported in wxDart Native (but they are fully
-supported in wxDart Flutter) including streams and asynchronous file operations or web transfer.
-
-## Modal dialogs
-
-As written above, wxDart Native does not currently support the async await paradigm of Dart, but Flutter
-requires it to show dialogs modally (i.e. blocking input to all other windows on screen). Therefore, 
-wxDart uses a slightly different API compared to the API of wxWidgets: the return value from
-WxDialog.showModal() is retrieved through a callback function.
-```dart
-    void showSomeDialog()
-    {
-      final dialog = MyDialog(this);
-      dialog.showModal( (ret, data) {
-        if (ret == wxID_OK) {
-          // Pressed OK
-        } else {
-          // Cancelled dialog
-        }
-      });
-    }
-```
-If the return value is not relevant, you can pass null to WxDialog.showModal():
-
-```dart
-    void showSomeDialog()
-    {
-      final dialog = MyDialog(this);
-      dialog.showModal(null);
-    }
-```
-WxDialog.showModal() will also destroy the dialog, so you cannot call WxDialog.showModal() twice.
-
-## Resources or assets
-
-Flutter and wxWidgets have the notion of assets or resources, i.e. files that will be used
-by the application during execution, such as image files or HTML text. Flutter loads assets
-asynchronously - potentially from a web server when using the Web variant - while wxWidgets
-loads them directly. wxDart either hides this difference on the level of controls or
-uses callbacks (which might get called sooner or later). 
-
-In wxDart, resource or asset files need to be in the lib/assets directory and the
-Flutter build system needs to be informed about them by adding them to the project's
-pubspec.yaml file. If README.md and flutter.png need to be used, they have to be
-declared in the pubspec.yaml file of your project like this:
-
-```yaml
-  # To add assets to your application, add an assets section, like this:
-  assets:
-     - lib/assets/README.md
-     - lib/assets/flutter.png
-```
-
-Such code is then needed to load the text file:
-
-```dart
-  void loadReadMe()
-  {
-    wxLoadStringFromResource( "README.md", (text) {
-      // here is the text
-      final readme = text;
-    } );
-  }
-```
-and likewise for an image
-
-```dart
-  void loadReadMe()
-  {
-    wxLoadImageFromResource( "flutter.png", (image) {
-      // here is the WxImage
-      final flutterImage = image;
-    } );
-  }
-```
-
-Note that for wxDart Native under OSX, the asset files need to be copied into the Resources 
-directory of the app package. For Linux, they need to be installed as by the Linux standard.
-
-## Layout mechanism
-
-The system for laying out windows or controls on screen in wxWidgets is based on so called sizers deriving from the
-wxSizer base class (see [wxSizer overview](https://docs.wxwidgets.org/trunk/overview_sizer.html)).
-The most often used sizers are wxBoxSizer, wxFlexGridSizer and wxStaticBoxSizer. Flutter
-has its own, very similar system where e.g. a [Row](https://api.flutter.dev/flutter/widgets/Row-class.html)
-corresponds to a [wxBoxSizer(wxHORIZONTAL)](https://docs.wxwidgets.org/trunk/classwx_box_sizer.html) in wxWidgets.
-
-Therefore, all wxDart sizer classes have been implemented to internally use the corresponding Flutter classes
-in wxDart Flutter, whereas they use the C++ wxSizer classes in wxDart Native. Both wxDart Flutter and wxDart
-Native lay out the controls automatically when the parent (e.g. a dialog) is shown on screen.
-
-A very subtle difference is that Flutter's layout classes automatically re-layout when they are changed also
-_after_ they have been shown on screen (e.g. by adding a control or by changing text with a different length).
-In wxWidgets, you then need to call 
-[wxDialog::Layout()](https://docs.wxwidgets.org/trunk/classwx_top_level_window.html#adfe7e3f4a32f3ed178968f64431bbfe0)
-for the controls to be laid out correctly again. 
-
-In practice, you should call WxDialog.layout() in wxDart which will do nothing in wxDart Flutter (as Flutter does
-the layout for you) and will call the C++ layout algorithm in wxDart Native. 
-
-## Using sizers within a scrolled window
-
-On the desktop, sizers are typically used to determine the size of dialog window, which usually
-do not use scrolling. On mobile devices with limited space, but also on desktop interfaces, the
-classical modal dialog is use less frequently now and vertical scrolling is used to layout
-controls. 
-
-Therefore, WxScrolledWindow in both wxDart Flutter and wxDart Native has been adapted to
-re-size the scrolling area (virtual area) to the size the sizers ask for and enable vertical
-scrolling automatically. This is slightly different from the semantics in the C++ library,
-but very convenient.
-
-## WxBitmapBundle
-
-Like the wxWidgets C++ library, wxDart supports resolution independent bitmaps through the WxBitmapBundle
-interface, i.e. a concrete WxBitmap can be constructed from e.g. two different PNG files (16x16 and 32x32)
-or from a single SVG file (which gets scaled to whatever resolution is needed).
-
-## Material icons
-
-wxDart Flutter and wxDart Native have built-in support for more than 2000 scalable icons from 
-Google's Material icon set. The data is included automatically in wxDart Native and is part of
-wxDart Flutter as well.
-
-## Dark and Light mode and accent colour
-
-Both wxDart Native and wxDart Flutter support dark and light modes. Only wxDart Flutter additionally
-supports setting an accent colour programmatically to use a specfic main branding colour in your application.
-The default is light blue.
-
-## Event handling
-
-[C++ event handling overview](https://docs.wxwidgets.org/trunk/overview_events.html)
-
-A key feature of the wxDart event handling system is that it allows you to override
-a base class behaviour as the derived class's event handler will be called first.
-If you want the base class to then execute its original code, you need to call
-WxEvent.skip(). This is particularly important when overriding the WxSizeEvent
-handler from the base class.
-
-wxDart implements the "bind" interface of the wxWidgets event handling in both wxDart Native
-and wxDart Flutter. You can bind any class deriving from WxEvtHandler to any event (even
-if that class does not emit that event). If you want to react to the event from a WxButton,
-you will typically call 
-```dart
-button.bindButtonEvent( (event)=>doSomething(), -1 );
-```
-You can also fully write out the event handler like this:
-
-```dart
-button.bindButtonEvent( onButton, -1 );
-
-void onButton( WxCommandEvent event )
-{
-  // do something
-}
-```
-
-System events like WxPaintEvent, WxKeyEvent and WxMouseEvent are only sent
-to the actual window where they occur - which is why they don't need any ID.
-It is very common to derive a new class if you handle these events
-
-```dart
-// in the constructor
-bindPaintEvent( onPaint );
-
-void onPaint( WxPaintEvent event )
-{
-  final dc = WxPaintDC( this );
-  dc.drawLine(10,10,100,100);
-}
-```
-
-Command events (all events deriving from WxCommandEvent) are propagated 
-to their parent windows (if not intercepted before) until they finally reach a top-level window
-such a s WxDialog or a WxFrame. 
-
-One usage case for propagating events up to parent windows is that you might want to design
-a dialog in an external GUI builder, then load the controls into
-your dialog and react to events in that parent dialog. But propagation of command events to
-parent windows is useful in many other situations.
-
-When intercepting command events in parent windows, such as a WxDialog, a unique
-id has to be assigned to the control and then used in the call to bind().
-
-```dart
-const int idTextCtrl = 300;
-
-final dialog = WxDialog( parent, -1, "Dialog", size: WxSize( 500,600) );
-final textctrl = WxTextCtrl( dialog, idTextCtrl );
-dialog.bindTextEvent( (event) {
-    // do something
-},idTextCtrl);
-```
-
-If the event is intercepted in the control itself, then the default id of -1 is fine.
-
-```dart
-final textctrl = WxTextCtrl( parent, -1 );
-textctrl.bindTextEvent( (event) {
-    // do something
-},-1);
-```
-
-Command events are typically sent from a control when the user e.g. clicked on a button,
-entered text in a text field or chose an item in a tree control. 
-Command events are not sent by controls when their content or selection is changed
-programmatically. This includes those cases where the events are being sent in
-the original C++ library (wxNotebook::SetSelection() and wxTextCtrl::SetValue()) - these
-two cases have been changed and corrected in wxDart Flutter _and wxDart Native_.
-

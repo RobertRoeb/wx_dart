@@ -1,8 +1,28 @@
+## 0.9.11
+
+* Changed wxDart Native way to build to use Flutter system on all systems
+* Added support for asynchronous code execution (async await) to wxDart Native
+* Added support for using the Asset framework (and other Bindings) to wxDart Native
+* Added async await sample to demo
+* Properly documented WxSizerItem and WxSizer
+* Added WxSizerItem.isSizer(), isWindow() and isSpacer()
+* Added WxSizer.getItemCount(), getItem(), getWindowItem() and getSizerItem()
+* Added WxSizer.remove(), removeSizer() and removeWindow()
+* Removed or hid platform specific code from WxSizer and WxSizerItem 
+* Corrected WxSizer.layout() and WxWindow.layout() in wxDart Flutter to update the display
+* Added WxImage.hasAlpha() and clearAlpha()
+* Added WxImage.fromRGB() and WxImage.fromRGBA() constructors
+* Updated TabbedView, used for WxNotebook, code to latest version
+* Initial work to support multi-windows on Flutter Desktop
+* Work on flutter_angle to support Flutter on Linux as well
+* Work on wxWidget's GTK+ port to allow synchronous wxDart code execution
+* Wrote ThreeJS Dart renderer using wxGlContext as the backend 
+
 ## 0.9.10
 
 * Corrected filled WxGraphicsContext.drawRectangle() etc. if a brush is used
 * Adapted OpenGL/WxGLCanvas/WxGLContext code for Flutter Web / WebGL
-* Adapted OpenGl to run on the Web and on Linux native as well
+* Adapted OpenGL to run on the Web and on Linux native as well
 * Synthesize idle event after main window resize
 * Defer sending WxSizeEvent to next Flutter frame
 * Added WxWindowCreateEvent
