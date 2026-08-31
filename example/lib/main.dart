@@ -604,22 +604,12 @@ class MyApp extends WxApp {
       }
     }
 
-/*
-      WxFrame myFrame = MyMicroFrame(null);
-      myFrame.show();
-      testAsync( "Hello" );
-       return true;
-*/
-
     if (isTouch()) {
       WxFrame myFrame = MyMobileFrame(null);
       myFrame.show();
     } else {
 
       WxFrame myFrame = MyMainFrame(null);
-
-     // WxFrame myFrame = WxFrame(null, -1, "OpenGL", pos: wxDefaultPosition, size: WxSize( 800,600) );
-     //  MyAsyncWindow(myFrame);
       myFrame.show();
 /*
       if (!wxUsesFlutter())
