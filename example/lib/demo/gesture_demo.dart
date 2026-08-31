@@ -10,14 +10,7 @@ class MyGestureWindow extends WxWindow {
     super( parent, -1, pos, size, style )
   { 
       // this assumes we are installed on the final machine
-      String assetPath = wxGetStandardPaths().getResourcesDir();
-
-      // this is for running locally
-      if (!wxUsesFlutter() && (wxIsLinux() || wxIsMSW())) {
-        assetPath = wxGetStandardPaths().getExecutablePath();
-        assetPath = assetPath.substring(0, assetPath.length-8);
-        assetPath += 'assets';
-      }
+      String assetPath = wxGetStandardPaths().getResourcesDir( useLocalDirOnLinuxAndWindows: true );
 
       // Add forward or backward slash
       if (wxIsMSW() && !wxUsesFlutter()) {

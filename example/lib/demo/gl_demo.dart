@@ -143,8 +143,6 @@ class CubeGLContext extends MatrixContext
     initVertices();
 
     _onPrepareDone = true;
-    // In wxDart Native, wxLoadImageFromResource() is synchonous and has
-    // finished by now. Update the OpenGL surface if we have everything.
     if (_dataLoaded) {
       _cubeWindow.updateCamera();
     }
@@ -174,8 +172,8 @@ class CubeGLContext extends MatrixContext
     wxLoadImageFromResource("horse.png", ((image)
     {
       // TODO: do we have to call these?
-      // makeCurrent() 
       // gl.bindVertexArray( _vao );
+      // makeCurrent() 
 
       neheTexture = createTexture();
       gl.pixelStorei(WebGL.UNPACK_ALIGNMENT, 1);
@@ -200,9 +198,6 @@ class CubeGLContext extends MatrixContext
       _dataLoaded = true;
 
       if (_onPrepareDone) {
-        // In wxDart Flutter, wxLoadImageFromResource() is asynchonous and can
-        // finish after onPrepare(). Update the OpenGL surface if we have 
-        // everything.
         _cubeWindow.updateCamera();
       }
     }) );
@@ -281,10 +276,9 @@ class CubeGLContext extends MatrixContext
     gl.disable(WebGL.BLEND);
     // checkError("disable(gl.CULL_FACE" );
 
-    // render() may have been called from a size event handler
-    // before the data has been loaded. Indeed, the data may
-    // never be loaded if the connection goes down.
-    if (!_dataLoaded) return;
+    if (!_dataLoaded) {
+      return;
+    }
 
     gl.bindVertexArray( _vao );
     checkError("bindVertexArray" );
@@ -363,9 +357,6 @@ class MyCubeWindow extends WxGLCanvas
     attrs.endList();
     _glContext = CubeGLContext(this,attrs);
 
-    // Update the surface after a resize. Note that a size
-    // event may get sent before the WxGLContext is properly
-    // set up, so test this in WxGLContext (_dataLoaded).
     bindSizeEvent( (_) => updateCamera() );
   }
 
@@ -391,14 +382,12 @@ class MyCubeWindow extends WxGLCanvas
 
   void updateCamera()
   {
-    // setCurrent() can fail - typically when called too soon
-    // in window creation process
     if (!setCurrent(_glContext)) {
       return;
     }
+
     final size = getClientSize();
     _glContext.setViewport( size.x, size.y );
-
     _glContext.render();
     swapBuffers();
   }

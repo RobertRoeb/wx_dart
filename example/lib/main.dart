@@ -21,6 +21,7 @@ import 'demo/drawer_demo.dart';
 import 'demo/gesture_demo.dart';
 import 'demo/fireworks_demo.dart';
 import 'demo/gl_demo.dart';
+import 'demo/async_demo.dart';
 
 
 // ------------------------- Ids ----------------------
@@ -165,8 +166,6 @@ class MyMainFrame extends WxAdaptiveFrame {
     final panel1 = MyInfoPage(databook);
     final chapter1 = databook.appendChapter( null, "Start", panel1 );
 
-    databook.appendPage( chapter1, null, "OpenGL", MyGLPage(databook) );
-
     final design = WxHtmlWindow(databook, -1);
     databook.appendPage( chapter1, null, "Overview", design );
     wxLoadStringFromResource( "DesignOverview.md", (text) {
@@ -178,6 +177,10 @@ class MyMainFrame extends WxAdaptiveFrame {
       classes.setPage( md.markdownToHtml(text, blockSyntaxes: [md.TableSyntax()]) );
     });
 
+
+    databook.appendPage( chapter1, null, "OpenGL", MyGLPage(databook) );
+
+    databook.appendPage( chapter1, null, "Async code", MyAsyncWindow(databook) );
 
     databook.appendPage( chapter1, null, "Sizers", MySizerWindow(databook) );
 
@@ -517,7 +520,21 @@ class MyMicroFrame extends WxFrame {
   MyMicroFrame( WxWindow ?parent ) 
   : super( parent, -1, "wxDart Demo", size: WxSize( 800, 600 ) )
   {
-    const int test = 4;
+    final menubar = WxMenuBar();
+    final filemenu = WxMenu();
+    filemenu.appendItem( idAbout, "About...\tAlt-A", help: "Info about wxDart 1.0" );
+    filemenu.appendSeparator();
+    filemenu.appendItem( wxID_EXIT, "Quit app\tCtrl-Q", help: "Run, baby, run!" );
+    menubar.append(filemenu, "&File");
+
+    setMenuBar(menubar);
+    
+    bindMenuEvent( (_) => close(false), wxID_EXIT );
+    bindCloseWindowEvent( (_) => destroy() );
+
+      createStatusBar( number: 1 );
+
+    const int test = 3;
 
     if (test == 0)
     {
@@ -586,18 +603,23 @@ class MyApp extends WxApp {
         return true;
       }
     }
+
 /*
       WxFrame myFrame = MyMicroFrame(null);
       myFrame.show();
-      return true;
+      testAsync( "Hello" );
+       return true;
 */
+
     if (isTouch()) {
       WxFrame myFrame = MyMobileFrame(null);
       myFrame.show();
     } else {
+
       WxFrame myFrame = MyMainFrame(null);
-//      WxFrame myFrame = WxFrame(null,-1,"MyFrame");
-//      MyGLPage( myFrame );
+
+     // WxFrame myFrame = WxFrame(null, -1, "OpenGL", pos: wxDefaultPosition, size: WxSize( 800,600) );
+     //  MyAsyncWindow(myFrame);
       myFrame.show();
 /*
       if (!wxUsesFlutter())
@@ -607,7 +629,7 @@ class MyApp extends WxApp {
       }
 */
     }
-    return true;
+      return true;
   }
 
   @override

@@ -4,14 +4,23 @@ wxDart consists of two separate libraries which offer the same API and can be us
 * 'wxDart Flutter' uses the [Flutter](https://flutter.dev) libary as its backend and is written in pure Dart.
 * 'wxDart Native' uses the [wxWidgets](https://wxwidgets.org) C++ GUI library as its backend using FFI calls.
 
+Both wxDart Flutter and wxDart Native support
+* Asynchronous code using the async await paradigm
+* The Flutter assets system (used in many Dart libraries)
+* An extensive list of controls from menus to animations
+* WxDataViewCtrl to display and edit complex and large table and tree data
+* Dark and light mode on all platforms
+* Image formats including SVG, PNG and JPG
+* Over 2000 Material icons built-in
+* A path based modern 2D drawing API
+* An OpenGL/WebGL based 3D canvas
+* ThreeJS Dart through its own renderer using WxGLContext and WxGLCanvas
+
+Only wxDart Flutter supports mobile devices (iOS and Android) and the web.
+
 Note that both wxDart Native and wxDart Flutter support the main desktop architectures (Windows, macOS and Linux).
-When using wxDart Flutter, your applications will have an identical look and feel across all desktop
+When using wxDart Flutter (this package), your applications will have an identical look and feel across all desktop
 platforms (and on the web). With wxDart Native, your applications will have the native look and feel.
-
-wxDart aims to provide Dart bindings to the wxWidgets library very similar to the hugely popular
-[wxPython](https://wxpython.org/) for Python, adding support for mobile apps and web apps.
-
-If you are coming from the Flutter world, consider wxDart a new toolkit based on the Flutter core (next to [Material UI](https://flutter.dev/docs/development/ui/widgets/material), [Cupertino UI](https://flutter.dev/docs/development/ui/widgets/cupertino), [MacOS UI](https://pub.dev/packages/macos_ui) or [Fluent UI](https://pub.dev/packages/fluent_ui)), but with a fully native twin brother library and a single code base for all of them.
 
 ## Licence
 
@@ -112,50 +121,8 @@ group of classes. These are not available in wxDart yet. Once done, it will use 
 Direct2D backend under Windows, CoreGraphics on MacOS, Cairo on Linux and Impellar
 when using the Flutter backend.
 
-There is no 3D support in wxDart yet. Ideal would be a port of ThreeJS on all platforms.
-
-## Dart main loop vs. wxWidgets main event loop
-
-A key technical difference between wxDart Native and wxDart Flutter is that wxDart
-Native uses the native system's main event loop while wxDart Flutter uses a specialized
-hybrid Dart/native main loop. This makes no difference when executing synchronous code, 
-but using the native event loop in wxDart Native means that you cannot run any asynchronous
-Dart code in wxDart Native. Put differently, wxDart Flutter supports the async await paradigm,
-but wxDart Native currently does not.
-
-Eventually, the goal is to enable asynchronous code execution in wxDart Native, as well, but
-currently no asynchronous Dart operations are supported in wxDart Native (but they are fully
-supported in wxDart Flutter) including streams and asynchronous file operations or web transfer.
-
-## Modal dialogs
-
-As written above, wxDart Native does not currently support the async await paradigm of Dart, but Flutter
-requires it to show dialogs modally (i.e. blocking input to all other windows on screen). Therefore, 
-wxDart uses a slightly different API compared to the API of wxWidgets: the return value from
-WxDialog.showModal() is retrieved through a callback function.
-```dart
-    void showSomeDialog()
-    {
-      final dialog = MyDialog(this);
-      dialog.showModal( (ret, data) {
-        if (ret == wxID_OK) {
-          // Pressed OK
-        } else {
-          // Cancelled dialog
-        }
-      });
-    }
-```
-If the return value is not relevant, you can pass null to WxDialog.showModal():
-
-```dart
-    void showSomeDialog()
-    {
-      final dialog = MyDialog(this);
-      dialog.showModal(null);
-    }
-```
-WxDialog.showModal() will also destroy the dialog, so you cannot call WxDialog.showModal() twice.
+wxDart supports OpenGL/WebGL based 3D drawing through its WxGLContext and WxGLCanvas 
+classes and it supports ThreeJS Dart through its own renderer.
 
 ## Resources or assets
 
@@ -206,15 +173,6 @@ corresponds to a [wxBoxSizer(wxHORIZONTAL)](https://docs.wxwidgets.org/3.3/class
 Therefore, all wxDart sizer classes have been implemented to internally use the corresponding Flutter classes
 in wxDart Flutter, whereas they use the C++ wxSizer classes in wxDart Native. Both wxDart Flutter and wxDart
 Native lay out the controls automatically when the parent (e.g. a dialog) is shown on screen.
-
-A very subtle difference is that Flutter's layout classes automatically re-layout when they are changed also
-_after_ they have been shown on screen (e.g. by adding a control or by changing text with a different length).
-In wxWidgets, you then need to call 
-[wxDialog::Layout()](https://docs.wxwidgets.org/3.3/classwx_top_level_window.html#adfe7e3f4a32f3ed178968f64431bbfe0)
-for the controls to be laid out correctly again. 
-
-In practice, you should call WxDialog.layout() in wxDart which will do nothing in wxDart Flutter (as Flutter does
-the layout for you) and will call the C++ layout algorithm in wxDart Native. 
 
 ## Using sizers within a scrolled window
 

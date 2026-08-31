@@ -20,16 +20,15 @@ class MyInfoPage extends WxScrolledWindow {
 
     sizer.add( WxStaticText( this, -1, "- Dart creates native binaries (and Javascript on the Web)"), flag: wxLEFT, border: 5 );
     sizer.add( WxStaticText( this, -1, "- Native look'n'feel on Windows, macOS and Linux"), flag: wxLEFT, border: 5 );
-    sizer.add( WxStaticText( this, -1, "- Alternatively, identical look'n'feel on all platforms"), flag: wxLEFT, border: 5 );
-    sizer.add( WxStaticText( this, -1, "- Support for iOS and Android"), flag: wxLEFT, border: 5 );
-    sizer.add( WxStaticText( this, -1, "- Desktop Web and mobile Web"), flag: wxLEFT, border: 5 );
+    sizer.add( WxStaticText( this, -1, "- Supports 'async await' on all platforms"), flag: wxLEFT, border: 5 );
+    sizer.add( WxStaticText( this, -1, "- Supports OpenGL and ThreeJS on all platforms"), flag: wxLEFT, border: 5 );
+    sizer.add( WxStaticText( this, -1, "- Support for iOS and Android (touch interface) and the web"), flag: wxLEFT, border: 5 );
     sizer.add( WxStaticText( this, -1, "- Support for light and dark modes"), flag: wxLEFT, border: 5 );
-    sizer.add( WxStaticText( this, -1, "- Support for touch and desktop interfaces"), flag: wxLEFT, border: 5 );
   
     sizer.addSpacer(10);
     sizer.add( WxStaticText( this, -1, "Current stage" )..setFont(WxFont(16,weight:wxFONTWEIGHT_BOLD)), flag: wxALL|wxALIGN_LEFT, border: 10 );
     sizer.add( WxStaticText( this, -1, 
-      "wxDart is currently in the stage of tech preview. This app has been written using wxDart."
+      "wxDart is approaching a first stable version. This app has been written using wxDart."
      , style: wxST_WRAP ), flag: wxALL, border: 10 );
 
 

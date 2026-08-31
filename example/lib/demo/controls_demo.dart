@@ -1,21 +1,6 @@
 
 import 'package:wx_dart/wx_dart.dart';
 
-/*
-import 'package:flutter/material.dart';
-
-class MyNativeWindow extends WxNativeWindow {
-  MyNativeWindow( WxWindow parent ) : super( parent, -1 );
-
-  @override
-  Widget buildWidget(BuildContext context) {
-    return 
-      doBuildSystemEventHandlers(context, 
-        Text( 'This is a native Flutter window.' ) );
-  }
-}
-*/
-
 class MyControlsWindow extends WxScrolledWindow {
   MyControlsWindow( WxWindow parent ) : super( parent, -1, style: wxVSCROLL )
   {
@@ -27,10 +12,6 @@ class MyControlsWindow extends WxScrolledWindow {
     mainSizer.add( WxStaticText(this, -1, "The boxes below show various controls", style: wxST_WRAP), 
         flag: wxALL|wxALIGN_CENTER_HORIZONTAL, border: 10 );
 
-/*
-    mainSizer.add( MyNativeWindow(this), 
-        flag: wxALL|wxALIGN_CENTER_HORIZONTAL, border: 10 );
-*/
 
     sbs = WxStaticBoxSizer(wxVERTICAL, this, "WxStaticText" );
     mainSizer.addSizer( sbs, flag: wxEXPAND|wxALL, border: 10 );
@@ -118,21 +99,6 @@ class MyControlsWindow extends WxScrolledWindow {
 
   void createComboBoxPage( WxStaticBoxSizer sizer, WxWindow parent )
   {
-    sizer.add( WxStaticText(parent, -1, "WxBitmapComboBox:"), flag: wxALL, border: 5 );
-    final bitmapCombo = WxBitmapComboBox(parent, -1, size: WxSize(300,-1) );
-
-    final bitmap1 = WxBitmapBundle.fromMaterialIcon( WxMaterialIcon.fit_screen, WxSize(24, 24), );
-    final bitmap2 = WxBitmapBundle.fromMaterialIcon( WxMaterialIcon.play_arrow, WxSize(24, 24) );
-    final bitmap3 = WxBitmapBundle.fromMaterialIcon( WxMaterialIcon.pause, WxSize(24, 24) );
-    bitmapCombo.appendWithBitmap("fit_screen", bitmap1 );
-    bitmapCombo.append("no image" );
-    bitmapCombo.appendWithBitmap("play_arrow", bitmap2 );
-    bitmapCombo.appendWithBitmap("pause", bitmap3 );
-    sizer.add( bitmapCombo, flag: wxALL, border: 5 );
-
-    sizer.addSpacer(10);
-
-    sizer.add( WxStaticText(parent, -1, "WxComboBox:"), flag: wxALL, border: 5 );
     final combo = WxComboBox( parent, -1, choices: ['Choice #3','Choice #2','Choice #1'], size: WxSize(200, -1), style: wxCB_SORT );
     sizer.add( combo, flag: wxALL, border: 5 );
 
@@ -365,6 +331,7 @@ class MyControlsWindow extends WxScrolledWindow {
     bottomSizer.addStretchSpacer();
     bottomSizer.add( WxStaticText(parent, -1, 'PNG:  '), flag: wxALIGN_CENTER_VERTICAL );
     path = "${assetPath}wxWidgets.png";
+
     bottomSizer.add( WxStaticBitmap(parent, -1, WxBitmapBundle.fromPNGAsset( path)), flag: wxALIGN_CENTER_VERTICAL|wxALL, border: 5 );
     bottomSizer.addStretchSpacer();
     bottomSizer.add( WxStaticText(parent, -1, 'SVG:  '), flag: wxALIGN_CENTER_VERTICAL );
