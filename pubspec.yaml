@@ -1,6 +1,6 @@
 name: wx_dart
 description: "Flutter backend of wxDart"
-version: 0.9.10
+version: 0.9.11
 homepage: https://github.com/RobertRoeb/wx_dart
 
 environment:
@@ -10,7 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  single_child_two_dimensional_scroll_view: ^0.0.3
+  single_child_two_dimensional_scroll_view: ^0.1.0
   url_launcher: ^6.3.2
   multi_split_view: ^3.6.1
   tabbed_view: ^3.1.0
@@ -20,10 +20,12 @@ dependencies:
   scrollable_positioned_list: ^0.3.8
   input_quantity: ^2.5.1
   flutter_html: ^3.0.0
+  #  git:
+  #    url: https://github.com/suhail-121/flutter_html.git
   floating_dialog: ^1.1.1+1
   file_picker: ^10.3.10
   path_provider: ^2.1.5
-  desktop_window: ^0.4.2
+  desktop_window: ^0.4.4
   ffi: ^2.2.0
   flutter_angle: ^0.4.2
 
