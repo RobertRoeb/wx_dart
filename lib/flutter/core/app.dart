@@ -113,8 +113,6 @@ class WxDartAppWidgetState extends State<WxDartAppWidget>
   late final AppLifecycleListener _listener;
   double _screenWidth = 1280;
   double _screenHeight = 800;
-  double _oldScreenWidth = 1280;
-  double _oldScreenHeight = 800;
   bool _idleScheduled = false;
 
   @override
@@ -181,16 +179,11 @@ class WxDartAppWidgetState extends State<WxDartAppWidget>
     });
   }
 
-  @override
-  Widget build(BuildContext context)
+  void _wakeUpIdle() async
   {
-    _screenWidth = MediaQuery.sizeOf(context).width;
-    _screenHeight = MediaQuery.sizeOf(context).height;
-    if ((_screenWidth != _oldScreenWidth) || (_screenHeight != _oldScreenHeight)) {
-      _oldScreenHeight = _screenHeight;
-      _oldScreenWidth = _screenWidth;
       if (!_idleScheduled) {
         _idleScheduled = true;
+        await Future.delayed( const Duration( milliseconds: 0 ));
         WidgetsBinding.instance.addPostFrameCallback((_) {
           for (final tlw in _topLevelWindows) {
             tlw._callRecursiveOnInternalIdle( tlw );
@@ -198,6 +191,16 @@ class WxDartAppWidgetState extends State<WxDartAppWidget>
           _idleScheduled = false;
         });        
       }
+  }
+
+  @override
+  Widget build(BuildContext context)
+  {
+    _screenWidth = MediaQuery.sizeOf(context).width;
+    _screenHeight = MediaQuery.sizeOf(context).height;
+
+    if (!_idleScheduled) {
+      _wakeUpIdle();
     }
 
     if (theTLW == null) {

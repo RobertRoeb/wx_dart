@@ -32,7 +32,7 @@ class MyAsyncWindow extends WxScrolledWindow {
       }
     }, -1 );
 
-    final startAsyncButton = WxButton( this, -1, "Start async" );
+    final startAsyncButton = WxButton( this, -1, "Add controls asynchronously" );
     buttonSizer.add( startAsyncButton, flag: wxALL, border: 10 );
     startAsyncButton.bindButtonEvent( (_) {
       _topSizer.add( WxStaticText(this, -1, "Before calling async operation" ), border: 5, flag: wxALL );
@@ -41,6 +41,13 @@ class MyAsyncWindow extends WxScrolledWindow {
       _topSizer.add( WxStaticText(this, -1, "After calling async operation" ), border: 5, flag: wxALL );
       _topSizer.layout();
     } , -1 );
+
+    bindIdleEvent( (_) {
+      if (removeButton.isShown() != (_topSizer.getItemCount() > 0)) {
+        removeButton.show( show: (_topSizer.getItemCount() > 0) );
+        layout();
+      }
+    } );
   }
 
   Future<void> loadImagesAsync() async
