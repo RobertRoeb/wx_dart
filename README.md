@@ -37,16 +37,16 @@ wxDart consists of two separate libraries which offer the same API and can be us
 * 'wxDart Native' uses the [wxWidgets](https://wxwidgets.org) C++ GUI library as its backend using FFI calls.
 
 Since version 0.9.11, both wxDart Flutter and wxDart Native support
-* Asynchronous code using the async await paradigm
-* The Flutter assets system (used in many Dart libraries)
-* An extensive list of controls from menus to animations
-* WxDataViewCtrl to display and edit complex and large table and tree data
-* Dark and light mode on all platforms
-* Image formats including SVG, PNG and JPG
-* Over 2000 Material icons built-in
-* A path based modern 2D drawing API
-* An OpenGL/WebGL based 3D canvas
-* ThreeJS Dart through its own renderer using WxGLContext and WxGLCanvas
+* Asynchronous code using the [async await](https://dart.dev/libraries/async/async-await) paradigm
+* The Flutter [assets](https://api.flutter.dev/flutter/services/AssetBundle-class.html) system (used in many Dart libraries)
+* An extensive list of controls from [menus](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxMenuBar-class.html) to [animations](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxAnimationCtrl-class.html)
+* [WxDataViewCtrl](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDataViewCtrl-class.html) to display and edit complex and large table and tree data
+* [Dark and light](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxApp/setAppearance.html) mode on all platforms
+* Image formats including [SVG](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxBitmapBundle/WxBitmapBundle.fromSVG.html), PNG and JPG
+* Over 2000 [Material icons](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxBitmapBundle/WxBitmapBundle.fromMaterialIcon.html) built-in
+* A path based modern [2D drawing](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxGraphicsContext-class.html) API
+* An OpenGL ES/WebGL based [OpenGL canvas](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxGLCanvas-class.html).
+* 3D scenes through its own [ThreeJS renderer](https://pub.dev/packages/three_js_wx_renderer) linking WxGLContext and WxGLCanvas to [ThreeJS Dart](https://pub.dev/packages/three_js)
 
 Only wxDart Flutter supports mobile devices (iOS and Android) and the web.
 
