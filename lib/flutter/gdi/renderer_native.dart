@@ -51,7 +51,7 @@ const int wxCONTROL_ITEM_LAST        = wxCONTROL_DIRTY;
 
 
 /// A class for rendering elements of th UI using the underlying systems
-/// functions of colour choices. 
+/// functions and colour choices. 
 /// 
 /// A reference to this class is acquired through the global function [wxGetRendererNative].
 /// 

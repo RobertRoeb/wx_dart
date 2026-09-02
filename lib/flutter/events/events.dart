@@ -651,7 +651,7 @@ class WxDialogValidateEventTableEntry extends WxEventTableEntry {
 /// 
 /// See also [WxInitDialogEvent].
 /// 
-/// dart``` 
+///```dart
 ///     // Validate entered data and transfer it somewhere if OK
 ///     bindDialogValidateEvent( (event) {
 ///       final newdata = text.getValue();
@@ -667,7 +667,7 @@ class WxDialogValidateEventTableEntry extends WxEventTableEntry {
 ///     }, -1); 
 ///   }
 /// }
-/// ``` 
+///``` 
 
 class WxDialogValidateEvent extends WxNotifyEvent {
   WxDialogValidateEvent( { int id = 0 } ) : super( wxGetDialogValidateEventType(), id );
@@ -707,7 +707,7 @@ class WxScrollWinEventTableEntry extends WxEventTableEntry {
 /// | void unbindScrollWinEvent() |
 
 class WxScrollWinEvent extends WxEvent {
-  /// Creates a the event. Done by [WxScrolledWindow].
+  /// Creates the event. Done by [WxScrolledWindow].
   WxScrollWinEvent( int eventType, { int orientation = 0, int position = 0 } ) : super( eventType, -1 )
   {
     _orientation = orientation;

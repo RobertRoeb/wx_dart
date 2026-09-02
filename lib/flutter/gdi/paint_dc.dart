@@ -12,6 +12,12 @@ part of '../../wx_dart.dart';
 /// Main device context (drawing class) for drawing into a window. The
 /// interface is derived from [WxReadOnlyDC] and [WxDC].
 /// 
+/// All line drawing functions like [drawLine] draw using the current pen which
+/// needs to be set using [setPen]. Functions like [drawRectangle] either use the
+/// current pen or the the current brush to fill out shapes or both. Use [setBrush]
+/// to set the filling style. Both [WxPen] and [WxBrush] have transparent variants
+/// indicating that no drawing or no filling should take place.
+/// 
 /// This class can only be used in a paint event handler.
 /// 
 /// Here is an example of a how [WxPaintDC] is used.
@@ -31,6 +37,9 @@ part of '../../wx_dart.dart';
 ///   {
 ///     // create paint device context during paint event
 ///     final dc = WxPaintDC( this );
+/// 
+///     // set a black pen to draw
+///     dc.setPen( wxBLACK_PEN );
 /// 
 ///     // draw something
 ///     dc.drawLine( 10, 10, 100, 100 );
@@ -62,6 +71,9 @@ part of '../../wx_dart.dart';
 /// 
 ///     // adjust for scrolling
 ///     doPrepareDC(dc);
+/// 
+///     // set a black pen to draw
+///     dc.setPen( wxBLACK_PEN );
 /// 
 ///     // draw a line
 ///     dc.drawLine( 10, 10, 100, 100 );

@@ -15,6 +15,12 @@ const int wxWINDING_RULE = 2;
 /// Base class for [WxPaintDC] and [WxMemoryDC]. It defines the
 /// standard 2D drawing interface.
 /// 
+/// All line drawing functions like [drawLine] draw using the current pen which
+/// needs to be set using [setPen]. Functions like [drawRectangle] either use the
+/// current pen or the the current brush to fill out shapes or both. Use [setBrush]
+/// to set the filling style. Both [WxPen] and [WxBrush] have transparent variants
+/// indicating that no drawing or no filling should take place.
+/// 
 /// wxDart currently uses the original drawing API from the wxDC
 /// (device context = drawing API) group of classes.
 /// 

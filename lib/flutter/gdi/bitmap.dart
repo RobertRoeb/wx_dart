@@ -26,7 +26,7 @@ const int wxBITMAP_TYPE_ANY = 50;
 /// the connection goes down, the internal representation will never
 /// be created. You can ignore that in you code: controls using
 /// bitmaps and [WxDC.drawBitmap] know about asynchronous bitmap
-/// creation and will get notified once the bitmap is fully build
+/// creation and will get notified once the bitmap is fully built
 /// and will then redraw themselves. 
 /// 
 /// You cannot currently manipulate objects of this class directly.
