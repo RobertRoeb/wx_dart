@@ -371,7 +371,11 @@ class WxApp extends WxEvtHandler
   {
     if (theTLW != null) {
       _appWidget = WxDartAppWidget();
-      runApp( _appWidget! );
+      runWidget(
+        MultiViewApp(
+          viewBuilder: (BuildContext context) => _appWidget!,
+        ),
+      );
     
 /*
    //  it's all in, behind a flutter config --enable-windowing feature flag:

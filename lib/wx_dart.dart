@@ -29,6 +29,7 @@ import 'package:desktop_window/desktop_window.dart';
 import 'package:flutter_angle/flutter_angle.dart';
 part 'webgl_constants.dart';
 part 'enums.dart';
+part 'flutter/core/viewbuilder.dart';
 part 'flutter/core/app.dart';
 part 'flutter/core/event.dart';
 part 'flutter/core/evt_handler.dart';

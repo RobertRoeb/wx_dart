@@ -1,3 +1,7 @@
+## 0.9.12
+
+* Allow wxDart Flutter apps on the web to appear in an HTML window - not just full-screen apps
+
 ## 0.9.11
 
 * Changed wxDart Native way to build to use Flutter system on all systems
