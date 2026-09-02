@@ -63,18 +63,34 @@ const wxDefaultPosition = WxPoint( -1, -1 );
 // ------------------------- wxRealPoint ----------------------
 
 /// Represents a position using double values. WxRealPoint is currently
-/// not used in any API, but it is handy to store coordinated for 
+/// not used in any API, but it is handy to store coordinates for 
 /// drawing with drawing operation using [WxGraphicsContext]
 /// 
 /// This class is constant.
 /// 
-/// see [WxPoint], [WxGraphicsContext]
+/// see [WxPoint], [WxGraphicsContext], [WxRealOffset]
 
 class WxRealPoint {
   const WxRealPoint( this.x, this.y );
   static WxRealPoint zero = WxRealPoint(0, 0);
   final double x;
   final double y;
+}
+
+// ------------------------- wxRealOffset ----------------------
+
+/// Represents an offset using double values. WxRealOffset is currently
+/// not used in any API, but it is handy to store offsets.
+/// 
+/// This class is constant.
+/// 
+/// see [WxRealPoint], [WxGraphicsContext]
+
+class WxRealOffset {
+  const WxRealOffset( this.dx, this.dy );
+  static WxRealOffset zero = WxRealOffset(0, 0);
+  final double dx;
+  final double dy;
 }
 
 // ------------------------- wxRect ----------------------
