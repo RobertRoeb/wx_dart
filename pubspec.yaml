@@ -19,9 +19,8 @@ dependencies:
   gif_view: ^1.0.3
   scrollable_positioned_list: ^0.3.8
   input_quantity: ^2.5.1
-  flutter_html: ^3.0.0
-  #  git:
-  #    url: https://github.com/suhail-121/flutter_html.git
+  flutter_widget_from_html_core: ^0.17.3
+  # flutter_html: ^3.0.0
   floating_dialog: ^1.1.1+1
   file_picker: ^10.3.10
   path_provider: ^2.1.5

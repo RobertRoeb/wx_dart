@@ -117,6 +117,7 @@ class WxHtmlWindow extends WxControl {
   Widget _build(BuildContext context)
   {
     final finalWidget = SingleChildScrollView(
+    /*
         child: Html(
           onLinkTap: (link, map, element) {
             if (link != null) {
@@ -127,6 +128,14 @@ class WxHtmlWindow extends WxControl {
             }
           },
           data: _data )
+    */
+        child: HtmlWidget( _data,
+        onTapUrl: (link) {
+              final event = WxHtmlLinkEvent(getId(), link );
+              event.setEventObject( this );
+              if (processEvent(event)) return true;
+              return false;
+        }, )
     );
 
     return _buildControl( context, finalWidget );
