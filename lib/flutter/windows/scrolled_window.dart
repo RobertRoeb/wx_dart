@@ -18,7 +18,7 @@ part of '../../wx_dart.dart';
 /// On mobile platforms, but more and more commonly also on desktop screens,
 /// it is common to allow vertical scrolling only and use [WxSizer]s to layout
 /// controls. You need to use the wxVSCROLL flag in this case (see below) and
-/// wxDart will take care of setting scrollbars and layout out the controls:
+/// wxDart will take care of setting scrollbars and laying out the controls:
 /// 
 ///```dart
 ///class MySizerWindow extends WxScrolledWindow {
@@ -26,6 +26,8 @@ part of '../../wx_dart.dart';
 ///  {
 ///    final mainSizer = WxBoxSizer( wxVERTICAL );
 ///    setSizer( mainSizer );
+/// 
+///    // add windows or controls to mainSizer here
 ///  }
 ///}
 ///```
@@ -64,6 +66,9 @@ part of '../../wx_dart.dart';
 /// 
 ///     // adjust for scrolling
 ///     doPrepareDC(dc);
+/// 
+///     // set black pen
+///     dc.setPen( wxBLACK_PEN );
 /// 
 ///     // draw a line
 ///     dc.drawLine( 10, 10, 100, 100 );
