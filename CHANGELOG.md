@@ -1,6 +1,9 @@
 ## 0.9.12
 
 * Allow wxDart Flutter apps on the web to appear in an HTML window - not just full-screen apps
+* Added WxRealOffset for conveniance
+* Change from flutter_html to flutter_widget_from_html because the former is no longer maintained
+* Several documentation updates 
 
 ## 0.9.11
 
