@@ -212,7 +212,31 @@ abstract class WxBookCtrlBase extends WxControl {
     }
   }
 
+  /// Returns the index of the image of the given [page]
+  int getPageImage( int page ) {
+    WxPageItem? item = _pages.elementAtOrNull(page);
+    if (item != null) {
+      return item.image;
+    }
+    return -1;
+  }
+
+  /// Sets image of page at index [page] to [image]
+  /// 
+  /// Returns true on success
+  bool setPageImage( int page, int image ) {
+    WxPageItem? item = _pages.elementAtOrNull(page);
+    if (item != null) {
+      item.image = image;
+      _setState();
+      return true;
+    }
+    return false;
+  }
+
   /// Delete page at index [page]
+  /// 
+  /// Returns true on success
   bool deletePage( int page ) {
     WxWindow? window = getPage(page);
     if (window == null) {
@@ -235,7 +259,7 @@ abstract class WxBookCtrlBase extends WxControl {
     destroyChildren();
     _recreateController;
     _setState();
-    return false;
+    return true;
   }
 }
 
