@@ -313,9 +313,7 @@ class MyControlsWindow extends WxScrolledWindow {
 
   void createImagePage( WxStaticBoxSizer sizer, WxWindow parent )
   {
-      // this assumes we are installed on the final machine
-      String assetPath = wxGetStandardPaths().getResourcesDir( useLocalDirOnLinuxAndWindows: true );
-
+      String assetPath = wxGetStandardPaths().getResourcesDir();
       // Add forward or backward slash
       if (wxIsMSW() && !wxUsesFlutter()) {
         assetPath += "\\";

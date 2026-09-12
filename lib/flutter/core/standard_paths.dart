@@ -63,23 +63,23 @@ class WxStandardPaths extends WxClass {
 
   /// Returns the standard directory for resources/assets like text files or images.
   /// 
-  /// In wxDart Flutter, all resource files should be stored under lib/assets and this
-  /// function will always return "lib/assets" there. Flutter will either add the actual
+  /// In wxDart, all resource files should be stored under lib/assets and this
+  /// function will always return "lib/assets". wxDart will either add the actual
   /// files to the binary, put them into a resource folder or make them downloadable
   /// using http when using Flutter on the Web.
   /// 
   /// In wxDart Native, there are two different scenarios. The resource directory is
   /// either the folder where the resource files should be located when the final
-  /// software is installed, or they are left in lib/assets, indicated by [useLocalDirOnLinuxAndWindows],
-  /// in which case the returned path will be the folder in which the executable
-  /// is located with the subdirectory _assets_ appended.
+  /// software is installed indicated by [useInstalledDirectory], or they are left
+  /// in lib/assets as explained above. If you use the [useInstalledDirectory] option the 
+  /// subdirectory _assets_ will be appended appended.
   /// 
   /// * macOS myapp.app/Contents/Resources (bundle subdirectory)
   /// * iOS: myapp.app (bundle subdirectory)
   /// * Linux/Unix: prefix/share/myapp or $exepath/assets
   /// * Windows: folder where the executable is located or $exepath/assets
   ///  
-  String getResourcesDir( { bool useLocalDirOnLinuxAndWindows = false } ) {
+  String getResourcesDir( { bool useInstalledDirectory = false } ) {
     return "lib/assets";
   }
 

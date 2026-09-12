@@ -32,9 +32,7 @@ class MyInfoPage extends WxScrolledWindow {
      , style: wxST_WRAP ), flag: wxALL, border: 10 );
 
 
-      // this assumes we are installed on the final machine
-      String assetPath = wxGetStandardPaths().getResourcesDir( useLocalDirOnLinuxAndWindows: true );
-
+      String assetPath = wxGetStandardPaths().getResourcesDir();
       // Add forward or backward slash
       if (wxIsMSW() && !wxUsesFlutter()) {
         assetPath += "\\";

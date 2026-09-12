@@ -9,9 +9,7 @@ class MyGestureWindow extends WxWindow {
   MyGestureWindow( WxWindow parent, { WxPoint pos=wxDefaultPosition, WxSize size=wxDefaultSize, int style=0 }) :
     super( parent, -1, pos, size, style )
   { 
-      // this assumes we are installed on the final machine
-      String assetPath = wxGetStandardPaths().getResourcesDir( useLocalDirOnLinuxAndWindows: true );
-
+      String assetPath = wxGetStandardPaths().getResourcesDir();
       // Add forward or backward slash
       if (wxIsMSW() && !wxUsesFlutter()) {
         assetPath += "\\Merian_Germania_big.jpg";

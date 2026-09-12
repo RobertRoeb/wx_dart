@@ -63,14 +63,13 @@ class MyFirstDialog extends WxDialog
     final page1 = WxPanel( notebook, -1 );
     notebook.addPage(page1, "wxWidgets book" );
 
-    String assetPath = wxGetStandardPaths().getResourcesDir( useLocalDirOnLinuxAndWindows: true );
-
-      // Add forward backwars slash
-      if (wxIsMSW() && !wxUsesFlutter()) {
-        assetPath += "\\Splash.jpg";
-      } else {
-        assetPath += "/Splash.jpg";
-      }
+    String assetPath = wxGetStandardPaths().getResourcesDir();
+    // Add forward or backward slash
+    if (wxIsMSW() && !wxUsesFlutter()) {
+      assetPath += "\\Splash.jpg";
+    } else {
+      assetPath += "/Splash.jpg";
+    }
     final bundle = WxBitmapBundle.fromJPEGAsset(assetPath);
 
     final imageSizer = WxBoxSizer( wxTheApp.isTouch() ? wxVERTICAL : wxHORIZONTAL );
