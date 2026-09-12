@@ -237,30 +237,7 @@ void wxLoadImageFromResource( String filename, void Function( WxImage image ) re
         wxLogError( "Image data of $path not available as RGBA and cannot be converted to WxImage" );
         return;
       }
-      final image = WxImage( uiImage.width, uiImage.height );
-      image.initAlpha();
-      final rgba = byteData.buffer.asUint8List();
-      final rgb = image.getData();
-      final alpha = image.getAlphaData()!;
-      int rgbaIndex = 0;
-      int rgbIndex = 0;
-      int alphaIndex = 0;
-      for (int y = 0; y < uiImage.height; y++) {
-        for (int x = 0; x < uiImage.width; x++) {
-          rgb[rgbIndex] = rgba[rgbaIndex];
-          rgbaIndex++;
-          rgbIndex++;
-          rgb[rgbIndex] = rgba[rgbaIndex];
-          rgbaIndex++;
-          rgbIndex++;
-          rgb[rgbIndex] = rgba[rgbaIndex];
-          rgbaIndex++;
-          rgbIndex++;
-          alpha[alphaIndex] = rgba[rgbaIndex];
-          rgbaIndex++;
-          alphaIndex++;
-        }
-      }
+      final image = WxImage.fromRGBA( uiImage.width, uiImage.height, byteData.buffer.asUint8List() );
       returnImage( image );
 
     }).catchError((error) {
