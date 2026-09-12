@@ -251,8 +251,11 @@ class WxGraphicsContext extends WxGraphicsObject {
     }
     if (bitmap._bitmap!.isOk())
     {
-      // TODO scale
-      _canvas!.drawImage(bitmap._bitmap!._image!, Offset( x, y ), _penPaint );
+      pushState();
+      _canvas!.translate( x, y );
+      _canvas!.scale( width / bitmap._bitmap!.getWidth(), height / bitmap._bitmap!.getHeight() );
+      _canvas!.drawImage(bitmap._bitmap!._image!, Offset.zero, _penPaint );
+      popState();
     } else {
       if (_owner != null) {
         bitmap._bitmap!._addListener(_owner!);
