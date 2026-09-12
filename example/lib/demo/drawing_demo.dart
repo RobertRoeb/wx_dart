@@ -406,9 +406,34 @@ class MyImageWindow extends WxWindow {
     icon14 = WxBitmap.fromMaterialIcon( WxMaterialIcon.data_exploration, WxSize(32,32), wxBLUE );
     icon15 = WxBitmap.fromMaterialIcon( WxMaterialIcon.data_exploration, WxSize(41,41), wxBLUE );
 
+    String path = wxGetStandardPaths().getResourcesDir();
+    // Add forward or backward slash
+    if (wxIsMSW() && !wxUsesFlutter()) {
+      path += "\\throbber2.gif";
+    } else {
+      path += "/throbber2.gif";
+    }
+    _animation = WxAnimation(path);
+    _animation.load().then( (_) {
+      if (!_animation.isOk()) {
+        wxLogError( "animation did not load" );
+        return;
+      }
+      for (int i = 0; i < _animation.getFrameCount(); i++ ) {
+        final image = _animation.getFrame(i);
+        if (image != null) {
+          image.initAlpha();
+          _frames.add( WxBitmap.fromImage(image) );
+        }
+      }
+      refresh();
+    },);
+
     bindPaintEvent( onPaint );
   }
 
+  late WxAnimation _animation;
+  final List<WxBitmap> _frames = [];
   late WxBitmap bitmap,memBitmap;
   late WxBitmap icon1,icon2,icon3,icon4,icon5;
   late WxBitmap icon6,icon7,icon8,icon9,icon10;
@@ -421,24 +446,30 @@ class MyImageWindow extends WxWindow {
     dc.drawBitmap(bitmap, 10, 10);
     dc.drawBitmap(memBitmap, 120, 10);
 
-        dc.drawBitmap(icon1, 200, 80 );
-        dc.drawBitmap(icon2, 200, 120 );
-        dc.drawBitmap(icon3, 200, 160 );
-        dc.drawBitmap(icon4, 200, 200 );
-        dc.drawBitmap(icon5, 200, 250 );
+    dc.drawBitmap(icon1, 200, 80 );
+    dc.drawBitmap(icon2, 200, 120 );
+    dc.drawBitmap(icon3, 200, 160 );
+    dc.drawBitmap(icon4, 200, 200 );
+    dc.drawBitmap(icon5, 200, 250 );
 
-        dc.drawBitmap(icon6, 250, 80 );
-        dc.drawBitmap(icon7, 250, 120 );
-        dc.drawBitmap(icon8, 250, 160 );
-        dc.drawBitmap(icon9, 250, 200 );
-        dc.drawBitmap(icon10, 250, 250 );
+    dc.drawBitmap(icon6, 250, 80 );
+    dc.drawBitmap(icon7, 250, 120 );
+    dc.drawBitmap(icon8, 250, 160 );
+    dc.drawBitmap(icon9, 250, 200 );
+    dc.drawBitmap(icon10, 250, 250 );
 
-        dc.drawBitmap(icon11, 300, 80 );
-        dc.drawBitmap(icon12, 300, 120 );
-        dc.drawBitmap(icon13, 300, 160 );
-        dc.drawBitmap(icon14, 300, 200 );
-        dc.drawBitmap(icon15, 300, 250 );
+    dc.drawBitmap(icon11, 300, 80 );
+    dc.drawBitmap(icon12, 300, 120 );
+    dc.drawBitmap(icon13, 300, 160 );
+    dc.drawBitmap(icon14, 300, 200 );
+    dc.drawBitmap(icon15, 300, 250 );
 
+    int y = 10;
+    int x = getSize().x - 100;
+    for (final frame in _frames) {
+      dc.drawBitmap(frame, x, y);
+      y += 10 + frame.getHeight();
+    }
   }
 }
 
