@@ -1,3 +1,9 @@
+## 0.9.13
+
+* Added WxBookCtrl (and WxNotebook) setPageImage and getPageImage
+* Corrected app clean up in wxDart Native
+* Corrected sequence of calls when completing WxUIAnimation to allow infinite loops
+
 ## 0.9.12
 
 * Allow wxDart Flutter apps on the web to appear in an HTML window - not just full-screen apps
