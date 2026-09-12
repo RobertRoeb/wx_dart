@@ -3,6 +3,7 @@
 * Added WxBookCtrl (and WxNotebook) setPageImage and getPageImage
 * Corrected app clean up in wxDart Native
 * Corrected sequence of calls when completing WxUIAnimation to allow infinite loops
+* Fully implemented wxAnimation including accessors to the individal frames
 
 ## 0.9.12
 
