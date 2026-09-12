@@ -32,7 +32,7 @@ WxStandardPaths wxGetStandardPaths() {
 /// 
 /// ```dart
 ///  // files are stored in lib/assets
-///  String assetPath = wxGetStandardPaths().getResourcesDir( useLocalDirOnLinuxAndWindows: true );
+///  String assetPath = wxGetStandardPaths().getResourcesDir();
 ///
 ///  // Add forward or backward slash
 ///  if (wxIsMSW() && !wxUsesFlutter()) {
