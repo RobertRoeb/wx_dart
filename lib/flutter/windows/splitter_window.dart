@@ -157,11 +157,17 @@ class WxSplitterWindow extends WxWindow {
   final MultiSplitViewController _controller = MultiSplitViewController();
 
   void _rebuildController() {
+    double width = getSize().x.toDouble();
+    if (width < 2) {
+      width = 200;
+    } else {
+      width = width / 2;
+    }
     final List<Area> areas = [];
     if ((_window1 != null) && (_window2 != null)) {
       areas.add( 
         Area( 
-        size: _pos == -1 ? null : _pos.toDouble(),
+        size: _pos == -1 ? width : _pos.toDouble(),
         min: _minimumPaneSize > 0 ? _minimumPaneSize.toDouble() : null,
         builder: (BuildContext context, Area area) {
           return _window1!._build(context);
@@ -169,6 +175,7 @@ class WxSplitterWindow extends WxWindow {
       ) );
       areas.add( 
         Area( 
+        size: _pos == -1 ? width : (_minimumPaneSize > 0 ? _minimumPaneSize.toDouble() : null),
         min: _minimumPaneSize > 0 ? _minimumPaneSize.toDouble() : null,
         builder: (BuildContext context, Area area) {
           return _window2!._build(context);
