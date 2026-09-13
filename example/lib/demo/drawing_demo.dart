@@ -422,17 +422,27 @@ class MyImageWindow extends WxWindow {
       for (int i = 0; i < _animation.getFrameCount(); i++ ) {
         final image = _animation.getFrame(i);
         if (image != null) {
-          image.initAlpha();
+          if (!image.hasAlpha()) {
+            // this will convert from mask to alpha which is
+            // currently required due to a bug on wxMac
+            image.initAlpha();
+          }
           _frames.add( WxBitmap.fromImage(image) );
         }
       }
       refresh();
     },);
 
+    wxLoadImageFromResource( "toucan.png", (image) {
+      _toucan = WxBitmap.fromImage(image);
+    });
+
+
     bindPaintEvent( onPaint );
   }
 
   late WxAnimation _animation;
+  WxBitmap? _toucan;
   final List<WxBitmap> _frames = [];
   late WxBitmap bitmap,memBitmap;
   late WxBitmap icon1,icon2,icon3,icon4,icon5;
@@ -469,6 +479,10 @@ class MyImageWindow extends WxWindow {
     for (final frame in _frames) {
       dc.drawBitmap(frame, x, y);
       y += 10 + frame.getHeight();
+    }
+
+    if (_toucan != null) {
+      dc.drawBitmap(_toucan!, x-80, 50);
     }
   }
 }
