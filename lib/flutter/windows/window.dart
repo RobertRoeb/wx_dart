@@ -1959,8 +1959,8 @@ int _getKeyCodeFromKeyEvent( KeyEvent event )
     case LogicalKeyboardKey.end:              return WXK_END;
     case LogicalKeyboardKey.pageUp:           return WXK_PAGEUP;
     case LogicalKeyboardKey.pageDown:         return WXK_PAGEDOWN;
-    case LogicalKeyboardKey.add:              return WXK_ADD;
-    case LogicalKeyboardKey.minus:            return WXK_SUBTRACT;
+    case LogicalKeyboardKey.add:              return WXK_PLUS;
+    case LogicalKeyboardKey.minus:            return WXK_MINUS;
     case LogicalKeyboardKey.escape:           return WXK_ESCAPE;
     case LogicalKeyboardKey.backspace:        return WXK_BACK;
     case LogicalKeyboardKey.f1:               return WXK_F1;
@@ -1984,11 +1984,14 @@ int _getKeyCodeFromKeyEvent( KeyEvent event )
     case LogicalKeyboardKey.shift:            return WXK_SHIFT;
     case LogicalKeyboardKey.control:          return WXK_CONTROL;
 
-    case LogicalKeyboardKey.exclamation:      return 33;
-    case LogicalKeyboardKey.numberSign:       return 35;
-    case LogicalKeyboardKey.dollar:           return 36;
-    case LogicalKeyboardKey.percent:          return 37;
-    case LogicalKeyboardKey.quoteSingle:      return 39;
+    case LogicalKeyboardKey.exclamation:      return WXK_EXCLAMATION;
+    case LogicalKeyboardKey.numberSign:       return WXK_NUMBER_SIGN;
+    case LogicalKeyboardKey.dollar:           return WXK_DOLLAR;
+    case LogicalKeyboardKey.percent:          return WXK_PERCENT;
+    case LogicalKeyboardKey.ampersand:        return WXK_AMPERSAND;
+    case LogicalKeyboardKey.asterisk:         return WXK_ASTERISK;
+    case LogicalKeyboardKey.quoteSingle:      return WXK_SINGLE_QUOTE;
+    case LogicalKeyboardKey.slash:            return WXK_SLASH;
     case LogicalKeyboardKey.backslash:        return 92;
     case LogicalKeyboardKey.braceLeft:        return 123;
     case LogicalKeyboardKey.braceRight:       return 125;
@@ -1996,9 +1999,9 @@ int _getKeyCodeFromKeyEvent( KeyEvent event )
     case LogicalKeyboardKey.bracketLeft:      return 91;
     case LogicalKeyboardKey.bracketRight:     return 93;
 
-    case LogicalKeyboardKey.comma:            return 44;
-    case LogicalKeyboardKey.quote:            return 45;
-    case LogicalKeyboardKey.period:           return 46;
+    case LogicalKeyboardKey.comma:            return WXK_COMMA;
+    case LogicalKeyboardKey.quote:            return WXK_DOUBLE_QUOTE;
+    case LogicalKeyboardKey.period:           return WXK_PERIOD;
 
     // case LogicalKeyboardKey.divide:           return 47;
     case LogicalKeyboardKey.digit0:           return 48;

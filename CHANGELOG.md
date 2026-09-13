@@ -5,6 +5,7 @@
 * Corrected sequence of calls when completing WxUIAnimation to allow infinite loops
 * Fully implemented wxAnimation including accessors to the individal frames
 * Implemented WxSplitterWindow.setMinimumPaneSize()
+* Corrected and added some more keyboard key constants
 
 ## 0.9.12
 

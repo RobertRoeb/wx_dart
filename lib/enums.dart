@@ -427,7 +427,23 @@ const int  WXK_TAB     =    9;
 const int  WXK_RETURN  =    13;
 const int  WXK_ESCAPE  =    27;
 
-const int  WXK_SPACE   =    32;
+const int  WXK_SPACE        = 32;
+const int  WXK_EXCLAMATION  = 33;
+const int  WXK_DOUBLE_QUOTE = 34;
+const int  WXK_NUMBER_SIGN  = 35;
+const int  WXK_DOLLAR       = 36;
+const int  WXK_PERCENT      = 37;
+const int  WXK_AMPERSAND    = 38;
+const int  WXK_SINGLE_QUOTE = 39;
+const int  WXK_OPEN_PARENTHESIS  = 40;
+const int  WXK_CLOSE_PARENTHESIS = 41;
+const int  WXK_ASTERISK     = 42;
+const int  WXK_PLUS         = 43;
+const int  WXK_COMMA        = 44;
+const int  WXK_MINUS        = 45;
+const int  WXK_PERIOD       = 46;
+const int  WXK_SLASH        = 47;
+
     /* values from 33 to 126 are reserved for the standard ASCII characters */
 const int  WXK_DELETE  =    127;
 
