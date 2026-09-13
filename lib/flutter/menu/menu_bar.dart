@@ -49,6 +49,8 @@ class WxRealMenuBar extends WxWindow {
           final frame = _owner.getFrame();
           if (frame != null) {
             frame.popupMenu(item);
+            _hover = -1;
+            refresh();
           }
           break;
         }
