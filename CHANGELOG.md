@@ -4,6 +4,7 @@
 * Corrected app clean up in wxDart Native
 * Corrected sequence of calls when completing WxUIAnimation to allow infinite loops
 * Fully implemented wxAnimation including accessors to the individal frames
+* Implemented WxSplitterWindow.setMinimumPaneSize()
 
 ## 0.9.12
 
