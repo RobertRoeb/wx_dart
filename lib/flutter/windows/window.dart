@@ -1343,7 +1343,6 @@ class WxWindow extends WxEvtHandler {
                   return KeyEventResult.handled;
                 }
               }
-
             }
             return KeyEventResult.ignored;
           }
