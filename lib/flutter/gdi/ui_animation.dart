@@ -11,6 +11,9 @@ part of '../../wx_dart.dart';
 
 const int wxCURVE_LINEAR = 1;
 const int wxCURVE_EASE_IN_EASE_OUT = 2;
+const int wxCURVE_EASE_IN = 3;
+const int wxCURVE_EASE_OUT = 4;
+const int wxCURVE_BOUNCE = 5;
 
 /// Used to drive animations on screen. Currently implemented using a timer
 /// in wxDart Native and using a ticker (synchronized with refresh rate)
@@ -44,6 +47,9 @@ class WxUIAnimation extends WxObject {
   /// Currently, supported values for [curve] are
   /// * wxCURVE_LINEAR
   /// * wxCURVE_EASE_IN_EASE_OUT
+  /// * wxCURVE_EASE_IN
+  /// * wxCURVE_EASE_OUT
+  /// * wxCURVE_BOUNCE
   WxUIAnimation( void Function( double value ) callback, int millisecs, { void Function ()? callbackCompleted, 
     int curve = wxCURVE_LINEAR } )
   {
@@ -64,6 +70,32 @@ class WxUIAnimation extends WxObject {
       return square / (2.0 * (square - source) + 1.0);
   }
 
+  double _easeIn(double source)
+  {
+      return source * source;
+  }
+
+  double _easeOut(double source)
+  {
+      return source * (2 - source);
+  }
+
+  double _bounce(double source)
+  {
+    const n1 = 7.5625;
+    const d1 = 2.75;
+
+    if (source < 1 / d1) {
+        return n1 * source * source;
+    } else if (source < 2 / d1) {
+        return n1 * (source -= 1.5 / d1) * source + 0.75;
+    } else if (source < 2.5 / d1) {
+        return n1 * (source -= 2.25 / d1) * source + 0.9375;
+    } else {
+        return n1 * (source -= 2.625 / d1) * source + 0.984375;
+    }
+  }
+
   bool _init()
   {
     if (_controller != null) {
@@ -80,8 +112,11 @@ class WxUIAnimation extends WxObject {
     );
     _controller!.addListener( () {
       double value = _controller!.value;
-      if (_curve == wxCURVE_EASE_IN_EASE_OUT) {
-        value = _easeInEaseOut(value);
+      switch (_curve) {
+        case wxCURVE_EASE_IN_EASE_OUT:  value = _easeInEaseOut(value);
+        case wxCURVE_EASE_IN:           value = _easeIn(value);
+        case wxCURVE_EASE_OUT:          value = _easeOut(value);
+        case wxCURVE_BOUNCE:            value = _bounce(value);
       }
       _callback( value );
     });
