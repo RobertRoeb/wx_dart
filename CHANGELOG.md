@@ -6,6 +6,7 @@
 * Fully implemented wxAnimation including accessors to the individal frames
 * Implemented WxSplitterWindow.setMinimumPaneSize()
 * Corrected and added some more keyboard key constants
+* Allow to define curves for UI animations, starting with ease in ease out
 
 ## 0.9.12
 

@@ -9,6 +9,9 @@ part of '../../wx_dart.dart';
 
 // ------------------------- WxUIAnimation ----------------------
 
+const int wxCURVE_LINEAR = 1;
+const int wxCURVE_EASE_IN_EASE_OUT = 2;
+
 /// Used to drive animations on screen. Currently implemented using a timer
 /// in wxDart Native and using a ticker (synchronized with refresh rate)
 /// in wxDart Flutter.
@@ -33,12 +36,19 @@ class WxUIAnimation extends WxObject {
   /// a callback indicating completion. 
   /// 
   /// [millisecs] indicates the duration. 
+  /// [curve] indicate the curve
   /// 
-  /// The callback parameter [value] start with 0 and ends with 1.0 if the animation
+  /// The callback parameter _value_ start with 0 and ends with 1.0 if the animation
   /// has completed.
-  WxUIAnimation( void Function( double value ) callback, int millisecs, { void Function ()? callbackCompleted } )
+  /// 
+  /// Currently, supported values for [curve] are
+  /// * wxCURVE_LINEAR
+  /// * wxCURVE_EASE_IN_EASE_OUT
+  WxUIAnimation( void Function( double value ) callback, int millisecs, { void Function ()? callbackCompleted, 
+    int curve = wxCURVE_LINEAR } )
   {
     _callback = callback;
+    _curve = curve;
     _callbackCompleted = callbackCompleted;
     _millisecs = millisecs;
     if (!_init()) {
@@ -46,6 +56,12 @@ class WxUIAnimation extends WxObject {
         _init();
       });      
     }
+  }
+
+  double _easeInEaseOut(double source)
+  {
+      final square = source * source;
+      return square / (2.0 * (square - source) + 1.0);
   }
 
   bool _init()
@@ -63,7 +79,11 @@ class WxUIAnimation extends WxObject {
       vsync: _theWxDartAppState!
     );
     _controller!.addListener( () {
-      _callback( _controller!.value );
+      double value = _controller!.value;
+      if (_curve == wxCURVE_EASE_IN_EASE_OUT) {
+        value = _easeInEaseOut(value);
+      }
+      _callback( value );
     });
     _controller!.addStatusListener( (AnimationStatus status) {
       if (status.isCompleted) {
@@ -135,4 +155,5 @@ class WxUIAnimation extends WxObject {
   void Function()? _callbackCompleted;
   int _millisecs = 1000;
   bool _hasStarted = false;
+  int _curve = wxCURVE_LINEAR;
 }
