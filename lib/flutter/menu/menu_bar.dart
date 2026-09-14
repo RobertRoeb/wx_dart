@@ -48,9 +48,10 @@ class WxRealMenuBar extends WxWindow {
         if ((event.getX() >= x) && (event.getX() <= x+width)) {
           final frame = _owner.getFrame();
           if (frame != null) {
-            frame.popupMenu(item);
-            _hover = -1;
-            refresh();
+            frame.popupMenu(item).then( (_) { 
+              _hover = -1;
+              refresh();
+            }  );
           }
           break;
         }
@@ -96,14 +97,16 @@ class WxRealMenuBar extends WxWindow {
     for (final item in _owner._menus) {
       dc.drawText(item.getTitle(), x+_padding, y );
       final width = dc.getTextExtent(item.getTitle()).x;
-      dc.setPen(wxTRANSPARENT_PEN);
-      if (count == _hover) {
-        dc.setBrush(WxBrush( wxTheApp.getAccentColour() ));
-        int animationPadding = _extraPadding*3 - (_extraPadding*4*_factor).floor();
-        dc.drawRectangle(x+_padding+animationPadding, size.y-7, width-2*animationPadding, _thickness);
-      } else {
-        dc.setBrush(wxLIGHT_GREY_BRUSH);
-        dc.drawRectangle(x+_padding+_extraPadding*3, size.y-7, width-_extraPadding*6, _thickness);
+      if (_owner._style & wxMB_UNDERLINE != 0) {
+        dc.setPen(wxTRANSPARENT_PEN);
+        if (count == _hover) {
+          dc.setBrush(WxBrush( wxTheApp.getAccentColour() ));
+          int animationPadding = _extraPadding*3 - (_extraPadding*4*_factor).floor();
+          dc.drawRectangle(x+_padding+animationPadding, size.y-7, width-2*animationPadding, _thickness);
+        } else {
+          dc.setBrush(wxLIGHT_GREY_BRUSH);
+          dc.drawRectangle(x+_padding+_extraPadding*3, size.y-7, width-_extraPadding*6, _thickness);
+        }
       }
       x += 2*_padding + width;
       count ++;

@@ -767,6 +767,8 @@ class WxMenu extends WxEvtHandler {
     if (key == "Right") return LogicalKeyboardKey.arrowRight;
     if (key == "Up") return LogicalKeyboardKey.arrowUp;
     if (key == "Down") return LogicalKeyboardKey.arrowDown;
+    if (key == "+") return LogicalKeyboardKey.add;
+    if (key == "-") return LogicalKeyboardKey.minus;
     // more to come
 
     return LogicalKeyboardKey.f1;
