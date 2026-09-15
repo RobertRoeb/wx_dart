@@ -1,12 +1,13 @@
 ## 0.9.13
 
+* Support for built-in curves for WxUIAnimations, wxCURVE_EASE_IN_EASE_OUT etc.
 * Added WxBookCtrl (and WxNotebook) setPageImage and getPageImage
 * Corrected app clean up in wxDart Native
 * Corrected sequence of calls when completing WxUIAnimation to allow infinite loops
 * Fully implemented wxAnimation including accessors to the individal frames
+*   This allows drawing animations in OnPaint, not just in a control
 * Implemented WxSplitterWindow.setMinimumPaneSize()
 * Corrected and added some more keyboard key constants
-* Allow to define curves for UI animations, starting with ease in ease out
 
 ## 0.9.12
 
