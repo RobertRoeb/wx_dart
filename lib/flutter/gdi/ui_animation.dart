@@ -19,12 +19,20 @@ const int wxCURVE_BOUNCE = 5;
 /// in wxDart Native and using a ticker (synchronized with refresh rate)
 /// in wxDart Flutter.
 /// 
+/// 
+/// [WxUIAnimation] has built-in support for animation curves: 
+/// * wxCURVE_LINEAR
+/// * wxCURVE_EASE_IN_EASE_OUT
+/// * wxCURVE_EASE_IN
+/// * wxCURVE_EASE_OUT
+/// * wxCURVE_BOUNCE
+/// 
 /// ```dart
 /// // create animation that will last 250 milliseconds to turn a chevron 90°
 /// _chevronAnimation = WxUIAnimation((value) {
 /// 
 ///    // tell the window where we are from 0.0 to 1.0
-///    _chevronAnimationFactor = value;
+///    _chevronAngle = value * 90;
 /// 
 ///   // update the window
 ///   refresh();

@@ -1,3 +1,7 @@
+## 0.9.14
+
+* Added WxGraphicsAnimation
+
 ## 0.9.13
 
 * Support for built-in curves for WxUIAnimations, wxCURVE_EASE_IN_EASE_OUT etc.

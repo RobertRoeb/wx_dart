@@ -126,3 +126,4 @@ part 'generic/dataviewevent.dart';
 part 'generic/databook.dart';
 part 'generic/header.dart';
 part 'generic/tilesizer.dart';
+part 'generic/graphics_animation.dart';

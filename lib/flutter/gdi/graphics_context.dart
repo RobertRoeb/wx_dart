@@ -24,6 +24,8 @@ class WxGraphicsObject extends WxObject {
 /// 
 /// See [WxGraphicsContext.createBitmap] and [WxGraphicsContext.createBitmapFromImage]
 /// 
+/// See also [WxGraphicsAnimation]
+/// 
 ///```dart
 /// final image = WxImage( 80, 120 );
 /// image.initAlpha();
@@ -72,7 +74,9 @@ const int wxCOMPOSITION_DIFF = 13;
 /// [WxGraphicsContext] uses _double_ values for coordinates, not _int_
 /// values like [WxDC]
 /// 
-/// See [WxDC], [WxPaintDC]
+/// See [WxGraphicsBitmap], [WxGraphicsPath] and [WxGraphicsAnimation]  
+/// 
+/// See also [WxDC], [WxPaintDC]
 /// 
 /// ```dart
 /// class MyGraphicsWindow extends WxScrolledWindow {

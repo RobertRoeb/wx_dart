@@ -21,7 +21,7 @@ const int wxAC_DEFAULT_STYLE = wxBORDER_NONE;
 /// Example usage:
 /// ```dart
 ///  // Get path to asset
-///  String assetPath = wxGetStandardPaths().getResourcesDir( useLocalDirOnLinuxAndWindows: true );
+///  String assetPath = wxGetStandardPaths().getResourcesDir();
 ///
 ///  // Add forward slash (or backward slash on wxMSW in wxDart Native)
 ///  if (wxIsMSW() && !wxUsesFlutter()) {
