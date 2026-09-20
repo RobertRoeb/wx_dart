@@ -1,6 +1,6 @@
 name: wx_dart
 description: "Flutter backend of wxDart"
-version: 0.9.13
+version: 0.9.14
 homepage: https://github.com/RobertRoeb/wx_dart
 
 environment:
