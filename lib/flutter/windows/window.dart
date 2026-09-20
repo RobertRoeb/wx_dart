@@ -327,21 +327,36 @@ class WxWindow extends WxEvtHandler {
   WxWindow? _sliverView;
   bool _hasSentWindowCreateEvent = false;
 
+  // Does cleanup of the window and calls [dispose] on all child windows.
   @override
   void dispose() {
     _doubleClickTimer?.cancel();
     if (_focusNode != null) {
       _focusNode!.dispose();
-    } 
+    }
+    for (final child in _children) {
+      child.dispose();
+    }
     super.dispose();
   }
 
-  /// Delete this window and remove it from the parent's child window list
+  /// Deletes this window and removes it from the parent's child window list.
+  /// 
+  /// Will also call [dispose] on this window and from there all child windows
+  /// to allow clean up.
   bool destroy() {
     if (_parent != null) {
       _parent!.removeChild(this);
     }
     dispose();
+    return true;
+  }
+
+  /// Deletes all child windows
+  bool destroyChildren() {
+    while (_children.isNotEmpty) {
+      _children.first.destroy();
+    }
     return true;
   }
 
@@ -376,14 +391,6 @@ class WxWindow extends WxEvtHandler {
       }
     }
     return null;
-  }
-
-  /// Delete all child windows
-  bool destroyChildren() {
-    while (_children.isNotEmpty) {
-      _children.first.destroy();
-    }
-    return true;
   }
 
   /// Returns window size minus border and scrollbar size, of present

@@ -201,8 +201,6 @@ class WxTopLevelWindow extends WxNonOwnedWindow {
     _isBeingDeleted = true;
     if (_parent != null)
     {
-      _parent!.removeChild(this);
-
       BuildContext? parentContext = _navigatorKey.currentContext;
       if (parentContext != null) {
         Navigator.pop(parentContext);
@@ -212,9 +210,9 @@ class WxTopLevelWindow extends WxNonOwnedWindow {
     {
       SystemNavigator.pop();
     }
-
     _topLevelWindows.remove( this );
-    return true;
+
+    return super.destroy();
   }
 
   /// Returns true if this toplevel window has been scheduled for deletion
