@@ -1,4 +1,6 @@
 
+import 'dart:async';
+
 import 'package:wx_dart/wx_dart.dart';
 import 'dart:math';
 
@@ -117,12 +119,38 @@ class MyGraphicsWindow extends WxScrolledWindow {
     // build WxGraphicsBitmap from bitmap
     bitmapFromBitmap = gc.createBitmap( bitmap );
 
+    String path = wxGetStandardPaths().getResourcesDir();
+    // Add forward or backward slash
+    if (wxIsMSW() && !wxUsesFlutter()) {
+      path += "\\throbber2.gif";
+    } else {
+      path += "/throbber2.gif";
+    }
+    // create thobber animation
+    _animation = WxGraphicsAnimation(path,gc);
+
+    // create timer
+    _timer = WxTimer.withOwner( this );
+    // call refresh() for animation
+    bindTimerEvent( (_) => refresh() );
+    // start timer and let it fire every 100ms
+    _timer.start( milliseconds: 100 );
+
     bindPaintEvent( onPaint );
   }
 
+  @override
+  void dispose() 
+  {
+    _timer.dispose();
+    super.dispose();
+  }
+
+  late WxTimer _timer;
   late WxBitmap bitmap;
   late WxGraphicsBitmap bitmapFromImage;
   late WxGraphicsBitmap bitmapFromBitmap;
+  late WxGraphicsAnimation _animation;
 
   void onPaint( WxPaintEvent event )
   {
@@ -169,12 +197,20 @@ class MyGraphicsWindow extends WxScrolledWindow {
 
     dc.drawText("rotated back", 350, 100 );
 
+    gc.pushState();
     // translate right
     gc.translate(200,0);
     gc.rotate(-0.1);
 
     // draw again, but not scaled
     gc.drawBitmap(bitmapFromBitmap, 120, 50, 80, 120 );
+    gc.popState();
+
+    // draw animation
+    final windowWidth = getSize().x;
+    final size = _animation.getSize();
+    final millis = DateTime.now().millisecondsSinceEpoch;
+    _animation.draw(gc, windowWidth-70, 20, size.x.toDouble(), size.y.toDouble(), millis );
   }
 }
 
@@ -406,33 +442,6 @@ class MyImageWindow extends WxWindow {
     icon14 = WxBitmap.fromMaterialIcon( WxMaterialIcon.data_exploration, WxSize(32,32), wxBLUE );
     icon15 = WxBitmap.fromMaterialIcon( WxMaterialIcon.data_exploration, WxSize(41,41), wxBLUE );
 
-    String path = wxGetStandardPaths().getResourcesDir();
-    // Add forward or backward slash
-    if (wxIsMSW() && !wxUsesFlutter()) {
-      path += "\\throbber2.gif";
-    } else {
-      path += "/throbber2.gif";
-    }
-    _animation = WxAnimation(path);
-    _animation.load().then( (_) {
-      if (!_animation.isOk()) {
-        wxLogError( "animation did not load" );
-        return;
-      }
-      for (int i = 0; i < _animation.getFrameCount(); i++ ) {
-        final image = _animation.getFrame(i);
-        if (image != null) {
-          if (!image.hasAlpha()) {
-            // this will convert from mask to alpha which is
-            // currently required due to a bug on wxMac
-            image.initAlpha();
-          }
-          _frames.add( WxBitmap.fromImage(image) );
-        }
-      }
-      refresh();
-    },);
-
     wxLoadImageFromResource( "toucan.png", (image) {
       _toucan = WxBitmap.fromImage(image);
     });
@@ -441,9 +450,7 @@ class MyImageWindow extends WxWindow {
     bindPaintEvent( onPaint );
   }
 
-  late WxAnimation _animation;
   WxBitmap? _toucan;
-  final List<WxBitmap> _frames = [];
   late WxBitmap bitmap,memBitmap;
   late WxBitmap icon1,icon2,icon3,icon4,icon5;
   late WxBitmap icon6,icon7,icon8,icon9,icon10;
@@ -474,15 +481,8 @@ class MyImageWindow extends WxWindow {
     dc.drawBitmap(icon14, 300, 200 );
     dc.drawBitmap(icon15, 300, 250 );
 
-    int y = 10;
-    int x = getSize().x - 100;
-    for (final frame in _frames) {
-      dc.drawBitmap(frame, x, y);
-      y += 10 + frame.getHeight();
-    }
-
     if (_toucan != null) {
-      dc.drawBitmap(_toucan!, x-80, 50);
+      dc.drawBitmap(_toucan!, getSize().x - 120, 50);
     }
   }
 }
