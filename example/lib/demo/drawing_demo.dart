@@ -142,7 +142,7 @@ class MyGraphicsWindow extends WxScrolledWindow {
   @override
   void dispose() 
   {
-    _timer.dispose();
+    _timer.stop();
     super.dispose();
   }
 
