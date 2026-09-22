@@ -207,6 +207,7 @@ const int wxTOUCH_RAW_EVENTS = 0x0020;
 /// * [thaw]
 /// 
 /// Close/destroy/delete interface
+/// * [dispose]
 /// * [destroy]
 /// 
 /// Position, sizing and hints
@@ -327,7 +328,12 @@ class WxWindow extends WxEvtHandler {
   WxWindow? _sliverView;
   bool _hasSentWindowCreateEvent = false;
 
-  // Does cleanup of the window and calls [dispose] on all child windows.
+  /// Gets called before the window is destroyed and can be used to e.g.
+  /// close a database or network connection or to stop a [WxTimer].
+  /// 
+  /// Does cleanup of the window and calls [dispose] on all child windows.
+  /// 
+  /// Don't forget to call super.dispose() when overriding
   @override
   void dispose() {
     _doubleClickTimer?.cancel();
@@ -342,8 +348,7 @@ class WxWindow extends WxEvtHandler {
 
   /// Deletes this window and removes it from the parent's child window list.
   /// 
-  /// Will also call [dispose] on this window and from there all child windows
-  /// to allow clean up.
+  /// Will also call [dispose] on this window and from there all child windows.
   bool destroy() {
     if (_parent != null) {
       _parent!.removeChild(this);
