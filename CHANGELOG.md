@@ -1,3 +1,8 @@
+## 0.9.15
+
+* Added WxFrame.showInfoBar()
+* Documented various WxFrame methods
+
 ## 0.9.14
 
 * Added WxGraphicsAnimation

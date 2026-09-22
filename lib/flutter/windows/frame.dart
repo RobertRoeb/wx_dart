@@ -12,6 +12,10 @@ part of '../../wx_dart.dart';
 WxFrame? theTLW;
 const int wxDEFAULT_FRAME_STYLE = (wxSYSTEM_MENU | wxRESIZE_BORDER | wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxCLOSE_BOX | wxCAPTION | wxCLIP_CHILDREN);
 
+const int wxINFOBAR_BOTTOM = 0;
+const int wxINFOBAR_TOP = 1;
+const int wxINFOBAR_FLOATING = 2;
+
 
 /// Main toplevel window. Each app needs to have at least one WxFrame.
 /// 
@@ -169,6 +173,7 @@ class WxFrame extends WxTopLevelWindow {
     super.onInternalIdle();
   }
 
+  /// Creates and returns the frame's main toolbar
   WxToolBar createToolBar( { int style = wxTB_DEFAULT_STYLE, int id = -1 } )
   {
     _toolBar = WxToolBar( this, id, style: style );
@@ -180,6 +185,10 @@ class WxFrame extends WxTopLevelWindow {
     return _toolBar;
   }
 
+  /// Creates and returns the frame's statusbar at the bottom of the frame.
+  /// [number] indicates the number of field in it.
+  /// 
+  /// see [setStatusText]
   WxStatusBar createStatusBar( { int number = 1 } )
   {
     if (_statusBar != null) {
@@ -191,6 +200,8 @@ class WxFrame extends WxTopLevelWindow {
     _setState();
     return _statusBar!;
   }
+
+  /// Returns the current status bar, if any has been created, or null
   WxStatusBar? getStatusBar() {
     return _statusBar;
   }
@@ -202,21 +213,66 @@ class WxFrame extends WxTopLevelWindow {
     return  _menubar!.findItem( id );
   }
 
+  /// Sets the text if the status bar. [number] indicates the field if
+  /// more than one field has been created with [createStatusBar].
   void setStatusText( String text, { int number = 0 } ) {
     if (_statusBar != null) {
       _statusBar!.setStatusText(text,index: number);
     }
   }
 
+  /// Sets the menu bar of the frame
   void setMenuBar( WxMenuBar menubar ) {
     _menubar = menubar;
     menubar.attach( this );
     _setState();
   }
 
+  /// Returns the current menu bar, if any has been created, or null
   WxMenuBar? getMenuBar() {
     return _menubar;
   } 
+
+  /// Shows a short information message, usually at the bottom of the frame.
+  /// 
+  /// When no actionId is given, the message will be shown in the status bar of the
+  /// frame on wxDart Native. In wxDart Flutter, a small window will appear and will
+  /// disappear again after [duration] in milliseconds.
+  /// 
+  /// If the actionId is give (and not -1), a small window will appear that will 
+  /// contain the action button and a small close button. In this case, the info
+  /// bar will not disappear by itself. Showing an info bar with an action button
+  /// requires the frame to have a vertical sizer [WxColumn]/[WxBoxSizer] into
+  /// which the info gets inserted.
+  /// 
+  /// The action button emits a button event when pressed.
+  /// 
+  /// wxDart Flutter suppports the [style] flags wxINFOBAR_BOTTOM and wxINFOBAR_FLOATING.
+  /// wxDart Native suppports the [style] flag wxINFOBAR_TOP or wxINFOBAR_BOTTOM.
+  
+  void showInfoBar( String message, { int duration = 500, int style = wxINFOBAR_BOTTOM, int actionId = -1, String action = "" } )
+  {
+    BuildContext? context = _navigatorKey.currentContext;
+    if (context == null) {
+      wxLogError("No context to build popup menu" );
+      return;
+    }
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text( message ),
+        duration: Duration( milliseconds: duration ),
+        showCloseIcon: actionId != -1,
+        behavior: style == wxINFOBAR_FLOATING ? SnackBarBehavior.floating : SnackBarBehavior.fixed,
+        action: actionId == -1 ? null : SnackBarAction(
+              label: action,
+              onPressed: () {
+                WxCommandEvent event = WxCommandEvent( wxGetButtonEventType(), actionId );
+                event.setEventObject( this );
+                processEvent( event ); 
+              },
+      )
+    ) );
+  }
 
   @override
   Widget _build(BuildContext context) {

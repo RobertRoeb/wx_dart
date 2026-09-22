@@ -57,6 +57,8 @@ const idError = 227;
 const idTreeDialog = 228;
 const idChapterDialog = 229;
 const idDrawerFrame = 230;
+const idInfobar = 231;
+const idInfobarAction = 232;
 
 const idRunApp = 240;
 const idTutorialList = 241;
@@ -99,6 +101,9 @@ class MyMainFrame extends WxAdaptiveFrame {
     filemenu.appendItem( idDirDialog, "Choose dir...", help: "Choose folder" );
     filemenu.appendItem( idInfo, "Info message...", help: "A very long message" );
     filemenu.appendItem( idError, "Error message...", help: "An error ocurred" );
+    filemenu.appendSeparator();
+    filemenu.appendItem( idInfobar, "Show info bar", help: "Show info bar" );
+    filemenu.appendItem( idInfobarAction, "Info bar action", help: "Show info bar with action" );
     filemenu.appendSeparator();
     filemenu.appendItem( idDrawerFrame, "Drawer...", help: "Frame with Sidebar vs. Drawer" );
     filemenu.appendItem( idTreeDialog, "Treebook...", help: "Frame with WxTreebook" );
@@ -161,7 +166,10 @@ class MyMainFrame extends WxAdaptiveFrame {
       setStatusText( "Welcome to wxDart Native $wxDART_MAJOR_VERSION.$wxDART_MINOR_VERSION.$wxDART_MICRO_VERSION" );
     }
 
+    final mainSizer = WxColumn();
+    setSizer( mainSizer ); 
     final databook = WxDataViewBook(this, -1);
+    mainSizer.add( databook, proportion: 1, flag: wxEXPAND );
 
     final panel1 = MyInfoPage(databook);
     final chapter1 = databook.appendChapter( null, "Start", panel1 );
@@ -323,6 +331,13 @@ class MyMainFrame extends WxAdaptiveFrame {
       final dialog = MyMessageDialog( this );
         dialog.showModal( null );
     }, idInfo );
+
+    bindMenuEvent((_) {
+      showInfoBar("Quick message!", duration: 1000 );
+    }, idInfobar );
+    bindMenuEvent((_) {
+      showInfoBar("Quick message!", duration: 1000, actionId: idAbout, action: 'About' );
+    }, idInfobarAction );
 
     bindMenuEvent((_) {
       final dialog = WxMessageDialog( this, "An error occurred", style: wxOK|wxHELP|wxICON_ERROR, caption: "Error" );
