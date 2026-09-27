@@ -29,9 +29,11 @@ part of '../../wx_dart.dart';
 class WxClass {
   WxClass();
 
-  /// Destroys the C++ class in wxDart Native. This can either
-  /// be called directly or it will be called when the Dart 
-  /// instance is destroyed by the Dart garbage collector.
+  /// Gets called when the C++ object is about to be destroyed in
+  /// wxDart Native.
+  /// 
+  /// Override to do clean up like closing network or database
+  /// connections or stopping timers.
   void dispose() {
   }
 
@@ -57,7 +59,11 @@ class WxClass {
 class WxObject extends WxClass {
   WxObject();
 
-  /// Destroys the C++ wxObject instance in wxDart Native
+  /// Gets called when the C++ object is about to be destroyed in
+  /// wxDart Native.
+  /// 
+  /// Override to do clean up like closing network or database
+  /// connections or stopping timers.
   @override
   void dispose() {
   }
