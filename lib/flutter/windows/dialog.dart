@@ -70,7 +70,7 @@ part of '../../wx_dart.dart';
 /// 
 ///     // create OK and Cancel buttons
 ///     final buttons = createStdDialogButtonSizer( wxOK|wxCANCEL );
-///     mainSizer.addSizer( buttons, flags: wxALL|wxALIGN_RIGHT );
+///     mainSizer.addSizer( buttons, flag: wxALL|wxALIGN_RIGHT );
 /// 
 ///     // Transfer data to the dialog (controls). In many cases
 ///     // this can also be done when creating the control 
@@ -117,8 +117,18 @@ class WxDialog extends WxTopLevelWindow {
   bool _hasSentInitEvent = false;
   int _buttonFlags = 0;
   bool _synchronous = false;
+  bool _makeFit = false;
   void Function( int, dynamic )? _onReturn;
   
+  /// Associate [sizer] with this window and resize it to make it fit the 
+  /// minimal constraints of it. Under wxDart Flutter, the fitting is automatically
+  /// achieved by the Flutter layout mechanism. 
+  @override
+  void setSizerAndFit( WxSizer sizer ) {
+    super.setSizerAndFit( sizer );
+    _makeFit = true;
+  }
+
   /// Returns ID that closes the dialog with user indicating to accept the
   /// input (like hitting OK). 
   /// 
@@ -302,14 +312,14 @@ class WxDialog extends WxTopLevelWindow {
             cursor: SystemMouseCursors.grab,
             child:
             Padding(
-              padding: EdgeInsets.only( right: 30 ),
+              padding: EdgeInsets.only( left: 5, right: 30 ),
               child: 
               Container(
                 decoration: BoxDecoration(
                   color: accent,
                   borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(22.0),
-                    topRight: Radius.circular(22.0),
+                    topLeft: Radius.circular(15.0),
+                    topRight: Radius.circular(15.0),
                   ), 
                 ),
                 child: Padding( 
@@ -483,8 +493,10 @@ class WxDialog extends WxTopLevelWindow {
               onClose:() {
                 _endDialog( wxID_CANCEL );
               },
+              child: 
+              IntrinsicWidth( 
               child: SizedBox(
-                width: _initialSize.x == -1 ? 500 : _initialSize.x.toDouble(),
+                width: _initialSize.x == -1 ? (_makeFit ? null : 500) : _initialSize.x.toDouble(),
                 height: _initialSize.y == -1 ? null : _initialSize.y.toDouble(),
                 child: 
                 Padding(
@@ -514,8 +526,8 @@ class WxDialog extends WxTopLevelWindow {
                       ]
                     )
                 )
-              )
-            );
+              ) 
+            ) );
 
                   }
       ).whenComplete(() {
