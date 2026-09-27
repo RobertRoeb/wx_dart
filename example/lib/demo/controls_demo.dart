@@ -363,20 +363,31 @@ class MyControlsWindow extends WxScrolledWindow {
     path = "${assetPath}throbber2.gif";
     final ani = WxAnimationCtrl(parent, -1, WxAnimation(path) );
     imageSizer.add( ani, flag: wxALIGN_CENTER_VERTICAL );
+
+    imageSizer.addSpacer(15);
+    imageSizer.add( WxStaticText(parent, -1, 'WxActivityIndicator:  '), flag: wxALIGN_CENTER_VERTICAL );
+    final activity = WxActivityIndicator(parent, -1 );
+    imageSizer.add( activity, flag: wxALIGN_CENTER_VERTICAL );
+
     imageSizer.addStretchSpacer();
 
     playpause.bindButtonEvent((_) {
-    if (ani.isPlaying()) {
+      if (ani.isPlaying()) {
           ani.stop();
           playpause.setBitmap(WxBitmapBundle.fromMaterialIcon( WxMaterialIcon.play_arrow, WxSize(48, 48) ));
           playpause.setLabel( "Play" );
           parent.getParent()!.layout(); // not needed on wxDart Flutter
-        } else {
+      } else {
           ani.play();
           playpause.setBitmap(WxBitmapBundle.fromMaterialIcon( WxMaterialIcon.pause, WxSize(48, 48) ));
           playpause.setLabel( "Pause" );
           parent.getParent()!.layout(); // not needed on wxDart Flutter
-        }
+      }
+      if (activity.isRunning()) {
+        activity.stop();
+      } else {
+        activity.start();
+      }
     }, -1);
     imageSizer.addStretchSpacer();
   }

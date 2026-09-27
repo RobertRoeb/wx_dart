@@ -223,6 +223,7 @@ of the Dart classes as well as the C++ classes which wxDart Native uses internal
 | [WxButton](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxButton-class.html) | [wxButton](https://docs.wxwidgets.org/trunk/classwx_button.html) |
 | [WxBitmapButton](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxBitmapButton-class.html) | [wxBitmapButton](https://docs.wxwidgets.org/trunk/classwx_bitmap_button.html) |
 | [WxToggleButton](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxToggleButton-class.html) | [wxToggleButton](https://docs.wxwidgets.org/trunk/classwx_toggle_button.html) |
+| [WxActivityIndicator](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxActivityIndicator-class.html) | [wxActivityIndicator](https://docs.wxwidgets.org/trunk/classwx_activity_indicator.html) |
 | [WxAnimationCtrl](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxAnimationCtrl-class.html) | [wxAnimationCtrl](https://docs.wxwidgets.org/trunk/classwx_animation_ctrl.html) |
 | [WxCheckBox](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxCheckBox-class.html) | [wxCheckBox](https://docs.wxwidgets.org/trunk/classwx_check_box.html) |
 | [WxTextCtrl](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxTextCtrl-class.html) | [wxTextCtrl](https://docs.wxwidgets.org/trunk/classwx_text_ctrl.html) |

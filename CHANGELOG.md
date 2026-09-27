@@ -2,6 +2,9 @@
 
 * Added WxFrame.showInfoBar()
 * Documented various WxFrame methods
+* Added WxActivityIndicator (circular progress indicator)
+* Corrected wxGLContext.createFramebuffer() and createRenderbuffer()
+* Minor doc updates
 
 ## 0.9.14
 
