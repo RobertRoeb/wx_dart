@@ -24,6 +24,8 @@ const int wxINFOBAR_FLOATING = 2;
 /// On the desktop, a [WxFrame] most often has a [WxMenuBar] and/or a [WxToolBar] and
 /// it may have a [WxStatusBar] at the bottom for information.
 /// 
+/// [showInfoBar] shows a temporary message with an option action button.
+/// 
 /// Here is an example to start with
 /// 
 /// ```Dart
@@ -90,6 +92,7 @@ const int wxINFOBAR_FLOATING = 2;
 /// * [setStatusText]
 /// * [createToolBar]
 /// * [getToolBar]
+/// * [showInfoBar]
 /// 
 /// Close/destroy/delete interface
 /// * [close]
