@@ -923,8 +923,8 @@ abstract class WxGLContext extends WxObject {
     _gl!.drawArraysInstanced( v0, v1, v2, v3 );
   }
 
-  void bindFramebuffer(int target, WxGlFramebuffer? v1) {
-    _gl!.bindFramebuffer( target, v1 );
+  void bindFramebuffer(int target, WxGlFramebuffer? framebuffer) {
+    _gl!.bindFramebuffer( target, framebuffer );
   }
 
   int checkFramebufferStatus(int target) {
@@ -996,11 +996,11 @@ abstract class WxGLContext extends WxObject {
   }
 
   WxGlRenderbuffer createRenderbuffer() {
-    return WxGlRenderbuffer( _gl!.createRenderbuffer() );
+    return WxGlRenderbuffer( _gl!.createRenderbuffer().id );
   }
 
   WxGlFramebuffer createFramebuffer() {
-    return WxGlFramebuffer( _gl!.createFramebuffer() );
+    return WxGlFramebuffer( _gl!.createFramebuffer().id );
   }
 
   void blitFramebuffer(
