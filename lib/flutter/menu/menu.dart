@@ -114,7 +114,10 @@ const int wxMENU_TEAROFF = 0x0001;
 /// 
 /// Please note that wxID_ABOUT and wxID_EXIT are predefined and have a special meaning. 
 /// Entries using these IDs will be taken out of the normal menus under macOS and will
-/// be inserted into the system menu (currently wxDart Native onle).
+/// be inserted into the system menu (currently wxDart Native only).
+/// 
+/// See [WxUpdateUIEvent] on a common approach to update UI elements like
+/// toolbars and menus according to state changes in the software.
 /// 
 /// ```dart
 /// // create menubar, usually in your frame's constructor
@@ -122,7 +125,7 @@ const int wxMENU_TEAROFF = 0x0001;
 /// 
 /// // create menu and add items
 /// final filemenu = WxMenu();
-/// filemenu.appendItem( idAbout, "About...\tAlt-A", help: "Info about wxDart 1.0" );
+/// filemenu.appendItem( wxID_ABOUT, "About...\tAlt-A", help: "Info about wxDart 1.0" );
 /// filemenu.appendSeparator();
 /// filemenu.appendItem( idFileDialog, "Open file...", help: "Open file" );
 /// filemenu.appendSeparator();

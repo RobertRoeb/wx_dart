@@ -131,6 +131,9 @@ class WxToolBarToolBase extends WxObject {
 /// 
 /// Note: once you have created the toolbar, you need to call [realize].
 /// 
+/// See [WxUpdateUIEvent] on common approach to update UI elements like
+/// toolbars and menus according to state changes in the software.
+/// 
 /// ```dart
 /// // in your frame's constructor
 /// final toolbar = createToolBar( style: wxTB_FLAT|wxTB_TEXT );

@@ -129,6 +129,9 @@ const int wxMB_UNDERLINE = 0x0002;
 /// to the top of the screen and therefore this class is not
 /// a window.
 ///
+/// See [WxUpdateUIEvent] on a common approach to update UI elements like
+/// toolbars and menus according to state changes in the software.
+/// 
 /// ```dart
 /// // create menubar, usually in your frame's constructor
 /// final menubar = WxMenuBar();
