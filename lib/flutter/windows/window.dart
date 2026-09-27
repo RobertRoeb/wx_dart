@@ -333,7 +333,7 @@ class WxWindow extends WxEvtHandler {
   /// 
   /// Does cleanup of the window and calls [dispose] on all child windows.
   /// 
-  /// Don't forget to call super.dispose() when overriding
+  /// Don't forget to call super.dispose() when overriding.
   @override
   void dispose() {
     _doubleClickTimer?.cancel();
