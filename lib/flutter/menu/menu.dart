@@ -228,6 +228,9 @@ class WxMenu extends WxEvtHandler {
           }
         }
       }
+      if (event.getSetEnabled()) {
+        tool.enable(event.getEnabled());
+      }
     }
   }
 
