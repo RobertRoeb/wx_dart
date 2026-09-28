@@ -313,28 +313,18 @@ class MyControlsWindow extends WxScrolledWindow {
 
   void createImagePage( WxStaticBoxSizer sizer, WxWindow parent )
   {
-      String assetPath = wxGetStandardPaths().getResourcesDir();
-      // Add forward or backward slash
-      if (wxIsMSW() && !wxUsesFlutter()) {
-        assetPath += "\\";
-      } else {
-        assetPath += "/";
-      }
 
     final bottomSizer = WxBoxSizer( wxHORIZONTAL );
     sizer.addSizer( bottomSizer, flag: wxEXPAND ); 
 
-    String path = "";
 
     bottomSizer.addStretchSpacer();
     bottomSizer.add( WxStaticText(parent, -1, 'PNG:  '), flag: wxALIGN_CENTER_VERTICAL );
-    path = "${assetPath}wxWidgets.png";
 
-    bottomSizer.add( WxStaticBitmap(parent, -1, WxBitmapBundle.fromPNGAsset( path)), flag: wxALIGN_CENTER_VERTICAL|wxALL, border: 5 );
+    bottomSizer.add( WxStaticBitmap(parent, -1, WxBitmapBundle.fromPNGAsset( "wxWidgets.png")), flag: wxALIGN_CENTER_VERTICAL|wxALL, border: 5 );
     bottomSizer.addStretchSpacer();
     bottomSizer.add( WxStaticText(parent, -1, 'SVG:  '), flag: wxALIGN_CENTER_VERTICAL );
-    path = "${assetPath}flutter.svg";
-    bottomSizer.add( WxStaticBitmap(parent, -1, WxBitmapBundle.fromSVGAsset( path, WxSize(48, 48))), flag: wxALIGN_CENTER_VERTICAL|wxALL, border: 5 );
+    bottomSizer.add( WxStaticBitmap(parent, -1, WxBitmapBundle.fromSVGAsset( "flutter.svg", WxSize(48, 48))), flag: wxALIGN_CENTER_VERTICAL|wxALL, border: 5 );
     bottomSizer.addStretchSpacer();
 
 
@@ -353,15 +343,13 @@ class MyControlsWindow extends WxScrolledWindow {
     final  imageSizer = WxBoxSizer( wxHORIZONTAL );
     sizer.addSizer( imageSizer, flag: wxEXPAND ); 
 
-    path = "${assetPath}PlayPause.png";
     final playpause = WxButton( parent, -1 ,"Play" );
     playpause.setBitmap(WxBitmapBundle.fromMaterialIcon( WxMaterialIcon.play_arrow, WxSize(48, 48) ));
     imageSizer.add( playpause, flag: wxALIGN_CENTER_VERTICAL );
     imageSizer.addSpacer(10);
 
     imageSizer.add( WxStaticText(parent, -1, 'GIF:  '), flag: wxALIGN_CENTER_VERTICAL );
-    path = "${assetPath}throbber2.gif";
-    final ani = WxAnimationCtrl(parent, -1, WxAnimation(path) );
+    final ani = WxAnimationCtrl(parent, -1, WxAnimation("throbber2.gif") );
     imageSizer.add( ani, flag: wxALIGN_CENTER_VERTICAL );
 
     imageSizer.addSpacer(15);

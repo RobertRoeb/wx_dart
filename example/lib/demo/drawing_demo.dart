@@ -119,15 +119,8 @@ class MyGraphicsWindow extends WxScrolledWindow {
     // build WxGraphicsBitmap from bitmap
     bitmapFromBitmap = gc.createBitmap( bitmap );
 
-    String path = wxGetStandardPaths().getResourcesDir();
-    // Add forward or backward slash
-    if (wxIsMSW() && !wxUsesFlutter()) {
-      path += "\\throbber2.gif";
-    } else {
-      path += "/throbber2.gif";
-    }
-    // create thobber animation
-    _animation = WxGraphicsAnimation(path,gc);
+    // create throbber animation from resource
+    _animation = WxGraphicsAnimation("throbber2.gif",gc);
 
     // create timer
     _timer = WxTimer.withOwner( this );

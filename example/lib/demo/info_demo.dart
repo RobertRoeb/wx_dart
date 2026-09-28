@@ -28,28 +28,16 @@ class MyInfoPage extends WxScrolledWindow {
     sizer.addSpacer(10);
     sizer.add( WxStaticText( this, -1, "Current stage" )..setFont(WxFont(16,weight:wxFONTWEIGHT_BOLD)), flag: wxALL|wxALIGN_LEFT, border: 10 );
     sizer.add( WxStaticText( this, -1, 
-      "wxDart is approaching a first stable version. This app has been written using wxDart."
-     , style: wxST_WRAP ), flag: wxALL, border: 10 );
-
-
-      String assetPath = wxGetStandardPaths().getResourcesDir();
-      // Add forward or backward slash
-      if (wxIsMSW() && !wxUsesFlutter()) {
-        assetPath += "\\";
-      } else {
-        assetPath += "/";
-      }
+      "wxDart is approaching a first stable version. This app has been written using wxDart.",
+      style: wxST_WRAP ), flag: wxALL, border: 10 );
 
     sizer.add( WxStaticText(this, -1, 'Read more...'), flag: wxALL, border: 5 );
 
     final flex = WxFlexGridSizer( 2, vgap: 5, hgap: 5);
     sizer.addSizer( flex, flag: wxALIGN_CENTRE_HORIZONTAL ); 
 
-    String path = "${assetPath}wxWidgets.png";
-    flex.add( WxStaticBitmap(this, -1, WxBitmapBundle.fromPNGAsset( path)), flag: wxALIGN_CENTER_VERTICAL|wxALL, border: 5 );
-
-    path = "${assetPath}flutter.svg";
-    flex.add( WxStaticBitmap(this, -1, WxBitmapBundle.fromSVGAsset( path, WxSize(48, 48))), flag: wxALIGN_CENTER_VERTICAL|wxALL, border: 5 );
+    flex.add( WxStaticBitmap(this, -1, WxBitmapBundle.fromPNGAsset("wxWidgets.png")), flag: wxALIGN_CENTER_VERTICAL|wxALL, border: 5 );
+    flex.add( WxStaticBitmap(this, -1, WxBitmapBundle.fromSVGAsset("flutter.svg", WxSize(48, 48))), flag: wxALIGN_CENTER_VERTICAL|wxALL, border: 5 );
 
     final hl = WxHyperlinkCtrl(this, -1, 'http://wxwidgets.org', 'http://wxwidgets.org');
     flex.add( hl, flag: wxALL, border: 5 );

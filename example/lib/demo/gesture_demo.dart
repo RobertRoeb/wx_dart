@@ -9,15 +9,7 @@ class MyGestureWindow extends WxWindow {
   MyGestureWindow( WxWindow parent, { WxPoint pos=wxDefaultPosition, WxSize size=wxDefaultSize, int style=0 }) :
     super( parent, -1, pos, size, style )
   { 
-      String assetPath = wxGetStandardPaths().getResourcesDir();
-      // Add forward or backward slash
-      if (wxIsMSW() && !wxUsesFlutter()) {
-        assetPath += "\\Merian_Germania_big.jpg";
-      } else {
-        assetPath += "/Merian_Germania_big.jpg";
-      }
-
-    _bitmap = WxBitmap(assetPath, wxBITMAP_TYPE_JPEG);
+    _bitmap = WxBitmap("Merian_Germania_big.jpg", wxBITMAP_TYPE_JPEG);
 
     _castle = WxBitmap.fromMaterialIcon( WxMaterialIcon.castle, WxSize(20,20), wxRED );
 
