@@ -31,6 +31,12 @@ class WxBitmapBundle extends WxClass {
   /// Creates a bitmap bundle from a PNG.
   /// 
   /// [path] is relative to [WxStandardPaths.getResourcesDir]
+  /// 
+  /// Example:
+  /// ```dart
+  ///    // create bitmap bundle from lib/assets/images/MyImage.png
+  ///    final bitmap = WxBitmapBundle.fromPNGAsset( "images/MyImage.png" ); 
+  /// ```
   WxBitmapBundle.fromPNGAsset( String path )  {
     // this will automatically look for scaled images like /2.0x/image.png
     _bitmap = WxBitmap(path, wxBITMAP_TYPE_PNG );
@@ -39,6 +45,12 @@ class WxBitmapBundle extends WxClass {
   /// Creates a bitmap bundle from a JPEG image.
   /// 
   /// [path] is relative to [WxStandardPaths.getResourcesDir]
+  /// 
+  /// Example:
+  /// ```dart
+  ///    // create bitmap bundle from lib/assets/images/MyImage.jpg
+  ///    final bitmap = WxBitmapBundle.fromJPEGAsset( "images/MyImage.jpg" ); 
+  /// ```
   WxBitmapBundle.fromJPEGAsset( String path )  {
     // this will automatically look for scaled images like /2.0x/image.jpg, ???
     _bitmap = WxBitmap(path, wxBITMAP_TYPE_JPEG );
@@ -48,6 +60,12 @@ class WxBitmapBundle extends WxClass {
   /// size given in [sizeDef].
   /// 
   /// [path] is relative to [WxStandardPaths.getResourcesDir]
+  /// 
+  /// Example:
+  /// ```dart
+  ///    // create bitmap bundle from lib/assets/images/MyImage.svg
+  ///    final bitmap = WxBitmapBundle.fromSVGAsset( "images/MyImage.svg", WxSize(20,20) ); 
+  /// ```
   WxBitmapBundle.fromSVGAsset( String path, WxSize sizeDef )  {
     _bitmap = WxBitmap.fromSVGAsset( path, sizeDef.x, sizeDef.y );
   }

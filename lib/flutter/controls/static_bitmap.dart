@@ -30,6 +30,12 @@ const int wxBI_EXPAND = wxEXPAND;
 /// | -------- | -------- |
 /// | wxBI_EXPAND | wxEXPAND |
 /// 
+/// Example:
+/// ```dart
+///    // create WxStaticBitmap from lib/assets/images/MyImage.png
+///    final statbitmap = WxStaticBitmap( this, -1, WxBitmapBundle.fromPNGAsset("images/MyImage.png") );
+///    statbitmap.setScaleMode( scaleAspectFit );
+/// ```
 class WxStaticBitmap extends WxControl {
   WxStaticBitmap( super._parent, super._id, WxBitmapBundle bitmap, { super.pos = wxDefaultPosition, super.size = wxDefaultSize, super.style = 0 } ) {
     _bitmap = bitmap.getBitmapFor( this );

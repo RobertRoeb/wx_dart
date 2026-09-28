@@ -175,7 +175,7 @@ void wxLoadStringFromResource( String filename, void Function( String data ) ret
 void wxLoadRGBAFromResource( String filename, void Function( Uint8List rgba, int width, int height ) returnRGBA,
  { int format = wxBITMAP_TYPE_PNG, String subdir = "" } )
 {
-    String path = "lib/assets";
+    String path = wxGetStandardPaths().getResourcesDir();
     if (subdir.isNotEmpty) {
       path = "$path/$subdir"; 
     }
@@ -219,7 +219,7 @@ void wxLoadRGBAFromResource( String filename, void Function( Uint8List rgba, int
 
 void wxLoadImageFromResource( String filename, void Function( WxImage image ) returnImage, { int format = wxBITMAP_TYPE_PNG, String subdir = "" } ) 
 {
-    String path = "lib/assets";
+    String path = wxGetStandardPaths().getResourcesDir();
     if (subdir.isNotEmpty) {
       path = "$path/$subdir"; 
     }
@@ -249,7 +249,7 @@ void wxLoadImageFromResource( String filename, void Function( WxImage image ) re
 
 WxBitmapBundle wxLoadSVGFromResource( String filename, WxSize size, { String subdir = "" } ) 
 {
-    String path = "lib/assets";
+    String path = wxGetStandardPaths().getResourcesDir();
     if (subdir.isNotEmpty) {
       path = "$path/$subdir"; 
     }

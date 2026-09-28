@@ -22,6 +22,12 @@ class _AnimationFrame
 /// You can used the derived class [WxGraphicsAnimation] to draw 
 /// the animation frames directly into a window using a [WxGraphicsContext].
 /// 
+/// Example:
+/// ```dart
+///    // create animation from lib/assets/animations/circular.gif
+///    final bitmap = WxAnimation( "animations/circular.gif" ); 
+/// ```
+/// 
 /// Not to be mixed up with [WxUIAnimation] which controls animations 
 /// onscreen.
 ///
@@ -30,16 +36,8 @@ class _AnimationFrame
 /// is loaded asynchronously.
 /// 
 /// ```dart
-///  String path = wxGetStandardPaths().getResourcesDir();
-///  // Add forward or backward slash
-///  if (wxIsMSW() && !wxUsesFlutter()) {
-///    path += "\\throbber.gif";
-///  } else {
-///    path += "/throbber.gif";
-///  }
-/// 
 ///  final List<WxBitmap> frames = [];
-///  final animation = WxAnimation(path);
+///  final animation = WxAnimation("throbber.gif");
 ///  animation.load().then( (_) {
 ///    if (!animation.isOk()) {
 ///      wxLogError( "animation did not load" );
@@ -68,7 +66,7 @@ class WxAnimation extends WxObject {
   /// 
   /// [path] is relative to [WxStandardPaths.getResourcesDir]
   WxAnimation( String path ) {
-    _path = path;
+    _path = "${wxGetStandardPaths().getResourcesDir()}/$path";
   }
 
   /// Returns true if the animation has been successfully and completely loaded

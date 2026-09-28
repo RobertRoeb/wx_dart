@@ -23,19 +23,11 @@ part of '../../wx_dart.dart';
 /// 
 ///   MyWindow( WxWindow parent, int id ) : super( parent, id, wxDefaultPosition, wxDefaultSize, 0 )
 ///   {
-///     String path = wxGetStandardPaths().getResourcesDir();
-///     // Add forward or backward slash
-///     if (wxIsMSW() && !wxUsesFlutter()) {
-///       path += "\\throbber.gif";
-///     } else {
-///       path += "/throbber.gif";
-///     }
-/// 
 ///     // Create a graphics context
 ///     final context = WxGraphicsContext();
 /// 
 ///     // Create animation and load it in the background
-///     _animation = WxGraphicsAnimation( path, context );
+///     _animation = WxGraphicsAnimation( "throbber.gif", context );
 /// 
 ///     // Bind paint handler to the paint event
 ///     bindPaintEvent(onPaint);

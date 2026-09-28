@@ -28,21 +28,13 @@ WxStandardPaths wxGetStandardPaths() {
 
 // ------------------------- wxStandardPaths ----------------------
 
-/// Helper class to query standard directories
+/// Helper class to query standard directories. This class is used
+/// internally when loading assets such as images. Importantly,
+/// [getResourcesDir] returns the path to the assets.
 /// 
 /// ```dart
-///  // files are stored in lib/assets
-///  String assetPath = wxGetStandardPaths().getResourcesDir();
-///
-///  // Add forward or backward slash
-///  if (wxIsMSW() && !wxUsesFlutter()) {
-///    assetPath += "\\";
-///  } else {
-///    assetPath += "/";
-///  }
-///
-///  // create WxBitmapBundle
-///  final bundle = WxBitmapBundle.fromPNGAsset( "${assetPath}wxWidgets.png");
+///  // create WxBitmapBundle from lib/assets/wxWidgets.png
+///  final bundle = WxBitmapBundle.fromPNGAsset( "wxWidgets.png" );
 /// 
 ///  // create WxStaticBitmap
 ///  final staticbitmap = WxStaticBitmap( this, -1, bundle ); 
@@ -71,7 +63,9 @@ class WxStandardPaths extends WxClass {
   /// In wxDart Native, there are two different scenarios. The resource directory is
   /// either the folder where the resource files should be located when the final
   /// software is installed indicated by [useInstalledDirectory], or they are left
-  /// in lib/assets as explained above. If you use the [useInstalledDirectory] option the 
+  /// in lib/assets as explained above. 
+  /// 
+  /// TBD: If you use the [useInstalledDirectory] option the 
   /// subdirectory _assets_ will be appended appended.
   /// 
   /// * macOS myapp.app/Contents/Resources (bundle subdirectory)

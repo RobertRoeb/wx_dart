@@ -20,7 +20,7 @@ const int wxBITMAP_TYPE_ANY = 50;
 /// drawing directly into a window.
 /// 
 /// Creation of a [WxBitmap] is an asychronous operation
-/// in wxDart Flutter. That means that the internal representation of
+/// in wxDart (Flutter). That means that the internal representation of
 /// the bitmap will be build in the background and this will not interrupt
 /// program flow. Indeed, if the bitmap is loaded from the web and
 /// the connection goes down, the internal representation will never
@@ -31,7 +31,7 @@ const int wxBITMAP_TYPE_ANY = 50;
 /// 
 /// You cannot currently manipulate objects of this class directly.
 /// Rather, you create a [WxBitmap] from an [WxImage] or directly
-/// from a file or an SVG string. 
+/// from a resource file or an SVG string. 
 /// 
 /// ```dart
 ///    final image = WxImage( 100, 100 );
@@ -49,7 +49,13 @@ const int wxBITMAP_TYPE_ANY = 50;
 ///    }
 ///
 ///    // create bitmap from WxImage
-///    bitmap = WxBitmap.fromImage( image ); 
+///    final bitmap = WxBitmap.fromImage( image ); 
+/// ```
+/// 
+/// From a resource:
+/// ```dart
+///    // create bitmap from lib/assets/images/MyImage.png
+///    final bitmap = WxBitmap.fromImage( "/images/MyImage.png", wxBITMAP_TYPE_PNG ); 
 /// ```
 /// 
 /// Alternatively, you can use a [WxMemoryDC] to create a [WxBitmap]
@@ -97,33 +103,36 @@ const int wxBITMAP_TYPE_ANY = 50;
 /// can handle multiple resolutions using multple bitmaps.
 /// 
 /// # Image file format constants
-/// | constant | meaning |
-/// | -------- | -------- |
-/// | wxBITMAP_TYPE_BMP | 1 |
-/// | wxBITMAP_TYPE_GIF | 13 |
-/// | wxBITMAP_TYPE_PNG | 15 |
-/// | wxBITMAP_TYPE_JPEG | 17 |
-/// | wxBITMAP_TYPE_WEBP | 32 |
-/// | wxBITMAP_TYPE_ANY | 50 |
+/// * wxBITMAP_TYPE_BMP
+/// * wxBITMAP_TYPE_GIF
+/// * wxBITMAP_TYPE_PNG
+/// * wxBITMAP_TYPE_JPEG
+/// * wxBITMAP_TYPE_WEBP
+/// * wxBITMAP_TYPE_ANY
 
 class WxBitmap extends WxObject {
 
-/// Loads in image from a resource. with the given format.
+/// Loads in image from a resource with the given format.
 /// 
 /// [path] is relative to [WxStandardPaths.getResourcesDir]
 /// 
 /// # Image file format constants
-/// | constant | meaning/value |
-/// | -------- | -------- |
-/// | wxBITMAP_TYPE_BMP | 1 |
-/// | wxBITMAP_TYPE_GIF | 13 |
-/// | wxBITMAP_TYPE_PNG | 15 |
-/// | wxBITMAP_TYPE_JPEG | 17 |
-/// | wxBITMAP_TYPE_WEBP | 32 |
-/// | wxBITMAP_TYPE_ANY | 50 |
+/// * wxBITMAP_TYPE_BMP
+/// * wxBITMAP_TYPE_GIF
+/// * wxBITMAP_TYPE_PNG
+/// * wxBITMAP_TYPE_JPEG
+/// * wxBITMAP_TYPE_WEBP
+/// * wxBITMAP_TYPE_ANY
+/// 
+/// Example:
+/// ```dart
+///    // create bitmap from lib/assets/images/MyImage.png
+///    final bitmap = WxBitmap( "images/MyImage.png", wxBITMAP_TYPE_PNG ); 
+/// ```
   WxBitmap( String path, int format )
   {
-    _buildAsset(path,-1,-1).then( (image ) {
+    final resourcePath = "${wxGetStandardPaths().getResourcesDir()}/$path";
+    _buildAsset(resourcePath,-1,-1).then( (image ) {
       _image = image;
       // notify owning classes
       for (final listener in _listeners) {
@@ -231,7 +240,8 @@ Future<ui.Image> _buildAsset(String path, int height, int width) async
   /// [path] is relative to [WxStandardPaths.getResourcesDir]
   WxBitmap.fromSVGAsset( String path, int width, int height )
   {
-    _buildSVGAsset(path,width,height).then( (image ) {
+    final resourcePath = "${wxGetStandardPaths().getResourcesDir()}/$path";
+    _buildSVGAsset(resourcePath,width,height).then( (image ) {
       _image = image;
       // notify owning classes
       for (final listener in _listeners) {

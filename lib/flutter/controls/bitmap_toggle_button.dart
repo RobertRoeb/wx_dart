@@ -11,6 +11,21 @@ part of '../../wx_dart.dart';
 
 /// Allows user to toggle a feature using a bitmap button.
 /// 
+/// Allows user to toggle a feature using a button.
+/// 
+/// Example usage
+/// ```dart
+///  final myButton = WxBitmapToggleButton( parent, -1, WxBitmapBundle.fromPNGAsset("show.png") );
+///  myButton.bindToggleButtonEvent((event)
+///  {
+///    if (event.isChecked()) {
+///      // actually show something
+///    } else {
+///      // actually hide something
+///    }
+///  }, -1);
+///```
+///
 /// [ToggleButton](/wxdart/wxGetToggleButtonEventType.html) event gets sent when the button is toggled or untoggled. |
 /// | ----------------- |
 /// | void bindToggleButtonEvent( void function( [WxCommandEvent] event ) ) |
