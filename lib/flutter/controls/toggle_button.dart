@@ -22,6 +22,19 @@ extension ToggleButtonEventBinder on WxEvtHandler {
 }
 /// Allows user to toggle a feature using a button.
 /// 
+/// Example usage
+/// ```dart
+///  final myButton = WxToggleButton( parent, -1, "Show it");
+///  myButton.bindToggleButtonEvent((event)
+///  {
+///    if (event.isChecked()) {
+///      // actually show something
+///    } else {
+///      // actually hide something
+///    }
+///  }, -1);
+///```
+///
 /// [ToggleButton](/wxdart/wxGetToggleButtonEventType.html) event gets sent when the button is toggled or untoggled. |
 /// | ----------------- |
 /// | void bindToggleButtonEvent( void function( [WxCommandEvent] event ) ) |
