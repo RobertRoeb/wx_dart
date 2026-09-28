@@ -20,6 +20,12 @@ part of '../../wx_dart.dart';
 /// Notably, a [WxBitmapBundle] can be passed to many controls in wxDart to allow them
 /// to select the best available bitmap to be shown depending on the display
 /// resolution of the current monitor.
+/// 
+/// Example:
+/// ```dart
+///  // create bitmap bundle from lib/assets/images/MyImage.png
+///  final bitmap = WxBitmapBundle.fromPNGAsset( "images/MyImage.png" ); 
+/// ```
 
 class WxBitmapBundle extends WxClass {
 
@@ -34,8 +40,8 @@ class WxBitmapBundle extends WxClass {
   /// 
   /// Example:
   /// ```dart
-  ///    // create bitmap bundle from lib/assets/images/MyImage.png
-  ///    final bitmap = WxBitmapBundle.fromPNGAsset( "images/MyImage.png" ); 
+  /// // create bitmap bundle from lib/assets/images/MyImage.png
+  /// final bitmap = WxBitmapBundle.fromPNGAsset( "images/MyImage.png" ); 
   /// ```
   WxBitmapBundle.fromPNGAsset( String path )  {
     // this will automatically look for scaled images like /2.0x/image.png
@@ -48,8 +54,8 @@ class WxBitmapBundle extends WxClass {
   /// 
   /// Example:
   /// ```dart
-  ///    // create bitmap bundle from lib/assets/images/MyImage.jpg
-  ///    final bitmap = WxBitmapBundle.fromJPEGAsset( "images/MyImage.jpg" ); 
+  /// // create bitmap bundle from lib/assets/images/MyImage.jpg
+  /// final bitmap = WxBitmapBundle.fromJPEGAsset( "images/MyImage.jpg" ); 
   /// ```
   WxBitmapBundle.fromJPEGAsset( String path )  {
     // this will automatically look for scaled images like /2.0x/image.jpg, ???
@@ -63,8 +69,8 @@ class WxBitmapBundle extends WxClass {
   /// 
   /// Example:
   /// ```dart
-  ///    // create bitmap bundle from lib/assets/images/MyImage.svg
-  ///    final bitmap = WxBitmapBundle.fromSVGAsset( "images/MyImage.svg", WxSize(20,20) ); 
+  /// // create bitmap bundle from lib/assets/images/MyImage.svg
+  /// final bitmap = WxBitmapBundle.fromSVGAsset( "images/MyImage.svg", WxSize(20,20) ); 
   /// ```
   WxBitmapBundle.fromSVGAsset( String path, WxSize sizeDef )  {
     _bitmap = WxBitmap.fromSVGAsset( path, sizeDef.x, sizeDef.y );

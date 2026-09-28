@@ -24,8 +24,8 @@ class _AnimationFrame
 /// 
 /// Example:
 /// ```dart
-///    // create animation from lib/assets/animations/circular.gif
-///    final bitmap = WxAnimation( "animations/circular.gif" ); 
+/// // create animation from lib/assets/animations/circular.gif
+/// final animation = WxAnimation( "animations/circular.gif" ); 
 /// ```
 /// 
 /// Not to be mixed up with [WxUIAnimation] which controls animations 

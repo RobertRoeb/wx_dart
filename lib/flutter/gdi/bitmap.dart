@@ -33,6 +33,13 @@ const int wxBITMAP_TYPE_ANY = 50;
 /// Rather, you create a [WxBitmap] from an [WxImage] or directly
 /// from a resource file or an SVG string. 
 /// 
+/// From a resource:
+/// ```dart
+///    // create bitmap from lib/assets/images/MyImage.png
+///    final bitmap = WxBitmap.fromImage( "images/MyImage.png", wxBITMAP_TYPE_PNG ); 
+/// ```
+/// 
+/// From an image:
 /// ```dart
 ///    final image = WxImage( 100, 100 );
 ///    for (int y = 0; y < 100; y++) {
@@ -50,12 +57,6 @@ const int wxBITMAP_TYPE_ANY = 50;
 ///
 ///    // create bitmap from WxImage
 ///    final bitmap = WxBitmap.fromImage( image ); 
-/// ```
-/// 
-/// From a resource:
-/// ```dart
-///    // create bitmap from lib/assets/images/MyImage.png
-///    final bitmap = WxBitmap.fromImage( "/images/MyImage.png", wxBITMAP_TYPE_PNG ); 
 /// ```
 /// 
 /// Alternatively, you can use a [WxMemoryDC] to create a [WxBitmap]
