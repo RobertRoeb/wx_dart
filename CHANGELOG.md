@@ -1,3 +1,8 @@
+## 0.9.16
+
+* Implemented WxDialog.setSizerAndFit() to find resize dialog according to the main WxSizer
+* Changed asset path logic - now paths on MSW are converted to from forward to back slash
+
 ## 0.9.15
 
 * Added WxFrame.showInfoBar()
