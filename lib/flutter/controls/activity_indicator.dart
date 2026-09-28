@@ -11,6 +11,17 @@ part of '../../wx_dart.dart';
 
 /// A simple control indicating that some work is currently being done. Typically by
 /// showing a turning graphic.
+/// 
+/// Main interface
+/// * [start]
+/// * [stop]
+/// * [isRunning]
+/// 
+/// Example usage
+/// ```dart
+///  final indicator = WxActivityIndicator( parent, -1 );
+///  indicator.start();
+///```
 
 class WxActivityIndicator extends WxControl {
 
