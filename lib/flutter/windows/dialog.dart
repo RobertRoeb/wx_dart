@@ -489,6 +489,7 @@ class WxDialog extends WxTopLevelWindow {
             _hasSentInitEvent = true;
           }
           return  
+          _buildTLW( parentContext, 
             FloatingDialog(
               onClose:() {
                 _endDialog( wxID_CANCEL );
@@ -527,7 +528,7 @@ class WxDialog extends WxTopLevelWindow {
                     )
                 )
               ) 
-            ) );
+            ) ) );
 
                   }
       ).whenComplete(() {
