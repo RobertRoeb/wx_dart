@@ -251,6 +251,16 @@ class MyLinesWindow extends WxWindow {
     dc.gradientFillConcentric(WxRect(351, 10, 100, 100), wxGREEN, wxBLUE );
 
     dc.drawText( "Event received: $eventMessage", 10, 80 );
+
+    final gc = WxGraphicsContext.fromDC(dc);
+
+    gc.setPen(wxRED_PEN);
+    gc.setBrush(wxTRANSPARENT_BRUSH);
+    gc.drawRectangle(10, 50, 20, 20 );
+    gc.drawRectangle(40, 50, 20.5, 20.5 );
+    gc.drawRectangle(70.5, 50.5, 20, 20 );
+    gc.drawRectangle(100.5, 50.5, 20.5, 20.5 );
+
   }
 
   String eventMessage = "Click here and press a key";

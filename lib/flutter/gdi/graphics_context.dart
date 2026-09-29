@@ -336,10 +336,20 @@ class WxGraphicsContext extends WxGraphicsObject {
       _brushPaint );
     }
     if (_currentPen.isNonTransparent()) {
+      final path = Path();
+      path.moveTo(x+0.5, y+0.5 );
+      path.lineTo(x+0.5, y+height+0.5 );
+      path.lineTo(x+width+0.5, y+height+0.5 );
+      path.lineTo(x+width+0.5, y+0.5 );
+      path.lineTo(x+0.5, y+0.5 );
+      _canvas!.drawPath( path, _penPaint );
+/*
+      // this produces strange results for non-integer dimensions
       _canvas!.drawRect( Rect.fromPoints(
           Offset( x+0.5, y+0.5 ),
           Offset( x+width+0.5, y+height+0.5 ) ),
       _penPaint );
+*/
     }
   }
 
