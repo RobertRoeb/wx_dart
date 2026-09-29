@@ -134,21 +134,34 @@ class WxFrame extends WxTopLevelWindow {
   WxFrame( super._parent, super._id, super._title, { super.pos = wxDefaultPosition, super.size = wxDefaultSize, super.style = wxDEFAULT_FRAME_STYLE } ) {
     theTLW ??= this;
 
-    bindMenuHighlightEvent(onMenuHighlight);
+    bindMenuHighlightEvent(_onMenuHighlight);
+    bindMenuCloseEvent(_onMenuClose);
   }
 
   WxMenuBar? _menubar;
   WxStatusBar? _statusBar;
   WxToolBar? _toolBar;
 
-  void onMenuHighlight( WxMenuEvent event )
+  void _onMenuClose( WxMenuEvent event )
   {
+    event.skip();
+    if (_statusBar == null) return;
+    _statusBar!._setHelpText( "" );
+  }
+
+  void _onMenuHighlight( WxMenuEvent event )
+  {
+    event.skip();
+    if (_statusBar == null) return;
+
     WxMenuItem? item = findItemInMenuBar(event.getMenuId() );
     if (item != null) {
       if (item.getHelp().isNotEmpty) {
-        setStatusText( item.getHelp() );
+        _statusBar!._setHelpText( item.getHelp() );
+        return;
       }
     }
+    _statusBar!._setHelpText( "" );
   }
 
   @override

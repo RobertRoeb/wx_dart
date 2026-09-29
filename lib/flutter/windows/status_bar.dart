@@ -45,35 +45,47 @@ class WxStatusBar extends WxEvtHandler {
   final WxWindow parent;
   final int id;
   final int style;
+  String _helpText = "";
 
   final List<WxStatusBarPane> _fields = [ WxStatusBarPane() ];
 
-    /// Sets the text of a status bar field at position [index]
-    void setStatusText( String text, { int index = 0 } ) {
-      if (index >= _fields.length) return;
-      WxStatusBarPane pane = _fields[index];
-      pane.text = text;
-      parent._setState();
-    }
+  void _setHelpText( String help ) {
+    _helpText = help;
+    parent._setState();
+  }
 
-    /// Returns the number of fields in the status bar
-    int getFieldsCount() {
-      return _fields.length;
-    }
+  /// Sets the text of a status bar field at position [index]
+  void setStatusText( String text, { int index = 0 } ) {
+    if (index >= _fields.length) return;
+    WxStatusBarPane pane = _fields[index];
+    pane.text = text;
+    parent._setState();
+  }
 
-    /// Sets the number of fields in the status bar
-    void setFieldsCount( { int count = 1 } ) {
-      _fields.clear();
-      for (int i = 0; i < count; i++) {
-        _fields.add( WxStatusBarPane() );
-      }
-      parent._setState();
+  /// Returns the number of fields in the status bar
+  int getFieldsCount() {
+    return _fields.length;
+  }
+
+  /// Sets the number of fields in the status bar
+  void setFieldsCount( { int count = 1 } ) {
+    _fields.clear();
+    for (int i = 0; i < count; i++) {
+      _fields.add( WxStatusBarPane() );
     }
+    parent._setState();
+  }
 
   Widget _build(BuildContext context) {
-    Row row = Row( children: [] ); 
+    Row row = Row( children: [] );
+    bool first = true;
     for (WxStatusBarPane field in _fields) {
-      row.children.add( Expanded( flex: 1, child: Text(field.text) ) );
+      if (first && _helpText.isNotEmpty) {
+        row.children.add( Expanded( flex: 1, child: Text(_helpText) ) );
+      } else {
+        row.children.add( Expanded( flex: 1, child: Text(field.text) ) );
+      }
+      first = false;
     }
     return Padding(padding: EdgeInsets.fromLTRB(5, 2, 5, 2), child: row );
   }

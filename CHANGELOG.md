@@ -1,3 +1,8 @@
+## 0.9.17
+
+* Implemented support for disabling menu items via WxUpdateUIEvent
+* Make menu item help text disappear again when menu is close
+
 ## 0.9.16
 
 * Implemented WxDialog.setSizerAndFit() to find resize dialog according to the main WxSizer
@@ -31,7 +36,7 @@
 ## 0.9.12
 
 * Allow wxDart Flutter apps on the web to appear in an HTML window - not just full-screen apps
-* Added WxRealOffset for conveniance
+* Added WxRealOffset for convenience
 * Change from flutter_html to flutter_widget_from_html because the former is no longer maintained
 * Several documentation updates 
 
@@ -85,13 +90,13 @@
 
 * Added WxGLCanvas and WxGLContext for OpenGL (ES) support on all platforms
 * Added WxWindow.getChildCount() and WxWindow.getChild(index) as we don't have a GetChildren() accessor like in C++
-* Added WxRealPoint for conveniance
+* Added WxRealPoint for convenience
 * Corrected WxGraphicsPath.addCircle()
 
 ## 0.9.7
 
 * Implemented control of focus behaviour (disable focus, child window focus)
-* Updated function category documentation for the wxWindow class
+* Updated function category documentation for the WxWindow class
 * Added wxBitmapComboBox
 
 ## 0.9.6
