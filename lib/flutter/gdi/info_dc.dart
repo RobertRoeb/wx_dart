@@ -47,7 +47,9 @@ class WxReadOnlyDC extends WxObject {
             maxLines: 1, 
             textDirection: TextDirection.ltr)
       ..layout(minWidth: 0, maxWidth: double.infinity);
-    return WxSize( textPainter.size.width.floor(), textPainter.size.height.floor() );
+    final returnValue = WxSize( textPainter.size.width.floor(), textPainter.size.height.floor() );
+    textPainter.dispose();
+    return returnValue;
   }
 
   void _recalcMatrix() {

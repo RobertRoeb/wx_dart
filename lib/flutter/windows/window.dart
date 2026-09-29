@@ -554,7 +554,9 @@ class WxWindow extends WxEvtHandler {
     TextPainter textPainter = TextPainter(
         text: TextSpan(text: text, style: null), maxLines: 1, textDirection: TextDirection.ltr)
       ..layout(minWidth: 0, maxWidth: double.infinity);
-    return WxSize( textPainter.size.width.floor(), textPainter.size.height.floor() );
+    final returnValue = WxSize( textPainter.size.width.floor(), textPainter.size.height.floor() );
+    textPainter.dispose();
+    return returnValue;
   }
 
   /// Set the foreground colour of the window or control. This can have different

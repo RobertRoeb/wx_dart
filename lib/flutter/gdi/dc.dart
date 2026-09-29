@@ -335,7 +335,8 @@ class WxDC extends WxReadOnlyDC {
     }
 
     Offset offset = Offset( x+0.5, y+0.5 );
-    textPainter.paint(_canvas, offset);    
+    textPainter.paint(_canvas, offset);
+    textPainter.dispose();
   }
 
   /// Draws an elliptic arc centered around [x],[y] with [width] and [height] and
