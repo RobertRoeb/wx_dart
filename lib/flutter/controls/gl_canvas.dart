@@ -169,6 +169,10 @@ class WxGLCanvas extends WxWindow {
     {
         if ((size.x != _oldSize.x) || (size.y != _oldSize.y))
         {
+          if (_isResizing) {
+            // Avoid reentrance
+            return;
+          }
           final options = AngleOptions(
             width: size.x, 
             height: size.y, 
@@ -177,11 +181,13 @@ class WxGLCanvas extends WxWindow {
             useSurfaceProducer: true
           );
 
-            _flutterGlPlugin!.resize( _texture!, options ).then( (_) {
-              _oldSize = size;
-              final event = WxSizeEvent( size, id: getId() );
-              processEvent( event );
-            } );
+          _isResizing = true;
+          _flutterGlPlugin!.resize( _texture!, options ).then( (_) {
+            _oldSize = size;
+            final event = WxSizeEvent( size, id: getId() );
+            processEvent( event );
+            _isResizing = false;
+          } );
           
         }
     }
@@ -193,6 +199,8 @@ class WxGLCanvas extends WxWindow {
   FlutterAngleTexture? _texture;
   WxSize _oldSize = wxDefaultSize;
   bool _buildingTexture = false;
+  bool _isUpdating = false;
+  bool _isResizing = false;
 
   /// Swap buffers after drawing is completed
   void swapBuffers()
@@ -207,8 +215,14 @@ class WxGLCanvas extends WxWindow {
     _gl!.finish();
 
     if (_texture == null) return;
+
+    if (_isUpdating) {
+      // Avoid reentrance
+      return;
+    }
+    _isUpdating = true;
     _flutterGlPlugin!.updateTexture(_texture!).then( (_) {
-        //print( "#2 Texture updated" );
+      _isUpdating = false;
     });
   }
 
