@@ -327,6 +327,7 @@ class WxWindow extends WxEvtHandler {
   bool _lastButtonWasright = false;
   WxWindow? _sliverView;
   bool _hasSentWindowCreateEvent = false;
+  int _centreOnParent = 0;
 
   /// Gets called before the window is destroyed and can be used to e.g.
   /// close a database or network connection or to stop a [WxTimer].
@@ -425,11 +426,18 @@ class WxWindow extends WxEvtHandler {
     return _size;
   }
 
-  /// Set the size if the controls
+  /// Sets the size if the controls
   void setSize( WxSize size ) {
     _initialSize = size;
     _setSizeInternal( size );
     _setState();
+  }
+
+  /// Centres the window on its parent window in the given direction
+  /// 
+  /// [direction] can be either of wxHORIZONTAL, wxVERTICAL or wxBOTH
+  void centreOnParent( { int direction = wxBOTH } ) {
+    _centreOnParent = direction;
   }
 
   void _setSizeInternal( WxSize size ) 

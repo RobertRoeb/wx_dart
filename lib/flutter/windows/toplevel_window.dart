@@ -299,6 +299,8 @@ class WxTopLevelWindow extends WxNonOwnedWindow {
   }
 
   /// wxDart Native: centre window on screen
+  /// 
+  /// See also [centreOnParent]
   void centreOnScreen( int direction ) {
   }
 

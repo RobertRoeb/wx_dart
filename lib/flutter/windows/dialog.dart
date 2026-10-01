@@ -17,6 +17,17 @@ part of '../../wx_dart.dart';
 /// On small mobile devices, dialogs can be implemented either as a sheet appearing from the bottom
 /// or a window filling out most of the screen.
 /// 
+/// On some platforms a [WxDialog] will be automatically centred on its parent if no position
+/// is given (Linux, Flutter) whereas on others platforms you need to  call [centreOnParent]
+/// after a call to [setSizer] or [setSizerAndFit]. When centering the dialog on the parent,
+/// the algorithm can only take into account the control dimensions that are known at that time
+/// but e.g. a [WxStaticBitmap] will load its bitmap asynchronously and therefore initially assumes
+/// a size of 0. In order to get correct centering, you may need to pass the size of the bitmap
+/// with the constructor like this 
+/// ```dart
+/// final statbm = WxStaticBitmap(this, -1, WxBitmapBundle.fromPNGAsset("image.png"), size: WxSize(300,200));
+/// ```
+/// 
 /// [WxDialog] provides a way to place standard buttons at the bottom of the dialog and their
 /// ordering will be done in platform dependent way, using the [createStdDialogButtonSizer] method.
 /// 
@@ -60,9 +71,6 @@ part of '../../wx_dart.dart';
 ///     // create main sizer 
 ///     final mainSizer = WxColumn();
 /// 
-///     // and tell dialog to actually use it
-///     setSizer( mainSizer );
-/// 
 ///     // create text field
 ///     final text = WxTextCtrl( this, -1, style: wxTE_MULTILINE );
 ///     // and tell main sizer to make it stretch and have a border
@@ -70,7 +78,17 @@ part of '../../wx_dart.dart';
 /// 
 ///     // create OK and Cancel buttons
 ///     final buttons = createStdDialogButtonSizer( wxOK|wxCANCEL );
+/// 
+///     // add button sizer to main sizer
 ///     mainSizer.addSizer( buttons, flag: wxALL|wxALIGN_RIGHT );
+/// 
+///     // Tell dialog to actually use the main sizer and to use it
+///     // to determine the initial size
+///     setSizerAndFit( mainSizer );
+/// 
+///     // Centre the dialog on the parent window where not already
+///     // done automatically
+///     centreOnParent();
 /// 
 ///     // Transfer data to the dialog (controls). In many cases
 ///     // this can also be done when creating the control 
@@ -118,6 +136,7 @@ class WxDialog extends WxTopLevelWindow {
   int _buttonFlags = 0;
   bool _synchronous = false;
   bool _makeFit = false;
+  bool _rebuildDialog = false;
   void Function( int, dynamic )? _onReturn;
   
   /// Associate [sizer] with this window and resize it to make it fit the 
@@ -494,6 +513,9 @@ class WxDialog extends WxTopLevelWindow {
               onClose:() {
                 _endDialog( wxID_CANCEL );
               },
+              dialogLeft: _position.x == -1 ? null : _position.x.toDouble(),
+              dialogTop: _position.y == -1 ? null : _position.y.toDouble(),
+              autoCenter: (_position.x == -1) && (_position.y == -1), // FloatingDialog does this internally anyways
               child: 
               IntrinsicWidth( 
               child: SizedBox(
@@ -529,8 +551,7 @@ class WxDialog extends WxTopLevelWindow {
                 )
               ) 
             ) ) );
-
-                  }
+        }
       ).whenComplete(() {
           if (_retCode == 0) {
             _retCode = wxID_CANCEL;
