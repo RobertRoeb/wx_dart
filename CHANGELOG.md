@@ -2,11 +2,14 @@
 
 * Implemented support for disabling menu items via WxUpdateUIEvent
 * Make menu item help text disappear again when menu is close
+* Implemented and clarified WxDialog.centreOnParent()
+* Change to prevent reentrance issue in wxDart Flutter's WxGLCanvas
+* Also test for WxGLCanvas not having a size yet in sample code
 
 ## 0.9.16
 
 * Implemented WxDialog.setSizerAndFit() to find resize dialog according to the main WxSizer
-* Changed asset path logic - now paths on MSW are converted to from forward to back slash
+* Changed asset path logic - now paths on MSW are converted from forward slash to back slash
 
 ## 0.9.15
 
