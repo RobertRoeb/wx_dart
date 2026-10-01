@@ -161,7 +161,7 @@ of the Dart classes as well as the C++ classes which wxDart Native uses internal
 | [WxFileDialog](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxFileDialog-class.html) | [wxFileDialog](https://docs.wxwidgets.org/trunk/classwx_file_dialog.html) |
 | [WxDirDialog](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDirDialog-class.html) | [wxDirDialog](https://docs.wxwidgets.org/trunk/classwx_dir_dialog.html) |
 
-## Menu classes, status bar and tool bar
+## Menu classes, status bar, tool bar and info bar
 
 | Dart | C++ |
 | ------------------ | ----------------- |
@@ -170,6 +170,7 @@ of the Dart classes as well as the C++ classes which wxDart Native uses internal
 | [WxMenuItem](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxMenuItem-class.html) | [wxMenuItem](https://docs.wxwidgets.org/trunk/classwx_menu_item.html) |
 | [WxToolBar](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxToolBar-class.html) | [wxToolBar](https://docs.wxwidgets.org/trunk/classwx_tool_bar.html) |
 | [WxStatusBar](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxStatusBar-class.html) | [wxStatusBar](https://docs.wxwidgets.org/trunk/classwx_status_bar.html) |
+| [WxInfoBar](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxFrame/showInfoBar.html) | [wxInfoBar](https://docs.wxwidgets.org/trunk/classwx_info_bar.html) |
 
 ## Misc classes 
 
