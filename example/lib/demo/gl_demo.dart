@@ -387,6 +387,11 @@ class MyCubeWindow extends WxGLCanvas
     }
 
     final size = getClientSize();
+    if ((size.x < 2) || (size.y < 2)) {
+      // The window has not been given a size yet
+      return;
+    }
+    
     _glContext.setViewport( size.x, size.y );
     _glContext.render();
     swapBuffers();
