@@ -22,7 +22,7 @@ part of '../../wx_dart.dart';
 /// after a call to [setSizer] or [setSizerAndFit]. When centering the dialog on the parent,
 /// the algorithm can only take into account the control dimensions that are known at that time
 /// but e.g. a [WxStaticBitmap] will load its bitmap asynchronously and therefore initially assumes
-/// a size of 0. In order to get correct centering, you may need to pass the size of the bitmap
+/// a size of zero. In order to get correct centering, you may need to pass the size of the bitmap
 /// with the constructor like this 
 /// ```dart
 /// final statbm = WxStaticBitmap(this, -1, WxBitmapBundle.fromPNGAsset("image.png"), size: WxSize(300,200));
