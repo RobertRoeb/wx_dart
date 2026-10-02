@@ -34,7 +34,7 @@ class WxDataViewTileRenderer extends WxDataViewRenderer {
      _smallSize = pointSize/1.2;
   }
 
-  final int _height;
+        int _height;
   final int _margins;
   late double _bigSize;
   late double _mediumSize;
@@ -47,6 +47,51 @@ class WxDataViewTileRenderer extends WxDataViewRenderer {
     _bigSize = big;
     _mediumSize = medium;
     _smallSize = small;
+  }
+
+  void _calculateHeight( WxInfoDC dc )
+  {
+    if (_value is! WxDataViewTileData) {
+      return;
+    }
+
+    int leadingHeight = 0;
+    if (_value.leading != null) {
+        leadingHeight = _value.leading.getHeight() as int;
+        leadingHeight += 2*_margins;
+    }
+    int trailingHeight = 0;
+    if (_value.trailing != null) {
+        trailingHeight = _value.trailing.getHeight() as int;
+        trailingHeight += 2*_margins;
+    }
+    int textHeight = _margins;
+    if (_value.big.isNotEmpty)
+    {
+      dc.setFont( WxFont(_bigSize) );
+      textHeight += dc.getTextExtent( 'H' ).y + _margins;
+    }
+    if (_value.medium.isNotEmpty)
+    {
+      dc.setFont( WxFont(_mediumSize) );
+      textHeight += dc.getTextExtent( 'H' ).y + _margins;
+    }
+    if (_value.small.isNotEmpty)
+    {
+      dc.setFont( WxFont(_smallSize) );
+      textHeight += dc.getTextExtent( 'H' ).y + _margins;
+    }
+    _height = max( trailingHeight, leadingHeight );
+    _height = max( _height, textHeight );
+
+    if (_attr != null) {
+      final margins = _attr!.getMargins();
+      _height += 2* margins.y;
+    }
+  }
+
+  int _getHeight() {
+    return _height;
   }
 
   @override
@@ -73,7 +118,6 @@ class WxDataViewTileRenderer extends WxDataViewRenderer {
         final height = _value.leading.getHeight() as int;
         final y = paddedCell.y + _margins - (height-(paddedCell.height-2*_margins))~/2;
         dc.drawBitmap( _value.leading, paddedCell.x + _margins, y );
-        yForText = y;
       }
       widthForText -= width + _margins;
       xForText += width + _margins;
@@ -86,7 +130,6 @@ class WxDataViewTileRenderer extends WxDataViewRenderer {
         final height = _value.trailing.getHeight() as int;
         final y = paddedCell.y + _margins - (height-(paddedCell.height-2*_margins))~/2;
         dc.drawBitmap( _value.trailing, paddedCell.x + paddedCell.width - width - _margins, y );
-        yForText = y;
       }
       widthForText -= width + _margins;
     }
@@ -119,7 +162,7 @@ class WxDataViewTileRenderer extends WxDataViewRenderer {
 
   @override
   WxSize getSize() {
-    return WxSize( 300, _height );
+    return WxSize( 300, _height == -1 ? 36 : _height );
   }
 }
 
@@ -133,11 +176,13 @@ class WxDataViewTileRenderer extends WxDataViewRenderer {
 /// A tile is a typical user interface element showing a leading icon, some
 /// text in up to three rows in the middle and optionally a trailing icons again.
 /// 
+/// All rows have the same height. See [setRowHeight].
+/// 
 /// ```dart
 ///    dataview = WxDataViewTileListCtrl( this, 
 ///    -1,  // No ID used in this case 
-///    80,  // height of the tile in pixels
-///    4,   // margin between elements
+///    height: 80,  // height of the tile in pixels
+///    margins: 4,   // margin between elements
 ///    style: wxDV_NO_HEADER|wxVSCROLL ); // no header and only vertical scrolling on mobile
 ///
 ///    final leading = WxBitmap.fromMaterialIcon( WxMaterialIcon.account_balance, WxSize(48,48), wxGREY );
@@ -154,22 +199,42 @@ class WxDataViewTileRenderer extends WxDataViewRenderer {
 
 class WxDataViewTileListCtrl extends WxDataViewListCtrl {
   /// Creates the control
-  WxDataViewTileListCtrl( super.parent, super.id, int height, int margins,
-         { super.pos = wxDefaultPosition, super.size = wxDefaultSize, super.style = wxDV_NO_HEADER|wxVSCROLL } )
+  /// 
+  /// If the height is left at -1 the control will use the first item to calculate the
+  /// height of the rows
+  WxDataViewTileListCtrl( super.parent, super.id, { int height = -1, int margins = 5,
+         super.pos = wxDefaultPosition, super.size = wxDefaultSize, super.style = wxDV_NO_HEADER|wxVSCROLL } )
   {
     _store._columns.add( (WxDataViewTileData).toString() );
     _tileRenderer = WxDataViewTileRenderer( height, margins );  
     final dvc = WxDataViewColumn("", _tileRenderer, 0, width: wxDVC_DEFAULT_WIDTH,
                              flags: wxDATAVIEW_COL_RESIZABLE );
     appendColumn( dvc );
-    setRowHeight( height );
+    if (height != -1) {
+      setRowHeight( height );
+    } else {
+      _needToCalculateHeight = true;
+    }
   }
 
   late WxDataViewTileRenderer _tileRenderer;
 
+  /// Calculate height of all rows based on this single item (which should be the largest item)
+  int calculateRowHeight( WxBitmap? leading, String big, String medium, String small, WxBitmap? trailing ) 
+  {
+    _tileRenderer.setValue( WxDataViewTileData( leading, big, medium, small: small, trailing: trailing ) );
+    _tileRenderer._calculateHeight( WxInfoDC( this ));
+    return _tileRenderer._getHeight();
+  }
+
   /// Append a tile
   void appendTile( WxBitmap? leading, String big, String medium, { String small="", WxBitmap? trailing } )
   {
+    if (_needToCalculateHeight) {
+      setRowHeight( calculateRowHeight(leading, big, medium, small, trailing) );
+      _needToCalculateHeight = false;
+    }
+
     // append list with a single item
     appendItem( [WxDataViewTileData( leading, big, medium, small: small, trailing: trailing )] );
   }
@@ -177,6 +242,11 @@ class WxDataViewTileListCtrl extends WxDataViewListCtrl {
   /// Prepend a tile
   void prependTile( WxBitmap? leading, String big, String medium, { String small="", WxBitmap? trailing } )
   {
+    if (_needToCalculateHeight) {
+      setRowHeight( calculateRowHeight(leading, big, medium, small, trailing) );
+      _needToCalculateHeight = false;
+    }
+
     // prepend list with a single item
     prependItem( [WxDataViewTileData( leading, big, medium, small: small, trailing: trailing )] );
   }
@@ -184,7 +254,14 @@ class WxDataViewTileListCtrl extends WxDataViewListCtrl {
   /// Insert a tile at [pos]
   void insertTile( int pos, WxBitmap? leading, String big, String medium, { String small="", WxBitmap? trailing } )
   {
+    if (_needToCalculateHeight) {
+      setRowHeight( calculateRowHeight(leading, big, medium, small, trailing) );
+      _needToCalculateHeight = false;
+    }
+
     // insert list with a single item
     insertItem( pos, [WxDataViewTileData( leading, big, medium, small: small, trailing: trailing )] );
   }
+
+  bool _needToCalculateHeight = false;
 }
