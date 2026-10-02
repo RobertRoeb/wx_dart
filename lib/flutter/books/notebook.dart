@@ -82,6 +82,7 @@ const int wxNB_FIXEDWIDTH = 0x0100;
 const int wxNB_MULTILINE = 0x0200;
 const int wxNB_NOPAGETHEME = 0x0400;
 const int wxNB_CLASSIC_THEME = 0x0800;
+const int wxNB_ANIMATED_THEME = 0x1000;
 
 /// Represents a notebook that allows the user to choose different pages from tabs.
 /// 
@@ -177,12 +178,13 @@ const int wxNB_CLASSIC_THEME = 0x0800;
 /// | wxNB_MULTILINE | 0x0200 (only wxDart Native) |
 /// | wxNB_NOPAGETHEME | 0x0400 |
 /// | wxNB_CLASSIC_THEME | 0x0800 (only wxDart Flutter) |
+/// | wxNB_ANIMATED_THEME | 0x1000 (only wxDart Flutter) |
 
 class WxNotebook extends WxBookCtrlBase {
   WxNotebook( super.parent, super.id, { super.pos = wxDefaultPosition, super.size = wxDefaultSize, super.style = 0 } )
   {
     // TabbedViewTheme crashes in WASM build
-    _useTabbedView = !wxTheApp.isTouch() && !wxIsWeb();
+    _useTabbedView = !hasFlag(wxNB_ANIMATED_THEME) && !wxTheApp.isTouch() && !wxIsWeb();
 }
 
 bool _useTabbedView = true;
