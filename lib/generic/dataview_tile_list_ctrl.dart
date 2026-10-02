@@ -110,12 +110,14 @@ class WxDataViewTileRenderer extends WxDataViewRenderer {
     int widthForText = paddedCell.width - 2*_margins; // TODO with ellipsis
     int xForText = paddedCell.x + _margins;
     int yForText = paddedCell.y + _margins;
+    int imageHeight = 12;
     if (_value.leading != null) {
       int width = 20;
       if (_value.leading.isOk()) 
       {
         width = _value.leading.getWidth() as int;
         final height = _value.leading.getHeight() as int;
+        imageHeight = max( height, imageHeight );
         final y = paddedCell.y + _margins - (height-(paddedCell.height-2*_margins))~/2;
         dc.drawBitmap( _value.leading, paddedCell.x + _margins, y );
       }
@@ -128,6 +130,7 @@ class WxDataViewTileRenderer extends WxDataViewRenderer {
       if (_value.trailing.isOk()) {
         width = _value.trailing.getWidth() as int;
         final height = _value.trailing.getHeight() as int;
+        imageHeight = max( height, imageHeight );
         final y = paddedCell.y + _margins - (height-(paddedCell.height-2*_margins))~/2;
         dc.drawBitmap( _value.trailing, paddedCell.x + paddedCell.width - width - _margins, y );
       }
@@ -137,6 +140,10 @@ class WxDataViewTileRenderer extends WxDataViewRenderer {
     {
       dc.setFont( WxFont(_bigSize) );
       final height = dc.getTextExtent( 'H' ).y;
+      if ((_value.medium.isEmpty) && (_value.small.isEmpty)) {
+        // centre around bitmap
+        yForText = paddedCell.y + _margins - (height-(paddedCell.height-2*_margins))~/2;
+      }
       renderText( _value.big, 0, WxRect(xForText,yForText,widthForText,height), dc, state );
       yForText += height;
       yForText += _margins;
