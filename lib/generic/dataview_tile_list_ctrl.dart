@@ -14,18 +14,15 @@ part of '../wx_dart.dart';
 
 class WxDataViewTileData {
   WxDataViewTileData( this.leading, this.big, this.medium, { this.small = "", 
-    this.trailing, this.trailingWhite, this.trailingBlack,
-    this.leadingWhite, this.leadingBlack } );
+    this.trailing, this.trailingHighlighted, this.leadingHighlighted } );
 
   final WxBitmap? leading;
-  final WxBitmap? leadingWhite;
-  final WxBitmap? leadingBlack;
+  final WxBitmap? leadingHighlighted;
   final String big;
   final String medium;
   final String small;
   final WxBitmap? trailing;
-  final WxBitmap? trailingWhite;
-  final WxBitmap? trailingBlack;
+  final WxBitmap? trailingHighlighted;
 }
 
 /// Renderer that renders a tile as defined by a [WxDataViewTileData] to be display by a [WxDataViewTileListCtrl].
@@ -120,18 +117,11 @@ class WxDataViewTileRenderer extends WxDataViewRenderer {
 
     WxBitmap? leading = _value.leading;
     if (leading != null) {
-      if (state & wxDATAVIEW_CELL_SELECTED != 0) 
-      {
-        WxBitmap? leadingWhite = _value.leadingWhite;
-        WxBitmap? leadingBlack = _value.leadingBlack;
-        if (!wxTheApp.isDark() && (leadingWhite != null)) {
-          leading = leadingWhite;
-        } else if (wxTheApp.isDark() && (leadingBlack != null)) {
-          leading = leadingBlack;
-        }
+      if ((state & wxDATAVIEW_CELL_SELECTED != 0) && (_value.leadingHighlighted != null)) {
+        leading = _value.leadingHighlighted;
       }
       int width = 20;
-      if (leading.isOk()) 
+      if (leading!.isOk()) 
       {
         width = leading.getWidth();
         final height = leading.getHeight();
@@ -146,15 +136,8 @@ class WxDataViewTileRenderer extends WxDataViewRenderer {
     WxBitmap? trailing = _value.trailing;
     if (trailing != null)
     {
-      if (state & wxDATAVIEW_CELL_SELECTED != 0) 
-      {
-        WxBitmap? trailingWhite = _value.trailingWhite;
-        WxBitmap? trailingBlack = _value.trailingBlack;
-        if (!wxTheApp.isDark() && (trailingWhite != null)) {
-          leading = trailingWhite;
-        } else if (wxTheApp.isDark() && (trailingBlack != null)) {
-          leading = trailingBlack;
-        }
+      if ((state & wxDATAVIEW_CELL_SELECTED != 0) && (_value.trailingHighlighted != null)) {
+        leading = _value.trailingHighlighted;
       }
       int width = 20;
       if (trailing.isOk()) {
@@ -210,17 +193,18 @@ class WxDataViewTileRenderer extends WxDataViewRenderer {
 /// 
 /// This is an example case of how [WxDataViewCtrl] can be used on mobile devices
 /// showing one large vertical list of similar objects, in this case a tile.
-/// A tile is a typical user interface element showing a leading icon, some
-/// text in up to three rows in the middle and optionally a trailing icons again.
+/// 
+/// A tile is a typical user interface element showing a leading bitmap/icon, some
+/// text in up to three rows in the middle and optionally a trailing bitmap/icon again.
+/// 
+/// The leading and trailing bitmap/icon can optionally have a highlighted variant
+/// to allow contrast to the highlight selection colours. This could be a e.g.  white
+/// variant on macOS.
 /// 
 /// All rows have the same height. See [setRowHeight].
 /// 
 /// ```dart
-///    dataview = WxDataViewTileListCtrl( this, 
-///    -1,  // No ID used in this case 
-///    height: 80,  // height of the tile in pixels
-///    margins: 4,   // margin between elements
-///    style: wxDV_NO_HEADER|wxVSCROLL ); // no header and only vertical scrolling on mobile
+///    dataview = WxDataViewTileListCtrl( this, -1 );
 ///
 ///    final leading = WxBitmap.fromMaterialIcon( WxMaterialIcon.account_balance, WxSize(48,48), wxGREY );
 ///    final trailing = WxBitmap.fromMaterialIcon( WxMaterialIcon.delete, WxSize(48,48), wxRED );
@@ -266,10 +250,10 @@ class WxDataViewTileListCtrl extends WxDataViewListCtrl {
 
   /// Append a tile
   void appendTile( WxBitmap? leading, String big, String medium, { String small="", 
-    WxBitmap? trailing, WxBitmap? trailingWhite, WxBitmap? trailingBlack, WxBitmap? leadingWhite, WxBitmap? leadingBlack } )
+    WxBitmap? trailing, WxBitmap? trailingHighlighted, WxBitmap? leadingHighlighted } )
   {
     final tile = WxDataViewTileData( leading, big, medium, small: small, trailing: trailing,
-     trailingWhite: trailingWhite, trailingBlack: trailingBlack, leadingWhite: leadingWhite, leadingBlack: leadingBlack );
+     trailingHighlighted: trailingHighlighted, leadingHighlighted: leadingHighlighted );
 
     if (_needToCalculateHeight) {
       setRowHeight( calculateRowHeight( tile) );
@@ -282,10 +266,10 @@ class WxDataViewTileListCtrl extends WxDataViewListCtrl {
 
   /// Prepend a tile
   void prependTile( WxBitmap? leading, String big, String medium, { String small="", 
-    WxBitmap? trailing, WxBitmap? trailingWhite, WxBitmap? trailingBlack, WxBitmap? leadingWhite, WxBitmap? leadingBlack } )
+    WxBitmap? trailing, WxBitmap? trailingHighlighted, WxBitmap? leadingHighlighted } )
   {
     final tile = WxDataViewTileData( leading, big, medium, small: small, trailing: trailing,
-     trailingWhite: trailingWhite, trailingBlack: trailingBlack, leadingWhite: leadingWhite, leadingBlack: leadingBlack );
+     trailingHighlighted: trailingHighlighted, leadingHighlighted: leadingHighlighted );
 
     if (_needToCalculateHeight) {
       setRowHeight( calculateRowHeight(tile) );
@@ -298,10 +282,10 @@ class WxDataViewTileListCtrl extends WxDataViewListCtrl {
 
   /// Insert a tile at [pos]
   void insertTile( int pos, WxBitmap? leading, String big, String medium, { String small="", 
-    WxBitmap? trailing, WxBitmap? trailingWhite, WxBitmap? trailingBlack, WxBitmap? leadingWhite, WxBitmap? leadingBlack } )
+    WxBitmap? trailing, WxBitmap? trailingHighlighted, WxBitmap? leadingHighlighted } )
   {
     final tile = WxDataViewTileData( leading, big, medium, small: small, trailing: trailing,
-     trailingWhite: trailingWhite, trailingBlack: trailingBlack, leadingWhite: leadingWhite, leadingBlack: leadingBlack );
+     trailingHighlighted: trailingHighlighted, leadingHighlighted: leadingHighlighted );
 
     if (_needToCalculateHeight) {
       setRowHeight( calculateRowHeight(tile) );

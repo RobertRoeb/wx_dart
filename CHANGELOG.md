@@ -1,11 +1,14 @@
 ## 0.9.17
 
 * Implemented support for disabling menu items via WxUpdateUIEvent
-* Make menu item help text disappear again when menu is close
+* Make menu item help text disappear again when menu is closed
 * Implemented and clarified WxDialog.centreOnParent()
 * Change to prevent reentrance issue in wxDart Flutter's WxGLCanvas
 * Also test for WxGLCanvas not having a size yet in sample code
 * Expanded and documented WxSizerFlags
+* Let WxDataViewTileListCtrl figure out its ideal row height itself
+* If tile has only one line of text, centre it on the tile
+* Allow providing a highlighted variant of the tile icons
 
 ## 0.9.16
 
@@ -14,7 +17,7 @@
 
 ## 0.9.15
 
-* Added WxFrame.showInfoBar()
+* Added WxFrame.showInfoBar() implemented using wxInfoBar in wxDart Native
 * Documented various WxFrame methods
 * Added WxActivityIndicator (circular progress indicator)
 * Corrected wxGLContext.createFramebuffer() and createRenderbuffer()

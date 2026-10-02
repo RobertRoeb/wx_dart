@@ -9,7 +9,7 @@ class MyTileDataView extends WxPanel {
     _mainSizer = WxBoxSizer( wxHORIZONTAL );
     setSizer(_mainSizer);
 
-    _dataview = WxDataViewTileListCtrl( this, -1, 80, 4, size: WxSize(300,-1), style: wxDV_NO_HEADER|wxVSCROLL );
+    _dataview = WxDataViewTileListCtrl( this, -1, size: WxSize(300,-1) );
 
     _isTouch = wxTheApp.isTouch();
     if (_isTouch)
