@@ -5,6 +5,7 @@
 * Implemented and clarified WxDialog.centreOnParent()
 * Change to prevent reentrance issue in wxDart Flutter's WxGLCanvas
 * Also test for WxGLCanvas not having a size yet in sample code
+* Expanded and documented WxSizerFlags
 
 ## 0.9.16
 
