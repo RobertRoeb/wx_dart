@@ -162,12 +162,14 @@ Future<ui.Image> _buildAsset(String path, int height, int width) async
   int _materialIconHeight = -1;
   WxMaterialIcon _materialIcon = WxMaterialIcon.access_alarm;
   WxColour? _materialIconColour;
+  WxSize _knownSize = WxSize.zero;
 
   /// Creates a bitmap from an [WxImage]
   WxBitmap.fromImage( WxImage image )
   {
     final width = image.getWidth();
     final height = image.getHeight();
+    _knownSize = WxSize( width, height );
     final rgba = Uint8List.fromList( List.filled(width * height * 4, 255) );
     final bitmapByteData = rgba.buffer.asByteData();
     final imageByteData = image.getData().buffer.asByteData();
@@ -215,6 +217,7 @@ Future<ui.Image> _buildAsset(String path, int height, int width) async
   /// not supported on all platforms.
   WxBitmap.fromSize( int width, int height, { int depth = 24 } )
   {
+    _knownSize = WxSize( width, height );
     final rgba = Uint8List( width * height * 4 );
     final ByteData byteData = rgba.buffer.asByteData();
     for (int i = 0; i < width*height; i++) {
@@ -241,6 +244,7 @@ Future<ui.Image> _buildAsset(String path, int height, int width) async
   /// [path] is relative to [WxStandardPaths.getResourcesDir]
   WxBitmap.fromSVGAsset( String path, int width, int height )
   {
+    _knownSize = WxSize( width, height );
     final resourcePath = "${wxGetStandardPaths().getResourcesDir()}/$path";
     _buildSVGAsset(resourcePath,width,height).then( (image ) {
       _image = image;
@@ -269,6 +273,7 @@ Future<ui.Image> _buildAsset(String path, int height, int width) async
   /// wxDart Flutter and will be grey in wxDart Native. 
   WxBitmap.fromMaterialIcon( WxMaterialIcon icon, WxSize size, WxColour? colour  )
   {
+    _knownSize = size;
     // needed to recreate when updating theme
     _isMaterialIcon = true;
     _materialIconWidth = size.x;
@@ -338,6 +343,7 @@ Future<ui.Image> _buildAsset(String path, int height, int width) async
 
   WxBitmap._fromPicture( ui.Picture picture, int width, int height )
   {
+    _knownSize = WxSize( width, height );
     _buildPicture(picture, width, height ).then( (image ) {
       _image = image;
       for (final listener in _listeners) {
@@ -356,6 +362,7 @@ Future<ui.Image> _buildAsset(String path, int height, int width) async
   /// size given in [width] and [height].
   WxBitmap.fromSVG( String svg, int width, int height )
   {
+    _knownSize = WxSize( width, height );
     _buildSVG(svg,width,height).then( (image ) {
       _image = image;
       // notify owning classes
@@ -436,6 +443,10 @@ Future<ui.Image> _buildAsset(String path, int height, int width) async
   /// 
   /// return -1 if width is (not yet) known
   int getWidth() {
+    if (_knownSize != WxSize.zero) {
+      return _knownSize.x;
+    }
+
     if (!isOk()) {
       return -1;
     }
@@ -446,6 +457,10 @@ Future<ui.Image> _buildAsset(String path, int height, int width) async
   /// 
   /// return -1 if height is (not yet) known
   int getHeight() {
+    if (_knownSize != WxSize.zero) {
+      return _knownSize.y;
+    }
+
     if (!isOk()) {
       return -1;
     }
