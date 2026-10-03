@@ -34,14 +34,14 @@ class WxDataViewListStore extends WxDataViewIndexListModel {
 
   @override
   bool setValue( dynamic value, WxDataViewItem item, int column ) {
-    final List rowData = _modelData[item.getID()];
+    final List rowData = _modelData[ getRow( item ) ];
     rowData[column] = value;
     return true;
   }
 
   @override
   dynamic getValue( WxDataViewItem item, int column ) {
-    final List rowData = _modelData[item.getID()];
+    final List rowData = _modelData[ getRow( item ) ];
     return rowData[column];
   }
 }
