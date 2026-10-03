@@ -4313,39 +4313,11 @@ void updateColumnSizes()
             // we might be deleting a whole branch, so clear whole height cache
             _updateRowHeightCache();
           } else {
-            // print( "just delete a leaf" );
+            // print( "just delete a leaf at pos ${getRowByItem(parent) + itemPosInNode} from rowHeightCache" );
 
             _rowHeightCache!.remove( getRowByItem(parent) + itemPosInNode);
           }
         }
-
-        /*
-        for ( wxDataViewTreeNodes::const_iterator i = parentsChildren.begin();
-              i != parentsChildren.end();
-              ++i, ++itemPosInNode )
-        {
-            if( (*i)->GetItem() == item )
-            {
-                itemNode = *i;
-                break;
-            }
-        }
-
-        // If the parent wasn't expanded, it's possible that we didn't have a
-        // node corresponding to 'item' and so there's nothing left to do.
-        if ( !itemNode )
-        {
-            // If this was the last child to be removed, it's possible the parent
-            // node became a leaf. Let's ask the model about it.
-            if ( parentNode->GetChildNodes().empty() )
-                parentNode->SetHasChildren(GetModel()->IsContainer(parent));
-
-            return true;
-        }
-
-        if ( m_rowHeightCache )
-            m_rowHeightCache->Remove(GetRowByItem(parent) + itemPosInNode);
-        */
 
         // Delete the item from wxDataViewTreeNode representation:
         final itemsDeleted = 1 + itemNode.getSubTreeCount();
