@@ -9,6 +9,8 @@
 * Let WxDataViewTileListCtrl figure out its ideal row height itself
 * If tile has only one line of text, centre it on the tile
 * Allow providing a highlighted variant of the tile icons
+* Added missing implementation of WxDataViewListIndexModel.cleared()
+* Corrected WxDataViewListCtrl code for unordered data (once IDs or no longer line numbers)
 
 ## 0.9.16
 
