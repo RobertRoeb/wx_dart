@@ -633,6 +633,15 @@ abstract class WxDataViewIndexListModel extends WxDataViewListModel {
       /* wxDataViewModel:: */ valueChanged( getItem(row), col );
   }
 
+  /// Clears the index hash and informs model that all data has been removed
+  @override
+  bool cleared() {
+    _hash.clear();
+    _ordered = true;
+    _nextFreeID = 0;
+    return super.cleared();
+  }
+
   /// Returns the row of the given [item]
   @override
   int getRow( WxDataViewItem item ) 

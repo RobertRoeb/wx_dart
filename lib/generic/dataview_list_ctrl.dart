@@ -121,12 +121,12 @@ class WxDataViewListCtrl extends WxDataViewCtrl {
 
   /// Returns the [WxDataViewItem] for the [row]
   WxDataViewItem rowToItem( int row ) {
-    return WxDataViewItem( id: row );
+    return _store.getItem( row );
   }
 
   /// Returns the row index of [item]
   int itemToRow( WxDataViewItem item ) {
-    return item.getID();
+    return _store.getRow( item );
   }
 
   /// Selects the item in [row]
@@ -173,7 +173,7 @@ class WxDataViewListCtrl extends WxDataViewCtrl {
     _store.rowDeleted( row );
   }
 
-  /// Deletes all items
+  /// Deletes all items (= all rows)
   void deleteAllItems( ) {
     _store._modelData.clear();
     _store.cleared();
