@@ -11,6 +11,7 @@
 * Allow providing a highlighted variant of the tile icons
 * Added missing implementation of WxDataViewListIndexModel.cleared()
 * Corrected WxDataViewListCtrl code for unordered data (once IDs or no longer line numbers)
+* Updated wxWidgets to version almost 3.3.4 including vastly improved support for Win32 dark mode
 
 ## 0.9.16
 
