@@ -20,7 +20,6 @@ class WxFlexGridSizer extends WxGridSizer {
   int _growableHeight = -1;
   int _totalVerticalProportion = 0;  // TODO assume all have proportion 1 for now
 
-
 /*
           if ((item.flag & wxEXPAND) != 0) {
             if (item.kind == WxSizerKind.window) {
@@ -103,8 +102,10 @@ class WxFlexGridSizer extends WxGridSizer {
   }
 
   @override
-  Widget _build(BuildContext context, WxWindow owner) {
-    
+  Widget _build(BuildContext context, WxWindow owner)
+  {
+    _newItems.clear(); // only used in WxGridSizer
+
     Map<int, TableColumnWidth> columnWidths = {};
     for (int col = 0; col < getEffectiveColsCount(); col++) {
       if (isColGrowable(col)) {
@@ -232,6 +233,7 @@ class WxFlexGridSizer extends WxGridSizer {
 
     Table table = Table(
       columnWidths: _growableColumns.isEmpty ? null : columnWidths,
+      defaultColumnWidth: IntrinsicColumnWidth(),
       children: rows,
     );
 

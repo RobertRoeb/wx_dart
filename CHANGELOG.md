@@ -1,3 +1,7 @@
+## 0.9.18
+
+* Fully implemented WxGridSizer
+
 ## 0.9.17
 
 * Implemented support for disabling menu items via WxUpdateUIEvent

@@ -9,9 +9,9 @@ part of '../../wx_dart.dart';
 
 // ------------------------- wxGridSizer ----------------------
 
-/// This sizer puts the child items into cells of equal size. This
-/// is only supported in wxDart Native. In wxDart Flutter this behaves
-/// like a [WxFlexGridSizer].
+/// This sizer puts the child items into cells of equal size. 
+/// If a new item get added with a bigger size, all cells
+/// get bigger, which may require a call to [layout].
 
 class WxGridSizer extends WxSizer {
   WxGridSizer( int cols, { int vgap = 0, int hgap = 0 } ) {
@@ -23,6 +23,10 @@ class WxGridSizer extends WxSizer {
   late int _cols;
   late int _vgap;
   late int _hgap;
+  bool _sizeKnown = false;
+  int _maxWidth = 5;
+  int _maxHeight = 5;
+  final List<WxSizerItem> _newItems = [];
 
   int getEffectiveColsCount( ) {
     return _cols;
@@ -34,6 +38,41 @@ class WxGridSizer extends WxSizer {
       count ++;
     }
     return count;
+  }
+
+  @override
+  WxSizerItem add( WxWindow window, { int proportion = 0, int flag = 0, int border = 0 } )
+  {
+    final newItem = super.add( window, proportion: proportion, flag: flag, border: border );
+    _newItems.add( newItem );
+    return newItem;
+  }
+
+  @override
+  WxSizerItem prepend( WxWindow window, { int proportion = 0, int flag = 0, int border = 0 } )
+  {
+    final newItem = super.prepend( window, proportion: proportion, flag: flag, border: border );
+    _newItems.add( newItem );
+    return newItem;
+  }
+
+  @override
+  WxSizerItem insert( int index, WxWindow window, { int proportion = 0, int flag = 0, int border = 0 } )
+  {
+    final newItem = super.insert( 0, window, proportion: proportion, flag: flag, border: border );
+    _newItems.add( newItem );
+    return newItem;
+  }
+
+  /// Causes the [WxGridSizer] to layout again, e.g. after an change
+  /// to a control's size after the sizer aleady had been shown.
+  /// This currently causes flicker in wxDart Flutter.
+  @override
+  void layout() 
+  {
+    // Calculate everything anew. This will cause flicker. 
+    _sizeKnown = false;
+    super.layout();
   }
 
   void setVGap( int vgap) {
@@ -53,10 +92,11 @@ class WxGridSizer extends WxSizer {
   }
 
   @override
-  Widget _build(BuildContext context, WxWindow owner) {
+  Widget _build(BuildContext context, WxWindow owner)
+  {
     Map<int, TableColumnWidth> columnWidths = {};
     for (int col = 0; col < getEffectiveColsCount(); col++) {
-        columnWidths[col] = FlexColumnWidth();
+      columnWidths[col] = IntrinsicColumnWidth();
     }
 
     List<TableRow> rows = [];
@@ -74,6 +114,13 @@ class WxGridSizer extends WxSizer {
           if (item._kind == WxSizerKind.window) {
             if (!item._window!.isShown()) continue;
             finalWidget = item._window!._build( context );
+            if (_sizeKnown && !_newItems.contains(item)) {
+              finalWidget = SizedBox(
+                width: _maxWidth.toDouble(),
+                height: _maxHeight.toDouble(),
+                child: finalWidget
+              );
+            } else {
             WxSize size = item._window!.getMinSize();
             if ((size.x != -1) || (size.y != -1)) {
               finalWidget = SizedBox(
@@ -82,6 +129,7 @@ class WxGridSizer extends WxSizer {
                 child: finalWidget
               );
             }
+          }
           } else 
           if (item._kind == WxSizerKind.sizer) {
             finalWidget = item._sizer!._build(context, owner);
@@ -96,16 +144,18 @@ class WxGridSizer extends WxSizer {
             );
           }
 
-          if (((item._flag & wxALL) != 0) && (item._border != 0)) {
-            final double b = item._border.toDouble();
-            Padding padding = Padding(padding: 
-              EdgeInsetsGeometry.fromLTRB(
-                (item._flag & wxLEFT) == 0 ? 0 : b, 
-                (item._flag & wxTOP) == 0 ? 0 : b, 
-                (item._flag & wxRIGHT) == 0 ? 0 : b, 
-                (item._flag & wxBOTTOM) == 0 ? 0 : b), 
-              child: finalWidget);
-            finalWidget = padding;
+          if (!_sizeKnown) {
+            if (((item._flag & wxALL) != 0) && (item._border != 0)) {
+              final double b = item._border.toDouble();
+              Padding padding = Padding(padding: 
+                EdgeInsetsGeometry.fromLTRB(
+                  (item._flag & wxLEFT) == 0 ? 0 : b, 
+                  (item._flag & wxTOP) == 0 ? 0 : b, 
+                  (item._flag & wxRIGHT) == 0 ? 0 : b, 
+                  (item._flag & wxBOTTOM) == 0 ? 0 : b), 
+                child: finalWidget);
+              finalWidget = padding;
+            }
           }
 
           double halignment = -1.0;
@@ -146,12 +196,55 @@ class WxGridSizer extends WxSizer {
 
     Table table = Table(
       columnWidths: columnWidths,
+      defaultColumnWidth: IntrinsicColumnWidth(),
       children: rows,
     );
 
+    if (!_sizeKnown)
+    {
+      // Redo everything
+      _maxWidth = -1;
+      _maxHeight = -1;
+      _sizeKnown = true;
+      for (final item in _items) {
+        final size = item.getSize();
+        if ((size.x == -1) || (size.y == -1)) {
+          _sizeKnown = false;
+          break;
+        }
+        _maxWidth = max( _maxWidth, size.x+1 );   // TODO: why +1
+        _maxHeight = max( _maxHeight, size.y+1 ); // TODO: why +1
+      }
+      if (_sizeKnown) {
+        if (_owningWindow != null) {
+          _owningWindow!._setState();
+        }
+      }
+    } else 
+    if (_newItems.isNotEmpty)
+    {
+      // Only check newly added items
+      bool sizeKnown = true;
+      for (final item in _newItems) {
+        final size = item.getSize();
+        if ((size.x == -1) || (size.y == -1)) {
+          sizeKnown = false;
+          break;
+        }
+        _maxWidth = max( _maxWidth, size.x+1 );   // TODO: why +1
+        _maxHeight = max( _maxHeight, size.y+1 ); // TODO: why +1
+      }
+      if (sizeKnown) {
+        _newItems.clear();
+        if (_owningWindow != null) {
+          _owningWindow!._setState();
+        }
+      }
+    }
+
     return ReportSize( child: table, 
           onSizeChange: (size) {
-            _setSizeInternal( WxSize(size.width.floor(),size.height.floor()) );
+            _setSizeInternal( WxSize(size.width.round(),size.height.round()) );
           } 
         );
   }

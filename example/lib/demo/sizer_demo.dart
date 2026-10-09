@@ -32,6 +32,19 @@ class MySizerWindow extends WxScrolledWindow {
     mainSizer.addSizer( sbs, flag: wxEXPAND|wxALL, border: 10 );
     createFlexGridSizerPage( sbs, sbs.getStaticBox() );
 
+    /*
+    final flex = WxFlexGridSizer( 3 );
+    for (int i = 0; i < 7; i++) {
+      flex.add( WxStaticText( this, -1, "Text 3" ), flag: wxALL, border: 5  );
+    }
+    // flex.addGrowableCol(0);
+    mainSizer.addSizer(flex, flag: 0);
+    */
+
+    sbs = WxStaticBoxSizer(wxVERTICAL, this, "WxGridSizer" );
+    mainSizer.addSizer( sbs, flag: wxALL, border: 10 );
+    createGridSizerPage( sbs, sbs.getStaticBox() );
+
     sbs = WxStaticBoxSizer(wxVERTICAL, this, "WxWrapSizer" );
     mainSizer.addSizer( sbs, flag: wxEXPAND|wxALL, border: 10 );
     createWrapSizerPage( sbs, sbs.getStaticBox() );
@@ -43,6 +56,47 @@ class MySizerWindow extends WxScrolledWindow {
     sbs = WxStaticBoxSizer(wxVERTICAL, this, "WxTileSizer" );
     mainSizer.addSizer( sbs, flag: wxALL, border: 10 );
     createTileSizerPage( sbs, sbs.getStaticBox() );
+  }
+
+  void createGridSizerPage( WxStaticBoxSizer sizer, WxWindow parent )
+  {
+    final topSizer = WxRow();
+
+    final grid = WxGridSizer(3 /*,vgap: 5, hgap: 5*/);
+    topSizer.addSizer(grid, flag: wxEXPAND );
+    for (int i = 0; i < 4; i++) {
+      grid.add( WxStaticText(parent, -1, "Text #$i"), flag: wxALL, border: 5 );
+      grid.add( WxStaticText(parent, -1, "Text #$i"), flag: wxALL, border: 5 );
+      grid.add( WxStaticText(parent, -1, "Long text #$i"), flag: wxALL, border: 5 );
+    }
+    sizer.addSizer( topSizer );
+
+    final buttons = WxRow();
+    final textForGrid = WxTextCtrl(parent, -1, value: "Test", size: WxSize(120,-1) );
+    buttons.add(textForGrid, flag: WxSizerFlags.borderAll(valign: .center), border: 5);
+    buttons.add( WxStaticText(parent, -1, "Border:"), flag: WxSizerFlags.borderAll(valign: .center), border: 5 );
+    final borderForGrid = WxSpinCtrl(parent, -1, "5", min: 0, max: 15 );
+    buttons.add( borderForGrid, flag: WxSizerFlags.borderAll(valign: .center), border: 5 );
+    final addToGrid = WxButton(parent, -1, "Add item" );
+    buttons.add( addToGrid, flag: WxSizerFlags.borderAll(valign: .center), border: 5 );
+    addToGrid.bindButtonEvent( (_) {
+      grid.add( WxStaticText( parent, -1, textForGrid.getValue() ), 
+        flag: wxALL, border: borderForGrid.getValue() );
+        if (!wxUsesFlutter()) {
+          layout();
+        }
+    }, -1);
+    final removeFromGrid = WxButton(parent, -1, "Remove #1" );
+    buttons.add( removeFromGrid, flag: WxSizerFlags.borderAll(valign: .center), border: 5 );
+    removeFromGrid.bindButtonEvent( (_) {
+      if (grid.getItemCount() > 0) {
+        grid.remove(0);
+        if (!wxUsesFlutter()) {
+          layout();
+        }
+      }
+    }, -1);
+    sizer.addSizer( buttons );
   }
 
   void createTileSizerPage( WxStaticBoxSizer sizer, WxWindow parent )
@@ -61,11 +115,40 @@ class MySizerWindow extends WxScrolledWindow {
   }
   void createFlexGridSizerPage( WxStaticBoxSizer sizer, WxWindow parent )
   {
+    final topSizer = WxRow();
     final flex = WxFlexGridSizer(3,vgap: 5, hgap: 5);
-    sizer.addSizer(flex, flag: wxEXPAND );
+    topSizer.addSizer(flex, flag: wxEXPAND );
     for (int i = 0; i < 12; i++) {
       flex.add( WxStaticText(parent, -1, "Text #$i"), flag: wxALL, border: 5 );
     }
+    sizer.addSizer( topSizer );
+
+    final buttons = WxRow();
+    final textForGrid = WxTextCtrl(parent, -1, value: "Test", size: WxSize(120,-1) );
+    buttons.add(textForGrid, flag: WxSizerFlags.borderAll(valign: .center), border: 5);
+    buttons.add( WxStaticText(parent, -1, "Border:"), flag: WxSizerFlags.borderAll(valign: .center), border: 5 );
+    final borderForGrid = WxSpinCtrl(parent, -1, "5", min: 0, max: 15 );
+    buttons.add( borderForGrid, flag: WxSizerFlags.borderAll(valign: .center), border: 5 );
+    final addToGrid = WxButton(parent, -1, "Add item" );
+    buttons.add( addToGrid, flag: WxSizerFlags.borderAll(valign: .center), border: 5 );
+    addToGrid.bindButtonEvent( (_) {
+      flex.add( WxStaticText( parent, -1, textForGrid.getValue() ), 
+        flag: wxALL, border: borderForGrid.getValue() );
+        if (!wxUsesFlutter()) {
+          layout();
+        }
+    }, -1);
+    final removeFromGrid = WxButton(parent, -1, "Remove #1" );
+    buttons.add( removeFromGrid, flag: WxSizerFlags.borderAll(valign: .center), border: 5 );
+    removeFromGrid.bindButtonEvent( (_) {
+      if (flex.getItemCount() > 0) {
+        flex.remove(0);
+        if (!wxUsesFlutter()) {
+          layout();
+        }
+      }
+    }, -1);
+    sizer.addSizer( buttons );
   }
   void createWrapSizerPage( WxStaticBoxSizer sizer, WxWindow parent )
   {
