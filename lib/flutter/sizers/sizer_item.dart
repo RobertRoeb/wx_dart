@@ -57,7 +57,8 @@ class WxSizerItem {
     return _window;
   }
 
-  /// Returns the current position on the parent window, if already known.
+  /// Returns the current position on the parent window, if already known
+  /// or wxDefaultPosition of not known yet.
   WxPoint getPosition()
   {
     WxPoint pos = wxDefaultPosition;
@@ -76,18 +77,18 @@ class WxSizerItem {
     } else 
     {
       if (_spacerParentWindow == null) {
-        return WxPoint(-1, -1);
+        return wxDefaultPosition;
       }
       if (_spacerWidgetKey==null) {
-        return WxPoint(-1, -1);
+        return wxDefaultPosition;
       }
       final RenderObject? renderObject = _spacerWidgetKey!.currentContext?.findRenderObject();
       if (renderObject == null) {
-        return WxPoint(-1, -1);
+        return wxDefaultPosition;
       }
       final RenderObject? renderParentObject = _spacerParentWindow!._getWidgetKey().currentContext?.findRenderObject();
       if (renderParentObject == null) {
-        return WxPoint(-1, -1);
+        return wxDefaultPosition;
       }
       final RenderBox renderBox = renderObject as RenderBox;
       final Offset offset = renderBox.localToGlobal(Offset.zero, ancestor: renderParentObject);
@@ -104,11 +105,14 @@ class WxSizerItem {
     return pos;
   }
 
-  /// Returns the current size on the parent window, if already known.
-  WxSize getSize() {
+  /// Returns the current size on the parent window, if already known
+  /// or [wxDefaultSize] if not known yet.
+  WxSize getSize()
+  {
     WxSize size = wxDefaultSize;
     if (_kind == WxSizerKind.window) {
       size = _window!.getSize();
+      if ((size.x == -1) && (size.y == -1)) return wxDefaultSize;
     } 
     else
     if (_kind == WxSizerKind.sizer) {
