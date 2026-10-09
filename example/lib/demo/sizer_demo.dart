@@ -82,19 +82,24 @@ class MySizerWindow extends WxScrolledWindow {
     addToGrid.bindButtonEvent( (_) {
       grid.add( WxStaticText( parent, -1, textForGrid.getValue() ), 
         flag: wxALL, border: borderForGrid.getValue() );
-        if (!wxUsesFlutter()) {
-          layout();
-        }
+      layout();
     }, -1);
     final removeFromGrid = WxButton(parent, -1, "Remove #1" );
     buttons.add( removeFromGrid, flag: WxSizerFlags.borderAll(valign: .center), border: 5 );
     removeFromGrid.bindButtonEvent( (_) {
       if (grid.getItemCount() > 0) {
         grid.remove(0);
-        if (!wxUsesFlutter()) {
-          layout();
-        }
+        layout();
       }
+    }, -1);
+    final addSpacer = WxButton(parent, -1, "Add sizer" );
+    buttons.add( addSpacer, flag: WxSizerFlags.borderAll(valign: .center), border: 5 );
+    addSpacer.bindButtonEvent( (_) {
+      final row = WxRow();
+      row.add( WxStaticText(parent, -1, 'left left left'), flag: wxALL, border: 2 );
+      row.add( WxStaticText(parent, -1, 'right right right'), flag: wxALL, border: 2 );
+      grid.addSizer(row);
+      layout();
     }, -1);
     sizer.addSizer( buttons );
   }
@@ -134,19 +139,24 @@ class MySizerWindow extends WxScrolledWindow {
     addToGrid.bindButtonEvent( (_) {
       flex.add( WxStaticText( parent, -1, textForGrid.getValue() ), 
         flag: wxALL, border: borderForGrid.getValue() );
-        if (!wxUsesFlutter()) {
-          layout();
-        }
+      layout();
     }, -1);
     final removeFromGrid = WxButton(parent, -1, "Remove #1" );
     buttons.add( removeFromGrid, flag: WxSizerFlags.borderAll(valign: .center), border: 5 );
     removeFromGrid.bindButtonEvent( (_) {
       if (flex.getItemCount() > 0) {
         flex.remove(0);
-        if (!wxUsesFlutter()) {
-          layout();
-        }
+        layout();
       }
+    }, -1);
+    final addSpacer = WxButton(parent, -1, "Add sizer" );
+    buttons.add( addSpacer, flag: WxSizerFlags.borderAll(valign: .center), border: 5 );
+    addSpacer.bindButtonEvent( (_) {
+      final row = WxRow();
+      row.add( WxStaticText(parent, -1, 'left left left'), flag: wxALL, border: 2 );
+      row.add( WxStaticText(parent, -1, 'right right right'), flag: wxALL, border: 2 );
+      flex.addSizer(row);
+      layout();
     }, -1);
     sizer.addSizer( buttons );
   }

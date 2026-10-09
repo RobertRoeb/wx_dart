@@ -40,6 +40,10 @@ class WxGridSizer extends WxSizer {
     return count;
   }
 
+  /// Adds a [window] as a new item.
+  /// 
+  /// May require a call to [WxDialog.layout] if done after the dialog
+  /// (or other parent window) is shown already.
   @override
   WxSizerItem add( WxWindow window, { int proportion = 0, int flag = 0, int border = 0 } )
   {
@@ -48,6 +52,10 @@ class WxGridSizer extends WxSizer {
     return newItem;
   }
 
+  /// Prepends a [window] as a new item.
+  /// 
+  /// May require a call to [WxDialog.layout] if done after the dialog
+  /// (or other parent window) is shown already.
   @override
   WxSizerItem prepend( WxWindow window, { int proportion = 0, int flag = 0, int border = 0 } )
   {
@@ -56,22 +64,52 @@ class WxGridSizer extends WxSizer {
     return newItem;
   }
 
+  /// Inserts a [window] as a new item at position [index].
+  /// 
+  /// May require a call to [WxDialog.layout] if done after the dialog
+  /// (or other parent window) is shown already.
   @override
   WxSizerItem insert( int index, WxWindow window, { int proportion = 0, int flag = 0, int border = 0 } )
   {
-    final newItem = super.insert( 0, window, proportion: proportion, flag: flag, border: border );
+    final newItem = super.insert( index, window, proportion: proportion, flag: flag, border: border );
     _newItems.add( newItem );
     return newItem;
   }
 
-  /// Causes the [WxGridSizer] to layout again, e.g. after an change
+  @override
+  WxSizerItem addSizer( WxSizer sizer, { int proportion = 0, int flag = 0, int border = 0 } )
+  {
+    final newItem = super.addSizer( sizer, proportion: proportion, flag: flag, border: border );
+    _newItems.add( newItem );
+    return newItem;
+  }
+
+  @override
+  WxSizerItem prependSizer( WxSizer sizer, { int proportion = 0, int flag = 0, int border = 0 } )
+  {
+    final newItem = super.prependSizer( sizer, proportion: proportion, flag: flag, border: border );
+    _newItems.add( newItem );
+    return newItem;
+  }
+
+  @override
+  WxSizerItem insertSizer( int index, WxSizer sizer, { int proportion = 0, int flag = 0, int border = 0 } )
+  {
+    final newItem = super.insertSizer( 0, sizer, proportion: proportion, flag: flag, border: border );
+    _newItems.add( newItem );
+    return newItem;
+  }
+
+  /// Causes the [WxGridSizer] to layout again, e.g. after a change
   /// to a control's size after the sizer aleady had been shown.
-  /// This currently causes flicker in wxDart Flutter.
   @override
   void layout() 
   {
-    // Calculate everything anew. This will cause flicker. 
-    _sizeKnown = false;
+    // Only update new items if some have been added.
+    if (_newItems.isNotEmpty) {
+      // Calculate everything anew. This might cause flicker. 
+      _sizeKnown = false;
+    }
     super.layout();
   }
 
