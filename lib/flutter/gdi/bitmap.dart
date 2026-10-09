@@ -128,9 +128,9 @@ class WxBitmap extends WxObject {
 /// Example:
 /// ```dart
 ///    // create bitmap from lib/assets/images/MyImage.png
-///    final bitmap = WxBitmap( "images/MyImage.png", wxBITMAP_TYPE_PNG ); 
+///    final bitmap = WxBitmap.fromAsset( "images/MyImage.png", wxBITMAP_TYPE_PNG ); 
 /// ```
-  WxBitmap( String path, int format )
+  WxBitmap.fromAsset( String path, int format )
   {
     final resourcePath = "${wxGetStandardPaths().getResourcesDir()}/$path";
     _buildAsset(resourcePath,-1,-1).then( (image ) {
@@ -215,7 +215,7 @@ Future<ui.Image> _buildAsset(String path, int height, int width) async
 
   /// Creates a bitmap with a given size. This is actually
   /// not supported on all platforms.
-  WxBitmap.fromSize( int width, int height, { int depth = 24 } )
+  WxBitmap( int width, int height, { int depth = 24 } )
   {
     _knownSize = WxSize( width, height );
     final rgba = Uint8List( width * height * 4 );

@@ -1,6 +1,7 @@
 ## 0.9.18
 
 * Fully implemented WxGridSizer
+* Flipped naming of WxBitmap.fromSize() and WxBitmap.fromAsset()
 
 ## 0.9.17
 

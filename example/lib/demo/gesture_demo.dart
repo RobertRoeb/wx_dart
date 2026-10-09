@@ -9,7 +9,7 @@ class MyGestureWindow extends WxWindow {
   MyGestureWindow( WxWindow parent, { WxPoint pos=wxDefaultPosition, WxSize size=wxDefaultSize, int style=0 }) :
     super( parent, -1, pos, size, style )
   { 
-    _bitmap = WxBitmap("Merian_Germania_big.jpg", wxBITMAP_TYPE_JPEG);
+    _bitmap = WxBitmap.fromAsset("Merian_Germania_big.jpg", wxBITMAP_TYPE_JPEG);
 
     _castle = WxBitmap.fromMaterialIcon( WxMaterialIcon.castle, WxSize(20,20), wxRED );
 

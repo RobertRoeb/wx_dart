@@ -45,7 +45,7 @@ class WxBitmapBundle extends WxClass {
   /// ```
   WxBitmapBundle.fromPNGAsset( String path )  {
     // this will automatically look for scaled images like /2.0x/image.png
-    _bitmap = WxBitmap(path, wxBITMAP_TYPE_PNG );
+    _bitmap = WxBitmap.fromAsset(path, wxBITMAP_TYPE_PNG );
   }
 
   /// Creates a bitmap bundle from a JPEG image.
@@ -59,7 +59,7 @@ class WxBitmapBundle extends WxClass {
   /// ```
   WxBitmapBundle.fromJPEGAsset( String path )  {
     // this will automatically look for scaled images like /2.0x/image.jpg, ???
-    _bitmap = WxBitmap(path, wxBITMAP_TYPE_JPEG );
+    _bitmap = WxBitmap.fromAsset(path, wxBITMAP_TYPE_JPEG );
   }
 
   /// Creates a bitmap bundle from an SVG image with the 
