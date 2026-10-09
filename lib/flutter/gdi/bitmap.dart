@@ -36,7 +36,7 @@ const int wxBITMAP_TYPE_ANY = 50;
 /// From a resource:
 /// ```dart
 ///    // create bitmap from lib/assets/images/MyImage.png
-///    final bitmap = WxBitmap.fromImage( "images/MyImage.png", wxBITMAP_TYPE_PNG ); 
+///    final bitmap = WxBitmap.fromAsset( "images/MyImage.png", wxBITMAP_TYPE_PNG ); 
 /// ```
 /// 
 /// From an image:
