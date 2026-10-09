@@ -210,6 +210,7 @@ of the Dart classes as well as the C++ classes which wxDart Native uses internal
 | [WxBitmap](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxBitmap-class.html) | [wxBitmap](https://docs.wxwidgets.org/trunk/classwx_bitmap.html) |
 | [WxBitmapBundle](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxBitmapBundle-class.html) | [wxBitmapBundle](https://docs.wxwidgets.org/trunk/classwx_bitmap_bundle.html) |
 | [WxImage](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxImage-class.html) | [wxImage](https://docs.wxwidgets.org/trunk/classwx_image.html) |
+| [WxAnimation](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxAnimation-class.html) | [wxAnimation](https://docs.wxwidgets.org/trunk/classwx_animation.html) |
 | [WxRendererNative](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxRendererNative-class.html) | [wxRendererNative](https://docs.wxwidgets.org/trunk/classwx_renderer_native.html) |
 
 ## Control classes
