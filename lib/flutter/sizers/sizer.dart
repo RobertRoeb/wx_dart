@@ -206,6 +206,20 @@ class WxSizer extends WxObject {
     return false;
   }
 
+
+  void _setOwningWindowRecursive( WxSizer parent, WxWindow window ) {
+    parent._owningWindow = window;
+    for (final item in parent._items) {
+      if (item._kind == WxSizerKind.sizer) {
+        _setOwningWindowRecursive( item._sizer!, window);
+      }
+    }
+  }
+
+  void _setOwningWindow( WxWindow window ) {
+    _setOwningWindowRecursive( this, window );
+  }
+
   /// Tells the sizer to layout its children and update the 
   /// screen.
   void layout() {
@@ -250,7 +264,7 @@ class WxSizer extends WxObject {
     for (final item in _items) {
       if (item._kind == WxSizerKind.window) {
         if (item._window!.getParent() != _owningWindow) {
-          wxLogError( "sizer has ${item._window!.runtimeType} owned by wrong parent window" );
+          wxLogError( "${(this).runtimeType} has ${item._window!.runtimeType} owned by wrong parent window" );
           return;
         }
         else if (item._kind == WxSizerKind.sizer)
@@ -259,7 +273,7 @@ class WxSizer extends WxObject {
             if (subitem._kind == WxSizerKind.window) 
             {
               if (subitem._window!.getParent() != _owningWindow) {
-                wxLogError( "sizer has ${subitem._window!.runtimeType} owned by wrong parent window" );
+                wxLogError( "${(this).runtimeType} has ${subitem._window!.runtimeType} owned by wrong parent window" );
                 return;
               }
             }
@@ -274,7 +288,7 @@ class WxSizer extends WxObject {
     for (final item in _items) {
       if (item._kind == WxSizerKind.sizer) {
         if (item._sizer == sizer) {
-          wxLogError( "sizer aleady added" );
+          wxLogError( "${(this).runtimeType}: ${sizer.runtimeType} aleady added" );
           return;
         }
       }
@@ -339,6 +353,7 @@ class WxSizer extends WxObject {
     _testIfSizerAlreadyInList( sizer );
     WxSizerItem item = WxSizerItem._asSizer(sizer, proportion, flag, border);
     _items.add( item );
+    sizer._owningWindow ??= _owningWindow;
     return item;
   }
 
@@ -372,6 +387,7 @@ class WxSizer extends WxObject {
     _testIfSizerAlreadyInList( sizer );
     WxSizerItem item = WxSizerItem._asSizer(sizer, proportion, flag, border);
     _items.insert( 0, item );
+    sizer._owningWindow ??= _owningWindow;
     return item;
   }
 
@@ -405,6 +421,7 @@ class WxSizer extends WxObject {
     _testIfSizerAlreadyInList( sizer );
     WxSizerItem item = WxSizerItem._asSizer(sizer, proportion, flag, border);
     _items.insert( index, item );
+    sizer._owningWindow ??= _owningWindow;
     return item;
   }
 

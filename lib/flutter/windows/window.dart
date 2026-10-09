@@ -442,7 +442,7 @@ class WxWindow extends WxEvtHandler {
 
   void _setSizeInternal( WxSize size ) 
   {
-    if (size == _size) return;
+    if ((size.x == _size.x) && (size.x == _size.y)) return;
     if ((size.x < 1) || (size.y < 1)) return;
     _size = size;
     if (((_eventHandlers != null) || (_onSizeFunc != null))) {
@@ -1278,7 +1278,7 @@ class WxWindow extends WxEvtHandler {
       child: child, 
       onSizeChange: (size) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          _setSizeInternal( WxSize(size.width.floor(),size.height.floor()) );
+          _setSizeInternal( WxSize(size.width.round(),size.height.round()) );
           // The window must have been created if it received a size
           // from the layout algorithm
           if (!_hasSentWindowCreateEvent) {
@@ -1633,7 +1633,7 @@ class WxWindow extends WxEvtHandler {
   /// Associate [sizer] with this window
   void setSizer( WxSizer sizer ) {
     _sizer = sizer;
-    sizer._owningWindow = this;
+    sizer._setOwningWindow( this );
     sizer._testParentWindow();
   }
 
