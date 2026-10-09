@@ -40,6 +40,7 @@ class WxStaticBoxSizer extends WxBoxSizer {
   WxStaticBoxSizer( super.orientation, WxWindow parent, String label ) {
     _staticBox = WxStaticBox( parent, -1, label );
     _staticBox._associateSizer( this );
+    _owningWindow = _staticBox;
   }
 
   late WxStaticBox _staticBox;
