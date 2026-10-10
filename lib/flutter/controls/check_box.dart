@@ -30,6 +30,17 @@ const int wxCHK_UNDETERMINED = 2;
 
 /// Lets the user check a box.
 /// 
+/// ```dart
+///   final checkbox = WxCheckBox( this, -1, "Check me" );
+///   checkbox.setValue( true );
+/// 
+///   checkbox.bindCheckboxEvent( (event) {
+///     if (event.isChecked()) {
+///       // do something
+///     }
+///   }, -1);
+/// ```
+/// 
 /// # Event emitted
 /// [Checkbox](/wxdart/wxGetCheckboxEventType.html) event gets sent when the user checks or unchecks |
 /// | ----------------- |

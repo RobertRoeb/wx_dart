@@ -77,6 +77,18 @@ const int wxHL_DEFAULT_STYLE = (wxHL_CONTEXTMENU|wxNO_BORDER|wxHL_ALIGN_CENTRE);
 
 /// Represents a hyper link that the user can click.
 /// 
+/// By default, it will launch the system's default browswer.
+/// 
+/// Example
+/// ```dart
+///   final hyperlink = WxHyperlinkCtrl( this, -1, "wxDart", "https://pub.dev/packages/wx_dart" );
+/// 
+///   hyperlink.bindHyperlinkEvent( (event) {
+///     final url = event.getURL();
+///     // do something or launch a browser 
+///   }, -1)
+/// ```
+/// 
 /// # Events emitted
 /// [Hyperlink](/wxdart/wxGetHyperlinkEventType.html) gets sent when user clicked on hyper link |
 /// | ----------------- |

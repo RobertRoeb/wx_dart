@@ -9,7 +9,7 @@ part of '../../wx_dart.dart';
 
 // ------------------------- wxDialog ----------------------
 
-/// WxDialos a is toplevel window that usually asks the user for some input - although it can be informational only.
+/// [WxDialog] a is toplevel window that usually asks the user for some input - although it can be informational only.
 /// 
 /// Different from a [WxFrame], a [WxDialog] is usually used modally, i.e. when the dialog is shown
 /// using [showModal], no other window or frame on screen can receive any input such as mouse clicks.
@@ -17,7 +17,7 @@ part of '../../wx_dart.dart';
 /// On small mobile devices, dialogs can be implemented either as a sheet appearing from the bottom
 /// or a window filling out most of the screen.
 /// 
-/// On some platforms a [WxDialog] will be automatically centred on its parent if no position
+/// On some platforms, a [WxDialog] will be automatically centred on its parent if no position
 /// is given (Linux, Flutter) whereas on others platforms you need to  call [centreOnParent]
 /// after a call to [setSizer] or [setSizerAndFit]. When centering the dialog on the parent,
 /// the algorithm can only take into account the control dimensions that are known at that time

@@ -20,18 +20,8 @@ const int wxAC_DEFAULT_STYLE = wxBORDER_NONE;
 /// 
 /// Example usage:
 /// ```dart
-///  // Get path to asset
-///  String assetPath = wxGetStandardPaths().getResourcesDir();
-///
-///  // Add forward slash (or backward slash on wxMSW in wxDart Native)
-///  if (wxIsMSW() && !wxUsesFlutter()) {
-///    assetPath += "\\JumpingBird.gif";
-///  } else {
-///    assetPath += "/JumpingBird.gif";
-///  }
-///
-///  // Create animation control
-///  final ani = WxAnimationCtrl(parent, -1, WxAnimation(path) );
+///  // Create animation control from lib/assets/JumpingBird.gif
+///  final ani = WxAnimationCtrl(parent, -1, WxAnimation("JumpingBird.gif") );
 ///
 ///  // Somewhere else in your code
 ///  if (ani.isPlaying()) {
