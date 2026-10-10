@@ -36,7 +36,8 @@ wxDart consists of two separate libraries which offer the same API and can be us
 * 'wxDart Flutter' uses the [Flutter](https://flutter.dev) libary as its backend and is written in pure Dart.
 * 'wxDart Native' uses the [wxWidgets](https://wxwidgets.org) C++ GUI library as its backend using FFI calls.
 
-Since version 0.9.11, both wxDart Flutter and wxDart Native support
+Both wxDart Flutter and wxDart Native support
+* Conversion from dart:ui Image and dart:ui Picture to WxBitmap to enable off-screen drawing using Dart
 * Asynchronous code using the [async await](https://dart.dev/libraries/async/async-await) paradigm
 * The Flutter [assets](https://api.flutter.dev/flutter/services/AssetBundle-class.html) system (used in many Dart libraries)
 * An extensive list of controls from [menus](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxMenuBar-class.html) to [animations](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxAnimationCtrl-class.html)

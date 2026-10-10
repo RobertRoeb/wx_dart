@@ -1,7 +1,10 @@
 ## 0.9.18
 
+* Allow use of Dart's ui.Image and ui.Picture to draw into a WxBitmap
+* Added WxBitmap.fromUIImage() to wxDart Flutter for that purpose
 * Fully implemented WxGridSizer
-* Flipped naming of WxBitmap.fromSize() and WxBitmap.fromAsset()
+* Corrected constuctor naming of WxBitmap.fromAsset()
+* Change WxBitmap.fromSize() into standard constructor
 
 ## 0.9.17
 
@@ -9,14 +12,14 @@
 * Make menu item help text disappear again when menu is closed
 * Implemented and clarified WxDialog.centreOnParent()
 * Change to prevent reentrance issue in wxDart Flutter's WxGLCanvas
-* Also test for WxGLCanvas not having a size yet in sample code
+* Also added test for WxGLCanvas not having a size yet in sample code
 * Expanded and documented WxSizerFlags
 * Let WxDataViewTileListCtrl figure out its ideal row height itself
 * If tile has only one line of text, centre it on the tile
 * Allow providing a highlighted variant of the tile icons
 * Added missing implementation of WxDataViewListIndexModel.cleared()
 * Corrected WxDataViewListCtrl code for unordered data (once IDs or no longer line numbers)
-* Updated wxWidgets to version almost 3.3.4 including vastly improved support for Win32 dark mode
+* Updated wxWidgets to upcoming version 3.3.4 including vastly improved support for Win32 dark mode
 
 ## 0.9.16
 
