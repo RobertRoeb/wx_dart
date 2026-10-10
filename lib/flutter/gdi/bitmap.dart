@@ -19,9 +19,10 @@ const int wxBITMAP_TYPE_ANY = 50;
 /// Represents a platform-dependent bitmap which is optimized for 
 /// drawing directly into a window.
 /// 
-/// Creation of a [WxBitmap] is an asychronous operation
-/// in wxDart (Flutter). That means that the internal representation of
-/// the bitmap will be build in the background and this will not interrupt
+/// Creation of a [WxBitmap] is an asychronous operation in wxDart Flutter
+/// but a synchronous operation in wxDart Native. That means that in wxDart
+/// Flutter, the internal representation of
+/// the bitmap will be built in the background and this will not interrupt
 /// program flow. Indeed, if the bitmap is loaded from the web and
 /// the connection goes down, the internal representation will never
 /// be created. You can ignore that in you code: controls using
@@ -29,7 +30,7 @@ const int wxBITMAP_TYPE_ANY = 50;
 /// creation and will get notified once the bitmap is fully built
 /// and will then redraw themselves. 
 /// 
-/// You cannot currently manipulate objects of this class directly.
+/// You cannot manipulate a [WxBitmap] directly (since it may not exist).
 /// Rather, you create a [WxBitmap] from an [WxImage] or directly
 /// from a resource file or an SVG string. 
 /// 
@@ -44,7 +45,7 @@ const int wxBITMAP_TYPE_ANY = 50;
 ///    final image = WxImage( 100, 100 );
 ///    for (int y = 0; y < 100; y++) {
 ///        for (int x = 0; x <100; x++) {
-///          // set pixel in image
+///          // set some pixels in image
 ///          image.setRGB(x, y, 20, 100, 100 );
 ///        }
 ///    }
@@ -63,6 +64,7 @@ const int wxBITMAP_TYPE_ANY = 50;
 /// and draw into it.
 /// 
 /// ```dart
+///  // draw something off-screen
 ///  final dc = WxMemoryDC(100, 100);
 ///  dc.setPen( wxTRANSPARENT_PEN );
 ///  dc.setPen( wxRED_PEN );
@@ -70,6 +72,33 @@ const int wxBITMAP_TYPE_ANY = 50;
 /// 
 ///  // create bitmap from WxMemoryDC
 ///  final bitmap = dc.getBitmap();
+/// ```
+/// 
+/// Last not least, it is possible use dart::ui to draw off-screen and
+/// create a [WxBitmap] from it:
+/// ```dart
+  ///Future<WxBitmap?> createBitmapFromUIPicture( ui.Picture picture, int width, int height ) async
+  ///{
+  ///  // create ui.Image from ui.Picture
+  ///  final image = await picture.toImage(width, height);
+  /// 
+  ///  // convert ui.Image to WxBitmap
+  ///  if (wxUsesFlutter()) {
+  ///    return WxBitmap.fromUIImage( image );
+  ///  } else {
+  ///   final sizeRGBA = image.width * image.height * 4;
+  ///   final byteData = await image.toByteData();
+  ///   if (byteData == null) {
+  ///     wxLogError( "Failed to convert ui.image" );
+  ///     return null;
+  ///   }
+  ///   if (byteData!.lengthInBytes != sizeRGBA) {
+  ///     wxLogError( "ui.image data not available as RGBA and cannot be converted to WxImage" );
+  ///     return null;
+  ///   }
+  ///   final wximage = WxImage.fromRGBA( image.width, image.height, byteData.buffer.asUint8List() );
+  ///   return WxBitmap.fromImage( wximage );
+  /// }
 /// ```
 /// 
 /// Once created, you draw the bitmap in a paint event handler: 
@@ -163,6 +192,40 @@ Future<ui.Image> _buildAsset(String path, int height, int width) async
   WxMaterialIcon _materialIcon = WxMaterialIcon.access_alarm;
   WxColour? _materialIconColour;
   WxSize _knownSize = WxSize.zero;
+
+  /// Creates a bitmap from an Dart::UI image. This constructor is not implemented
+  /// in wxDart Native. 
+  /// 
+  /// To construct a [WxBitmap] from a Dart::UI image in wxDart Native, convert it
+  /// to RGBA data, then use [WxImage.fromRGBA] and create the bitmap using [WxBitmap.fromImage]
+  /// 
+  /// ```dart
+  /// Future<WxBitmap?> createBitmapFromUIImage( ui.Image image ) async
+  /// {
+  ///   if (wxUsesFlutter()) {
+  ///     return WxBitmap.fromUIImage( image );
+  ///   } else {
+  ///     final sizeRGBA = image.width * image.height * 4;
+  ///    final byteData = await image.toByteData();
+  ///    if (byteData == null) {
+  ///      wxLogError( "Failed to convert ui.image" );
+  ///      return null;
+  ///   }
+  ///   if (byteData!.lengthInBytes != sizeRGBA) {
+  ///     wxLogError( "ui.image data not available as RGBA and cannot be converted to WxImage" );
+  ///     return null;
+  ///   }
+  ///   final wximage = WxImage.fromRGBA( image.width, image.height, byteData.buffer.asUint8List() );
+  ///   return WxBitmap.fromImage( wximage );
+  /// }
+  /// ```
+  WxBitmap.fromUIImage( ui.Image image ) 
+  {
+    final width = image.width;
+    final height = image.height;
+    _knownSize = WxSize( width, height );
+    _image = image;
+  }
 
   /// Creates a bitmap from an [WxImage]
   WxBitmap.fromImage( WxImage image )

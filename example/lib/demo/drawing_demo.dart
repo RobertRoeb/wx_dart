@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:wx_dart/wx_dart.dart';
 import 'dart:math';
+import 'dart:ui' as ui;
 
 // ------------------------- MyGraphicsPathWindow ----------------------
 
@@ -129,6 +130,21 @@ class MyGraphicsWindow extends WxScrolledWindow {
     // start timer and let it fire every 100ms
     _timer.start( milliseconds: 100 );
 
+    // Paint something using dart::ui
+    final recorder = ui.PictureRecorder();
+    final canvas = ui.Canvas( recorder );
+    final paint = ui.Paint();
+    paint.style = ui.PaintingStyle.fill;
+    paint.color = ui.Color.fromARGB( 255, 255, 0, 0  );
+    canvas.drawRect(ui.Rect.fromPoints( ui.Offset(5,5), ui.Offset(40,40)), paint );
+    final picture = recorder.endRecording();
+
+    // create a WxBitmap from it
+    createBitmapFromUIPicture( picture, 50, 50 ).then( (bitmap) {
+      _dartBitmap = bitmap;
+      refresh();
+    });
+
     bindPaintEvent( onPaint );
   }
 
@@ -141,6 +157,7 @@ class MyGraphicsWindow extends WxScrolledWindow {
 
   late WxTimer _timer;
   late WxBitmap bitmap;
+       WxBitmap? _dartBitmap;
   late WxGraphicsBitmap bitmapFromImage;
   late WxGraphicsBitmap bitmapFromBitmap;
   late WxGraphicsAnimation _animation;
@@ -160,6 +177,11 @@ class MyGraphicsWindow extends WxScrolledWindow {
 
     // still draws red
     gc.drawRectangle(50, 2, 48, 48 );
+
+    if (_dartBitmap != null) {
+      dc.drawText("bitmap from dart::ui", 180, 2 );
+      dc.drawBitmap( _dartBitmap!, 220, 20 );
+    }
 
     dc.drawText("dc.drawBitmap", 20, 100 );
     dc.drawBitmap(bitmap, 20, 50 );
@@ -204,6 +226,28 @@ class MyGraphicsWindow extends WxScrolledWindow {
     final size = _animation.getSize();
     final millis = DateTime.now().millisecondsSinceEpoch;
     _animation.draw(gc, windowWidth-70, 20, size.x.toDouble(), size.y.toDouble(), millis );
+  }
+
+  Future<WxBitmap?> createBitmapFromUIPicture( ui.Picture picture, int width, int height ) async
+  {
+    final image = await picture.toImage(width, height);
+
+    if (wxUsesFlutter()) {
+       return WxBitmap.fromUIImage( image );
+    } else {
+      final sizeRGBA = image.width * image.height * 4;
+      final byteData = await image.toByteData();
+      if (byteData == null) {
+        wxLogError( "Failed to convert ui.image" );
+        return null;
+      }
+      if (byteData.lengthInBytes != sizeRGBA) {
+        wxLogError( "ui.image data not available as RGBA and cannot be converted to WxImage" );
+        return null;
+      }
+      final wximage = WxImage.fromRGBA( image.width, image.height, byteData.buffer.asUint8List() );
+      return WxBitmap.fromImage( wximage );
+    }
   }
 }
 
