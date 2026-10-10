@@ -250,7 +250,7 @@ class WxDataViewTileListCtrl extends WxDataViewListCtrl {
 
   /// Append a tile
   void appendTile( WxBitmap? leading, String big, String medium, { String small="", 
-    WxBitmap? trailing, WxBitmap? trailingHighlighted, WxBitmap? leadingHighlighted } )
+    WxBitmap? trailing, WxBitmap? trailingHighlighted, WxBitmap? leadingHighlighted, dynamic clientData } )
   {
     final tile = WxDataViewTileData( leading, big, medium, small: small, trailing: trailing,
      trailingHighlighted: trailingHighlighted, leadingHighlighted: leadingHighlighted );
@@ -261,12 +261,12 @@ class WxDataViewTileListCtrl extends WxDataViewListCtrl {
     }
 
     // append list with a single item
-    appendItem( [tile] );
+    appendItem( [tile], clientData: clientData );
   }
 
   /// Prepend a tile
   void prependTile( WxBitmap? leading, String big, String medium, { String small="", 
-    WxBitmap? trailing, WxBitmap? trailingHighlighted, WxBitmap? leadingHighlighted } )
+    WxBitmap? trailing, WxBitmap? trailingHighlighted, WxBitmap? leadingHighlighted, dynamic clientData  } )
   {
     final tile = WxDataViewTileData( leading, big, medium, small: small, trailing: trailing,
      trailingHighlighted: trailingHighlighted, leadingHighlighted: leadingHighlighted );
@@ -277,12 +277,12 @@ class WxDataViewTileListCtrl extends WxDataViewListCtrl {
     }
 
     // prepend list with a single item
-    prependItem( [tile] );
+    prependItem( [tile], clientData: clientData );
   }
 
   /// Insert a tile at [pos]
   void insertTile( int pos, WxBitmap? leading, String big, String medium, { String small="", 
-    WxBitmap? trailing, WxBitmap? trailingHighlighted, WxBitmap? leadingHighlighted } )
+    WxBitmap? trailing, WxBitmap? trailingHighlighted, WxBitmap? leadingHighlighted, dynamic clientData } )
   {
     final tile = WxDataViewTileData( leading, big, medium, small: small, trailing: trailing,
      trailingHighlighted: trailingHighlighted, leadingHighlighted: leadingHighlighted );
@@ -293,7 +293,7 @@ class WxDataViewTileListCtrl extends WxDataViewListCtrl {
     }
 
     // insert list with a single item
-    insertItem( pos, [tile] );
+    insertItem( pos, [tile], clientData: clientData );
   }
 
   bool _needToCalculateHeight = false;

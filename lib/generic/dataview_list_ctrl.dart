@@ -9,6 +9,12 @@ part of '../wx_dart.dart';
 
 // ------------------------- WxDataViewListStore ----------------------
 
+class WxDataViewListStoreRow {
+  WxDataViewListStoreRow( this.values, this.clientData );
+  dynamic clientData;
+  List values = [];
+}
+
 /// Concrete implementation of a [WxDataViewModel] that stores tabular data.
 /// 
 /// Used internally by [WxDataViewListCtrl].
@@ -16,33 +22,51 @@ part of '../wx_dart.dart';
 class WxDataViewListStore extends WxDataViewIndexListModel {
   WxDataViewListStore() : super( 0 );
 
-  final List<List> _modelData = [];
+  final List<WxDataViewListStoreRow> _modelData = [];
   final List<String> _columns = [];
 
   @override
   dynamic getValueByRow( int row, int col ) {
-    final List rowData = _modelData[row];
+    final List rowData = _modelData[row].values;
     return rowData[col];
   }
 
   @override
   bool setValueByRow( dynamic value, int row, int col) {
-    final List rowData = _modelData[row];
+    final List rowData = _modelData[row].values;
     rowData[col] = value;
     return true;
   }
 
   @override
   bool setValue( dynamic value, WxDataViewItem item, int column ) {
-    final List rowData = _modelData[ getRow( item ) ];
+    final List rowData = _modelData[ getRow( item ) ].values;
     rowData[column] = value;
     return true;
   }
 
   @override
   dynamic getValue( WxDataViewItem item, int column ) {
-    final List rowData = _modelData[ getRow( item ) ];
+    final List rowData = _modelData[ getRow( item ) ].values;
     return rowData[column];
+  }
+
+  bool setItemData( WxDataViewItem item, dynamic data ) {
+    _modelData[ getRow( item ) ].clientData = data;
+    return true;
+  }
+
+  dynamic getItemData( WxDataViewItem item ) {
+    return _modelData[ getRow( item ) ].clientData;
+  }
+
+  bool setItemDataByRow( int row, dynamic data ) {
+    _modelData[ row ].clientData = data;
+    return true;
+  }
+
+  dynamic getItemDataByRow( int row ) {
+    return _modelData[ row ].clientData;
   }
 }
 
@@ -110,6 +134,12 @@ class WxDataViewListStore extends WxDataViewIndexListModel {
 /// * [unselectRow]
 /// * [getSelectedRow]
 /// * [isRowSelected]
+/// 
+/// Client data
+/// * [getItemData]
+/// * [getItemDataByRow]
+/// * [setItemData]
+/// * [setItemDataByRow]
 
 class WxDataViewListCtrl extends WxDataViewCtrl {
   WxDataViewListCtrl( super.parent, super.id, { super.pos = wxDefaultPosition, super.size = wxDefaultSize, super.style = 0 } ) {
@@ -150,20 +180,21 @@ class WxDataViewListCtrl extends WxDataViewCtrl {
   }
 
   /// Appends a new row with the data given in [values]
-  void appendItem( List values ) {
-    _store._modelData.add(values);
+  void appendItem( List values, { dynamic clientData } ) {
+
+    _store._modelData.add( WxDataViewListStoreRow(values,clientData) );
     _store.rowAppended();
   }
 
   /// Prepends a new row with the data given in [values]
-  void prependItem( List values ) {
-    _store._modelData.insert(0, values);
+  void prependItem( List values, { dynamic clientData } ) {
+    _store._modelData.insert(0, WxDataViewListStoreRow(values,clientData));
     _store.rowPrepended();
   }
 
   /// Inserts a new row with the data given in [values] at [pos]
-  void insertItem( int pos, List values ) {
-    _store._modelData.insert(pos, values);
+  void insertItem( int pos, List values, { dynamic clientData } ) {
+    _store._modelData.insert(pos, WxDataViewListStoreRow(values,clientData));
     _store.rowInserted( pos );
   }
 
@@ -186,14 +217,40 @@ class WxDataViewListCtrl extends WxDataViewCtrl {
 
   /// Sets the value in [row],[col]
   void setValue( dynamic value, int row, int col ) {
-    final dataRow = _store._modelData[ row ];
+    final dataRow = _store._modelData[ row ].values;
     dataRow[col] = value;
+    _store.rowChanged(row);
+  }
+
+  /// Sets all values in [row]
+  void setValues( List values, int row ) {
+    _store._modelData[ row ].values = values;
     _store.rowChanged(row);
   }
 
   /// Returns the value in [row],[col]
   dynamic getValue( int row, int col ) {
     return _store.getValueByRow( row, col);
+  }
+
+  /// Associates [data] as client data to [item]
+  bool setItemData( WxDataViewItem item, dynamic data ) {
+    return _store.setItemData( item, data );
+  }
+
+  /// Returns the client data associated with [item]
+  dynamic getItemData( WxDataViewItem item ) {
+    return _store.getItemData( item );
+  }
+
+  /// Associates [data] as client data to the item in [row]
+  bool setItemDataByRow( int row, dynamic data ) {
+    return _store.setItemDataByRow( row, data );
+  }
+
+  /// Returns the client data associated with the item in [row]
+  dynamic getItemDataByRow( int row ) {
+    return _store.getItemDataByRow( row );
   }
 
   /// Appends a [column] to contain data of type [variantType]
