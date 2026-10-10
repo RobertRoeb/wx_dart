@@ -1,3 +1,7 @@
+## 0.9.19
+
+* Corrected wrong upload
+
 ## 0.9.18
 
 * Allow use of Dart's ui.Image and ui.Picture to draw into a WxBitmap
