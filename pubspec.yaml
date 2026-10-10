@@ -3,6 +3,14 @@ description: "Flutter backend of wxDart"
 version: 0.9.18
 homepage: https://github.com/RobertRoeb/wx_dart
 
+platforms:
+  android:
+  ios:
+  linux:
+  macos:
+  web:
+  windows:
+
 environment:
   sdk: ^3.11.0
   flutter: ">=1.17.0"
