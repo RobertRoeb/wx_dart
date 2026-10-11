@@ -11,9 +11,9 @@ part of '../wx_dart.dart';
 
 /// Internal helper class used by [WxDataViewTreeStore]
 class WxDataViewTreeStoreNode {
-  WxDataViewTreeStoreNode( WxBitmap? bitmap, String text, dynamic clientData ) {
+  WxDataViewTreeStoreNode( WxBitmap? bitmap, String text, dynamic clientdata ) {
     data = WxDataViewIconTextData( bitmap, text );
-    clientData = clientData;
+    clientData = clientdata;
   }
   late WxDataViewIconTextData data ;
   late dynamic clientData; 
