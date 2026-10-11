@@ -111,14 +111,14 @@ class WxDataViewBook extends WxWindow {
     {
       page.hide();
     }
-    return _chapterCtrl.appendItem( WxDataViewItem(), icon, title, data: page );
+    return _chapterCtrl.appendItem( WxDataViewItem(), icon, title, clientData: page );
   }
 
   /// Appends new chapter to given [parent] chapter
   WxDataViewItem appendPage( WxDataViewItem parent, WxBitmap? icon, String title, WxWindow page )
   {
     page.hide();
-    return _chapterCtrl.appendItem( parent, icon, title, data: page );
+    return _chapterCtrl.appendItem( parent, icon, title, clientData: page );
   }
 
   /// Set the width of the left panel containing the tree view of the

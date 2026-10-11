@@ -49,7 +49,7 @@ class WxDataViewBookStore extends WxDataViewTreeStore {
   {
     if (!item.isOk()) return null;
     WxDataViewTreeStoreNode node = item.getID();
-    final haschildren = node._children.isNotEmpty;
+    final haschildren = node.children.isNotEmpty;
 
     WxDataViewItem parentItem = getParent( item );
     if (!parentItem.isOk()) return _header1;  // even if no children
@@ -137,8 +137,8 @@ class WxDataViewChapterCtrl extends WxDataViewCtrl {
     _store.setHeaderThreeAttr( attr );
   }
 
-  WxDataViewItem appendItem( WxDataViewItem parent, WxBitmap? icon, String text, { dynamic data } ) {
-    return _store.appendItem( parent, icon, text, data: data );
+  WxDataViewItem appendItem( WxDataViewItem parent, WxBitmap? icon, String text, { dynamic clientData } ) {
+    return _store.appendItem( parent, icon, text, clientData: clientData );
   }
 
   void deleteItem( WxDataViewItem item ) {
