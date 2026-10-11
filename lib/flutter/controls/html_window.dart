@@ -42,7 +42,6 @@ extension HtmlLinkEventBinder on WxEvtHandler {
   }
 }
 
-
 /// Event sent by [WxHtmlWindow]
 class WxHtmlLinkEvent extends WxCommandEvent {
   /// Creates the event with the given [href]. Done inside [WxHtmlWindow]
