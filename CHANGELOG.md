@@ -8,7 +8,7 @@
 * Allow use of Dart's ui.Image and ui.Picture to draw into a WxBitmap
 * Added WxBitmap.fromUIImage() to wxDart Flutter for that purpose
 * Fully implemented WxGridSizer
-* Corrected constuctor naming of WxBitmap.fromAsset()
+* Corrected constructor naming of WxBitmap.fromAsset()
 * Change WxBitmap.fromSize() into standard constructor
 
 ## 0.9.17
