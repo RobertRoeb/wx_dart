@@ -1,8 +1,8 @@
-## 0.9.19
+## 0.9.20
 
-* Corrected wrong upload
+* Added ability to add client data to WxDataViewListCtrl and WxDataViewTileListCtrl
 
-## 0.9.18
+## 0.9.18/19
 
 * Allow use of Dart's ui.Image and ui.Picture to draw into a WxBitmap
 * Added WxBitmap.fromUIImage() to wxDart Flutter for that purpose

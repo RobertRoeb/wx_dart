@@ -9,13 +9,14 @@ part of '../wx_dart.dart';
 
 // ------------------------- WxDataViewListStore ----------------------
 
+/// Helper class used internally by [WxDataViewListStore]
 class WxDataViewListStoreRow {
   WxDataViewListStoreRow( this.values, this.clientData );
   dynamic clientData;
   List values = [];
 }
 
-/// Concrete implementation of a [WxDataViewModel] that stores tabular data.
+/// Concrete implementation of a [WxDataViewModel] that stores tabular data
 /// 
 /// Used internally by [WxDataViewListCtrl].
 
@@ -51,20 +52,24 @@ class WxDataViewListStore extends WxDataViewIndexListModel {
     return rowData[column];
   }
 
+  /// Sets the (client) data of an [item]
   bool setItemData( WxDataViewItem item, dynamic data ) {
     _modelData[ getRow( item ) ].clientData = data;
     return true;
   }
 
+  /// Gets the (client) data of an [item]
   dynamic getItemData( WxDataViewItem item ) {
     return _modelData[ getRow( item ) ].clientData;
   }
 
+  /// Sets the (client) data of the item at the given [row]
   bool setItemDataByRow( int row, dynamic data ) {
     _modelData[ row ].clientData = data;
     return true;
   }
 
+  /// Gets the (client) data of the item at the given [row]
   dynamic getItemDataByRow( int row ) {
     return _modelData[ row ].clientData;
   }
@@ -180,6 +185,7 @@ class WxDataViewListCtrl extends WxDataViewCtrl {
   }
 
   /// Appends a new row with the data given in [values]
+  /// with optional [clientData] associated with the item
   void appendItem( List values, { dynamic clientData } ) {
 
     _store._modelData.add( WxDataViewListStoreRow(values,clientData) );
@@ -187,12 +193,14 @@ class WxDataViewListCtrl extends WxDataViewCtrl {
   }
 
   /// Prepends a new row with the data given in [values]
+  /// with optional [clientData] associated with the item
   void prependItem( List values, { dynamic clientData } ) {
     _store._modelData.insert(0, WxDataViewListStoreRow(values,clientData));
     _store.rowPrepended();
   }
 
   /// Inserts a new row with the data given in [values] at [pos]
+  /// with optional [clientData] associated with the item
   void insertItem( int pos, List values, { dynamic clientData } ) {
     _store._modelData.insert(pos, WxDataViewListStoreRow(values,clientData));
     _store.rowInserted( pos );
