@@ -12,6 +12,20 @@ class MyControlsWindow extends WxScrolledWindow {
     mainSizer.add( WxStaticText(this, -1, "The boxes below show various controls", style: wxST_WRAP), 
         flag: wxALL|wxALIGN_CENTER_HORIZONTAL, border: 10 );
 
+    final collpane1 = WxCollapsiblePane(this, -1, "WxCollapsiblePanel #1", style: wxNO_BORDER|wxCP_NO_TLW_RESIZE );
+    WxStaticText( collpane1.getPane(), -1, "This is text that can be hidden in a WxCollapsiblePanel" );
+    mainSizer.add(collpane1, flag: wxEXPAND|wxALL, border: 5 );
+    collpane1.bindCollapsiblePaneChangedEvent( (_)=> layout(), -1);
+
+    final collpane2 = WxCollapsiblePane(this, -1, "WxCollapsiblePanel #2", style: wxNO_BORDER|wxCP_NO_TLW_RESIZE );
+    final panel = collpane2.getPane();
+    final panelSizer = WxRow();
+    panelSizer.add( WxStaticText( panel, -1, "Left text" ), flag: wxALL, border: 5 );
+    panelSizer.addStretchSpacer();
+    panelSizer.add( WxStaticText( panel, -1, "Right text" ), flag: wxALL, border: 5 );
+    panel.setSizer(panelSizer);
+    mainSizer.add(collpane2, flag: wxEXPAND|wxALL, border: 10 );
+    collpane2.bindCollapsiblePaneChangedEvent( (_)=> layout(), -1);
 
     sbs = WxStaticBoxSizer(wxVERTICAL, this, "WxStaticText" );
     mainSizer.addSizer( sbs, flag: wxEXPAND|wxALL, border: 10 );

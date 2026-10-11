@@ -110,6 +110,7 @@ int wxGetTreeDeleteItemEventType()              { return 234; }
 
 int wxGetHyperlinkEventType()                   { return 240; }
 int wxGetHtmlLinkClickEventType()               { return 241; }
+int wxGetCollapsiblePaneChangedEventType()      { return 242; }
 
 int wxGetTreebookPageChangedEventType()         { return 250; }
 int wxGetTreebookPageChangingEventType()        { return 251; }

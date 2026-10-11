@@ -1,6 +1,7 @@
 ## 0.9.20
 
 * Added ability to add client data to WxDataViewListCtrl and WxDataViewTileListCtrl
+* Added WxCollapsiblePanel
 
 ## 0.9.18/19
 

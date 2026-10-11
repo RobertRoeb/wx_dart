@@ -134,6 +134,7 @@ of the Dart classes as well as the C++ classes which wxDart Native uses internal
 | [WxPanel](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxPanel-class.html) | [wxPanel](https://docs.wxwidgets.org/trunk/classwx_panel.html) |
 | [WxScrolledWindow](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxScrolledWindow-class.html) | [wxScrolledWindow](https://docs.wxwidgets.org/trunk/classwx_scrolled.html) |
 | [WxSplitterWindow](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxSplitterWindow-class.html) | [wxSplitterWindow](https://docs.wxwidgets.org/trunk/classwx_splitter_window.html) |
+| [WxCollapsiblePanel](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxCollapsiblePanel-class.html) | [wxCollapsiblePanel](https://docs.wxwidgets.org/trunk/classwx_collapsible_panel.html) |
 | [WxTopLevelWindow](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxTopLevelWindow-class.html) | [wxTopLevelWindow](https://docs.wxwidgets.org/trunk/classwx_top_level_window.html) |
 | [WxDialog](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDialog-class.html) | [wxDialog](https://docs.wxwidgets.org/trunk/classwx_dialog.html) |
 | [WxFrame](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxFrame-class.html) | [wxFrame](https://docs.wxwidgets.org/trunk/classwx_frame.html) |
@@ -308,6 +309,7 @@ Predefined models and controls for tree data
 | [WxSizerItem](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxSizerItem-class.html) | [wxSizerItem](https://docs.wxwidgets.org/trunk/classwx_sizer_item.html) |
 | [WxBoxSizer](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxBoxSizer-class.html) | [wxBoxSizer](https://docs.wxwidgets.org/trunk/classwx_box_sizer.html) |
 | [WxStaticBoxSizer](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxStaticBoxSizer-class.html) | [wxStaticBoxSizer](https://docs.wxwidgets.org/trunk/classwx_static_box_sizer.html) |
+| [WxGridSizer](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxGridSizer-class.html) | [wxGridSizer](https://docs.wxwidgets.org/trunk/classwx_grid_sizer.html) |
 | [WxFlexGridSizer](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxFlexGridSizer-class.html) | [wxFlexGridSizer](https://docs.wxwidgets.org/trunk/classwx_flex_grid_sizer.html) |
 | [WxWrapSizer](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxWrapSizer-class.html) | [wxWrapSizer](https://docs.wxwidgets.org/trunk/classwx_wrap_sizer.html) |
 | [WxTileSizer](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxTileSizer-class.html) | Only available in wxDart |
@@ -358,6 +360,7 @@ Command events (deriving from WxCommandEvent)
 | [WxSplitterEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxSplitterEvent-class.html) | [wxSplitterEvent](https://docs.wxwidgets.org/trunk/classwx_splitter_event.html) |
 | [WxDataViewEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDataViewEvent-class.html) | [wxDataViewEvent](https://docs.wxwidgets.org/trunk/classwx_data_view_event.html) |
 | [WxHtmlEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxHtmlEvent-class.html) | [wxHtmlEvent](https://docs.wxwidgets.org/trunk/classwx_html_event.html) |
+| [WxCollapsiblePaneEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxCollapsiblePane-class.html) | [wxCollapsiblePaneEvent](https://docs.wxwidgets.org/trunk/classwx_collapsible_pane_event.html) |
 
 ## Demo
 
