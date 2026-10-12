@@ -231,6 +231,7 @@ of the Dart classes as well as the C++ classes which wxDart Native uses internal
 | [WxAnimationCtrl](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxAnimationCtrl-class.html) | [wxAnimationCtrl](https://docs.wxwidgets.org/trunk/classwx_animation_ctrl.html) |
 | [WxCheckBox](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxCheckBox-class.html) | [wxCheckBox](https://docs.wxwidgets.org/trunk/classwx_check_box.html) |
 | [WxTextCtrl](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxTextCtrl-class.html) | [wxTextCtrl](https://docs.wxwidgets.org/trunk/classwx_text_ctrl.html) |
+| [WxSearchCtrl](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxSearchCtrl-class.html) | [wxSearchCtrl](https://docs.wxwidgets.org/trunk/classwx_search_ctrl.html) |
 | [WxChoice](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxChoice-class.html) | [wxChoice](https://docs.wxwidgets.org/trunk/classwx_choice.html) |
 | [WxRadioButton](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxRadioButton-class.html) | [wxRadioButton](https://docs.wxwidgets.org/trunk/classwx_radio_button.html) |
 | [WxRadioBox](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxRadioBox-class.html) | [wxRadioBox](https://docs.wxwidgets.org/trunk/classwx_radio_box.html) |

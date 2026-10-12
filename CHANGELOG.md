@@ -2,6 +2,7 @@
 
 * Added ability to add client data to WxDataViewListCtrl and WxDataViewTileListCtrl
 * Added WxCollapsiblePanel
+* Added WxSearchCtrl
 
 ## 0.9.18/19
 

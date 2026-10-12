@@ -94,6 +94,7 @@ part 'flutter/controls/activity_indicator.dart';
 part 'flutter/controls/hyperlink_ctrl.dart';
 part 'flutter/controls/gl_canvas.dart';
 part 'flutter/controls/collapsible_pane.dart';
+part 'flutter/controls/search_ctrl.dart';
 part 'flutter/events/events.dart';
 part 'flutter/events/command_event.dart';
 part 'flutter/gdi/geometry.dart';

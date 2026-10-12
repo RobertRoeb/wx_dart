@@ -19,6 +19,15 @@ class MyLoggingWindow extends WxScrolledWindow {
     text2.setHint( "Hinting...");
     sbs.add( text2, flag: wxALL|wxEXPAND, border: 5 );
 
+    sbs.add( WxStaticText(sb, -1, 'WxSearchCtrl'), flag: wxALL, border: 5);
+    final search = WxSearchCtrl(sb, -1 );
+    search.setDescriptiveText( "This explains it");
+    sbs.add( search, flag: wxALL|wxEXPAND, border: 5 );
+
+    sbs.add( WxStaticText(sb, -1, 'WxSearchCtrl and wxNO_BORDER'), flag: wxALL, border: 5);
+    final search2 = WxSearchCtrl(sb, -1, style: wxNO_BORDER );
+    sbs.add( search2, flag: wxALL|wxEXPAND, border: 5 );
+
     sbs.add( WxStaticText(sb, -1, 'With wxTE_PASSWORD'), flag: wxALL, border: 5);
     sbs.add( WxTextCtrl(sb, -1, style: wxTE_PASSWORD ), flag: wxALL|wxEXPAND, border: 5 );
 
@@ -52,18 +61,21 @@ class MyLoggingWindow extends WxScrolledWindow {
     final log = WxTextCtrl(lowerBox.getStaticBox(), -1, size: WxSize( 100,100), style: wxTE_MULTILINE );
     lowerBox.add( log, flag: wxEXPAND  );
 
+    search.bindSearchEvent( (_) => search.setDescriptiveText( 'Search starts!' ), -1 );
+    search.bindSearchCancelEvent( (_) => search.setDescriptiveText( 'Search cancelled' ), -1 );
+
     multi.bindTextEnterEvent((event) {
-      log.changeValue( 'bindTextEnterEvent:\n' );
+      log.setValue( 'bindTextEnterEvent:\n' );
       log.appendText( event.getString() );
     },-1);
 
     multi.bindTextEvent((event) {
-      log.changeValue( 'bindTextEvent:\n' );
+      log.setValue( 'bindTextEvent:\n' );
       log.appendText( event.getString() );
     },-1);
 
     changeValueButton.bindButtonEvent((event) {
-      multi.changeValue( 'New text from changeValue' );
+      multi.setValue( 'New text from changeValue' );
     },-1);
 
     setValueButton.bindButtonEvent((event) {
@@ -80,13 +92,13 @@ class MyLoggingWindow extends WxScrolledWindow {
 
     getStringSelectionButton.bindButtonEvent((event) {
       final sel = multi.getStringSelection();
-      log.changeValue( 'getStringSelection():\n' );
+      log.setValue( 'getStringSelection():\n' );
       log.appendText(sel);
     },-1);
 
     getInsertionPointButton.bindButtonEvent((event) {
       final sel = multi.getInsertionPoint();
-      log.changeValue( 'getInsertionPoint():\n' );
+      log.setValue( 'getInsertionPoint():\n' );
       log.appendText("$sel");
     },-1);
 
