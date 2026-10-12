@@ -129,8 +129,8 @@ extension TextEventEnterBinder on WxEvtHandler {
 
 class WxTextCtrl extends WxTextEntry {
   /// Creates the control
-  WxTextCtrl( WxWindow parent, int id, { String value = "", WxPoint pos = wxDefaultPosition, WxSize size = wxDefaultSize, int style = 0 } ) 
-  : super( parent, id, value: value, pos: pos, size: WxSize( size.x == -1 ? 180 : size.x , size.y ), style: style );
+  WxTextCtrl( super.parent, super.id, { super.value, super.pos, WxSize size = wxDefaultSize, super.style } ) 
+  : super( size: WxSize( size.x == -1 ? 180 : size.x , size.y ) );
 
   bool _dirty = false;
 
