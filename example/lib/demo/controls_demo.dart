@@ -225,7 +225,7 @@ class MyControlsWindow extends WxScrolledWindow {
     flex.add( gauge );
     gauge.setValue( 30 );
 
-    flex.add( WxStaticText(parent, -1, "WxSider:") );
+    flex.add( WxStaticText(parent, -1, "WxSlider:") );
     final slider1 = WxSlider(parent, -1, 0, 0, 100, size: WxSize(150,-1) );
     flex.add( slider1 );
 
