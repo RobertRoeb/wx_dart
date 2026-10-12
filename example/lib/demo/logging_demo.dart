@@ -20,9 +20,22 @@ class MyLoggingWindow extends WxScrolledWindow {
     sbs.add( text2, flag: wxALL|wxEXPAND, border: 5 );
 
     sbs.add( WxStaticText(sb, -1, 'WxSearchCtrl'), flag: wxALL, border: 5);
+    final searchSizer = WxRow();
     final search = WxSearchCtrl(sb, -1 );
+    search.showCancelButton(true);
+    final searchIndicator = WxActivityIndicator(sb, -1);
+    searchSizer.add( search, proportion: 1 );
+    searchSizer.addSpacer(10);
+    searchSizer.add( searchIndicator );
     search.setDescriptiveText( "This explains it");
-    sbs.add( search, flag: wxALL|wxEXPAND, border: 5 );
+    sbs.addSizer( searchSizer, flag: wxALL|wxEXPAND, border: 5 );
+
+    final dropmenu = WxMenu();
+    dropmenu.appendItem( 101, "Red", help: "Choose red theme" );
+    dropmenu.appendItem( 102, "Green\tCtrl-G", help: "Choose green theme" );
+    dropmenu.appendItem( 103, "Blue\tCtrl-B", help: "Choose blue theme" );
+    dropmenu.appendItem( 104, "Purple\tCtrl-P", help: "Choose purple theme" );
+    search.setMenu(dropmenu);
 
     sbs.add( WxStaticText(sb, -1, 'WxSearchCtrl and wxNO_BORDER'), flag: wxALL, border: 5);
     final search2 = WxSearchCtrl(sb, -1, style: wxNO_BORDER );
@@ -61,8 +74,8 @@ class MyLoggingWindow extends WxScrolledWindow {
     final log = WxTextCtrl(lowerBox.getStaticBox(), -1, size: WxSize( 100,100), style: wxTE_MULTILINE );
     lowerBox.add( log, flag: wxEXPAND  );
 
-    search.bindSearchEvent( (_) => search.setDescriptiveText( 'Search starts!' ), -1 );
-    search.bindSearchCancelEvent( (_) => search.setDescriptiveText( 'Search cancelled' ), -1 );
+    search.bindSearchEvent( (_) => searchIndicator.start(), -1 );
+    search.bindSearchCancelEvent( (_) => searchIndicator.stop(), -1 );
 
     multi.bindTextEnterEvent((event) {
       log.setValue( 'bindTextEnterEvent:\n' );

@@ -24,7 +24,7 @@ class MyControlsWindow extends WxScrolledWindow {
     panelSizer.addStretchSpacer();
     panelSizer.add( WxStaticText( panel, -1, "Right text" ), flag: wxALL, border: 5 );
     panel.setSizer(panelSizer);
-    mainSizer.add(collpane2, flag: wxEXPAND|wxALL, border: 10 );
+    mainSizer.add(collpane2, flag: wxEXPAND|wxALL, border: 5 );
     collpane2.bindCollapsiblePaneChangedEvent( (_)=> layout(), -1);
 
     sbs = WxStaticBoxSizer(wxVERTICAL, this, "WxStaticText" );

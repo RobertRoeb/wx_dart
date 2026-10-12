@@ -67,11 +67,23 @@ extension SearchCancelEventBinder on WxEvtHandler {
 
 class WxSearchCtrl extends WxTextEntry {
   WxSearchCtrl( super.parent, super.id, { super.value, super.pos, WxSize size = wxDefaultSize, super.style } ) 
-  : super( size: WxSize( size.x == -1 ? 180 : size.x , size.y ) );
+  : super( size: WxSize( size.x == -1 ? 180 : size.x , size.y ) )
+  {
+    bindKeyDownEvent( (event) {
+      if (event.getKeyCode() == WXK_ESCAPE) {
+        final event = WxCommandEvent( wxGetSearchCancelEventType(), getId() );
+        event.setEventObject( this );
+        processEvent( event );
+      } else {
+        event.skip();
+      }
+    } );
+  }
 
   bool _showSearchButton = true;
-  bool _showCancelButton = true;
+  bool _showCancelButton = false;
   String _descriptive = "";
+  WxMenu? _menu;
 
   /// Returns true if search button is visible
   bool isSearchButtonVisible( ) {
@@ -103,6 +115,7 @@ class WxSearchCtrl extends WxTextEntry {
 
   /// Adds a [WxMenu] to the control, where supported
   void setMenu( WxMenu? menu ) {
+    _menu = menu;
   }
 
   @override
@@ -127,22 +140,69 @@ class WxSearchCtrl extends WxTextEntry {
       } );
     }
 
-    Widget text = TextField(
-      decoration:  
-        InputDecoration(
-            hintText: _hint.isEmpty ? null : _hint,
-            helperText: _descriptive.isEmpty ? null : _descriptive,
-            isDense: !wxTheApp.isTouch(),
-            contentPadding: wxTheApp.isTouch() ? null : EdgeInsets.all( hasFlag(wxNO_BORDER) ? 1 : 4 ),
-            prefix: _showSearchButton ? IconButton(
+    Widget? searchButton;
+    if (_showSearchButton)
+    {
+      if (_menu != null)
+      {
+        searchButton= 
+          Row( 
+            mainAxisSize: .min,
+            children: [
+              IconButton(
+                padding: EdgeInsets.all( 0 ),
+                visualDensity: wxTheApp.isTouch() ? null : .compact,
+                iconSize: fromDIP(24).toDouble(),
+                icon: const Icon( Icons.search ),
+                onPressed: () {
+                  final event = WxCommandEvent( wxGetSearchEventType(), getId() );
+                  event.setEventObject( this );
+                  event.setString( getValue() );
+                  processEvent( event );
+              }),
+              IconButton(
+                padding: EdgeInsets.all( 0 ),
+                visualDensity: wxTheApp.isTouch() ? null : .compact,
+                iconSize: fromDIP(24).toDouble(),
+                icon: Padding(
+                  padding: EdgeInsetsGeometry.only(left: 2),
+                  child: CustomPaint(
+                    size: const Size(13, 30), 
+                    painter: TrianglePainter( false, border: 12, otherBorder: 10 ),
+                  )
+                ),
+                onPressed: () {
+                  popupMenu( _menu! );
+              }),
+            ]
+          );
+      }
+      else
+      {
+        searchButton= IconButton(
+              padding: EdgeInsets.all( 0 ),
+              visualDensity: wxTheApp.isTouch() ? null : .compact,
               iconSize: fromDIP(24).toDouble(),
               icon: const Icon( Icons.search ),
               onPressed: () {
                 final event = WxCommandEvent( wxGetSearchEventType(), getId() );
                 event.setEventObject( this );
+                event.setString( getValue() );
                 processEvent( event );
-            }) : null,
-            suffix: _showCancelButton ? IconButton(
+            });
+      }
+    }
+
+    Widget text = TextField(
+      decoration:  
+        InputDecoration(
+            hintText: _descriptive.isEmpty ? null : _descriptive,
+            isDense: !wxTheApp.isTouch(),
+            contentPadding: wxTheApp.isTouch() ? null : EdgeInsets.all( hasFlag(wxNO_BORDER) ? 1 : 4 ),
+            prefix: searchButton,
+            suffix: (_showCancelButton) ? IconButton(
+              padding: EdgeInsets.all( 0 ),
+              visualDensity: wxTheApp.isTouch() ? null : .compact,
               iconSize: fromDIP(24).toDouble(),
               icon: const Icon( Icons.cancel ),
               onPressed: () {
@@ -151,32 +211,20 @@ class WxSearchCtrl extends WxTextEntry {
                 processEvent( event );
             }) : null,
             border: (!hasFlag(wxNO_BORDER)) ? OutlineInputBorder( borderRadius: BorderRadius.circular(8.0) ) : null ,
-          ),
+          ), 
       controller: _textEditingController,
       focusNode: _focusNode,
-      textAlignVertical: TextAlignVertical.top,
       maxLines: 1,
       maxLength: _maxLength == -1 ? null : _maxLength,
       onChanged: (text) {
         _sendTextEvent(text);
       },
-      onSubmitted: hasFlag(wxTE_PROCESS_ENTER) ? (text) {
-        WxCommandEvent event = WxCommandEvent( wxGetTextEnterEventType(), getId() );
+      onSubmitted:  (text) {
+        final event = WxCommandEvent( wxGetSearchEventType(), getId() );
         event.setEventObject( this );
         event.setString( text );
-        if (!processEvent(event)) {
-          WxWindow current = this;
-          while (current.getParent() != null) {
-            if (current.getParent() is WxDialog) {
-              final dialog = current.getParent() as WxDialog;
-              final action = dialog.getAffirmativeId();
-              dialog._endDialog(action);
-              return;
-            }
-            current = current.getParent()!;
-          }
-        }
-      } : null,
+        processEvent( event );
+      } ,
     );
 
     
