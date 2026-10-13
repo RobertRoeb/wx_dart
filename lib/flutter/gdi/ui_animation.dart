@@ -65,7 +65,7 @@ const int wxCURVE_BOUNCE = 5;
 ///   void dispose() {
 ///     // The window is about to be destroyed - stop the animation
 ///     // in case it is still running.
-///     _chevronAnimation.stop;
+///     _chevronAnimation.stop();
 ///     super.dispose();
 ///   }
 /// }
