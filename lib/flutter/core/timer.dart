@@ -57,7 +57,7 @@ part of '../../wx_dart.dart';
 ///   void dispose() {
 ///     // The window is about to be destroyed - stop the timer
 ///     // in case it is still running.
-///     _timer.stop;
+///     _timer.stop();
 ///     super.dispose();
 ///   }
 /// }
