@@ -11,7 +11,10 @@ part of '../../wx_dart.dart';
 
 /// Represents a timer that calls [notify] or sends a [WxTimerEvent] after some time
 /// 
-/// The class can either fire just once or repeatedly.
+/// The class can either fire just once or repeatedly. 
+/// 
+/// Make sure the timer is stopped when the window gets destroyed. Override
+/// [WxWindow.dispose] which gets called before window destruction.
 /// 
 /// When overriding [notify] extend the class like this:
 /// ```dart
@@ -49,6 +52,14 @@ part of '../../wx_dart.dart';
 ///   }
 /// 
 ///   late WxTimer _timer;
+///   @override
+/// 
+///   void dispose() {
+///     // The window is about to be destroyed - stop the timer
+///     // in case it is still running.
+///     _timer.stop;
+///     super.dispose();
+///   }
 /// }
 /// ```
 /// or in short form
@@ -64,6 +75,13 @@ part of '../../wx_dart.dart';
 ///     });
 ///   }
 ///   late WxTimer _timer;
+/// 
+///   void dispose() {
+///     // The window is about to be destroyed - stop the timer
+///     // in case it is still running.
+///     _timer.stop;
+///     super.dispose();
+///   }
 /// }
 /// ```
 

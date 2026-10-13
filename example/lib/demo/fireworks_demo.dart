@@ -168,10 +168,18 @@ class MyFireworksFrame extends WxAdaptiveFrame {
   }
 
   late MyFireworksWindow firewindow;
+  late WxUIAnimation _anim;
+
+  @override
+  void dispose() {
+    // The window is about to be destroyed. Stop the animation.
+    _anim.stop;
+    super.dispose();
+  }
 
   void startFirework()
   {
-      final anim = WxUIAnimation( (value) {
+      _anim = WxUIAnimation( (value) {
         value *= 5;
         firewindow.radius1 = (value-0.5).clamp(0,1);
         firewindow.radius2 = (value-1.5).clamp(0,1);
@@ -182,7 +190,7 @@ class MyFireworksFrame extends WxAdaptiveFrame {
         firewindow.seed = Random().nextInt(10000);
         firewindow.refresh();
       }, 5000 );
-      anim.start();
+      _anim.start();
 
   }
 }

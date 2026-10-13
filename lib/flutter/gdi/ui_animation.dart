@@ -19,6 +19,9 @@ const int wxCURVE_BOUNCE = 5;
 /// in wxDart Native and using a ticker (synchronized with refresh rate)
 /// in wxDart Flutter.
 /// 
+/// It is important to stop a [WxUIAnimation] when a window is about to be
+/// destroyed as the animation is not tied to the window directly. Override
+/// [WxWindow.dispose] to stop the animation.
 /// 
 /// [WxUIAnimation] has built-in support for animation curves: 
 /// * wxCURVE_LINEAR
@@ -28,18 +31,44 @@ const int wxCURVE_BOUNCE = 5;
 /// * wxCURVE_BOUNCE
 /// 
 /// ```dart
-/// // create animation that will last 250 milliseconds to turn a chevron 90°
-/// _chevronAnimation = WxUIAnimation((value) {
+/// class MyWindow extends WxWindow {
+///   MyWindow( WxWindow parent, int id ) : super( parent, id, wxDefaultPosition, wxDefaultSize, 0 )
+///   {
+///     // create animation that will last 250 milliseconds to turn a chevron 90°
+///     _chevronAnimation = WxUIAnimation( (value) {
+///       // tell the window where we are from 0.0 to 1.0
+///       _chevronAngle = value * 90;
 /// 
-///    // tell the window where we are from 0.0 to 1.0
-///    _chevronAngle = value * 90;
+///       // update the window
+///       refresh();
+///     }, 250 );
 /// 
-///   // update the window
-///   refresh();
-///  }, 250 );
+///     // Bind paint handler to the paint event
+///     bindPaintEvent(onPaint);
+///   }
 /// 
-///  // somewhere in your code, after a button press on the chevron
-///  _chevronAnimation.start()
+///   double _chevronAngle = 0;
+///   late WxUIAnimation _chevronAnimation;
+/// 
+///   void onPaint( WxPaintEvent event )
+///   {
+///     // create paint device context during paint event
+///     final dc = WxPaintDC( this );
+///     // draw something
+///   }
+/// 
+///   void clickedOnChevron() {
+///     _chevronAnimation.start();
+///   }
+/// 
+///   @override
+///   void dispose() {
+///     // The window is about to be destroyed - stop the animation
+///     // in case it is still running.
+///     _chevronAnimation.stop;
+///     super.dispose();
+///   }
+/// }
 /// ```
 
 class WxUIAnimation extends WxObject {
