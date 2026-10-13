@@ -66,6 +66,18 @@ extension SplitterUnsplitEventBinder on WxEvtHandler {
   }
 }
 
+/// @nodoc
+
+extension SplitterDoubleClickEventBinder on WxEvtHandler {
+  void bindSplitterDoubleClickEvent( OnSplitterEventFunc func, int id ) {
+    _eventTable.add( WxSplitterEventTableEntry(wxGetSplitterDoubleClickEventType(), id, func));
+  }
+
+  void unbindSplitterDoubleClickEvent( int id ) {
+    _eventTable.removeWhere( (entry) => entry.matches(wxGetSplitterDoubleClickEventType(), id));
+  }
+}
+
 /// Event sent out for [WxSplitterWindow] 
 class WxSplitterEvent extends WxNotifyEvent {
   WxSplitterEvent( super.eventType, super.id );
@@ -152,6 +164,10 @@ const int wxSP_3D = (wxSP_3DBORDER | wxSP_3DSASH);
 /// | ----------------- |
 /// | void bindSplitterUnsplitEvent( void function( [WxSplitterEvent] event ) ) |
 /// | void unbindSplitterUnsplitEvent() |
+/// [SplitterDoubleClick](/wxdart/wxGetSplitterDoubleClickEventType.html) event gets sent when the user double clicks on the sash |
+/// | ----------------- |
+/// | void bindSplitterDoubleClickEvent( OnSplitterEventFunc ) |
+/// | void unbindSplitterDoubleClickEvent() |
 /// 
 /// # Window styles
 /// | constant | meaning |
