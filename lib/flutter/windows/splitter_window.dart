@@ -75,14 +75,17 @@ class WxSplitterEvent extends WxNotifyEvent {
   int _y = 0;
   int _pos = 0;
 
+  /// Returns the new sash position
   int getSashPosition( ) {
     return _pos;
   }
 
+  /// Returns the x coordinate of the double-click point
   int getX( ) {
     return _x;
   }
 
+  /// Returns the y coordinate of the double-click point
   int getY( ) {
     return _y; 
   }
@@ -111,6 +114,30 @@ const int wxSP_3D = (wxSP_3DBORDER | wxSP_3DSASH);
 /// The user can change the dimensions of the two windows by dragging the
 /// splitter sash around. If the wxSP_PERMIT_UNSPLIT flag is set, then the
 /// user can unsplit the window, i.e. one window gets hidden. 
+/// 
+/// ```dart
+///class MyMainWindow extends WxSplitterWindow
+///{
+///  MyMainWindow( MyFrame parent ) : super( parent, -1, style: wxSP_LIVE_UPDATE|wxSP_3DSASH )
+///  {
+///    // Create two windows
+///    _leftWindow = MyWindow(this);
+///    _rightWindow = MyWindow(this);
+///
+///    // Tell WxSplitterWindow how to split them
+///    splitVertically(_leftWindow, _rightWindow);
+///
+///    // Set minumum size
+///    setMinimumPaneSize(100);
+///
+///    // Set initial split/sash position
+///    setSashPosition(450);    
+///  }
+///
+///  late MyWindow _leftWindow;
+///  late MyWindow _rightWindow;
+///}
+///```
 ///
 /// # Events emitted
 /// [SplitterSashPosChanging](/wxdart/wxGetSplitterSashPosChangingEventType.html) event gets sent when the user drags the sash. |

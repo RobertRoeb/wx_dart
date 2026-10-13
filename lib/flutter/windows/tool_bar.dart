@@ -136,9 +136,17 @@ class WxToolBarToolBase extends WxObject {
 /// 
 /// ```dart
 /// // in your frame's constructor
+/// 
+/// // Create icons
+/// final fileOpenIcon = WxBitmapBundle.fromMaterialIcon(WxMaterialIcon.file_open, WxSize(32,32) );
+/// final dialogIcon = WxBitmapBundle.fromMaterialIcon(WxMaterialIcon.window, WxSize(32,32) );
+/// 
+/// // Create WxToolBar
 /// final toolbar = createToolBar( style: wxTB_FLAT|wxTB_TEXT );
-/// toolbar.addTool( idFileDialog, "Open..", WxBitmapBundle.fromMaterialIcon(WxMaterialIcon.file_open, WxSize(32,32) ), shortHelp: "Open file dialog" );
-/// toolbar.addTool( idDialog, "Dialog", WxBitmapBundle.fromMaterialIcon(WxMaterialIcon.window, WxSize(32,32) ), shortHelp: "Show dialog" );
+/// 
+/// // Add tools
+/// toolbar.addTool( idFileDialog, "Open..", fileOpenIcon, shortHelp: "Open file dialog" );
+/// toolbar.addTool( idDialog, "Dialog", dialogIcon, shortHelp: "Show dialog" );
 /// toolbar.addSeparator();
 /// 
 /// // don't forget this!
