@@ -71,6 +71,8 @@ class MyFrame extends WxAdaptiveFrame {
     // wxApp.isTouch() decides which one to show.
     // Experimental, but very cool.
 
+    final infoIcon = WxBitmapBundle.fromMaterialIcon(WxMaterialIcon.info, WxSize(32,32) );
+
     // Touch interface
 
       // AppBar, similar to a toolbar
@@ -78,7 +80,9 @@ class MyFrame extends WxAdaptiveFrame {
       // add action with text button
       appBar.addAction( wxID_EXIT, "Quit" );
       // add "about" tool with bitmap
-      appBar.addTool( idAbout, "", WxBitmapBundle.fromMaterialIcon(WxMaterialIcon.info, WxSize(32,32) ) );
+      appBar.addTool( idAbout, "", infoIcon );
+
+      appBar.realize();
 
     // Desktop interface
 
