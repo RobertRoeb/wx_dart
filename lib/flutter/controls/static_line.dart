@@ -25,10 +25,7 @@ class WxStaticLine extends WxControl {
   @override
   Widget _build(BuildContext context)
   {
-    Widget line = SizedBox(
-      width: _initialSize.x > 0 ? _initialSize.x.toDouble() : null,
-      height: _initialSize.y > 0 ? _initialSize.y.toDouble() : null,
-    );
+    Widget line = Divider();
     return _buildControl(context, line );
   }
 }
