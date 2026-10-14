@@ -2,7 +2,10 @@
 
 * Added ability to add client data to WxDataViewListCtrl and WxDataViewTileListCtrl
 * Added WxCollapsiblePanel
-* Added WxSearchCtrl
+* Added WxSearchCtrl with search and cancel icon and drop down menu
+* Added bindSplitterDoubleClickEvent to WxSplitterWindow
+* Added and clarified role of WxWindow.setMinSize vs. setSize
+* Implemented WxStaticLine using Flutter's Divider widget
 
 ## 0.9.18/19
 
