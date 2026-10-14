@@ -27,7 +27,7 @@ class MyLoggingWindow extends WxScrolledWindow {
     searchSizer.add( search, proportion: 1 );
     searchSizer.addSpacer(10);
     searchSizer.add( searchIndicator );
-    search.setDescriptiveText( "This explains it");
+    search.setDescriptiveText( "Search...");
     sbs.addSizer( searchSizer, flag: wxALL|wxEXPAND, border: 5 );
 
     final dropmenu = WxMenu();
@@ -40,6 +40,7 @@ class MyLoggingWindow extends WxScrolledWindow {
     sbs.add( WxStaticText(sb, -1, 'WxSearchCtrl and wxNO_BORDER'), flag: wxALL, border: 5);
     final search2 = WxSearchCtrl(sb, -1, style: wxNO_BORDER );
     sbs.add( search2, flag: wxALL|wxEXPAND, border: 5 );
+    search2.setDescriptiveText( "Search...");
 
     sbs.add( WxStaticText(sb, -1, 'With wxTE_PASSWORD'), flag: wxALL, border: 5);
     sbs.add( WxTextCtrl(sb, -1, style: wxTE_PASSWORD ), flag: wxALL|wxEXPAND, border: 5 );
