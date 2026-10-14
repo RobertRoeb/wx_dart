@@ -212,6 +212,7 @@ const int wxTOUCH_RAW_EVENTS = 0x0020;
 /// 
 /// Position, sizing and hints
 /// * [setSize]
+/// * [setMinSize]
 /// * [getSize]
 /// * [getMinSize]
 /// * [setPosition]
@@ -426,10 +427,25 @@ class WxWindow extends WxEvtHandler {
     return _size;
   }
 
-  /// Sets the size if the controls
-  void setSize( WxSize size ) {
+  /// Sets the requested size of the control with -1 indicating that
+  /// the control should calculate the dimension itself or do a guess.
+  /// 
+  /// see [setSize]
+  void setMinSize( WxSize size ) {
     _initialSize = size;
-    _setSizeInternal( size );
+    _setState();
+  }
+
+  /// Sets the requested size of the control with -1 indicating no change.
+  /// 
+  /// see [setMinSize]
+  void setSize( WxSize size ) {
+    if (size.x > 0) {
+      _initialSize = WxSize( size.x, _initialSize.y );
+    }
+    if (size.y > 0) {
+      _initialSize = WxSize( _initialSize.x, size.y );
+    }
     _setState();
   }
 
@@ -443,8 +459,18 @@ class WxWindow extends WxEvtHandler {
   void _setSizeInternal( WxSize size ) 
   {
     if ((size.x == _size.x) && (size.x == _size.y)) return;
-    if ((size.x < 1) || (size.y < 1)) return;
-    _size = size;
+    if (size.x > 0) {
+      _size = WxSize( size.x, _size.y );
+    } else {
+      wxLogError( "_setSizeInternal called with negative width in ${(this).runtimeType}" );
+      return;
+    }
+    if (size.y > 0) {
+      _size = WxSize( _size.x, size.y );
+    } else {
+      wxLogError( "_setSizeInternal called with negative height in ${(this).runtimeType}" );
+      return;
+    }
     if (((_eventHandlers != null) || (_onSizeFunc != null))) {
         WxSizeEvent event = WxSizeEvent( _size, id: getId() );
         processEvent(event);
