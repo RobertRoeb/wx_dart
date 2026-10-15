@@ -19,7 +19,7 @@ enum WxVAlignment { top, bottom, center, expand }
 /// all [WxSizer.add], [WxSizer.insert], [WxSizer.prepend] functions.
 /// It helps avoid typing errors. 
 /// 
-/// See [WxBoxSizer] for meaning of the indivdual flags.
+/// See [WxBoxSizer] for meaning of the individual flags.
 /// 
 /// Examples:
 /// 
@@ -41,8 +41,26 @@ enum WxVAlignment { top, bottom, center, expand }
 /// col.add( WxTextCtrl( this,-1), flag: WxSizerFlags.border( left: true ), border: 5 );
 /// 
 /// ```
+/// 
+/// Variant that lets you specify borders and alignment individually:
+/// * [border]
+/// 
+/// Variants with given alignment and borders speficied individually:
+/// * [expand]
+/// * [alignCentre]
+/// * [alignRight]
+/// * [alignBottom]
+/// 
+/// Variants with borders left/right or above/below:
+/// * [borderHorizontal]
+/// * [borderVertical]
+/// 
+/// Variants with borders all around:
+/// * [borderAll]
+/// * [expandAndBorderAll]
+
 class WxSizerFlags {
-  /// Speficies all border and alignments individually
+  /// Speficies all borders and alignments individually
   static int border(  {
     bool left=false, 
     bool right=false, 
