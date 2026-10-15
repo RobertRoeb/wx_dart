@@ -130,7 +130,7 @@ part 'dataview/dataview_tile_list_ctrl.dart';
 part 'dataview/dataview_tree_ctrl.dart';
 part 'dataview/dataview_chapter_ctrl.dart';
 part 'dataview/databook.dart';
-part 'generic/header.dart';
+part 'generic/header_ctrl.dart';
 part 'generic/tile_sizer.dart';
 part 'generic/sizer_flags.dart';
 part 'generic/graphics_animation.dart';
