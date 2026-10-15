@@ -55,6 +55,32 @@ const int wxCOL_REORDERABLE = 4;
 const int wxCOL_HIDDEN = 8;
 const int wxCOL_DEFAULT_FLAGS = wxCOL_RESIZABLE | wxCOL_REORDERABLE;
 
+/// Represents a column header in controls displaying tabular data such as [wxDataViewCtrl].
+/// 
+/// Notice that this is an abstract base class which is implemented (usually using
+/// the information stored in the associated control) by the different controls using
+/// [WxHeaderCtrl]. As the control only needs to retrieve the information about the
+/// column, this class defines only the methods for accessing the various column
+/// properties but not for changing them as the setters might not be needed at all,
+/// e.g. if the column attributes can only be changed via the methods of the main
+/// associated control (this is the case for wxGrid for example). If you do want to
+/// allow changing them directly using the column itself, you should inherit from
+/// [wxSettableHeaderColumn] instead of this class.
+/// 
+/// Finally, if you don't already store the column information at all anywhere, you
+/// should use the concrete [WxHeaderColumnSimple] class and [WxHeaderCtrlSimple].
+/// 
+/// # flag styles
+/// | constant | value |
+/// | -------- | -------- |
+/// | wxCOL_WIDTH_DEFAULT | -1 |
+/// | wxCOL_WIDTH_AUTOSIZE | -2 |
+/// | wxCOL_RESIZABLE | 1 |
+/// | wxCOL_SORTABLE | 2 |
+/// | wxCOL_REORDERABLE | 4 |
+/// | wxCOL_HIDDEN | 8 |
+/// | wxCOL_DEFAULT_FLAGS | wxCOL_RESIZABLE | wxCOL_REORDERABLE |
+
 class WxHeaderColumn {
 
   late String _title;
@@ -125,6 +151,23 @@ class WxHeaderColumn {
 
 // ------------------------- wxSettableHeaderColumn ----------------------
 
+/// Adds methods to set the column attributes to [WxHeaderColumn].
+/// 
+/// This class adds setters for the column attributes defined by
+/// [WxHeaderColumn]. It is still an abstract base class and needs to
+/// be implemented before using it with [WxHeaderCtrl].
+/// 
+/// # flag styles
+/// | constant | value |
+/// | -------- | -------- |
+/// | wxCOL_WIDTH_DEFAULT | -1 |
+/// | wxCOL_WIDTH_AUTOSIZE | -2 |
+/// | wxCOL_RESIZABLE | 1 |
+/// | wxCOL_SORTABLE | 2 |
+/// | wxCOL_REORDERABLE | 4 |
+/// | wxCOL_HIDDEN | 8 |
+/// | wxCOL_DEFAULT_FLAGS | wxCOL_RESIZABLE | wxCOL_REORDERABLE |
+
 class WxSettableHeaderColumn extends WxHeaderColumn {
 
   void setTitle( String title ) {
@@ -194,6 +237,31 @@ class WxSettableHeaderColumn extends WxHeaderColumn {
 
 // ------------------------- wxHeaderColumnSimple ----------------------
 
+/// Simple container for the information about the column.
+///
+/// This is a concrete class implementing all [WxSettableHeaderColumn] class
+/// methods in a trivial way, i.e. by just storing the information in the object
+/// itself. It is used by and with [WxHeaderCtrlSimple], e.g.
+/// 
+/// ```dart
+/// final header = WxHeaderCtrlSimple(...);
+/// final col = WxHeaderColumnSimple("Title");
+/// col.setWidth(100);
+/// col.setSortable(100);
+/// header.appendColumn(col);
+/// ```
+/// 
+/// # flag styles
+/// | constant | value |
+/// | -------- | -------- |
+/// | wxCOL_WIDTH_DEFAULT | -1 |
+/// | wxCOL_WIDTH_AUTOSIZE | -2 |
+/// | wxCOL_RESIZABLE | 1 |
+/// | wxCOL_SORTABLE | 2 |
+/// | wxCOL_REORDERABLE | 4 |
+/// | wxCOL_HIDDEN | 8 |
+/// | wxCOL_DEFAULT_FLAGS | wxCOL_RESIZABLE | wxCOL_REORDERABLE |
+
 class WxHeaderColumnSimple extends WxSettableHeaderColumn {
   WxHeaderColumnSimple( String title, { int width = wxCOL_WIDTH_DEFAULT, int alignment = wxALIGN_NOT, int flags = wxCOL_DEFAULT_FLAGS } ) {
     _title = title;
@@ -209,6 +277,12 @@ const int wxHD_ALLOW_REORDER = 0x0001;
 const int wxHD_ALLOW_HIDE = 0x0002;
 const int wxHD_BITMAP_ON_RIGHT = 0x0004;
 const int wxHD_DEFAULT_STYLE = wxHD_ALLOW_REORDER;
+
+/// Abstract base class for [WxHeaderCtrl]
+/// 
+/// The reason for this class is that it in principle would allow
+/// to derive a different (e.g. native) header control from it.
+/// Put differently, [WxHeaderCtrlBase] defines the abstract interface.
 
 abstract class WxHeaderCtrlBase extends WxWindow {
   WxHeaderCtrlBase( WxWindow parent,  int id, { WxPoint pos = wxDefaultPosition, WxSize size = wxDefaultSize, int style = 0 } ) : 
@@ -413,6 +487,38 @@ abstract class WxHeaderCtrlBase extends WxWindow {
 
 // ------------------------- wxHeaderCtrl ----------------------
 
+/// [WxHeaderCtrl] is the control containing the column headings which is
+/// usually used for display of tabular data.
+/// 
+/// It is used by [WxDataViewCtrl] but can be also used independently. In general
+/// this class is meant to be used as part of another control which already stores
+/// the column information somewhere as it can't be used directly: instead you need
+/// to inherit from it and implement the [getColumn] method to provide column information.
+/// 
+/// See [WxHeaderCtrlSimple] for a concrete control class which can be used directly.
+///
+/// In addition to labeling the columns, the control has the following features:
+///
+/// Column reordering support, either by explicitly configuring the columns order and
+/// calling [setColumnsOrder] or by dragging the columns interactively (if enabled).
+/// Display of the icons in the header: this is often used to display a sort or reverse
+/// sort indicator when the column header is clicked.
+/// 
+/// Notice that this control itself doesn't do anything other than displaying the column
+/// headers. In particular column reordering and sorting must still be supported by the
+/// associated control displaying the real data under the header. 
+/// 
+/// Also remember to call [scrollWindow] method of the control if the associated data
+/// display window has a horizontal scrollbar, otherwise the headers wouldn't align with
+/// the data when the window is scrolled.
+/// 
+/// # styles
+/// | constant | value |
+/// | -------- | -------- |
+/// |  wxHD_ALLOW_REORDER | 0x0001 |
+/// |  wxHD_ALLOW_HIDE | 0x0002 |
+/// |  wxHD_BITMAP_ON_RIGHT | 0x0004 |
+/// |  wxHD_DEFAULT_STYLE | wxHD_ALLOW_REORDER |
 
 abstract class WxHeaderCtrl extends WxHeaderCtrlBase {
   WxHeaderCtrl(super.parent, super.id, { super.pos = wxDefaultPosition, super.size = wxDefaultSize, super.style = wxHD_DEFAULT_STYLE } ) {
@@ -982,8 +1088,15 @@ abstract class WxHeaderCtrl extends WxHeaderCtrlBase {
 
 }
 
-// ------------------------- wxHeaderCtrl ----------------------
+// ------------------------- wxHeaderCtrlSimple ----------------------
 
+/// [WxHeaderCtrlSimple] is a concrete header control which can be used directly,
+/// without inheriting from it as you need to do when using [WxHeaderCtrl] itself.
+/// 
+/// When using it, you need to use simple [appendColumn], [insertColumn] and [deleteColumn]
+/// methods instead of setting the number of columns with [setColumnCount] and returning
+/// the information about them from the overridden [getColumn].
+/// 
 class WxHeaderCtrlSimple extends WxHeaderCtrl {
   WxHeaderCtrlSimple( super.parent, super.id, { super.pos = wxDefaultPosition, super.size = wxDefaultSize, super.style = wxHD_DEFAULT_STYLE } )
   {

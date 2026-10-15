@@ -27,17 +27,17 @@ enum WxVAlignment { top, bottom, center, expand }
 /// // create vertical WxBoxSizer = WxColmun
 /// final col = WxColumn();
 /// 
-/// // old style to specify flags
+/// // Old style using constants to specify the flag parameter
 /// col.add( WxTextCtrl( this,-1), flag: wxALL|wxEXPAND, border: 5 );
 /// 
-/// // old style to specify flags
+/// // New style using WxSizerFlags to specify the flag parameter
 /// col.add( WxTextCtrl( this,-1), flag: WxSizerFlags.expandAndBorderAll(), border: 5 );
 /// 
 /// 
-/// // old style to specify flags
+/// // Old style using constants to specify the flag parameter
 /// col.add( WxTextCtrl( this,-1), flag: wxLEFT, border: 5 );
 /// 
-/// // old style to specify flags
+/// // New style using WxSizerFlags to specify the flag parameter
 /// col.add( WxTextCtrl( this,-1), flag: WxSizerFlags.border( left: true ), border: 5 );
 /// 
 /// ```
