@@ -7,7 +7,7 @@
 * Added and clarified role of WxWindow.setMinSize vs. setSize
 * Implemented WxStaticLine using Flutter's Divider widget
 
-## 0.9.18/19
+## 0.9.19
 
 * Allow use of Dart's ui.Image and ui.Picture to draw into a WxBitmap
 * Added WxBitmap.fromUIImage() to wxDart Flutter for that purpose

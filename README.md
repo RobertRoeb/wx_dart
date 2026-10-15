@@ -134,7 +134,7 @@ of the Dart classes as well as the C++ classes which wxDart Native uses internal
 | [WxPanel](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxPanel-class.html) | [wxPanel](https://docs.wxwidgets.org/trunk/classwx_panel.html) |
 | [WxScrolledWindow](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxScrolledWindow-class.html) | [wxScrolledWindow](https://docs.wxwidgets.org/trunk/classwx_scrolled.html) |
 | [WxSplitterWindow](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxSplitterWindow-class.html) | [wxSplitterWindow](https://docs.wxwidgets.org/trunk/classwx_splitter_window.html) |
-| [WxCollapsiblePanel](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxCollapsiblePanel-class.html) | [wxCollapsiblePanel](https://docs.wxwidgets.org/trunk/classwx_collapsible_panel.html) |
+| [WxCollapsiblePane](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxCollapsiblePane-class.html) | [wxCollapsiblePane](https://docs.wxwidgets.org/trunk/classwx_collapsible_pane.html) |
 | [WxTopLevelWindow](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxTopLevelWindow-class.html) | [wxTopLevelWindow](https://docs.wxwidgets.org/trunk/classwx_top_level_window.html) |
 | [WxDialog](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDialog-class.html) | [wxDialog](https://docs.wxwidgets.org/trunk/classwx_dialog.html) |
 | [WxFrame](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxFrame-class.html) | [wxFrame](https://docs.wxwidgets.org/trunk/classwx_frame.html) |
