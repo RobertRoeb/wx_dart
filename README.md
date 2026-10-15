@@ -243,6 +243,7 @@ of the Dart classes as well as the C++ classes which wxDart Native uses internal
 | [WxSpinCtrl](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxSpinCtrl-class.html) | [wxSpinCtrl](https://docs.wxwidgets.org/trunk/classwx_spin_ctrl.html) |
 | [WxSpinCtrlDouble](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxSpinCtrlDouble-class.html) | [wxSpinCtrlDouble](https://docs.wxwidgets.org/trunk/classwx_spin_ctrl_double.html) |
 | [WxHyperlinkCtrl](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxHyperlinkCtrl-class.html) | [wxHyperlinkCtrl](https://docs.wxwidgets.org/trunk/classwx_hyperlink_ctrl.html) |
+| [WxHeaderCtrl](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxHeaderCtrl-class.html) | [wxHeaderCtrl](https://docs.wxwidgets.org/trunk/classwx_header_ctrl.html) |
 
 ## OpenGL and WebGL classes
 
