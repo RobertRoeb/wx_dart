@@ -25,7 +25,7 @@ class MyTileDataView extends WxPanel {
     final leading = WxBitmap.fromMaterialIcon( WxMaterialIcon.account_balance, WxSize(48,48), wxGREY );
     final trailing = WxBitmap.fromMaterialIcon( WxMaterialIcon.hot_tub, WxSize(48,48), wxGREY );
     for (int i = 0; i < 200; i++) {
-      _dataview.appendTile( leading, "Main text in row #$i", "Medium text", small: "Small text at the bottom", trailing: trailing );
+      _dataview.appendTile( leading, "Main text in row #$i", medium: "Medium text", small: "Small text at the bottom", trailing: trailing );
     }
 
     bindDataViewSelectionChangedEvent((event) {
