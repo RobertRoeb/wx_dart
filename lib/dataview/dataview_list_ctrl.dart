@@ -156,11 +156,15 @@ class WxDataViewListCtrl extends WxDataViewCtrl {
 
   /// Returns the [WxDataViewItem] for the [row]
   WxDataViewItem rowToItem( int row ) {
+    if ((row < 0) || (row >= _store._modelData.length)) {
+      return WxDataViewItem();
+    }
     return _store.getItem( row );
   }
 
   /// Returns the row index of [item]
   int itemToRow( WxDataViewItem item ) {
+    if (!item.isOk()) return -1;
     return _store.getRow( item );
   }
 
