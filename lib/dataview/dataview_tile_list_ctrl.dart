@@ -13,14 +13,18 @@ part of '../wx_dart.dart';
 /// a [WxDataViewTileRenderer] in a [WxDataViewTileListCtrl].
 
 class WxDataViewTileData {
-  WxDataViewTileData( this.leading, this.big, this.medium, { this.small = "", 
-    this.trailing, this.trailingHighlighted, this.leadingHighlighted } );
+  WxDataViewTileData( this.leading, this.big, { this.medium = "", this.small = "", 
+    this.trailing, this.trailingHighlighted, this.leadingHighlighted,
+    this.bigAlignment = .left, this.mediumAlignment = .left, this.smallAlignment = .left,  } );
 
   final WxBitmap? leading;
   final WxBitmap? leadingHighlighted;
   final String big;
+  final WxHAlignment bigAlignment;
   final String medium;
+  final WxHAlignment mediumAlignment;
   final String small;
+  final WxHAlignment smallAlignment;
   final WxBitmap? trailing;
   final WxBitmap? trailingHighlighted;
 }
@@ -157,7 +161,7 @@ class WxDataViewTileRenderer extends WxDataViewRenderer {
         // centre around bitmap
         yForText = paddedCell.y + _margins - (height-(paddedCell.height-2*_margins))~/2;
       }
-      renderText( _value.big, 0, WxRect(xForText,yForText,widthForText,height), dc, state );
+      renderText( _value.big, 0, WxRect(xForText,yForText,widthForText,height), dc, state, alignment: _value.bigAlignment );
       yForText += height;
       yForText += _margins;
     }
@@ -249,11 +253,13 @@ class WxDataViewTileListCtrl extends WxDataViewListCtrl {
   }
 
   /// Append a tile
-  void appendTile( WxBitmap? leading, String big, String medium, { String small="", 
-    WxBitmap? trailing, WxBitmap? trailingHighlighted, WxBitmap? leadingHighlighted, dynamic clientData } )
+  void appendTile( WxBitmap? leading, String big, { String medium="", String small="", 
+    WxBitmap? trailing, WxBitmap? trailingHighlighted, WxBitmap? leadingHighlighted, dynamic clientData,
+    WxHAlignment bigAlignment = .left, WxHAlignment mediumAlignment = .left, WxHAlignment smallAlignment = .left } )
   {
-    final tile = WxDataViewTileData( leading, big, medium, small: small, trailing: trailing,
-     trailingHighlighted: trailingHighlighted, leadingHighlighted: leadingHighlighted );
+    final tile = WxDataViewTileData( leading, big, medium: medium, small: small, trailing: trailing,
+     trailingHighlighted: trailingHighlighted, leadingHighlighted: leadingHighlighted,
+     bigAlignment: bigAlignment, mediumAlignment: mediumAlignment, smallAlignment: smallAlignment );
 
     if (_needToCalculateHeight) {
       setRowHeight( calculateRowHeight( tile) );
@@ -265,11 +271,13 @@ class WxDataViewTileListCtrl extends WxDataViewListCtrl {
   }
 
   /// Prepend a tile
-  void prependTile( WxBitmap? leading, String big, String medium, { String small="", 
-    WxBitmap? trailing, WxBitmap? trailingHighlighted, WxBitmap? leadingHighlighted, dynamic clientData  } )
+  void prependTile( WxBitmap? leading, String big, { String medium = "", String small="", 
+    WxBitmap? trailing, WxBitmap? trailingHighlighted, WxBitmap? leadingHighlighted, dynamic clientData,
+    WxHAlignment bigAlignment = .left, WxHAlignment mediumAlignment = .left, WxHAlignment smallAlignment = .left } )
   {
-    final tile = WxDataViewTileData( leading, big, medium, small: small, trailing: trailing,
-     trailingHighlighted: trailingHighlighted, leadingHighlighted: leadingHighlighted );
+    final tile = WxDataViewTileData( leading, big, medium: medium, small: small, trailing: trailing,
+     trailingHighlighted: trailingHighlighted, leadingHighlighted: leadingHighlighted,
+     bigAlignment: bigAlignment, mediumAlignment: mediumAlignment, smallAlignment: smallAlignment );
 
     if (_needToCalculateHeight) {
       setRowHeight( calculateRowHeight(tile) );
@@ -281,11 +289,13 @@ class WxDataViewTileListCtrl extends WxDataViewListCtrl {
   }
 
   /// Insert a tile at [pos]
-  void insertTile( int pos, WxBitmap? leading, String big, String medium, { String small="", 
-    WxBitmap? trailing, WxBitmap? trailingHighlighted, WxBitmap? leadingHighlighted, dynamic clientData } )
+  void insertTile( int pos, WxBitmap? leading, String big, { String medium = "", String small="", 
+    WxBitmap? trailing, WxBitmap? trailingHighlighted, WxBitmap? leadingHighlighted, dynamic clientData,
+    WxHAlignment bigAlignment = .left, WxHAlignment mediumAlignment = .left, WxHAlignment smallAlignment = .left } )
   {
-    final tile = WxDataViewTileData( leading, big, medium, small: small, trailing: trailing,
-     trailingHighlighted: trailingHighlighted, leadingHighlighted: leadingHighlighted );
+    final tile = WxDataViewTileData( leading, big, medium: medium, small: small, trailing: trailing,
+     trailingHighlighted: trailingHighlighted, leadingHighlighted: leadingHighlighted,
+     bigAlignment: bigAlignment, mediumAlignment: mediumAlignment, smallAlignment: smallAlignment );
 
     if (_needToCalculateHeight) {
       setRowHeight( calculateRowHeight(tile) );

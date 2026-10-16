@@ -101,9 +101,17 @@ class WxDataViewRenderer extends WxObject {
     }
     return false;
   }
-  void renderText( String text, int xoffset, WxRect rect, WxDC dc, int state)
+  void renderText( String text, int xoffset, WxRect rect, WxDC dc, int state, { WxHAlignment alignment = .left })
   {
       final textExtent = dc.getTextExtent( text );
+      if (textExtent.x < rect.width) {
+        if (alignment == .right) {
+          xoffset += (rect.width - textExtent.x);
+        } else
+        if (alignment == .center) {
+          xoffset += (rect.width - textExtent.x) ~/ 2;
+        }
+      } 
       String finalText = text;
       if (textExtent.x+xoffset > rect.width)
       {
