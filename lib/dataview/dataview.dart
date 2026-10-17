@@ -176,7 +176,7 @@ class WxDataViewColumn extends WxSettableHeaderColumn {
     if (_owner != null) {
         _owner!.dontUseColumnForSorting(_owner!.getColumnIndex(this));
     }
-    _updateWidth();
+    _updateDisplay();
   }
 
   @override
