@@ -1758,10 +1758,20 @@ class WxWindow extends WxEvtHandler {
     _setState();
   }
 
-  void _setState() {
-    if (!_frozen) {
-       wxTheApp._setState();
+  void _setState()
+  {
+    if (_frozen) return;
+
+    bool hidden = !isShown();
+    WxWindow? current = this;
+    while (!hidden && (this is! WxTopLevelWindow)) {
+      current = current!.getParent();
+      if (current == null) break;
+      hidden = !current.isShown();
     }
+    if (hidden) return;
+
+    wxTheApp._setState();
   }
 
   /// Stops updates to this window if a batch of updates occur
