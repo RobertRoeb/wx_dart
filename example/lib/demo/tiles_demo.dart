@@ -88,7 +88,7 @@ class MyTileDataView extends WxPanel {
       int selection = _dataview.getSelectedRow();
       if (selection != -1) {
         final tileData = _dataview.getValue(selection, 0) as WxDataViewTileData;
-        final dialog = WxMessageDialog(frame, "Clicked", caption: "WxDataViewTileListCtrl" );
+        final dialog = WxMessageDialog(frame, "Clicked", caption: wxTheApp.isTouch() ? "==" : "WxDataViewTileListCtrl" );
         dialog.setExtendedMessage("Item click is: ${tileData.big}" );
         dialog.showModal(null);
         

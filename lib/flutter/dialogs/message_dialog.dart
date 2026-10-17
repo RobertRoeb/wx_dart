@@ -41,7 +41,7 @@ part of '../../wx_dart.dart';
 
 class WxMessageDialog extends WxDialog {
   WxMessageDialog( WxWindow? parent, String message, { String caption = '', int style = wxOK|wxCENTRE, WxPoint pos = wxDefaultPosition } ) 
-  : super( parent, -1, caption, pos: pos )
+  : super( parent, -1, caption, pos: pos, style: wxTheApp.isTouch() ? 0 : wxDEFAULT_DIALOG_STYLE )
   {
     _mainSizer = WxBoxSizer( wxVERTICAL );
 

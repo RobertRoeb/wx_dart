@@ -31,6 +31,10 @@ part of '../../wx_dart.dart';
 /// [WxDialog] provides a way to place standard buttons at the bottom of the dialog and their
 /// ordering will be done in platform dependent way, using the [createStdDialogButtonSizer] method.
 /// 
+/// [wxDEFAULT_DIALOG_STYLE] is defined as (wxCAPTION | wxSYSTEM_MENU | wxCLOSE_BOX). You
+/// way choose different style flags on mobile devices, where a caption is unusual (and system
+/// menus and close boxes don't exist).
+/// 
 /// wxDart (Flutter and Native) uses events ([WxInitDialogEvent] and [WxDialogValidateEvent])
 /// to inform about when to transfer data to/from the dialog and when to validate input (see below).
 /// 

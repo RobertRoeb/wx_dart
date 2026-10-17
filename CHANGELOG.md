@@ -1,11 +1,13 @@
 ## 0.9.21
 
 * Don't call setState from hidden WxWindow
-* Correct WxDataViewCtrlGetSelection for multiple selections
-* Move wxDart Native specific code from a wxWidgets branch into the bridge library
+* Correct WxDataViewCtrl.getSelection() for multiple selections
 * Began docs for WxHeaderCtrl
 * Moved WxDataViewCtrl files to their own folder
 * Added text alignment to WxDataViewTileCtrl and wxDataViewRenderer.renderText()
+* Removed caption from "dialogs" on mobile interface by default
+* Move wxDart Native specific code from a wxWidgets branch into the bridge library
+* More wxDart Native memory cleanup after the WxObject.dispose changes started 0.9.14
 
 ## 0.9.20
 
