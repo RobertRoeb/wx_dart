@@ -4583,7 +4583,7 @@ class WxDataViewCtrlCachedColWidthInfo {
 /// | wxDV_PLUSMINUS_EXPANDER | Use plus/minus expander and not the default chevron triangle | 
 
 class WxDataViewCtrl extends WxScrolledWindow {
-  WxDataViewCtrl( super.parent, super.id, { super.pos = wxDefaultPosition, super.size = wxDefaultSize, super.style = wxVSCROLL|wxHSCROLL } ) {
+  WxDataViewCtrl( super.parent, super.id, { super.pos = wxDefaultPosition, super.size = wxDefaultSize, super.style = 0 } ) {
 
     _clientArea = WxDataViewMainWindow(this );
     if (!hasFlag(wxDV_NO_HEADER)) {
