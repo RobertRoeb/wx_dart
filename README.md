@@ -37,11 +37,11 @@ wxDart consists of two separate libraries which offer the same API and can be us
 * 'wxDart Native' uses the [wxWidgets](https://wxwidgets.org) C++ GUI library as its backend using FFI calls.
 
 Both wxDart Flutter and wxDart Native support
-* Conversion from dart:ui Image and dart:ui Picture to WxBitmap to enable off-screen drawing using Dart
 * Asynchronous code using the [async await](https://dart.dev/libraries/async/async-await) paradigm
 * The Flutter [assets](https://api.flutter.dev/flutter/services/AssetBundle-class.html) system (used in many Dart libraries)
 * An extensive list of controls from [menus](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxMenuBar-class.html) to [animations](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxAnimationCtrl-class.html)
 * [WxDataViewCtrl](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDataViewCtrl-class.html) to display and edit complex and large table and tree data
+* Conversion from dart:ui Image and dart:ui Picture to WxBitmap to enable off-screen drawing using Dart
 * [Dark and light](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxApp/setAppearance.html) mode on all platforms
 * Image formats including [SVG](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxBitmapBundle/WxBitmapBundle.fromSVG.html), PNG and JPG
 * Over 2000 [Material icons](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxBitmapBundle/WxBitmapBundle.fromMaterialIcon.html) built-in

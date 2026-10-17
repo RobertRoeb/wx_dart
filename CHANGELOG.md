@@ -1,3 +1,12 @@
+## 0.9.21
+
+* Don't call setState from hidden WxWindow
+* Correct WxDataViewCtrlGetSelection for multiple selections
+* Move wxDart Native specific code from a wxWidgets branch into the bridge library
+* Began docs for WxHeaderCtrl
+* Moved WxDataViewCtrl files to their own folder
+* Added text alignment to WxDataViewTileCtrl and wxDataViewRenderer.renderText()
+
 ## 0.9.20
 
 * Added ability to add client data to WxDataViewListCtrl and WxDataViewTileListCtrl
