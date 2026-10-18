@@ -5303,7 +5303,7 @@ class WxDataViewCtrl extends WxScrolledWindow {
       _colsBestWidths.add( WxDataViewCtrlCachedColWidthInfo() );
     }
     _colsDirty = true;
-    refresh();
+    // refresh(); this is called from with onPaint
   }
 
   void _invalidateColBestWidth(int idx)
@@ -5311,7 +5311,7 @@ class WxDataViewCtrl extends WxScrolledWindow {
     _colsBestWidths[idx].width = 0;
     _colsBestWidths[idx].dirty = true;
     _colsDirty = true;
-    refresh();
+    // refresh(); this is called from with onPaint
   }
 
   void _updateColWidths()
