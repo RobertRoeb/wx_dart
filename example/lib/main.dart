@@ -130,7 +130,7 @@ class MyMainFrame extends WxAdaptiveFrame {
     final submenuitemone = menubar.findItem(idSubMenuOne);
     if (submenuitemone != null)
     {
-      submenuitemone.enable(false);
+      submenuitemone.enable(false); 
     }
 
 

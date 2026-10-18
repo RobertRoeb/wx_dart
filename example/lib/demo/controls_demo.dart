@@ -367,7 +367,9 @@ class MyControlsWindow extends WxScrolledWindow {
     imageSizer.add( ani, flag: wxALIGN_CENTER_VERTICAL );
 
     imageSizer.addSpacer(15);
-    imageSizer.add( WxStaticText(parent, -1, 'WxActivityIndicator:  '), flag: wxALIGN_CENTER_VERTICAL );
+    if (!wxTheApp.isTouch()) {
+      imageSizer.add( WxStaticText(parent, -1, 'WxActivityIndicator:  '), flag: wxALIGN_CENTER_VERTICAL );
+    }
     final activity = WxActivityIndicator(parent, -1 );
     imageSizer.add( activity, flag: wxALIGN_CENTER_VERTICAL );
 

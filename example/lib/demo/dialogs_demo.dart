@@ -127,25 +127,25 @@ class MyFirstDialog extends WxDialog
 
     final midSizer = WxStaticBoxSizer( wxVERTICAL, _page2, 'Mid' );
 
-    final flexSizer = WxFlexGridSizer(2);
+    final flexSizer = WxFlexGridSizer( wxTheApp.isTouch() ? 1 : 2);
 
-    final text1 = WxTextCtrl( midSizer.getStaticBox(), -1, size: WxSize(350,-1) );
+    final text1 = WxTextCtrl( midSizer.getStaticBox(), -1, size: WxSize(300,-1) );
     // row #1
     flexSizer.add( WxStaticText(midSizer.getStaticBox(), -1, "ENTER will try to close the dialog:" ), flag: wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT );
     text1.setHint( "Hit <ENTER>" );
     flexSizer.add( text1, flag: wxALL, border: 10 );
     // row #2
     flexSizer.add( WxStaticText(midSizer.getStaticBox(), -1, "ENTER intercepted, won't close:" ), flag: wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT );
-    final text2 = WxTextCtrl( midSizer.getStaticBox(), -1, style: wxTE_PROCESS_ENTER, size: WxSize(350,-1) );
+    final text2 = WxTextCtrl( midSizer.getStaticBox(), -1, style: wxTE_PROCESS_ENTER, size: WxSize(300,-1) );
     text2.setHint( "Hit <ENTER>" );
     flexSizer.add( text2, flag: wxALL, border: 10 );
     // row #3
     flexSizer.add( WxStaticText(midSizer.getStaticBox(), -1, "No more than 17 characters allowed:" ), flag: wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT );
-    final text3 = WxTextCtrl( midSizer.getStaticBox(), -1, value: "Max 17 characters", size: WxSize(350,-1) );
+    final text3 = WxTextCtrl( midSizer.getStaticBox(), -1, value: "Max 17 characters", size: WxSize(300,-1) );
     flexSizer.add( text3, flag: wxALL, border: 10 );
     // row #4
     flexSizer.add( WxStaticText(midSizer.getStaticBox(), -1, "Text will be remembered next time:" ), flag: wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT );
-    final text4 = WxTextCtrl( midSizer.getStaticBox(), -1, size: WxSize(350,-1) );
+    final text4 = WxTextCtrl( midSizer.getStaticBox(), -1, size: WxSize(200,-1) );
     flexSizer.add( text4, flag: wxALL, border: 10 );
 
     midSizer.addSizer(flexSizer, flag: wxEXPAND );
