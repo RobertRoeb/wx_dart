@@ -1,4 +1,5 @@
 
+import 'package:example/demo/gl_demo.dart';
 import 'package:wx_dart/wx_dart.dart';
 
 import 'package:markdown/markdown.dart' as md;
@@ -179,6 +180,7 @@ class MyLessonsPage extends WxScrolledWindow {
     const int idMessage = 106;
     const int idDrawing = 107;
     const int idGestures = 108;
+    const int idOpenGL = 109;
 
     final flex = WxFlexGridSizer( 2, vgap: 10, hgap: 10 );
     mainSizer.addSizer( flex, flag: wxTOP|wxRIGHT|wxEXPAND, border: 10 );
@@ -215,6 +217,9 @@ class MyLessonsPage extends WxScrolledWindow {
 
     flex.add( WxStaticText(this, -1, "Gestures") );
     flex.add( WxButton(this, idGestures, "Start...") );
+
+    flex.add( WxStaticText(this, -1, "OpenGL ES") );
+    flex.add( WxButton(this, idOpenGL, "Start...") );
 
     bindButtonEvent( (event) {
       switch (event.getId()) {
@@ -254,6 +259,12 @@ class MyLessonsPage extends WxScrolledWindow {
         case idDrawing:
         final frame = WxFrame(getParent(), -1, 'Drawing example' );
         MyDrawingWindow( frame );
+        frame.show(); 
+        break;
+
+        case idOpenGL:
+        final frame = WxFrame(getParent(), -1, 'OpenGL ES example' );
+        MyGLPage( frame );
         frame.show(); 
         break;
 

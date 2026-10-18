@@ -9,7 +9,7 @@ import './gl/matrix4.dart';
 class MyGLPage extends WxPanel {
   MyGLPage( WxWindow parent ) : super( parent, -1 )
   {
-    final mainSizer = WxRow();
+    WxBoxSizer mainSizer = wxTheApp.isTouch() ? WxColumn() : WxRow() ;
     setSizer( mainSizer );
 
     final attr = WxGLAttributes();
@@ -19,7 +19,7 @@ class MyGLPage extends WxPanel {
     final cubeWindow = MyCubeWindow(this, attr);
     mainSizer.add( cubeWindow, proportion: 1, flag: wxEXPAND|wxALL, border: 5 );
 
-    final buttonSizer = WxColumn();
+    WxBoxSizer buttonSizer = wxTheApp.isTouch() ? WxRow() : WxColumn();
     mainSizer.addSizer(buttonSizer, flag: wxALIGN_BOTTOM );
 
     final upButton = WxButton(this, -1, "Up");
@@ -35,6 +35,10 @@ class MyGLPage extends WxPanel {
     rightButton.bindButtonEvent( (_)=>cubeWindow.turnRight(), -1);
     buttonSizer.add( rightButton, flag: wxALL, border: 5 );
     buttonSizer.addSpacer(10);
+
+    if (wxTheApp.isTouch()) {
+      mainSizer.addSpacer(40); // Need to find a better way 
+    }
   }
 
   int counter = 0;
