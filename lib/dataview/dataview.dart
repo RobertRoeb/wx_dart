@@ -16,6 +16,8 @@ part of '../wx_dart.dart';
 const int wxDataViewSortColumnNone = -2;
 const int wxDataViewSortColumnDefault = -1;
 
+/// Helper class for sorting within [WxDataViewCtrl]
+
 class WxDataViewSortOrder
 {
     WxDataViewSortOrder( { int column = wxDataViewSortColumnNone, bool ascending = true } ) {
@@ -26,233 +28,35 @@ class WxDataViewSortOrder
     late final int _column;
     late final bool _ascending;
 
+    /// Returns true if no sorting should happen
     bool isNone() { 
       return _column == wxDataViewSortColumnNone;
     }
 
+    /// Returns true if a column has been specified for sorting
     bool usesColumn() { 
       return _column >= 0;
     }
 
+    /// Returns the column for sorting, or -1 if none has been specified
     int getColumn() {
       return _column;
     }
 
+    /// Returns true if sorting is in ascending order
     bool isAscending() { 
       return _ascending;
     }
 
+    /// Returns true if this sort order is identical to [other]
     bool isEqualTo ( WxDataViewSortOrder other) {
         return _column == other._column && _ascending == other._ascending;
     }
 
+    /// Returns true if this sort order is not identical to [other]
     bool isNotEqualTo ( WxDataViewSortOrder other) {
         return !isEqualTo(other);
     }
-}
-
-// ------------------------- wxDataViewColumn ----------------------
-
-const int wxDVC_DEFAULT_WIDTH = 80;
-const int wxDVC_DEFAULT_MINWIDTH = 30;
-const int wxDVC_DEFAULT_RENDERER_SIZE = 25; // 20;
-const int wxDVC_TOGGLE_DEFAULT_WIDTH = 30;
-const int wxDATAVIEW_COL_RESIZABLE = wxCOL_RESIZABLE;
-const int wxDATAVIEW_COL_SORTABLE = wxCOL_SORTABLE;
-const int wxDATAVIEW_COL_REORDERABLE = wxCOL_REORDERABLE;
-const int wxDATAVIEW_COL_HIDDEN = wxCOL_HIDDEN;
-
-class WxDataViewColumn extends WxSettableHeaderColumn {
-  WxDataViewColumn( String title, WxDataViewRenderer renderer, int modelColumn, { int width = wxDVC_DEFAULT_WIDTH, int alignment = wxALIGN_CENTER, int flags = wxDATAVIEW_COL_RESIZABLE } ) {
-    _title = title;
-    _renderer = renderer;
-    _renderer.setOwner( this );
-    _modelColumn = modelColumn;
-    _width = width;
-    _minWidth = wxDVC_DEFAULT_MINWIDTH;
-    _alignment = alignment;
-    _flags = flags;
-    _manuallySetWidth = _width;
-  }
-
-  late final WxDataViewRenderer _renderer;
-  late final int _modelColumn;
-  late int _manuallySetWidth;
-  WxDataViewCtrl? _owner;
-
-  WxDataViewRenderer getRenderer() {
-    return _renderer;
-  }
-
-  int getModelColumn() {
-    return _modelColumn;
-  }
-
-  void setOwner( WxDataViewCtrl owner ) {
-    _owner = owner;
-  }
-
-  WxDataViewCtrl? getOwner() {
-    return _owner;
-  }
-
-  // ---------
-
-  @override
-  void setTitle( String title ) {
-    super.setTitle(title);
-    _updateWidth();
-  }
-
-  @override
-  void setBitmap( WxBitmap bitmap ) {
-    super.setBitmap(bitmap);
-    _updateWidth();
-  }
-
-  @override
-  void setWidth( int width ) {
-    super.setWidth(width);
-    _manuallySetWidth = width;
-    _updateWidth();
-  }
-
-  @override
-  int getWidth() {
-    return _doGetEffectiveWidth(_width);
-  }
-
-  @override
-  void setMinWidth( int minWidth ) {
-    super.setMinWidth(minWidth);
-    _updateWidth();
-  }
-
-  @override
-  void setFlags( int flags ) {
-    super.setFlags(flags);
-    _updateWidth();
-  }
-
-  @override
-  void setFlag( int flag ) {
-    super.setFlag(flag);
-    _updateWidth();
-  }
-
-  @override
-  void clearFlag( int flag ) {
-    super.clearFlag(flag);
-    _updateWidth();
-  }
-
-  @override
-  void setAlignment( int alignment ) {
-    super.setAlignment(alignment);
-    _updateWidth();
-  }
-
-  @override
-  void setResizeable( bool resizable ) {
-    super.setResizeable(resizable);
-    _updateWidth();
-  }
-
-  @override
-  void setSortable( bool sortable ) {
-    super.setSortable(sortable);
-    _updateWidth();
-  }
-
-  @override
-  void setHidden( bool hidden ) {
-    super.setHidden(hidden);
-    _updateWidth();
-  }
-
-  @override
-  void unsetAsSortKey( ) {
-    super.unsetAsSortKey();
-    if (_owner != null) {
-        _owner!.dontUseColumnForSorting(_owner!.getColumnIndex(this));
-    }
-    _updateDisplay();
-  }
-
-  @override
-  void setSortOrder( bool ascending ) {
-    if (_owner == null) {
-        return;
-    }
-
-    if (!_owner!.isMultiColumnSortAllowed()) {
-      _owner!._resetAllSortColumns();
-    }
-
-    final idx = _owner!.getColumnIndex(this);
-
-    if (!_isSortKey) {
-        _owner!.useColumnForSorting(idx);
-        _isSortKey = true;
-    }
-
-   _isSortOrderAscending = ascending;
-
-    _owner!.onColumnChange(idx);
-  }
-
-  // ---------
-
-  void _updateWidthInternal(int width)
-  {
-    if (width == _width) {
-      return;
-    }
-
-    _width = width;
-    _updateWidth();
-  }
-
-  void _onResizeFromHeaderCtrl(int width) {
-    _width =
-    _manuallySetWidth = width;
-
-    if (_owner != null) {
-      _owner!.onColumnResized();
-    }
-  }
-
-  int _getSpecifiedWidth() {
-    return _doGetEffectiveWidth(_manuallySetWidth);
-  }
-
-  void _updateDisplay() {
-    if (_owner != null) {
-        int idx = _owner!.getColumnIndex( this );
-        _owner!.onColumnChange( idx );
-    }
-  }
-  
-  void _updateWidth() {
-    if (_owner != null) {
-        int idx = _owner!.getColumnIndex( this );
-        _owner!.onColumnWidthChange( idx );
-    }
-  }
-
-  int _doGetEffectiveWidth(int width) {
-    if (_owner == null) return wxDVC_DEFAULT_WIDTH;
-    switch ( width )
-    {
-        case wxCOL_WIDTH_DEFAULT:
-            return wxDVC_DEFAULT_WIDTH;
-
-        case wxCOL_WIDTH_AUTOSIZE:
-            return _owner!.getBestColumnWidth(_owner!.getColumnIndex(this));
-
-    }
-    return width;
-  }
 }
 
 // ---------------------- helper ------------------
@@ -429,6 +233,11 @@ wxDataViewTreeNodeWalker( WxDataViewTreeNode node, WxDataViewJob func, { WxDataV
 }
 
 // ---------------------- wxDataViewHeaderWindow ------------------
+
+/// Specialized [WxHeaderCtrl] used for [WxDataViewCtrl]
+/// 
+/// This class shows the header and manages the size and position of the
+/// [WxDataViewColumn]s.
 
 class WxDataViewHeaderWindow extends WxHeaderCtrl {
   WxDataViewHeaderWindow( WxDataViewCtrl parent, WxSize size ) : super( parent, -1, size: size ) {
@@ -1027,61 +836,6 @@ class WxDataViewTreeNode
 
     }
 }
-
-// ------------------------- wxDataViewItem ----------------------
-
-/// Represents an item in a [WxDataViewCtrl].
-/// 
-/// The only [WxDataViewItem] you should ever create is an empty one
-/// meaning the root item in a tree control
-/// ```dart
-///  final root = WxDataViewItem();
-/// ```
-
-class WxDataViewItem {
-  /// Creates an item from an index or an ID
-  WxDataViewItem( { this.index = -1, this.id });
-
-  /// Creates a deep copy of an item
-  WxDataViewItem.fromItem( WxDataViewItem item ) {
-    index = item.getIndex();
-    id = item.getID();
-  }
-  late int index;
-  dynamic id;
-
-  /// Returns index of an item if in a list control
-  int getIndex() {
-    return index;
-  }
-  /// Returns ID from the item. Internal.
-  dynamic getID() {
-    return id;
-  }
-
-  /// Returns if valid. Otherwise indicates root or invalid item.
-  bool isOk() {
-    return (index >= 0) || (id != null);
-  }
-
-  @override
-  bool operator == (Object other) {
-    if (other is! WxDataViewItem) return false;
-    return hashCode == other.hashCode;
-  }
-
-  @override
-  int get hashCode {
-    if (id != null) {
-      return id.hashCode;
-    }
-    if (index > 0) {
-      return index.hashCode;
-    }
-    return -1;
-  }
-}
-
 
 // ------------------- wxFlutterDataViewModelNotifier -------------------
 
