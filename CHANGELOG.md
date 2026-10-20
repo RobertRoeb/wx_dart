@@ -3,6 +3,8 @@
 * Small mobile interface fixes, including OpenGL ES.
 * Support for hot reload, also on iPhone simulator.
 * Removed use of dot-short hand as Dart doesn't support this on Windows yet
+* Renamed setLogTarget() to wxSetLogTarget() and documented wxLog functions
+* Corrected WxDataViewCtrl.isExpanded() and .collapse() when used on hidden tree items
 
 ## 0.9.21
 

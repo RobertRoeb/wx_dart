@@ -11,6 +11,7 @@ part of '../../wx_dart.dart';
 
 WxTextCtrl? _logText;
 
+/// Logs an unrecoverable error
 void wxLogError( String text ) {
   debugPrint( "[error]: $text" );
   if (_logText != null) {
@@ -18,6 +19,7 @@ void wxLogError( String text ) {
   }
 }
 
+/// Logs a warning
 void wxLogWarning( String text ) {
   if (_logText != null) {
     _logText!.appendText( "[warning]: $text\n" );
@@ -26,6 +28,7 @@ void wxLogWarning( String text ) {
   }
 }
 
+/// Logs a message
 void wxLogMessage( String text ) {
   if (_logText != null) {
     _logText!.appendText( "[log]: $text\n" );
@@ -34,6 +37,7 @@ void wxLogMessage( String text ) {
   }
 }
 
+/// Logs a message in the [WxStatusBar] of the given [frame]
 void wxLogStatus( WxFrame frame, String text ) {
   frame.setStatusText( text );
 }
@@ -48,6 +52,8 @@ void wxLogDebug( String text ) {
   }
 }
 
-void setLogTarget( WxTextCtrl? textCtrl ) {
+/// Sets log target to this given [textCtrl] directing all 
+/// log output to it.
+void wxSetLogTarget( WxTextCtrl? textCtrl ) {
   _logText = textCtrl;
 }
