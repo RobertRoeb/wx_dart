@@ -36,6 +36,9 @@ wxDart consists of two separate libraries which offer the same API and can be us
 * 'wxDart Flutter' uses the [Flutter](https://flutter.dev) libary as its backend and is written in pure Dart.
 * 'wxDart Native' uses the [wxWidgets](https://wxwidgets.org) C++ GUI library as its backend using FFI calls.
 
+Since wxDart Flutter is written in pure Dart, it supports [hot reload](https://docs.flutter.dev/tools/hot-reload)
+so play with parameters or sizers while the app in running (also e.g. an iPhone simulator) without a full recompile.
+
 Both wxDart Flutter and wxDart Native support
 * Asynchronous code using the [async await](https://dart.dev/libraries/async/async-await) paradigm
 * The Flutter [assets](https://api.flutter.dev/flutter/services/AssetBundle-class.html) system (used in many Dart libraries)
@@ -62,8 +65,8 @@ If you are coming from the Flutter world, consider wxDart a new toolkit based on
 
 ## Screenshot
 
-A screenshot showing the demo running side-by-side in a web browser (wxDart Flutter, in light mode)
-and running natively on macOS Tahoe (wxDart Native, in dark mode). There are more screenshots
+A screenshot showing the demo running side-by-side in a web browser (wxDart Flutter)
+and running natively on macOS Tahoe (wxDart Native). There are more screenshots
 [below](#screenshots) and you can run the entire demo in the browser by clicking 
 [here](https://wxdesigner-software.com/demo03).
 
