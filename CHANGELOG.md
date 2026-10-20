@@ -5,6 +5,8 @@
 * Removed use of dot-short hand as Dart doesn't support this on Windows yet
 * Renamed setLogTarget() to wxSetLogTarget() and documented wxLog functions
 * Corrected WxDataViewCtrl.isExpanded() and .collapse() when used on hidden tree items
+* Made icon an optional named parameter in WxDataViewTreeCtrl.appendItem() (like in C++)
+* Added WxDataViewTreeCtrl.insertItem()
 
 ## 0.9.21
 

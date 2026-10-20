@@ -113,7 +113,7 @@ class WxDataViewTreeStore extends WxDataViewModel
   }
 
   /// Appends an item to [parent] and informs the owner(s) of the model
-  WxDataViewItem appendItem( WxDataViewItem parent, WxBitmap? icon, String text, { dynamic clientData } )
+  WxDataViewItem appendItem( WxDataViewItem parent, String text, { WxBitmap? icon, dynamic clientData } )
   {
     final node = WxDataViewTreeStoreNode( icon, text, clientData );
     if (!parent.isOk()) {
@@ -122,6 +122,23 @@ class WxDataViewTreeStore extends WxDataViewModel
     } else {
       final WxDataViewTreeStoreNode parentNode = parent.getID();
       parentNode.children.add( node );
+      node.parent = parentNode;
+    }
+    final childItem = WxDataViewItem( id: node );
+    itemAdded( parent, childItem );
+    return childItem;
+  }
+
+  /// Inserts an item to [parent] and informs the owner(s) of the model
+  WxDataViewItem insertItem( int pos, WxDataViewItem parent, String text, { WxBitmap? icon, dynamic clientData } )
+  {
+    final node = WxDataViewTreeStoreNode( icon, text, clientData );
+    if (!parent.isOk()) {
+      _root.children.insert( pos, node );
+      node.parent = _root; // children of root must report no parent
+    } else {
+      final WxDataViewTreeStoreNode parentNode = parent.getID();
+      parentNode.children.insert( pos, node );
       node.parent = parentNode;
     }
     final childItem = WxDataViewItem( id: node );
@@ -208,8 +225,14 @@ class WxDataViewTreeCtrl extends WxDataViewCtrl {
 
   /// Appends a new child item to [parent] 
   /// with optional [clientData] associated with the item
-  WxDataViewItem appendItem( WxDataViewItem parent, WxBitmap? icon, String text, { dynamic clientData } ) {
-    return _store.appendItem( parent, icon, text, clientData: clientData );
+  WxDataViewItem appendItem( WxDataViewItem parent, String text, { WxBitmap? icon, dynamic clientData } ) {
+    return _store.appendItem( parent, text, icon: icon, clientData: clientData );
+  }
+
+  /// Insert a new child item to [parent] at [pos]
+  /// with optional [clientData] associated with the item
+  WxDataViewItem insertItem( int pos, WxDataViewItem parent, String text, { WxBitmap? icon, dynamic clientData } ) {
+    return _store.insertItem( pos, parent, text, icon: icon, clientData: clientData );
   }
 
   /// Deletes the [item] 

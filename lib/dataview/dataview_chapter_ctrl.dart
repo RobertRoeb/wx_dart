@@ -137,8 +137,8 @@ class WxDataViewChapterCtrl extends WxDataViewCtrl {
     _store.setHeaderThreeAttr( attr );
   }
 
-  WxDataViewItem appendItem( WxDataViewItem parent, WxBitmap? icon, String text, { dynamic clientData } ) {
-    return _store.appendItem( parent, icon, text, clientData: clientData );
+  WxDataViewItem appendItem( WxDataViewItem parent, String text, { WxBitmap? icon, dynamic clientData } ) {
+    return _store.appendItem( parent, text, icon: icon, clientData: clientData );
   }
 
   void deleteItem( WxDataViewItem item ) {
