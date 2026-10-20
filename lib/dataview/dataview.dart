@@ -3749,22 +3749,6 @@ int getColumnStart(int column)
     _invalidateCount();
   }
 
-  void _collapseInvisibleItemByTreeNode( WxDataViewTreeNode node )
-  {
-    if (!node.hasChildren()) return;
-
-    if (node.isOpen())
-    {
-        if ( !_sendExpanderEvent( wxGetDataViewItemCollapsingEventType(), node.getItem()) )
-        {
-            // Vetoed by the event handler.
-            return;
-        }
-        node.toggleOpen(this);
-        _sendExpanderEvent( wxGetDataViewItemCollapsedEventType(), node.getItem());
-    }
-  }
-
   void collapse( int row )
   {
     if (isList()) return;
@@ -4734,14 +4718,17 @@ class WxDataViewCtrl extends WxScrolledWindow {
     _clientArea.setRowHeight(height);
   }
 
-  // Is a parent item collapse and therefore this is one hidden
+  // Is a parent item collapsed and therefore this is one hidden
   bool _isHidden( WxDataViewItem current )
   {
     if (_model == null) return false;
     while (current.isOk()) {
       current = _model!.getParent( current );
       if (!current.isOk()) break;
-      if (!isExpanded(current)) return true;
+      final result = _clientArea.findNode( current );
+      if (result._node == null) return false;
+      if (result._node!._branchData == null) return false;
+      if (!result._node!._branchData!.open) return true;
     }
     return false;
   }
@@ -4749,13 +4736,8 @@ class WxDataViewCtrl extends WxScrolledWindow {
   /// Collapses the branch identified by [item]
   void collapse( WxDataViewItem item )
   {
-    if (_isHidden(item)) 
-    {
-      final result = _clientArea.findNode( item );
-      if (result._node != null) {
-          _clientArea._collapseInvisibleItemByTreeNode(result._node!);
-          return;
-      }
+    if (_isHidden(item)) {
+      return;
     }
     final row = _clientArea.getRowByItem( item );
     if (row != -1) {
@@ -4799,15 +4781,11 @@ class WxDataViewCtrl extends WxScrolledWindow {
     _doExpand(item, true);
   }
 
-  /// Returns true if [item] is expanded
+  /// Returns true if [item] and all its ancestors are expanded
   bool isExpanded( WxDataViewItem item )
   {
-    final result = _clientArea.findNode( item );
-    if (result._node != null) {
-      final data = result._node!._branchData;
-      if (data != null) {
-        return data.open;
-      }
+    if (_isHidden(item)) {
+      return false;
     }
     final row = _clientArea.getRowByItem( item );
     if (row != -1) {
