@@ -1,3 +1,8 @@
+## 0.9.22
+
+* Small mobile interface fixes, including OpenGL ES.
+* Support for hot reload, also on iPhone simulator.
+
 ## 0.9.21
 
 * Don't call setState from hidden WxWindow

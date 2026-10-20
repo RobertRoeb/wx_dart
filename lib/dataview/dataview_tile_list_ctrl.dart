@@ -15,7 +15,7 @@ part of '../wx_dart.dart';
 class WxDataViewTileData {
   WxDataViewTileData( this.leading, this.big, { this.medium = "", this.small = "", 
     this.trailing, this.trailingHighlighted, this.leadingHighlighted,
-    this.bigAlignment = .left, this.mediumAlignment = .left, this.smallAlignment = .left,  } );
+    this.bigAlignment = WxHAlignment.left, this.mediumAlignment = WxHAlignment.left, this.smallAlignment = WxHAlignment.left,  } );
 
   final WxBitmap? leading;
   final WxBitmap? leadingHighlighted;
@@ -255,7 +255,7 @@ class WxDataViewTileListCtrl extends WxDataViewListCtrl {
   /// Append a tile
   void appendTile( WxBitmap? leading, String big, { String medium="", String small="", 
     WxBitmap? trailing, WxBitmap? trailingHighlighted, WxBitmap? leadingHighlighted, dynamic clientData,
-    WxHAlignment bigAlignment = .left, WxHAlignment mediumAlignment = .left, WxHAlignment smallAlignment = .left } )
+    WxHAlignment bigAlignment = WxHAlignment.left, WxHAlignment mediumAlignment = WxHAlignment.left, WxHAlignment smallAlignment = WxHAlignment.left } )
   {
     final tile = WxDataViewTileData( leading, big, medium: medium, small: small, trailing: trailing,
      trailingHighlighted: trailingHighlighted, leadingHighlighted: leadingHighlighted,
@@ -273,7 +273,7 @@ class WxDataViewTileListCtrl extends WxDataViewListCtrl {
   /// Prepend a tile
   void prependTile( WxBitmap? leading, String big, { String medium = "", String small="", 
     WxBitmap? trailing, WxBitmap? trailingHighlighted, WxBitmap? leadingHighlighted, dynamic clientData,
-    WxHAlignment bigAlignment = .left, WxHAlignment mediumAlignment = .left, WxHAlignment smallAlignment = .left } )
+    WxHAlignment bigAlignment = WxHAlignment.left, WxHAlignment mediumAlignment = WxHAlignment.left, WxHAlignment smallAlignment = WxHAlignment.left } )
   {
     final tile = WxDataViewTileData( leading, big, medium: medium, small: small, trailing: trailing,
      trailingHighlighted: trailingHighlighted, leadingHighlighted: leadingHighlighted,
@@ -291,7 +291,7 @@ class WxDataViewTileListCtrl extends WxDataViewListCtrl {
   /// Insert a tile at [pos]
   void insertTile( int pos, WxBitmap? leading, String big, { String medium = "", String small="", 
     WxBitmap? trailing, WxBitmap? trailingHighlighted, WxBitmap? leadingHighlighted, dynamic clientData,
-    WxHAlignment bigAlignment = .left, WxHAlignment mediumAlignment = .left, WxHAlignment smallAlignment = .left } )
+    WxHAlignment bigAlignment = WxHAlignment.left, WxHAlignment mediumAlignment = WxHAlignment.left, WxHAlignment smallAlignment = WxHAlignment.left } )
   {
     final tile = WxDataViewTileData( leading, big, medium: medium, small: small, trailing: trailing,
      trailingHighlighted: trailingHighlighted, leadingHighlighted: leadingHighlighted,
