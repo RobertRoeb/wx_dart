@@ -2,6 +2,7 @@
 
 * Small mobile interface fixes, including OpenGL ES.
 * Support for hot reload, also on iPhone simulator.
+* Removed use of dot-short hand as Dart doesn't support this on Windows yet
 
 ## 0.9.21
 
