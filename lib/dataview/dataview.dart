@@ -805,6 +805,27 @@ class WxDataViewTreeNode
         return _branchData!.open;
     }
 
+/*
+    void _printTree( WxDataViewTreeNode parent, WxDataViewMainWindow window  )
+    {
+      String text = parent._parent == null ? "Root: " : "Child: ";
+      if (parent._branchData == null) {
+        // text += "Leaf";
+        // print( text );
+      } else {
+        text += parent._branchData!.open ? "Open" : "Close";
+        print( text );
+        for (final child in parent._branchData!.children) {
+          _printTree( child, window);
+        }
+      }      
+    }
+    void _printWholeTree( WxDataViewTreeNode node, WxDataViewMainWindow window  )
+    {
+      while (node._parent != null) { node = node._parent!; }
+      _printTree( node, window );
+    }
+*/
     void toggleOpen( WxDataViewMainWindow window )
     {
         // We do not allow the (invisible) root node to be collapsed because
@@ -3728,6 +3749,22 @@ int getColumnStart(int column)
     _invalidateCount();
   }
 
+  void _collapseInvisibleItemByTreeNode( WxDataViewTreeNode node )
+  {
+    if (!node.hasChildren()) return;
+
+    if (node.isOpen())
+    {
+        if ( !_sendExpanderEvent( wxGetDataViewItemCollapsingEventType(), node.getItem()) )
+        {
+            // Vetoed by the event handler.
+            return;
+        }
+        node.toggleOpen(this);
+        _sendExpanderEvent( wxGetDataViewItemCollapsedEventType(), node.getItem());
+    }
+  }
+
   void collapse( int row )
   {
     if (isList()) return;
@@ -4697,8 +4734,29 @@ class WxDataViewCtrl extends WxScrolledWindow {
     _clientArea.setRowHeight(height);
   }
 
+  // Is a parent item collapse and therefore this is one hidden
+  bool _isHidden( WxDataViewItem current )
+  {
+    if (_model == null) return false;
+    while (current.isOk()) {
+      current = _model!.getParent( current );
+      if (!current.isOk()) break;
+      if (!isExpanded(current)) return true;
+    }
+    return false;
+  }
+
   /// Collapses the branch identified by [item]
-  void collapse( WxDataViewItem item ) {
+  void collapse( WxDataViewItem item )
+  {
+    if (_isHidden(item)) 
+    {
+      final result = _clientArea.findNode( item );
+      if (result._node != null) {
+          _clientArea._collapseInvisibleItemByTreeNode(result._node!);
+          return;
+      }
+    }
     final row = _clientArea.getRowByItem( item );
     if (row != -1) {
         _clientArea.collapse(row);
@@ -4742,7 +4800,15 @@ class WxDataViewCtrl extends WxScrolledWindow {
   }
 
   /// Returns true if [item] is expanded
-  bool isExpanded( WxDataViewItem item ) {
+  bool isExpanded( WxDataViewItem item )
+  {
+    final result = _clientArea.findNode( item );
+    if (result._node != null) {
+      final data = result._node!._branchData;
+      if (data != null) {
+        return data.open;
+      }
+    }
     final row = _clientArea.getRowByItem( item );
     if (row != -1) {
         return _clientArea.isExpanded(row);
