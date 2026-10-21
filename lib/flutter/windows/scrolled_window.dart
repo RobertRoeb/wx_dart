@@ -141,6 +141,8 @@ class WxScrolledWindow extends WxWindow {
   }
 
   /// Scroll [x] and [y] number of units (not pixels)
+  /// 
+  /// -1 indicates no change in the respective direction
   void scroll( int x, int y )
   {
     if (x != -1) {
@@ -152,12 +154,16 @@ class WxScrolledWindow extends WxWindow {
   }
 
   /// Returns the view start (how much has been scrolled) in units, not pixels
+  /// 
+  /// see [getViewStartPixels], [getScrollPixelsPerUnitX], [getScrollPixelsPerUnitY]
   WxPoint getViewStart( ) {
     final viewstart = getViewStartPixels();
     return WxPoint( viewstart.x ~/ _pixelsPerUnitX, viewstart.y ~/ _pixelsPerUnitY );
   }
 
   /// Returns the view start (how much has been scrolled) in pixels
+  /// 
+  /// see [getViewStart]
   WxPoint getViewStartPixels( )
   {
     if (_onlyVerticalScrolling()) {
