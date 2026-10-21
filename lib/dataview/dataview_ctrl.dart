@@ -4356,6 +4356,72 @@ class WxDataViewCtrlCachedColWidthInfo {
 /// | wxDV_NO_TWISTER_BUTTONS | Don't show any expander buttons which disables tree expansion by the user | 
 /// | wxDV_NATIVE_EXPANDER | Use the native platform expander (e.g. plus/minus on Windows | 
 /// | wxDV_PLUSMINUS_EXPANDER | Use plus/minus expander and not the default chevron triangle | 
+/// 
+/// # Events emitted
+/// [DataViewSelectionChanged](/wxdart/wxGetDataViewSelectionChangedEventType.html) event gets sent when the selection has changed. |
+/// | ----------------- |
+/// | void bindDataViewSelectionChangedEvent( void function( [WxDataViewEvent] event ) ) |
+/// | void unbindDataViewSelectionChangedEvent() |
+/// 
+/// [DataViewItemActivated](/wxdart/wxGetDataViewItemActivatedEventType.html) event gets sent when an item get double clicked or ENTER is pressed. |
+/// | ----------------- |
+/// | void bindDataViewItemActivatedEvent( void function( [WxDataViewEvent] event ) ) |
+/// | void unbindDataViewItemActivatedEvent() |
+/// 
+/// [DataViewItemValueChanged](/wxdart/wxGetDataViewItemValueChangedEventType.html) event gets sent when the value of an item has changed. |
+/// | ----------------- |
+/// | void bindDataViewItemValueChangedEvent( void function( [WxDataViewEvent] event ) ) |
+/// | void unbindDataViewItemValueChangedEvent() |
+/// 
+/// [DataViewItemCollapsed](/wxdart/wxGetDataViewItemCollapsedEventType.html) event gets sent when an tree item has collapsed. |
+/// | ----------------- |
+/// | void bindDataViewItemCollapsedEvent( void function( [WxDataViewEvent] event ) ) |
+/// | void unbindDataViewItemCollapsedEvent() |
+/// 
+/// [DataViewItemCollapsing](/wxdart/wxGetDataViewItemCollapsingEventType.html) event gets sent when an tree item is about to be collapsed. |
+/// | ----------------- |
+/// | void bindDataViewItemCollapsingEvent( void function( [WxDataViewEvent] event ) ) |
+/// | void unbindDataViewItemCollapsingEvent() |
+/// 
+/// [DataViewItemExpanded](/wxdart/wxGetDataViewItemExpandedEventType.html) event gets sent when an tree item has expanded. |
+/// | ----------------- |
+/// | void bindDataViewItemCollapsedEvent( void function( [WxDataViewEvent] event ) ) |
+/// | void unbindDataViewItemCollapsedEvent() |
+/// 
+/// [DataViewItemExpanding](/wxdart/wxGetDataViewItemExpandingEventType.html) event gets sent when an tree item is about to be expanded. |
+/// | ----------------- |
+/// | void bindDataViewItemExpandingEvent( void function( [WxDataViewEvent] event ) ) |
+/// | void unbindDataViewItemExpandingEvent() |
+/// 
+/// [DataViewItemEditingStarted](/wxdart/wxGetDataViewItemEditingStartedEventType.html) event gets sent when in-place editing has started. |
+/// | ----------------- |
+/// | void bindDataViewItemEditingStartedEvent( void function( [WxDataViewEvent] event ) ) |
+/// | void unbindDataViewItemEditingStartedEvent() |
+/// 
+/// [DataViewItemEditingDone](/wxdart/wxGetDataViewItemEditingDoneEventType.html) event gets sent when in-place editing has completed. |
+/// | ----------------- |
+/// | void bindDataViewItemEditingDoneEvent( void function( [WxDataViewEvent] event ) ) |
+/// | void unbindDataViewItemEditingDoneEvent() |
+/// 
+/// [DataViewColumnHeaderClick](/wxdart/wxGetDataViewColumnHeaderClickEventType.html) event gets sent when user clicked on a header. |
+/// | ----------------- |
+/// | void bindDataViewColumnHeaderClickEvent( void function( [WxDataViewEvent] event ) ) |
+/// | void unbindDataViewColumnHeaderClickEvent() |
+/// 
+/// [DataViewColumnHeaderRightClick](/wxdart/wxGetDataViewColumnHeaderRightClickEventType.html) event gets sent when user right clicked on a header. |
+/// | ----------------- |
+/// | void bindDataViewColumnHeaderRightClickEvent( void function( [WxDataViewEvent] event ) ) |
+/// | void unbindDataViewColumnHeaderRightClickEvent() |
+/// 
+/// [DataViewColumnSorted](/wxdart/wxGetDataViewColumnSortedEventType.html) event gets sent when sorting was done after a header click. |
+/// | ----------------- |
+/// | void bindDataViewColumnSortedEvent( void function( [WxDataViewEvent] event ) ) |
+/// | void unbindDataViewColumnSortedEvent() |
+/// 
+/// [DataViewColumnReordered](/wxdart/wxGetDataViewColumnReorderedEventType.html) event gets sent when the columns were reorderd. |
+/// | ----------------- |
+/// | void bindDataViewColumnReorderedEvent( void function( [WxDataViewEvent] event ) ) |
+/// | void unbindDataViewColumnReorderedEvent() |
 
 class WxDataViewCtrl extends WxScrolledWindow {
   WxDataViewCtrl( super.parent, super.id, { super.pos = wxDefaultPosition, super.size = wxDefaultSize, super.style = 0 } ) {
