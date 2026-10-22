@@ -69,6 +69,9 @@ class MySizerWindow extends WxScrolledWindow {
       grid.add( WxStaticText(parent, -1, "Text #$i"), flag: wxALL, border: 5 );
       grid.add( WxStaticText(parent, -1, "Long text #$i"), flag: wxALL, border: 5 );
     }
+    grid.add( WxStaticText(parent, -1, "Mulitline\ntext\nline 3."), flag: wxALL, border: 5 );
+    grid.add( WxStaticText(parent, -1, "wxALIGN_TOP"), flag: wxALL|wxALIGN_TOP, border: 5 );
+    grid.add( WxStaticText(parent, -1, "wxALIGN_BOTTOM"), flag: wxALL|wxALIGN_BOTTOM, border: 5 );
     sizer.addSizer( topSizer );
 
     final buttons = WxRow();
@@ -88,7 +91,10 @@ class MySizerWindow extends WxScrolledWindow {
     buttons.add( removeFromGrid, flag: WxSizerFlags.borderAll(valign: .center), border: 5 );
     removeFromGrid.bindButtonEvent( (_) {
       if (grid.getItemCount() > 0) {
+        final item = grid.getItem(0);
+        final win = item!.getWindow();
         grid.remove(0);
+        win!.destroy();
         layout();
       }
     }, -1);
@@ -126,6 +132,9 @@ class MySizerWindow extends WxScrolledWindow {
     for (int i = 0; i < 12; i++) {
       flex.add( WxStaticText(parent, -1, "Text #$i"), flag: wxALL, border: 5 );
     }
+    flex.add( WxStaticText(parent, -1, "Mulitline\ntext\nline 3."), flag: wxALL, border: 5 );
+    flex.add( WxStaticText(parent, -1, "wxALIGN_TOP"), flag: wxALL|wxALIGN_TOP, border: 5 );
+    flex.add( WxStaticText(parent, -1, "wxALIGN_BOTTOM"), flag: wxALL|wxALIGN_BOTTOM, border: 5 );
     sizer.addSizer( topSizer );
 
     final buttons = WxRow();
@@ -145,7 +154,10 @@ class MySizerWindow extends WxScrolledWindow {
     buttons.add( removeFromGrid, flag: WxSizerFlags.borderAll(valign: .center), border: 5 );
     removeFromGrid.bindButtonEvent( (_) {
       if (flex.getItemCount() > 0) {
+        final item = flex.getItem(0);
+        final win = item!.getWindow();
         flex.remove(0);
+        win!.destroy();
         layout();
       }
     }, -1);
