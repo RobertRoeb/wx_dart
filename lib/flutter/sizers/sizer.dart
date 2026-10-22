@@ -149,6 +149,20 @@ class WxSizer extends WxObject {
   /// remove them from the parent window.
   /// 
   /// Returns true on success.
+  /// 
+  /// Assuming that item 0 is a window and you do want to destroy it
+  /// ```dart
+  ///  // Get the first [WxSizerItem]
+  ///  final item = sizer.getItem(0);
+  ///  // Get the window from it
+  ///  final win = item!.getWindow();
+  /// 
+  ///  // Now remove the first sizer item from the size
+  ///  sizer.remove(0);
+  /// 
+  ///  // Now destroy the window
+  ///  win!.destroy();
+  /// ```
   bool remove( int index ) {
     if ((index < 0) || (index >= _items.length)) return false;
     _items.removeAt( index );
