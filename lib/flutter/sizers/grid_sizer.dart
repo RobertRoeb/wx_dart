@@ -12,7 +12,42 @@ part of '../../wx_dart.dart';
 /// This sizer puts the child items into cells of equal size. 
 /// If a new item get added with a bigger size, all cells
 /// get bigger, which may require a call to [layout].
-
+/// 
+/// Example:
+///```dart
+/// class MyDialog extends WxDialog {
+///   MyDialog( super.parent, super.id, super.title ) 
+///   {
+///     // create main sizer 
+///     final mainSizer = WxColumn();
+///
+///     /// create grid sizer with 2 columns 
+///     final grid = WxGridSizer(2 /*,vgap: 5, hgap: 5*/);
+///     mainSizer.addSizer(grid, flag: wxEXPAND );
+/// 
+///     // add controls, first row
+///     grid.add( WxStaticText(parent, -1, "Short text"), flag: wxALL|wxALIGN_CENTRE, border: 5 );
+///     grid.add( WxStaticText(parent, -1, "Short text"), flag: wxALL|wxALIGN_CENTRE, border: 5 );
+/// 
+///     // add controls, second row
+///     grid.add( WxStaticText(parent, -1, "Very long text"), flag: wxALL|wxALIGN_CENTRE, border: 5 );
+///     grid.add( WxStaticText(parent, -1, "Very long text"), flag: wxALL|wxALIGN_CENTRE, border: 5 );
+/// 
+///     // create OK and Cancel buttons
+///     final buttons = createStdDialogButtonSizer( wxOK|wxCANCEL );
+/// 
+///     // add button sizer to main sizer
+///     mainSizer.addSizer( buttons, flag: wxALL|wxALIGN_RIGHT );
+/// 
+///     // Tell dialog to actually use the main sizer and to use it
+///     // to determine the initial size
+///     setSizerAndFit( mainSizer );
+/// 
+///     // Centre the dialog on the parent window 
+///     centreOnParent();
+///   }
+/// }
+/// dart````
 class WxGridSizer extends WxSizer {
   WxGridSizer( int cols, { int vgap = 0, int hgap = 0 } ) {
     _cols = cols;
@@ -153,6 +188,25 @@ class WxGridSizer extends WxSizer {
             if (!item._window!.isShown()) continue;
             finalWidget = item._window!._build( context );
             if (_sizeKnown && !_newItems.contains(item)) {
+              double halignment = -1.0;
+              if ((item._flag & wxALIGN_CENTER_HORIZONTAL) != 0) {
+                halignment = 0.0;
+              } else 
+              if ((item._flag & wxALIGN_RIGHT) != 0) {
+                halignment = 1.0;
+              }
+
+              double valignment = -1.0;
+              if ((item._flag & wxALIGN_CENTER_VERTICAL) != 0) {
+                valignment = 0.0;
+              } else 
+              if ((item._flag & wxALIGN_BOTTOM) != 0) {
+                valignment = 1.0;
+              }
+              finalWidget = Align( 
+                  alignment: Alignment(halignment, valignment),
+                  child: finalWidget
+                );
               finalWidget = SizedBox(
                 width: _maxWidth.toDouble(),
                 height: _maxHeight.toDouble(),
@@ -195,27 +249,6 @@ class WxGridSizer extends WxSizer {
               finalWidget = padding;
             }
           }
-
-          double halignment = -1.0;
-          if ((item._flag & wxALIGN_CENTER_HORIZONTAL) != 0) {
-            halignment = 0.0;
-          } else 
-          if ((item._flag & wxALIGN_RIGHT) != 0) {
-            halignment = 1.0;
-          }
-
-          double valignment = -1.0;
-          if ((item._flag & wxALIGN_CENTER_VERTICAL) != 0) {
-            valignment = 0.0;
-          } else 
-          if ((item._flag & wxALIGN_BOTTOM) != 0) {
-            valignment = 1.0;
-          }
-
-          finalWidget = Align( 
-              alignment: Alignment(halignment, valignment),
-              child: finalWidget
-            );
 
           if ((getHGap() != 0) || (getVGap() != 0)) {
               finalWidget = Padding(
