@@ -161,6 +161,10 @@ class MyFirstDialog extends WxDialog
     buttonSizer.insert(0, setNotebookSelectionButton, flag: wxRIGHT, border: 10 );
     mainSizer.addSizer(buttonSizer, flag: wxALL|wxALIGN_RIGHT, border: 10);
 
+    if (wxTheApp.isTouch()) {
+      mainSizer.addSpacer(20);
+    }
+
     notebook.bindNotebookPageChangedEvent((event) {
       // print( "Changed from ${event.getOldSelection()} to ${event.getSelection()}" );
     },-1);
