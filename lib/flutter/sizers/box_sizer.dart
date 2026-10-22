@@ -16,6 +16,36 @@ part of '../../wx_dart.dart';
 /// * [WxColumn] is a synonym for a vertical [WxBoxSizer].
 /// * [WxRow] is a synonym for a horizontal [WxBoxSizer].
 /// 
+/// Adding items
+/// * [add]
+/// * [addSizer]
+/// * [addSpacer]
+/// * [addStretchSpacer]
+/// * [insert]
+/// * [insertSizer]
+/// * [insertSpacer]
+/// * [insertStretchSpacer]
+/// * [prepend]
+/// * [prependSizer]
+/// * [prependSpacer]
+/// * [prependStretchSpacer]
+/// 
+/// Handling of child items
+/// * [getItemCount]
+/// * [getItem]
+/// * [getSizerItem]
+/// * [getWindowItem]
+/// 
+/// Removing (but not deleting) items
+/// * [remove]
+/// * [removeWindow]
+/// * [removeSizer]
+/// 
+/// Size and position
+/// * [getSize]
+/// * [getPosition]
+/// * [layout]
+/// 
 /// For each added item, you can usually specify a border (space around the item) 
 /// and which of the four sides that border (space) should be:
 /// ```dart

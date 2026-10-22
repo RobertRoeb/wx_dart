@@ -58,6 +58,20 @@ const int wxSTRETCH_MASK = 0x7000;
 /// you still need to call [WxWindow.destroy] to actually delete the window
 /// from the parent window.
 /// 
+/// Adding items
+/// * [add]
+/// * [addSizer]
+/// * [addSpacer]
+/// * [addStretchSpacer]
+/// * [insert]
+/// * [insertSizer]
+/// * [insertSpacer]
+/// * [insertStretchSpacer]
+/// * [prepend]
+/// * [prependSizer]
+/// * [prependSpacer]
+/// * [prependStretchSpacer]
+/// 
 /// Handling of child items
 /// * [getItemCount]
 /// * [getItem]
@@ -72,20 +86,7 @@ const int wxSTRETCH_MASK = 0x7000;
 /// Size and position
 /// * [getSize]
 /// * [getPosition]
-/// 
-/// Adding items
-/// * [add]
-/// * [addSizer]
-/// * [addSpacer]
-/// * [addStretchSpacer]
-/// * [insert]
-/// * [insertSizer]
-/// * [insertSpacer]
-/// * [insertStretchSpacer]
-/// * [prepend]
-/// * [prependSizer]
-/// * [prependSpacer]
-/// * [prependStretchSpacer]
+/// * [layout]
 
 class WxSizer extends WxObject {
   /// This class is abstract. Do not create it directly.

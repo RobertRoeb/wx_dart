@@ -12,6 +12,44 @@ part of '../../wx_dart.dart';
 /// This sizer puts the child items into cells of equal size. 
 /// If a new item get added with a bigger size, all cells
 /// get bigger, which may require a call to [layout].
+///
+/// Adding items
+/// * [add]
+/// * [addSizer]
+/// * [addSpacer]
+/// * [addStretchSpacer]
+/// * [insert]
+/// * [insertSizer]
+/// * [insertSpacer]
+/// * [insertStretchSpacer]
+/// * [prepend]
+/// * [prependSizer]
+/// * [prependSpacer]
+/// * [prependStretchSpacer]
+/// 
+/// Handling of child items
+/// * [getItemCount]
+/// * [getItem]
+/// * [getSizerItem]
+/// * [getWindowItem]
+/// 
+/// Removing (but not deleting) items
+/// * [remove]
+/// * [removeWindow]
+/// * [removeSizer]
+/// 
+/// Gaps and layout
+/// * [getEffectiveColsCount]
+/// * [getEffectiveRowsCount]
+/// * [setVGap]
+/// * [getVGap]
+/// * [setHGap]
+/// * [getHGap]
+/// 
+/// Size and position
+/// * [getSize]
+/// * [getPosition]
+/// * [layout]
 /// 
 /// Example:
 ///```dart
@@ -63,10 +101,12 @@ class WxGridSizer extends WxSizer {
   int _maxHeight = 5;
   final List<WxSizerItem> _newItems = [];
 
+  /// Returns the actual number of columns
   int getEffectiveColsCount( ) {
     return _cols;
   }
 
+  /// Returns the actual number of rows
   int getEffectiveRowsCount( ) {
     int count = (_items.length / _cols).floor();
     if (_items.length % _cols != 0) {
@@ -148,18 +188,22 @@ class WxGridSizer extends WxSizer {
     super.layout();
   }
 
+  /// Specifies the gap between rows
   void setVGap( int vgap) {
     _vgap = vgap;
   }
 
+  /// Returns the currently specified gap between rows
   int getVGap() {
     return _vgap;
   }
 
+  /// Specifies the gap between columns
   void setHGap( int hgap) {
     _hgap = hgap;
   }
 
+  /// Returns the currently specified gap between columns
   int getHGap() {
     return _hgap;
   }

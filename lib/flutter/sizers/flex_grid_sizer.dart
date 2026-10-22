@@ -19,6 +19,54 @@ part of '../../wx_dart.dart';
 /// Only wxDart Native also lets you specify which rows can grow
 /// using [addGrowableRow].
 /// 
+/// Adding items
+/// * [add]
+/// * [addSizer]
+/// * [addSpacer]
+/// * [addStretchSpacer]
+/// * [insert]
+/// * [insertSizer]
+/// * [insertSpacer]
+/// * [insertStretchSpacer]
+/// * [prepend]
+/// * [prependSizer]
+/// * [prependSpacer]
+/// * [prependStretchSpacer]
+/// 
+/// Handling of child items
+/// * [getItemCount]
+/// * [getItem]
+/// * [getSizerItem]
+/// * [getWindowItem]
+/// 
+/// Removing (but not deleting) items
+/// * [remove]
+/// * [removeWindow]
+/// * [removeSizer]
+/// 
+/// Growable column interface
+/// * [addGrowableCol]
+/// * [removeGrowableCol]
+/// * [isColGrowable]
+/// 
+/// Growable row interface (wxDart Native only)
+/// * [addGrowableRow]
+/// * [removeGrowableRow]
+/// * [isRowGrowable]
+/// 
+/// Gaps and layout
+/// * [getEffectiveColsCount]
+/// * [getEffectiveRowsCount]
+/// * [setVGap]
+/// * [getVGap]
+/// * [setHGap]
+/// * [getHGap]
+/// 
+/// Size and position
+/// * [getSize]
+/// * [getPosition]
+/// * [layout]
+/// 
 /// Example:
 ///```dart
 /// class MyDialog extends WxDialog {
