@@ -30,6 +30,7 @@ const int wxCHK_UNDETERMINED = 2;
 
 /// Lets the user check a box.
 /// 
+/// Example usage
 /// ```dart
 ///   final checkbox = WxCheckBox( this, -1, "Check me" );
 ///   checkbox.setValue( true );
@@ -64,10 +65,12 @@ const int wxCHK_UNDETERMINED = 2;
 /// * [get3StateValue]
 
 class WxCheckBox extends WxControl {
-  WxCheckBox( super.parent, super.id, this.label, { super.pos = wxDefaultPosition, super.size = wxDefaultSize, super.style = 0 } );
+  WxCheckBox( super.parent, super.id, String label, { super.pos = wxDefaultPosition, super.size = wxDefaultSize, super.style = 0 } ) {
+    _label = label;
+  }
 
-  String label;
-  bool? value = false;
+  String _label = "";
+  bool? _value = false;
 
   /// Returns true if controls is checked
   bool isChecked( ) {
@@ -94,10 +97,10 @@ class WxCheckBox extends WxControl {
 /// | wxCHK_UNDETERMINED | 2 |
 
   int get3StateValue( ) {
-    if (value == null) {
+    if (_value == null) {
       return 2;
     }
-    if (value!) {
+    if (_value!) {
       return 1;
     }
     return 0;  
@@ -105,15 +108,15 @@ class WxCheckBox extends WxControl {
 
   /// Returns true if checked
   bool getValue() {
-    if (value == null) {
+    if (_value == null) {
       return false; // when called in tri state mode...
     } 
-    return value!;
+    return _value!;
   }
 
   /// Checks or unchecks control according to [state]
   void setValue( bool state ) {
-    value = state;
+    _value = state;
     _setState();
   }
 
@@ -127,11 +130,11 @@ class WxCheckBox extends WxControl {
 /// | wxCHK_UNDETERMINED | 2 |
   void set3StateValue( int state ) {
     if (state == 0) {
-      value = false;
+      _value = false;
     } else if (state == 1) {
-      value = true;
+      _value = true;
     } else {
-      value = null;
+      _value = null;
     }
     _setState();
   }
@@ -145,14 +148,14 @@ class WxCheckBox extends WxControl {
           children: [
             wxIsIOS() // no on macOS
             ? Checkbox.adaptive(
-              value: value, 
+              value: _value, 
               tristate: hasFlag(wxCHK_3STATE),
               onChanged: isEnabled() ? _onChanged: null )
             : Checkbox(
-              value: value, 
+              value: _value, 
               tristate: hasFlag(wxCHK_3STATE),
               onChanged: isEnabled() ? _onChanged: null ),
-              Text( label )
+              Text( _label )
           ] ) );
   }
 
@@ -162,7 +165,7 @@ class WxCheckBox extends WxControl {
     {
       selected = false;
     }
-    value = selected;
+    _value = selected;
     _setState();
     final event = WxCommandEvent( wxGetCheckboxEventType(), getId() );
     event.setInt( get3StateValue() );
