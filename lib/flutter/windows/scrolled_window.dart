@@ -75,6 +75,14 @@ part of '../../wx_dart.dart';
 ///   }
 /// }
 /// ```
+/// 
+/// [WxScrollWinEvent] get emitted by [WxScrolledWindow] after some user action
+/// (like clicking on a scrollbar or typing the PageDn key) that resulted in scrolling.
+///  
+/// [ScrollWin](/wxdart/wxGetScrollWinEventType.html) event gets sent when any scrolling has occured |
+/// | ----------------- |
+/// | void bindScrollWinEvent( void function( [WxScrollWinEvent] event ) |
+/// | void unbindScrollWinEvent() |
 
 class WxScrolledWindow extends WxWindow {
 

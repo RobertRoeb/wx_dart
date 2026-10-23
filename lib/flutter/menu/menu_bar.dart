@@ -133,23 +133,39 @@ const int wxMB_UNDERLINE = 0x0002;
 /// toolbars and menus according to state changes in the software.
 /// 
 /// ```dart
-/// // create menubar, usually in your frame's constructor
-/// final menubar = WxMenuBar();
+/// // Every app needs a WxFrame as a main window.
+/// class MyFrame extends WxFrame {
+///   MyFrame( WxFrame? parent) : super( parent, -1, "Hello World", size: WxSize(900, 700) ) 
+///   {
+///     // create menubar, usually in your frame's constructor
+///     final menubar = WxMenuBar();
 /// 
-/// // create menu and add items
-/// final filemenu = WxMenu();
-/// filemenu.appendItem( idAbout, "About...\tAlt-A", help: "Info about wxDart 1.0" );
-/// filemenu.appendSeparator();
-/// filemenu.appendItem( idFileDialog, "Open file...", help: "Open file" );
-/// filemenu.appendSeparator();
-/// filemenu.appendItem( wxID_EXIT, "Quit app\tCtrl-Q", help: "Run, baby, run!" );
+///     // create menu and add items
+///     final filemenu = WxMenu();
+///     filemenu.appendItem( idAbout, "About...\tAlt-A", help: "Info about wxDart 1.0" );
+///     filemenu.appendSeparator();
+///     filemenu.appendItem( idFileDialog, "Open file...", help: "Open file" );
+///     filemenu.appendSeparator();
+///     filemenu.appendItem( wxID_EXIT, "Quit app\tCtrl-Q", help: "Run, baby, run!" );
 /// 
-/// // attach menu to menubar
-/// menubar.append(filemenu, "&File");
+///     // attach menu to menubar
+///     menubar.append(filemenu, "&File");
 /// 
-/// // attach to the frame
-/// setMenuBar(menubar);
+///     // attach to the frame
+///     setMenuBar(menubar);
 /// 
+///     // toolbars and menus send out menu events
+///     bindMenuEvent( (_) {
+///       // open file...
+///     }, idFileDialog );
+/// 
+///     // update menu (and toolbar)
+///     bindUpdateUIEvent( (event) {
+///       switch (event.getId()) {
+///         case idFileDialog:   event.check( /*some condition*/ ); return;
+///       } 
+///     }, -1 );
+/// }
 /// ```
 /// 
 /// Menu interface

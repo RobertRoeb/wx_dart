@@ -7,6 +7,7 @@
 * Corrected WxDataViewCtrl.isExpanded() and .collapse() when used on hidden tree items
 * Made icon an optional named parameter in WxDataViewTreeCtrl.appendItem() (like in C++)
 * Added WxDataViewTreeCtrl.insertItem()
+* Documentation updates on many events
 
 ## 0.9.21
 

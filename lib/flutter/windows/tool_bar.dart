@@ -151,7 +151,24 @@ class WxToolBarToolBase extends WxObject {
 /// 
 /// // don't forget this!
 /// toolbar.realize();
-/// ```
+/// 
+/// // toolbars and menus send out menu events
+/// bindMenuEvent( (_) {
+///   // open file...
+/// }, idFileDialog );
+/// 
+/// bindMenuEvent( (_) {
+///   // show dialog ...
+/// }, idDialog );
+/// 
+/// // update toolbar (and menus)
+/// bindUpdateUIEvent( (event) {
+///   switch (event.getId()) {
+///     case idFileDialog:   event.check( /*some condition*/ ); return;
+///     case idDialog:       event.check( /*some condition*/ ); return;
+///   } 
+/// }, -1 );
+///```
 /// # Toolbar item kind constants
 /// | constant | value |
 /// | -------- | -------- |

@@ -117,7 +117,17 @@ part of '../../wx_dart.dart';
 /// }
 /// ``` 
 /// 
+/// # Events emitted
 /// 
+/// [InitDialog](/wxdart/wxGetInitDialogEventType.html) event gets sent when the dialog has been created. |
+/// | ----------------- |
+/// | void bindInitDialogEvent( void function( [WxInitDialogEvent] event ) ) |
+/// | void unbindInitDialogEvent() |
+/// 
+/// [DialogValidate](/wxdart/wxGetDialogValidateEventType.html) event gets sent when the dialog is about to be closed. |
+/// | ----------------- |
+/// | void bindDialogValidateEvent( void function( [WxDialogValidateEvent] event ) ) |
+/// | void unbindDialogValidateEvent() |
 
 class WxDialog extends WxTopLevelWindow {
   /// Creates a dialog with the given [id] and [title].

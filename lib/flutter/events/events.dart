@@ -445,7 +445,7 @@ class WxDPIChangedEventTableEntry extends WxEventTableEntry {
 
 /// [DPIChanged](/docs/wxdart/wxGetDPIChangedEventType.html) event gets sent when the screen resolution changes. Also when a window gets dragged between different monitors. |
 /// | ----------------- |
-/// | void bindDPIChangedEvent( OnDPIChangedEventFunc ) |
+/// | void bindDPIChangedEvent( void function( [WxDPIChangedEvent] event ) |
 /// | void unbindDPIChangedEvent() |
 
 class WxDPIChangedEvent extends WxEvent {
@@ -491,7 +491,7 @@ class WxSysColourChangedEventTableEntry extends WxEventTableEntry {
 
 /// [SysColourChanged](/docs/wxdart/wxGetSysColourChangedEventType.html) event gets sent when themes or light/dark modes have changed. |
 /// | ----------------- |
-/// | void bindSysColourChangedEvent( OnSysColourChangedEventFunc ) |
+/// | void bindSysColourChangedEvent( void function( [WxSysColourChangedEvent] event ) ) |
 /// | void unbindSysColourChangedEvent() |
 
 class WxSysColourChangedEvent extends WxEvent {

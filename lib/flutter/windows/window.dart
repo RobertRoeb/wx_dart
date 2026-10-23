@@ -264,6 +264,106 @@ const int wxTOUCH_RAW_EVENTS = 0x0020;
 /// * [setBackgroundColour]
 /// * [getBackgroundColour]
 /// * [useBackgroundColour]
+/// 
+/// # Events emitted
+/// 
+/// [Size](/wxdart/wxGetSizeEventType.html) event gets sent when the window changes size. |
+/// | ----------------- |
+/// | void bindSizeEvent( void function( [WxSizeEvent] event ) ) |
+/// | void unbindSizeEvent() |
+/// 
+/// [Paint](/wxdart/wxGetPaintEventType.html) event gets sent when the window needs to be redrawn. |
+/// | ----------------- |
+/// | void bindPaintEvent( void function( [WxPaintEvent] event ) ) |
+/// | void unbindPaintEvent() |
+/// 
+/// # Key events
+/// 
+/// [KeyDown](/wxdart/wxGetKeyDownEventType.html) event gets sent when the user hits a key. |
+/// | ----------------- |
+/// | void bindKeyDownEvent( void function( [WxKeyEvent] event ) ) |
+/// | void unbindKeyDownEvent() |
+/// 
+/// [KeyUp](/wxdart/wxGetKeyUpEventType.html) event gets sent when the user releases a key. |
+/// | ----------------- |
+/// | void bindKeyUpEvent( void function( [WxKeyEvent] event ) ) |
+/// | void unbindKeyUpEvent() |
+/// 
+/// [Char](/wxdart/wxGetCharEventType.html) event gets sent when a full character has been entered. |
+/// | ----------------- |
+/// | void bindCharEvent( void function( [WxKeyEvent] event ) ) |
+/// | void unbindCharEvent() |
+/// 
+/// # Mouse events
+/// 
+/// [LeftDown](/wxdart/wxGetLeftDownEventType.html) event gets sent when the left mouse button has been pressed. |
+/// | ----------------- |
+/// | void bindLeftDownEvent( void function( [WxMouseEvent] event ) ) |
+/// | void unbindLeftDownEvent() |
+/// 
+/// [LeftDClick](/wxdart/wxGetLeftDClickEventType.html) event gets sent when the left mouse button has been double pressed. |
+/// | ----------------- |
+/// | void bindLeftDClickEvent( void function( [WxMouseEvent] event ) ) |
+/// | void unbindLeftDClickEvent() |
+/// 
+/// [LeftUp](/wxdart/wxGetLeftDownEventType.html) event gets sent when the left mouse button has been released. |
+/// | ----------------- |
+/// | void bindLeftUpEvent( void function( [WxMouseEvent] event ) ) |
+/// | void unbindLeftUpEvent() |
+/// 
+/// Same for right (bindRightDownEvent()) and middle (bindMiddleDownEvent()) mouse button.
+/// 
+/// [Motion](/wxdart/wxGetMotionEventType.html) event gets sent when the mouse moves over window. |
+/// | ----------------- |
+/// | void bindMotionWindowEvent( void function( [WxMouseEvent] event ) ) |
+/// | void unbindMotionWindowEvent() |
+/// 
+/// [MouseWheel](/wxdart/wxGetMouseWheelType.html) event gets sent when the mouse wheel has been scrolled |
+/// | ----------------- |
+/// | void bindMouseWheelEvent( void function( [WxMouseEvent] event ) ) |
+/// | void unbindMouseWheelEvent() |
+/// 
+/// [EnterWindow](/wxdart/wxGetEnterWindowEventType.html) event gets sent when the mouse enters the window. |
+/// | ----------------- |
+/// | void bindEnterWindowEvent( void function( [WxMouseEvent] event ) ) |
+/// | void unbindEnterWindowEvent() |
+/// 
+/// [LeaveWindow](/wxdart/wxGetLeaveWindowEventType.html) event gets sent when the mouse leaves the window. |
+/// | ----------------- |
+/// | void bindLeaveWindowEvent( void function( [WxMouseEvent] event ) ) |
+/// | void unbindLeaveWindowEvent() |
+/// 
+/// # Focus events
+/// 
+/// [SetFocus](/wxdart/wxGetSetFocusEventType.html) event gets sent when the window received the focus. |
+/// | ----------------- |
+/// | void bindSetFocusEvent( void function( [WxFocusEvent] event ) ) |
+/// | void unbindSetFocusEvent() |
+/// 
+/// [KillFocus](/wxdart/wxGetKillFocusEventType.html) event gets sent when the window lost the focus. |
+/// | ----------------- |
+/// | void bindKillFocusEvent( void function( [WxFocusEvent] event ) ) |
+/// | void unbindKillFocusEvent() |
+/// 
+/// # System colour and display resolution changes
+/// 
+/// [SysColourChanged](/docs/wxdart/wxGetSysColourChangedEventType.html) event gets sent when themes or light/dark mode have changed. |
+/// | ----------------- |
+/// | void bindSysColourChangedEvent( void function( [WxSysColourChangedEvent] event ) ) |
+/// | void unbindSysColourChangedEvent() |
+/// 
+/// [DPIChanged](/docs/wxdart/wxGetDPIChangedEventType.html) event gets sent when the screen resolution changes. Also when a window gets dragged between different monitors. |
+/// | ----------------- |
+/// | void bindDPIChangedEvent( void function( [WxDPIChangedEvent] event ) ) |
+/// | void unbindDPIChangedEvent() |
+/// 
+/// # Idle event 
+/// 
+/// [Idle](/wxdart/wxGetIdleEventType.html) event gets sent when the system is idle. Good moment to update your UI. |
+/// | ----------------- |
+/// | void bindIdleEvent( void function( [WxIdleEvent] event ) ) |
+/// | void unbindIdleEvent() |
+
 
 class WxWindow extends WxEvtHandler {
   /// Creates a custom window with given parent, id, size and style
