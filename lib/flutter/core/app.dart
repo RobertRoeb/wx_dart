@@ -288,6 +288,7 @@ List <WxTopLevelWindow> _topLevelWindows = [];
 /// 
 /// An app needs to override [onInit] and create the main window there.
 /// 
+/// Example usage:
 /// ```dart
 ///class MyFrame extends WxFrame {
 ///  MyFrame( WxWindow ?parent ) 

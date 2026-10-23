@@ -119,10 +119,9 @@ String wxDynamicTypeToVariantType( dynamic value ) {
 /// paramater in the callback. Note that in wxDart Flutter on the web,
 /// the file gets transfered from the server via HTTP.
 /// 
-/// [filename] is the filename relative to the directory returned from 
-/// [WxStandardPaths.getResourcesDir]. If the file is located in
-/// lib/assets/myfile.txt then use this
+/// If the file is located in lib/assets/myfile.txt
 /// 
+/// Example usage:
 /// ```dart
 /// wxLoadStringFromResource( "myfile.txt", (text) {
 ///   print( text );
@@ -132,6 +131,7 @@ String wxDynamicTypeToVariantType( dynamic value ) {
 /// If the file is located in
 /// lib/assets/mydir/myfile.txt then use this
 /// 
+/// Example usage:
 /// ```dart
 /// wxLoadStringFromResource( "myfile.txt", subdir: "mydir", (text) {
 ///   print( text );
@@ -161,16 +161,27 @@ void wxLoadStringFromResource( String filename, void Function( String data ) ret
 /// Read an image from file or asset and returns the RGBA data in the callback.
 /// This will occur synchronously in wxDart Native and asynchronously in
 /// wxDart Flutter.
-/// [filename] is the filename relative to the directory returned from 
-/// [WxStandardPaths.getResourcesDir]. If the file is located in
-/// lib/assets/myimage.png then use this
+/// If the file is located in lib/assets/myimage.png 
 /// 
+/// Example usage:
 /// ```dart
 /// wxLoadRGBAFromResource( "myimage.png", (RGBA, width, height) {
 ///   // do something with RGBA data ...
-/// }
+/// } );
 /// ```
-/// [subdir] indicates a subdirectory where the file is located.
+/// 
+/// [subdir] indicates a subdirectory where the file is located, 
+/// but forward slashes in the filename are allowed on all platforms
+/// 
+/// Example usage:
+/// ```dart
+/// wxLoadRGBAFromResource( "images/myimage.png", (RGBA, width, height) {
+///   // do something with RGBA data ...
+/// } );
+/// wxLoadRGBAFromResource( "myimage.png", subdir: "images", (RGBA, width, height) {
+///   // do something with RGBA data ...
+/// } );
+/// ```
 
 void wxLoadRGBAFromResource( String filename, void Function( Uint8List rgba, int width, int height ) returnRGBA,
  { int format = wxBITMAP_TYPE_PNG, String subdir = "" } )
@@ -206,16 +217,26 @@ void wxLoadRGBAFromResource( String filename, void Function( Uint8List rgba, int
 /// Read an image from file or asset and returns the image in the callback.
 /// This will occur synchronously in wxDart Native and asynchronously in
 /// wxDart Flutter.
-/// [filename] is the filename relative to the directory returned from 
-/// [WxStandardPaths.getResourcesDir]. If the file is located in
-/// lib/assets/myimage.png then use this
+/// If the file is located in lib/assets/myimage.png 
 /// 
+/// Example usage:
 /// ```dart
 /// wxLoadImageFromResource( "myimage.png", (image) {
 ///   // do something with image ...
-/// }
+/// } );
 /// ```
-/// [subdir] indicates a subdirectory where the file is located.
+/// [subdir] indicates a subdirectory where the file is located, 
+/// but forward slashes in the filename are allowed on all platforms
+/// 
+/// Example usage:
+/// ```dart
+/// wxLoadImageFromResource( "images/myimage.png", (image) {
+///   // do something with image ...
+/// } );
+/// wxLoadImageFromResource( "myimage.png", subdir: "images", (image) {
+///   // do something with image ...
+/// } );
+/// ```
 
 void wxLoadImageFromResource( String filename, void Function( WxImage image ) returnImage, { int format = wxBITMAP_TYPE_PNG, String subdir = "" } ) 
 {
@@ -265,6 +286,12 @@ WxPoint wxGetMousePosition() {
 
 // -------------------- wxLaunchDefaultBrowser -----------------------
 
+/// Launches the default browser
+/// 
+/// Example usage:
+///```dart
+///  wxLaunchDefaultBrowser( "https://pub.dev/packages/wx_dart" );
+///``` 
 bool wxLaunchDefaultBrowser( String url, { int flags = 0 } ) {
   final Uri uri = Uri.parse( url );
   launchUrl(uri);
