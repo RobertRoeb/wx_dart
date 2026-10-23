@@ -97,13 +97,12 @@ FlutterAngle? _flutterGlPlugin;
 /// * [setCurrent]
 /// * [swapBuffers]
 /// 
-/// Sample code:
+/// Example usage:
 ///```dart
 ///   // in parent window's constructor
 ///   {
 ///     final attr = WxGLAttributes();
 ///     attr.defaults();
-///     // attr.doubleBuffer();
 ///     attr.endList();
 ///     _glCanvas = MyGLCanvas(this,attr);
 ///   }

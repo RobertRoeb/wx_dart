@@ -35,6 +35,7 @@ class _AnimationFrame
 /// convert them to [WxBitmap]s. You need to call [load] as the animation
 /// is loaded asynchronously.
 /// 
+/// Example usage to retrieve images from animation:
 /// ```dart
 ///  final List<WxBitmap> frames = [];
 ///  final animation = WxAnimation("throbber.gif");

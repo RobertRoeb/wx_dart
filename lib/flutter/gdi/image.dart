@@ -28,6 +28,7 @@ part of '../../wx_dart.dart';
 /// This bitmap can then be drawn in a device context, using [WxDC.drawBitmap].
 /// 
 /// Here is how you create an image and set pixels and alpha channel values:
+/// Example:
 /// ```dart
 ///    final image = WxImage( 100, 200 );
 ///    image.initAlpha();

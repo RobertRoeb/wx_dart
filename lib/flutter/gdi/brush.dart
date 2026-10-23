@@ -60,6 +60,7 @@ final wxWHITE_BRUSH = WxBrush( wxWHITE );
 /// |  wxRED_BRUSH  |  
 /// |  wxWHITE_BRUSH  |  
 /// 
+/// Example:
 /// ```dart
 /// // Derive new class from WxWindow
 /// class MyWindow extends WxWindow {

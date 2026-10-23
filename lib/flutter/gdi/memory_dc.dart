@@ -14,6 +14,7 @@ part of '../../wx_dart.dart';
 /// The bitmap is created in [getBitmap] and you cannot draw into
 /// the [WxMemoryDC] after retrieving that bitmap.
 /// 
+/// Example:
 /// ```dart
 ///  // Create memory dc
 ///  final dc = WxMemoryDC(100, 100);

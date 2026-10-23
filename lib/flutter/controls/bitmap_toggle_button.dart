@@ -15,7 +15,9 @@ part of '../../wx_dart.dart';
 /// 
 /// Example usage
 /// ```dart
-///  final myButton = WxBitmapToggleButton( parent, -1, WxBitmapBundle.fromPNGAsset("show.png") );
+///  final bitmap = WxBitmapBundle.fromPNGAsset("show.png");
+///   
+///  final myButton = WxBitmapToggleButton( parent, -1, bitmap );
 ///  myButton.bindToggleButtonEvent((event)
 ///  {
 ///    if (event.isChecked()) {

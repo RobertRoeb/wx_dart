@@ -206,6 +206,8 @@ const int wxFONTWEIGHT_EXTRAHEAVY = 1000;
 /// 
 /// If you want to draw text with a given font, set the font in
 /// the respective device context (DC) in an paint event handler:
+/// 
+/// Example:
 ///```dart
 /// // Derive new class from WxWindow
 /// class MyWindow extends WxWindow {

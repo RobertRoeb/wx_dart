@@ -84,6 +84,7 @@ const int  wxCAP_BUTT             = 132;
 /// |  wxRED_PEN  |  
 /// |  wxWHITE_PEN  |  
 /// 
+/// Example:
 /// ```dart
 /// // Derive new class from WxWindow
 /// class MyWindow extends WxWindow {

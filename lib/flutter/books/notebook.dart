@@ -120,9 +120,10 @@ const int wxNB_ANIMATED_THEME = 0x1000;
 ///     // add OK/Cancel buttons at the bottom
 ///     mainSizer.addSizer(createStdDialogButtonSizer(wxOK|wxCANCEL), flag: wxALL|wxALIGN_RIGHT, border: 10);
 /// 
-///     // transfer data to the dialog
-///     bindInitDialogEvent( (_) {
-///     });
+///     // bind to notebook change
+///     notebook.bindNotebookPageChangedEvent( (event) {
+///       // do something when page changed
+///     }, -1 );
 /// 
 ///     // validate data and if ok, transfer data from the dialog
 ///     bindDialogValidateEvent( (_) {

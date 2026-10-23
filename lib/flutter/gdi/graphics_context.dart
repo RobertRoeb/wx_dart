@@ -26,6 +26,7 @@ class WxGraphicsObject extends WxObject {
 /// 
 /// See also [WxGraphicsAnimation]
 /// 
+/// Example:
 ///```dart
 /// final image = WxImage( 80, 120 );
 /// image.initAlpha();

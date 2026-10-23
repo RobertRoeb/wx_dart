@@ -109,6 +109,7 @@ const int wxSP_WRAP = 0x8000;
 /// platforms as it sometimes has two small arrows above each other or two big arrows
 /// next to each other, taking much more space. 
 ///  
+/// Example usage:
 ///```dart
 ///  final spin = WxSpinCtrl(parent, -1, '-10', initial: -10, min: -20, max: 20 /*, size: WxSize(150,-1) */);
 ///  spin.bindSpinCtrlEvent((event) {

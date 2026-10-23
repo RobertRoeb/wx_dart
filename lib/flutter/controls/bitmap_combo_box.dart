@@ -10,6 +10,44 @@ part of '../../wx_dart.dart';
 // ------------------------- wxBitmapComboBox ----------------------
 
 /// Offers the user a choice of items (bitmap and text) and an addtional text field.
+/// 
+/// Example usage:
+///```dart
+///    // Create the control
+///    final combo = WxBitmapComboBox( parent, -1, size: WxSize(200, -1) );
+/// 
+///    // Create bitmaps
+///    final bitmapOnline = WxBitmapBundle.fromMaterialIcon( .cloud_done, WxSize(32,32), colour: wxBLUE );
+///    final bitmapOffline = WxBitmapBundle.fromMaterialIcon( .cloud_off, WxSize(32,32), colour: wxBLUE );
+/// 
+///    combo.appendWithBitmap( "Online", bitmapOnline );
+///    combo.appendWithBitmap( "Offline", bitmapOffline );
+/// 
+///    // bind to event when user selects an item from the drop down menu
+///    combo.bindComboboxEvent((event) {
+///      final index = event.getInt();
+///      final text = event.getString();
+///    }, -1 );
+/// 
+///    // bind to event when user types in the text field
+///    combo.bindTextEvent((event) {
+///      final text = event.getString();
+///    }, -1 );
+///```
+/// 
+/// # Events emitted
+/// [Combobox](/wxdart/wxGetComboboxEventType.html) event gets sent when the user selects an item from the drop down. |
+/// | ----------------- |
+/// | void bindComboboxEvent( void function( [WxCommandEvent] event ) ) |
+/// | void unbindComboboxEvent() |
+/// [Text](/wxdart/wxGetTextEventType.html) event gets sent when the user enters text. |
+/// | ----------------- |
+/// | void bindTextEvent( void function( [WxCommandEvent] event ) ) |
+/// | void unbindTextEvent() |
+/// [TextEnter](/wxdart/wxGetTextEnterEventType.html) event gets sent when hits enter and the wxTE_PROCESS_ENTER style is used. |
+/// | ----------------- |
+/// | void bindTextEnterEvent( void function( [WxCommandEvent] event ) ) |
+/// | void unbindTextEnterEvent() |
 class WxBitmapComboBox extends WxComboBox {
 
   /// Create a bitmap combobox. Items with bitmaps can only be added later.

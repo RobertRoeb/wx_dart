@@ -60,6 +60,7 @@ extension TreebookNodeExpandedEventBinder on WxEvtHandler {
 /// [WxDataViewBook] does not derive from [WxBookCtrlBase] but
 /// implements a similar interface and logic.
 /// 
+/// Example usage:
 /// ```dart
 /// final tree = WxTreebook(this, -1);
 ///
@@ -79,6 +80,18 @@ extension TreebookNodeExpandedEventBinder on WxEvtHandler {
 /// final panel2 = WxPanel( tree, -1 );
 /// tree.addPage(panel2, "Chapter 2", image: 0 );
 ///  // etc.
+/// 
+/// tree.bindTreebookPageChangedEvent( (event) {
+///    // page has changed
+/// }, -1 );
+/// 
+/// tree.bindTreebookNodeCollapsedEvent( (event) {
+///    // Node has collpased
+/// }, -1 );
+/// 
+/// tree.bindTreebookNodeExpandedEvent( (event) {
+///    // page has changed
+/// }, -1 );
 /// ```
 /// 
 /// Page interface

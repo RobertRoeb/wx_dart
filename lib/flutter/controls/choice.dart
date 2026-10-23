@@ -30,7 +30,7 @@ extension ChoiceEventBinder on WxEvtHandler {
 /// 
 ///    // bind event when user selects an item
 ///    choice.bindChoiceEvent((event) {
-///      final text = event.getInt();
+///      final selection = event.getInt();
 ///    }, -1 );
 ///```
 /// 

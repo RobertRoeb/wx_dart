@@ -196,6 +196,7 @@ const int wxTR_DEFAULT_STYLE  = (wxTR_HAS_BUTTONS | wxTR_NO_LINES | wxTR_FULL_RO
 /// 
 /// You can attach any data (client data) to an item using [setItemData].
 ///  
+/// Example usage:
 /// ```dart
 /// // create tree control
 /// final treectrl = WxTreeCtrl(this, -1, style: wxTR_DEFAULT_STYLE );

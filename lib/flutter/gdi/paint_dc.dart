@@ -22,6 +22,7 @@ part of '../../wx_dart.dart';
 /// 
 /// Here is an example of a how [WxPaintDC] is used.
 /// 
+/// Example:
 ///```dart
 /// // Derive new class from WxWindow
 /// class MyWindow extends WxWindow {

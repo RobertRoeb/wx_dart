@@ -52,6 +52,8 @@ const int wxCURSOR_DEFAULT = wxCURSOR_ARROW;
 /// If you want to show that mouse cursor only in a certain
 /// area, capture the mouse motion event and set the mouse
 /// cursor there:
+/// 
+/// Example:
 /// ```dart
 /// // Derive new class from WxWindow
 /// class MyWindow extends WxWindow {

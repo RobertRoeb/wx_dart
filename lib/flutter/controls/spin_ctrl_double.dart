@@ -66,6 +66,7 @@ class WxSpinDoubleEvent extends WxNotifyEvent  {
 
 /// Allows the user to enter an double number with keyboard or mouse/touch.
 /// 
+/// Example usage:
 ///```dart
 ///  final spin = WxSpinCtrlDouble(parent, -1, '-10.0', initial: -10, min: -20, max: 20 /*, size: WxSize(150,-1) */);
 ///  spin.bindSpinCtrlDoubleEvent((event) {

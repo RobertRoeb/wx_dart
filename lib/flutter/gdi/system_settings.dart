@@ -41,6 +41,7 @@ const int wxSYS_SCREEN_Y = 22;
 /// fonts or certain metrics. The the global getter to access this
 /// class:
 /// 
+/// Example:
 /// ```dart
 ///   final font = wxGetSystemSettings.getFont( wxSYS_DEFAULT_GUI_FONT );
 /// ```

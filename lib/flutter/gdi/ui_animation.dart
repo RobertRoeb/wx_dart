@@ -30,6 +30,7 @@ const int wxCURVE_BOUNCE = 5;
 /// * wxCURVE_EASE_OUT
 /// * wxCURVE_BOUNCE
 /// 
+/// Example:
 /// ```dart
 /// class MyWindow extends WxWindow {
 ///   MyWindow( WxWindow parent, int id ) : super( parent, id, wxDefaultPosition, wxDefaultSize, 0 )

@@ -126,7 +126,43 @@ const int wxTOUCH_RAW_EVENTS = 0x0020;
 /// Main window class from which all window classes derive.
 /// 
 /// Some functions have no meaning in derived classes such as the scrolling
-/// code for simple controls with no scrollbars. 
+/// code for simple controls with no scrollbars. You can use [WxWindow]
+/// directly for a custom window if no scrolling is required:
+/// 
+/// Example:
+///```dart
+/// // Derive new class from WxWindow
+/// class MyWindow extends WxWindow {
+///   MyWindow( WxWindow parent, int id ) : super( parent, id, wxDefaultPosition, wxDefaultSize, 0 )
+///   {
+///     // Bind paint handler to the paint event
+///     bindPaintEvent(onPaint);
+/// 
+///     // Bind to mouse motion event
+///     bindMotionEvent( onMotion );
+///   }
+/// 
+///   // define new mouse motion event handler
+///   void onMotion( WxMouseEvent event )
+///   {
+///     final pos = event.getPosition();
+///     // do something in reaction to mouse movement
+///   }
+/// 
+///   // define a new paint event handler
+///   void onPaint( WxPaintEvent event )
+///   {
+///     // create paint device context during paint event
+///     final dc = WxPaintDC( this );
+/// 
+///     // set a black pen to draw
+///     dc.setPen( wxBLACK_PEN );
+/// 
+///     // draw something
+///     dc.drawLine( 10, 10, 100, 100 );
+///   }
+/// }
+/// ```
 /// 
 /// # Constants
 /// 

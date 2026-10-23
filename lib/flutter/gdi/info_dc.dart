@@ -148,6 +148,18 @@ class WxReadOnlyDC extends WxObject {
 
 /// Implements a light weight device context for querying metrics only.
 /// Typically used to call [WxDC.setFont] and [WxDC.getTextExtent].
+/// 
+/// Example:
+/// ```dart
+/// // Derive new class from WxWindow
+/// class MyWindow extends WxWindow {
+///   MyWindow( WxWindow parent, int id ) : super( parent, id, wxDefaultPosition, wxDefaultSize, 0 )
+///   {
+///     final dc = WxInfoDC( this );
+///     final size = dc.getTextExtent( "Hello" );
+///   }
+/// }
+/// ```
 
 class WxInfoDC extends WxReadOnlyDC {
 

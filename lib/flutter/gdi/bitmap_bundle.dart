@@ -25,6 +25,12 @@ part of '../../wx_dart.dart';
 /// ```dart
 ///  // create bitmap bundle from lib/assets/images/MyImage.png
 ///  final bitmap = WxBitmapBundle.fromPNGAsset( "images/MyImage.png" ); 
+/// 
+///  final myButton = WxBitmapButton( parent, -1, bitmap );
+///  myButton.bindButtonEvent((_)
+///  {
+///    // actually start something!
+///  }, -1);
 /// ```
 
 class WxBitmapBundle extends WxClass {

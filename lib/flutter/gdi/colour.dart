@@ -37,7 +37,34 @@ final wxLIGHT_GREY = WxColour( 192, 192, 192 );
 ///  |  wxYELLOW  |  WxColour( 255, 255, 0 ) | 
 ///  |  wxGREY  |  WxColour( 80, 80, 80 ) | 
 ///  |  wxMEDIUM_GREY  |  WxColour( 130, 130, 130 ) | 
-///  |  wxLIGHT_GREY  |  WxColour( 192, 192, 192 ) | 
+///  |  wxLIGHT_GREY  |  WxColour( 192, 192, 192 ) |
+/// 
+/// Example:
+///```dart
+/// // Derive new class from WxWindow
+/// class MyWindow extends WxWindow {
+///   MyWindow( WxWindow parent, int id ) : super( parent, id, wxDefaultPosition, wxDefaultSize, 0 )
+///   {
+///     // Bind paint handler to the paint event
+///     bindPaintEvent(onPaint);
+///   }
+/// 
+///   // define a new paint event handler
+///   void onPaint( WxPaintEvent event )
+///   {
+///     // create paint device context during paint event
+///     final dc = WxPaintDC( this );
+/// 
+///     // draw lie with wxBLACK
+///     dc.setPen( wxBLACK, 2 );
+///     dc.drawLine( 10, 10, 100, 100 );
+/// 
+///     // draw lie with newly defined colour using RGB and alpha channel
+///     dc.setPen( WxColour(123,123,123,alpha:100), 2 );
+///     dc.drawLine( 10, 10, 100, 100 );
+///   }
+/// }
+/// ```
 
 class WxColour {
   /// Creates a colour from the RGB components and an optional [alpha] indicating transparency
