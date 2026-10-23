@@ -1,3 +1,7 @@
+## 0.9.23
+
+* AI told me to make the docs more AI friendly
+
 ## 0.9.22
 
 * Small mobile interface fixes, including OpenGL ES.
