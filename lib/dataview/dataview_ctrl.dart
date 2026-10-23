@@ -2512,7 +2512,7 @@ double _getTargetAngleFromDelta( final double dx, final double dy, final double 
                     {
                         final node = getTreeNodeByRow(item);
                         if (node == null) { wxLogError( "node not found"); return; }
-                        if ( isItemSingleValued(node!.getItem()) ) {
+                        if ( isItemSingleValued(node.getItem()) ) {
                             renderColumnFocus = false;
                         }
                     }
