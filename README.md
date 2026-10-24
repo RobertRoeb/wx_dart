@@ -7,6 +7,7 @@ A cross-platform GUI library to build native desktop apps, web apps and mobile a
 * [Introduction](#wxdart-flutter-and-wxdart-native)
 * [Screenshot](#screenshot)
 * [Installation](#installation-of-wxdart-flutter)
+* [Event binding syntax](#event-syntax-wxdart-vs-wxwidgets-and-wxpython)
 * [Tutorial with samples](#tutorial-with-samples)
 * [Licence](#licence)
 * [Classes by Category](#classes-by-category)
@@ -101,6 +102,115 @@ You can see some of these tutorials live embedded into HTML
 wxDart Native can be downloaded from [here](https://wxdesigner-software.com). It consists of the wxDart Native
 library and the three bridge libraries (the Windows .dll, macOS .dylib and Linux .so) as
 the interface to the respective platforms.
+
+## Event syntax wxDart vs wxWidgets and wxPython
+
+Both the wxWidgets C++ library and wxPython use Bind() with an event type constant
+
+How to bind to an event in wxWidgets C++:
+```C++
+    button->Bind( wxEVT_BUTTON, &MyWindow::OnHello, idHello ); 
+```
+How to bind to an event in wxPython:
+```Python
+    self.Bind(wx.EVT_BUTTON, self.OnHello, self.btn_hello)
+```
+
+wxDart uses class extensions that provide an own function per event: 
+
+How to bind to an event in wxDart:
+```Dart
+    button.bindButtonEvent( onHello, idHello );
+```
+
+wxWidgets C++ example of binding to a button event and a menu event:
+```C++
+const int idHello = 100;
+
+class MyFrame : public wxFrame
+{
+public:
+    MyFrame() : wxFrame(nullptr, wxID_ANY, "wxWidgets Example", wxDefaultPosition, wxSize(500, 450))
+    {
+        // Create menu here
+        // ...
+
+        // Create button here
+        wxButton* button = new wxButton( this, -1, "Hello" );
+
+        // Bind to button event directly from button
+        button->Bind( wxEVT_BUTTON, [this](wxCommandEvent&) {
+          wxMessageDialog dialog( this, "Hello from wxButton", "wxWidgets", wxOK );
+          dialog.ShowModal();
+        });
+
+        // Bind to menu event from this frame
+        Bind( wxEVT_MENU, [this](wxCommandEvent&) {
+          wxMessageDialog dialog( this, "Hello from wxMenu", "wxWidgets", wxOK );
+          dialog.ShowModal();
+        }, idHello );
+    }
+};
+```
+
+wxPython example of binding to a button event and a menu event:
+```Python
+class MyFrame(wx.Frame):
+    def __init__(self):
+        super().__init__(parent=None, title="wxPython Example", size=(500, 450))
+
+        # Create menu here
+        # ... 
+        # hello_item =
+        
+        # Create button here
+        self.btn_hello = wx.Button(parent=panel, label="Hello" )
+        
+        # Bind to button event directly from button
+        self.Bind(wx.EVT_BUTTON, self.on_hello_click, self.btn_hello)
+        
+        # Bind to menu event from this frame
+        self.Bind(wx.EVT_MENU, self.on_hello, hello_item)
+
+    def on_hello_click(self, event):
+        dialog = wx.MessageDialog( parent=self, message="Hello from wxButton", 
+            caption="wxPython", style=wx.OK )
+        dialog.ShowModal()
+        dialog.Destroy()
+
+    def on_hello(self, event):
+        dialog = wx.MessageDialog( parent=self, message="Hello from wxMenu", 
+            caption="wxPython", style=wx.OK )
+        dialog.ShowModal()
+        dialog.Destroy()
+
+```
+
+wxDart example of binding to a button event and a menu event:
+```Dart
+const int idHello = 100;
+
+class MyFrame extends WxFrame {
+  MyFrame( WxFrame? parent) : super( parent, -1, "wxDart Example", size: WxSize(500, 450) ) 
+  {
+    // Create menu here
+    // ...
+
+    // Bind to button event directly from button
+    final button = WxButton( this, -1, "Hello" );
+    button.bindButtonEvent( (_) {
+      final dialog = WxMessageDialog( this, "Hello from wxButton", caption: "wxDart", style: wxOK );
+      dialog.showModal(null);
+    }, -1 );
+
+    // Bind to menu event from this frame
+    bindMenuEvent( (_) {
+      final dialog = WxMessageDialog( this, "Hello from wxMenu", caption: "wxDart", style: wxOK );
+      dialog.showModal(null);
+    }, idHello );
+  }
+}
+```
 
 ## Licence
 

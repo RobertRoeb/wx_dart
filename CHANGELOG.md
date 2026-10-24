@@ -1,3 +1,7 @@
+## 0.9.24
+
+* More AI friendly doc updates
+
 ## 0.9.23
 
 * AI told me to make the docs more AI friendly
