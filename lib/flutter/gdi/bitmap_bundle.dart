@@ -21,10 +21,22 @@ part of '../../wx_dart.dart';
 /// to select the best available bitmap to be shown depending on the display
 /// resolution of the current monitor.
 /// 
-/// Example:
+/// Example with single bitmap:
 /// ```dart
 ///  // create bitmap bundle from lib/assets/images/MyImage.png
 ///  final bitmap = WxBitmapBundle.fromPNGAsset( "images/MyImage.png" ); 
+/// 
+///  final myButton = WxBitmapButton( parent, -1, bitmap );
+///  myButton.bindButtonEvent((_)
+///  {
+///    // actually start something!
+///  }, -1);
+/// ```
+/// 
+/// Example with Material icon:
+/// ```dart
+///  // create bitmap bundle from Material icon
+///  final bitmap = WxBitmapBundle.fromMaterialIcon( WxMaterialIcon.home, WxSize(32,32), colour: wxRED );
 /// 
 ///  final myButton = WxBitmapButton( parent, -1, bitmap );
 ///  myButton.bindButtonEvent((_)

@@ -1,5 +1,22 @@
 part of '../../wx_dart.dart';
 
+/// [WxMaterialIcon] is an enum with all available Material icons that are built
+/// into wxDart (Flutter and Native).
+/// 
+/// Most commonly used for [WxBitmapBundle.fromMaterialIcon]
+/// 
+/// Example usage:
+/// ```dart
+///  // create bitmap bundle from Material icon
+///  final bitmap = WxBitmapBundle.fromMaterialIcon( WxMaterialIcon.home, WxSize(32,32), colour: wxBLUE );
+/// 
+///  final myButton = WxBitmapButton( parent, -1, bitmap );
+///  myButton.bindButtonEvent((_)
+///  {
+///    // actually start something!
+///  }, -1);
+/// ```
+
 enum WxMaterialIcon {
   thirty_fps,
   threesixty,
