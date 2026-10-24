@@ -2185,16 +2185,24 @@ int _getKeyCodeFromKeyEvent( KeyEvent event )
     case LogicalKeyboardKey.asterisk:         return WXK_ASTERISK;
     case LogicalKeyboardKey.quoteSingle:      return WXK_SINGLE_QUOTE;
     case LogicalKeyboardKey.slash:            return WXK_SLASH;
-    case LogicalKeyboardKey.backslash:        return 92;
+    case LogicalKeyboardKey.backslash:        return WXK_BACKSLASH;
     case LogicalKeyboardKey.braceLeft:        return 123;
     case LogicalKeyboardKey.braceRight:       return 125;
-    case LogicalKeyboardKey.tilde:            return 126;
+    case LogicalKeyboardKey.tilde:            return WXK_TILDE;
     case LogicalKeyboardKey.bracketLeft:      return 91;
     case LogicalKeyboardKey.bracketRight:     return 93;
 
     case LogicalKeyboardKey.comma:            return WXK_COMMA;
+    case LogicalKeyboardKey.question:         return WXK_QUESTION;
     case LogicalKeyboardKey.quote:            return WXK_DOUBLE_QUOTE;
     case LogicalKeyboardKey.period:           return WXK_PERIOD;
+    case LogicalKeyboardKey.colon:            return WXK_COLON;
+    case LogicalKeyboardKey.semicolon:        return WXK_SEMICOLON;
+    case LogicalKeyboardKey.at:               return WXK_AT;
+    case LogicalKeyboardKey.tilde:            return WXK_TILDE;
+    case LogicalKeyboardKey.equal:            return WXK_EQUAL;
+    case LogicalKeyboardKey.less:             return WXK_LESS;
+    case LogicalKeyboardKey.greater:          return WXK_GREATER;
 
     // case LogicalKeyboardKey.divide:           return 47;
     case LogicalKeyboardKey.digit0:           return 48;

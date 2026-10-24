@@ -443,6 +443,15 @@ const int  WXK_COMMA        = 44;
 const int  WXK_MINUS        = 45;
 const int  WXK_PERIOD       = 46;
 const int  WXK_SLASH        = 47;
+const int  WXK_COLON        = 58;
+const int  WXK_SEMICOLON    = 59;
+const int  WXK_LESS         = 60;
+const int  WXK_EQUAL        = 61;
+const int  WXK_GREATER      = 62;
+const int  WXK_QUESTION     = 63;
+const int  WXK_AT           = 64;
+const int  WXK_BACKSLASH    = 92;
+const int  WXK_TILDE        = 127;
 
     /* values from 33 to 126 are reserved for the standard ASCII characters */
 const int  WXK_DELETE  =    127;

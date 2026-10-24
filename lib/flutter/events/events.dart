@@ -830,7 +830,7 @@ class WxIdleEventTableEntry extends WxEventTableEntry {
 /// 
 /// [Idle](/wxdart/wxGetIdleEventType.html) event gets sent when the system is idle. Good moment to update your UI. |
 /// | ----------------- |
-/// | void bindIdleEvent( OnIdleEventFunc ) |
+/// | void bindIdleEvent( void function( WxIdleEvent event ) ) |
 /// | void unbindIdleEvent() |
 
 class WxIdleEvent extends WxEvent {
@@ -872,11 +872,19 @@ class WxUpdateUIEventTableEntry extends WxEventTableEntry {
 }
 /// [UpdateUI](/docs/wxdart/wxGetUpdateUIEventType.html) event is sent in idle time to update menus and toolbars.|
 /// | ----------------- |
-/// | void bindUpdateUIEvent( OnUpdateUIEventFunc ) |
+/// | void bindUpdateUIEvent( void function( WxUpdateUIEvent event )  ) |
 /// | void unbindUpdateUIEvent() |
 ///
 /// Intercept this event and call [check] if a e.g. toolbar item needs to be checked.
 ///
+/// Main interface:
+/// * [check]
+/// * [enable]
+/// * [show]
+/// * [setText]
+/// * [set3StateValue]
+///
+/// Example usage:
 /// ```dart
 ///  // Somewhere in your frame 
 ///  final colormenu = WxMenu();
@@ -912,42 +920,52 @@ class WxUpdateUIEvent extends WxCommandEvent {
   bool _setText = false;
   bool _setShown = false;
 
+  /// Used internally. Returns true if item should be checked.
   bool getChecked( ) {
     return _isChecked;
   }
 
+  /// Used internally. Returns true if item should be enabled.
   bool getEnabled( ) {
     return _isEnabled;
   }
 
+  /// Returns true if item is a checkable item.
   bool isCheckable( ) {
     return _isCheckable;
   }
 
+  /// Returns true if item is a checkable item with 3 states (on/off/indeterminate).
   bool is3State( ) {
     return _is3State;
   }
 
+  /// Used internally. Returns the text for the item.
   String getText( ) {
     return _text;
   }
 
+  /// Used internally. Returns true if item should be shown.
   bool getShown( ) {
     return _isShown;
   }
 
+  /// Used internally. Returns true if [check] has been called.
   bool getSetChecked( ) {
     return _isSetChecked;
   }
 
+  /// Used internally. Returns true if [enable] has been called.
   bool getSetEnabled( ) {
     return _isSetEnabled;
   }
 
+  /// Used internally. Returns true if [setText] has been set.
   bool getSetShown( ) {
     return _setShown;
   }
 
+  /// Used internally.
   bool getSetText( ) {
     return _setText;
   }
@@ -1014,30 +1032,36 @@ class WxSizeEventTableEntry extends WxEventTableEntry {
 
 /// [Size](/docs/wxdart/wxGetSizeEventType.html) event gets sent when the size of a window changes. |
 /// | ----------------- |
-/// | void bindSizeEvent( OnSizeEventFunc ) |
+/// | void bindSizeEvent( void function( WxSizeEvent event ) ) |
 /// | void unbindSizeEvent() |
 /// 
 /// Make sure to call [WxSizeEvent.skip] so that ancestor windows can handle the
 /// event as well.
 
 class WxSizeEvent extends WxEvent {
-  WxSizeEvent(  this._size, { int id = 0 } ) : super( wxGetSizeEventType(), id );
+  WxSizeEvent(  WxSize size, { id = 0 } ) : super( wxGetSizeEventType(), id ) {
+    _size = size;
+  }
 
-  WxSize _size;
+  late WxSize _size;
   WxRect _rect = WxRect(0, 0, 0, 0);
 
+  /// Returns the new size of the window
   WxSize getSize( ) {
     return _size;
   }
 
+  /// Used internally. Sets the size of the window.
   void setSize( WxSize size ) {
     _size = size;
   }
 
+  /// Returns the new full dimensions of the window
   WxRect getRect( ) {
     return _rect;
   }
 
+  /// Used internally. Sets the dimension of the window.
   void setRect( WxRect rect ) {
     _rect = rect;
   }
@@ -1470,7 +1494,7 @@ class WxKeyEventTableEntry extends WxEventTableEntry {
 
 /// Event sent out for keyboard key events.
 /// 
-/// Example ussage:
+/// Example usage:
 /// ```dart
 /// // Derive new class from WxWindow
 /// class MyWindow extends WxWindow {
@@ -1503,6 +1527,23 @@ class WxKeyEventTableEntry extends WxEventTableEntry {
 ///   }
 /// }
 /// ```
+/// 
+/// Events:
+/// [KeyDown](/wxdart/wxGetKeyDownEventType.html) event gets sent when the user hits a key. |
+/// | ----------------- |
+/// | void bindKeyDownEvent( void function( [WxKeyEvent] event ) ) |
+/// | void unbindKeyDownEvent() |
+/// 
+/// [KeyUp](/wxdart/wxGetKeyUpEventType.html) event gets sent when the user releases a key. |
+/// | ----------------- |
+/// | void bindKeyUpEvent( void function( [WxKeyEvent] event ) ) |
+/// | void unbindKeyUpEvent() |
+/// 
+/// [Char](/wxdart/wxGetCharEventType.html) event gets sent when a full character has been entered. |
+/// | ----------------- |
+/// | void bindCharEvent( void function( [WxKeyEvent] event ) ) |
+/// | void unbindCharEvent() |
+/// 
 ///
 /// # Supported key code constants in wxDart Flutter and wxDart Native
 /// | key | constant |
@@ -1531,30 +1572,32 @@ class WxKeyEventTableEntry extends WxEventTableEntry {
 /// | alt | WXK_ALT |
 /// | shift | WXK_SHIFT |
 /// | control | WXK_CONTROL |
-/// | exclamation | 33 |
-/// | numberSign | 35 |
-/// | dollar | 36 |
-/// | percent | 37 |
-/// | quoteSingle | 39 |
+/// | exclamation | WXK_EXCLAMATION |
+/// | numberSign | WXK_NUMBER_SIGN |
+/// | dollar | WXK_DOLLAR |
+/// | percent | WXK_PERCENT |
+/// | quoteSingle | WXK_SINGLE_QUOTE |
 /// | backslash | 92 |
 /// | braceLeft | 123 |
 /// | braceRight | 125 |
-/// | tilde | 126 |
+/// | tilde | WXK_TILDE |
 /// | bracketLeft | 91 |
 /// | bracketRight | 93 |
-/// | comma | 44 |
-/// | quote | 45 |
-/// | period | 46 |
+/// | comma | WXK_COMMA |
+/// | minus | WXK_MINUS |
+/// | quote | WXK_DOUBLE_QUOTE |
+/// | period | WXK_PERIOD |
+/// | slash | WXK_SLASH |
 /// | digit0 | 48 | 
 /// | ... | ... | 
 /// | digit9 | 57 | 
-/// | colon | 58 |
-/// | semicolon | 59 |
-/// | less | 60 |
-/// | equal | 61 |
-/// | greater | 62 |
-/// | question | 63 |
-/// | at | 64 |
+/// | colon | WXK_COLON |
+/// | semicolon | WXK_SEMICOLON |
+/// | less | WXK_LESS |
+/// | equal | WXK_EQUAL |
+/// | greater | WXK_GREATER |
+/// | question | WXK_QUESTION |
+/// | at | WXK_AT |
 /// | keyA | WXK_A |
 /// | ... | ... |
 /// | keyZ | WXK_Z |
