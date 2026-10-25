@@ -32,6 +32,22 @@ const int wxRB_SINGLE = 0x0008;
 /// In wxDart Flutter, there can be only one group of radiobutton controls
 /// per parent window (the first of which needs to have the [wxRB_GROUP] flag).
 /// 
+/// Example usage:
+/// ```dart
+///  // Create fist control
+///  final radio1 = WxRadioButton( this, -1, "First choice", style: wxRB_GROUP );
+///  final radio2 = WxRadioButton( this, -1, "Second choice" );
+/// 
+///  radio1.bindRadioButtonEvent( (event) {
+///    if (event.isChecked()) {
+///      // radio1 was checked
+///    } else {
+///      // radio1 was unchecked because
+///      // radio2 was checked
+///    }
+///  }, -1 );
+/// ```
+/// 
 /// # Event emitted
 /// [RadioButton](/wxdart/wxGetRadioButtonEventType.html) event gets sent when the user selects this item. |
 /// | ----------------- |

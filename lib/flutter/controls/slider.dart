@@ -35,14 +35,22 @@ const int wxSL_INVERSE = 0x1000;
 
 /// A slider is a control with a handle which can be pulled back and forth to change the value.
 ///
+/// Main interface:
+/// * [setValue]
+/// * [getValue]
+/// * [setRange]
+/// * [getMin]
+/// * [getMax]
+///
+/// Example usage:
 ///```dart
 ///  // Create the slider with a range from 0 to 100
 ///  final slider = WxSlider(parent, -1, 0, 0, 100, size: WxSize(150,-1) );
 ///
 ///  slider.bindSliderEvent((event) {
 ///  final value = event.getInt();
-///  // do something with it
-/// }, -1);
+///    // do something with it
+///  }, -1);
 ///```
 ///
 /// [Slider](/wxdart/wxGetSliderEventType.html) event gets sent when user dragged the slider. |

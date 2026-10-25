@@ -43,6 +43,14 @@ extension SpinCtrlDoubleEventBinder on WxEvtHandler {
 }
 
 /// Event emitted by [WxSpinCtrlDouble].
+/// 
+/// Main interface:
+/// * [getValue]
+/// 
+/// [SpinCtrlDouble](/wxdart/wxGetSpinCtrlDoubleEventType.html) event gets sent when the user has entered a new number. |
+/// | ----------------- |
+/// | void bindSpinCtrlDoubleEvent( void function( [WxSpinDoubleEvent] event ) ) |
+/// | void unbindSpinCtrlDoubleEvent() |
 
 class WxSpinDoubleEvent extends WxNotifyEvent  {
   WxSpinDoubleEvent( int eventType, int id, { double value = 0 } ) : super( eventType, id ) {
@@ -66,11 +74,14 @@ class WxSpinDoubleEvent extends WxNotifyEvent  {
 
 /// Allows the user to enter an double number with keyboard or mouse/touch.
 /// 
+/// In wxDart Native, the change proposed by the control can be vetoed
+/// using [WxSpinDoubleEvent.veto]. This is not yet implemented in wxDart Flutter.
+/// 
 /// Example usage:
 ///```dart
 ///  final spin = WxSpinCtrlDouble(parent, -1, '-10.0', initial: -10, min: -20, max: 20 /*, size: WxSize(150,-1) */);
 ///  spin.bindSpinCtrlDoubleEvent((event) {
-///   double value = event.getValue;
+///   double value = event.getValue();
 /// } ,-1);
 ///```
 ///

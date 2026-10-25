@@ -37,6 +37,7 @@ extension SearchCancelEventBinder on WxEvtHandler {
 /// A text control with additional buttons to start and stop a search action.
 /// [WxSearchCtrl] does not actually perform the search itself.
 /// 
+/// Example usage:
 /// ```dart
 ///  // Create search control
 ///  final search = WxSearchCtrl( this, -1 );

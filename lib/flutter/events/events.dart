@@ -122,6 +122,14 @@ int wxGetTreebookNodeExpandedEventType()        { return 253; }
 int wxGetGesturePanEventType()                  { return 260; }
 int wxGetGestureZoomEventType()                 { return 261; }
 
+int wxGetDropDataEventType()                    { return 270; }
+int wxGetDropDropEventType()                    { return 271; }
+int wxGetDropEnterEventType()                   { return 272; }
+int wxGetDropLeaveEventType()                   { return 273; }
+int wxGetDropDragOverEventType()                { return 274; }
+
+int wxGetDragFeedbackEventType()                { return 275; }
+
 // ------------------------- wxGestureEvent ----------------------
 
 /// Base class for gesture events on touch interfaces
@@ -1844,7 +1852,51 @@ class WxCloseEventTableEntry extends WxEventTableEntry {
   }
 }
 
-/// [CloseWindow](/wxdart/wxGetCloseWindowEventType.html) event gets sent when a top level window gets closed, e.g. after the x button was pressed. |
+/// [WxCloseEvent] event gets sent when a top level window gets closed, e.g. after the x
+/// button was pressed.
+/// 
+/// Main interface
+/// * [veto]
+/// 
+/// Example usage:
+/// ```Dart
+/// class MyFrame extends WxFrame {
+///   MyFrame( WxFrame? parent) : super( parent, -1, "Hello World", size: WxSize(900, 700) ) 
+///   {
+///     // Create a menu bar
+///     final menubar = WxMenuBar();
+/// 
+///     // Create a menu 
+///     final filemenu = WxMenu();
+/// 
+///     // Append menu item for Quit
+///     filemenu.appendItem( wxID_EXIT, "Quit app\tCtrl-Q", help: "Run, baby, run!" );
+///     // Attach menu to menu bar
+///     menubar.append(filemenu, "File");
+/// 
+///     // Attach menu bar to this frame
+///     setMenuBar(menubar);
+/// 
+///     // Bind this function to wxID_EXIT (which is a pre-defined ID) used
+///     // in the 'Quit' menu item. In the handler, request to close the WxFrame
+///     bindMenuEvent( (_) => close(false), wxID_EXIT );
+/// 
+///     // Someone requested to close. This could also come from the user clicking
+///     // on the X button at the top of a window, or from a menu, or programmatically
+///     // by calling WxFrame.close() as above.
+///     bindCloseWindowEvent( (event) { 
+///       // You could try to veto
+///       // event.veto( true ); 
+///       // return
+/// 
+///       // otherwise, go ahead and quit by destroying the WxFrame
+///       destroy();
+///     } );
+///   }
+/// }
+/// ```
+/// 
+/// [CloseWindow](/wxdart/wxGetCloseWindowEventType.html) event gets sent when a [WxFrame] got a request to close. |
 /// | ----------------- |
 /// | void bindCloseWindowEvent( OnCloseEventFunc ) |
 /// | void unbindCloseWindowEvent() |

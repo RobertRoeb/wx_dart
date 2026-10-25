@@ -79,6 +79,14 @@ extension SpinDownEventBinder on WxEvtHandler {
 }
 
 /// Event emitted by [WxSpinCtrl].
+/// 
+/// Main interface:
+/// * [getPosition]
+/// 
+/// [SpinCtrl](/wxdart/wxGetSpinCtrlEventType.html) event gets sent when the user has entered a new number. |
+/// | ----------------- |
+/// | void bindSpinCtrlEvent( void function( [WxSpinEvent] event ) ) |
+/// | void unbindSpinCtrlEvent() |
 
 class WxSpinEvent extends WxNotifyEvent  {
 
@@ -109,11 +117,20 @@ const int wxSP_WRAP = 0x8000;
 /// platforms as it sometimes has two small arrows above each other or two big arrows
 /// next to each other, taking much more space. 
 ///  
+/// Main interface:
+/// * [setValue]
+/// * [getValue]
+/// * [setRange]
+/// * [getMin]
+/// * [getMax]
+/// * [setIncrement]
+/// * [getIncrement]
+/// 
 /// Example usage:
 ///```dart
 ///  final spin = WxSpinCtrl(parent, -1, '-10', initial: -10, min: -20, max: 20 /*, size: WxSize(150,-1) */);
 ///  spin.bindSpinCtrlEvent((event) {
-///   int value = event.getPos();
+///   int value = event.getPosition();
 ///    // same as: int value = event.getInt();
 /// } ,-1);
 ///```

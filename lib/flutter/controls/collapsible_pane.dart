@@ -42,16 +42,26 @@ extension CollapsiblePaneEventBinder on WxEvtHandler {
   }
 }
 
+/// [WxCollapsiblePaneEvent] gets sent from [WxCollapsiblePane]
+/// 
+/// [CollapsiblePaneChanged](/wxdart/wxGetCollapsiblePaneChangedEventType.html) event gets sent when the user collapses or expands the pane. |
+/// | ----------------- |
+/// | void bindCollapsiblePaneChangedEvent( void function( WxCollapsiblePaneEvent event ) ) |
+/// | void unbindCollapsiblePaneChangedEvent() |
 class WxCollapsiblePaneEvent extends WxCommandEvent {
+  /// Creates the event.
   WxCollapsiblePaneEvent( WxWindow generator, int id, bool collapse ) : super( wxGetCollapsiblePaneChangedEventType(), id)
   {
       _collapsed = collapse;
       setEventObject( generator );
   }
 
+  /// Sets if the pane was collapsed or expanded. Used internally.
   void setCollapsed( bool collapsed ) {
     _collapsed = collapsed;
   }
+
+  /// Returns true of the pane got collapsed, false when it expanded.
   bool getCollapsed( ) {
     return _collapsed;
   }
@@ -73,6 +83,7 @@ const int wxCP_NO_TLW_RESIZE = 0x0002;
 /// [wxCP_NO_TLW_RESIZE] specifies whether the toplevel window (typically a [WxDialog])
 /// should be resized. That is common on desktop platforms.
 /// 
+/// Example usage:
 /// ```dart
 ///  // Create collapsible pane 
 ///  final collpane = WxCollapsiblePane(this, -1, "WxCollapsiblePanel", style: wxNO_BORDER|wxCP_NO_TLW_RESIZE );
@@ -90,6 +101,11 @@ const int wxCP_NO_TLW_RESIZE = 0x0002;
 /// | wxCP_DEFAULT_STYLE | wxTAB_TRAVERSAL|wxBORDER_NONE |
 /// | wxCP_NO_TLW_RESIZE | 0x0002 |
 /// 
+/// [CollapsiblePaneChanged](/wxdart/wxGetCollapsiblePaneChangedEventType.html) event gets sent when the user collapses or expands the pane. |
+/// | ----------------- |
+/// | void bindCollapsiblePaneChangedEvent( void function( WxCollapsiblePaneEvent event ) ) |
+/// | void unbindCollapsiblePaneChangedEvent() |
+
 class WxCollapsiblePane extends WxControl {
   WxCollapsiblePane( WxWindow parent, int id, String label, { super.pos, super.size, super.style = wxCP_DEFAULT_STYLE } ) 
     : super(parent,id) {
