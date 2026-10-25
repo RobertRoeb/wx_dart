@@ -20,6 +20,7 @@ part of '../../wx_dart.dart';
 /// controls. You need to use the wxVSCROLL flag in this case (see below) and
 /// wxDart will take care of setting scrollbars and laying out the controls:
 /// 
+/// Example usage of [WxScrolledWindow] with a [WxSizer] and vertical scrolling:
 ///```dart
 ///class MySizerWindow extends WxScrolledWindow {
 ///  MySizerWindow( WxWindow parent ) : super( parent, -1, style: wxVSCROLL )
@@ -46,6 +47,7 @@ part of '../../wx_dart.dart';
 /// When drawing into a window, adapt the coordinate system using
 /// [WxScrolledWindow.doPrepareDC] like this.
 /// 
+/// Example usage:
 /// ```dart
 /// // Derive new class from WxWindow
 /// class MyWindow extends WxScrolledWindow {
@@ -76,6 +78,7 @@ part of '../../wx_dart.dart';
 /// }
 /// ```
 /// 
+/// Events emitted beyond those from [WxWindow]:
 /// [WxScrollWinEvent] get emitted by [WxScrolledWindow] after some user action
 /// (like clicking on a scrollbar or typing the PageDn key) that resulted in scrolling.
 ///  
