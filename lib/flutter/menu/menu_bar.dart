@@ -198,7 +198,7 @@ const int wxMB_UNDERLINE = 0x0002;
 /// 
 /// [Menu](/wxdart/wxGetMenuEventType.html) event gets sent when user selects a menu item |
 /// | ----------------- |
-/// | void bindMenuEvent( OnCommandEventFunc ) |
+/// | void bindMenuEvent( void Function( WxCommandEvent event ) ) |
 /// | void unbindMenuEvent() |
 
 
