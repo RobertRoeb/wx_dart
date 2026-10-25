@@ -1,10 +1,8 @@
 ## 0.9.24
 
-* More AI friendly doc updates
-
-## 0.9.23
-
-* AI told me to make the docs more AI friendly
+* Lots of updates to docs (also, to make them more AI friendly)
+* Added support for WxDataObject, WxDropTarget and WxDropSource to wxDart Native
+* Drag and Drop is not yet implemented in wxDart Flutter
 
 ## 0.9.22
 

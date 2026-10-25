@@ -24,6 +24,7 @@ A cross-platform GUI library to build native desktop apps, web apps and mobile a
     - [wxDataViewCtrl related classes](#wxdataviewctrl-related-classes)
     - [Layout classes](#layout-classes)
     - [Event classes](#event-classes)
+    - [Drag and Drop classes](#dnd-classes)
 * [Live web demo](#demo)
 * [More screenshots](#screenshots)
 * [Live tutorial apps](#web-app-tutorials)
@@ -476,6 +477,18 @@ Command events (deriving from WxCommandEvent)
 | [WxDataViewEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDataViewEvent-class.html) | [wxDataViewEvent](https://docs.wxwidgets.org/trunk/classwx_data_view_event.html) |
 | [WxHtmlEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxHtmlEvent-class.html) | [wxHtmlEvent](https://docs.wxwidgets.org/trunk/classwx_html_event.html) |
 | [WxCollapsiblePaneEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxCollapsiblePane-class.html) | [wxCollapsiblePaneEvent](https://docs.wxwidgets.org/trunk/classwx_collapsible_pane_event.html) |
+
+## DnD classes
+
+| Dart | C++ |
+| ------------------ | ----------------- |
+| [WxDataFormat](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDataFormat-class.html) | [wxDataFormat](https://docs.wxwidgets.org/trunk/classwx_data_format.html) |
+| [WxDataObject](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDataObject-class.html) | [wxDataObject](https://docs.wxwidgets.org/trunk/classwx_data_object.html) |
+| [WxTextDataObject](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxTextDataObject-class.html) | [wxTextDataObject](https://docs.wxwidgets.org/trunk/classwx_text_data_object.html) |
+| [WxDropSource](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDropSource-class.html) | [wxDropSource](https://docs.wxwidgets.org/trunk/classwx_drop_source.html)  |
+| [WxDropTarget](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDropTarget-class.html) | [wxDropTarget](https://docs.wxwidgets.org/trunk/classwx_drop_target.html)  |
+| [WxDropEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDropEvent-class.html) | Implemented using function overloading. |
+| [WxDragEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDragEvent-class.html) | Implemented using function overloading. |
 
 ## Demo
 
