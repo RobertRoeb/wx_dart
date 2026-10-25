@@ -1,5 +1,6 @@
 
 import 'package:wx_dart/wx_dart.dart';
+import 'dart:math';
 
 
 class MyFocussableWindow extends WxWindow {
@@ -8,19 +9,61 @@ class MyFocussableWindow extends WxWindow {
     bindKillFocusEvent((_)=>refresh() );
     bindSetFocusEvent((_)=>refresh() );
 
-    bindPaintEvent( (_) {
+    bindPaintEvent( onPaint );
+
+    _data = WxTextDataObject( "" );
+    _target = WxDropTarget( _data );
+    setDropTarget( _target );
+
+    bindDropEnterEvent( (_) { 
+      print( "DropEnterEvent" );
+      setBackgroundColour(wxGREEN);
+    }, -1 );
+    bindDropLeaveEvent( (_) {
+      print( "DropLeaveEvent" );
+      setBackgroundColour(wxGREY);
+    }, -1 );
+    bindDropDropEvent( onDrop, -1);
+    bindDropDataEvent( onData, -1);
+  }
+
+  late WxTextDataObject _data;
+  late WxDropTarget _target;
+  String _dropText = "";
+
+  void onDrop( WxDropEvent event )
+  {
+    print( "onDrop" );
+  }
+  void onData( WxDropEvent event )
+  {
+    print( "onDrop" );
+    _target.getData();
+    _dropText = _data.getText();
+    refresh();
+  }
+
+  void onPaint( WxPaintEvent event )
+  {
       final dc = WxPaintDC( this );
       dc.setBrush( wxWHITE_BRUSH );
       if (hasFocus()) {
         dc.setPen(wxBLACK_PEN);
         dc.drawRectangle(0, 0, getSize().x, getSize().y );
-        dc.drawText("Has focus", 5, 5 );
+        if (_dropText.isNotEmpty) {
+          dc.drawText("Droptext:\n$_dropText", 5, 5 );
+        } else {
+          dc.drawText("Has focus,\nis WxDropTarget!", 5, 5 );
+        }
       } else {
         dc.setPen(wxTRANSPARENT_PEN);
         dc.drawRectangle(0, 0, getSize().x, getSize().y );
-        dc.drawText("No focus", 5, 5 );
+        if (_dropText.isNotEmpty) {
+          dc.drawText("Droptext:\n$_dropText", 5, 5 );
+        } else {
+          dc.drawText("Doesn't have focus,\nis WxDropTarget!", 5, 5 );
+        }
       }
-    });
   }
 }
 
@@ -32,7 +75,38 @@ class MyNonFocussableWindow extends WxWindow {
     bindKillFocusEvent((_)=>refresh() );
     bindSetFocusEvent((_)=>refresh() );
 
-    bindPaintEvent( (_) {
+    bindPaintEvent( onPaint );
+    bindLeftDownEvent((event) {_isDown = true; _start = event.getPosition(); } );
+    bindLeftUpEvent((_) => _isDown = false );
+    bindLeaveWindowEvent( (_) => _isDown = false );
+    bindMotionEvent(onMotion);
+
+    bindDragFeedbackEvent( (_) {
+      // give custom feedback
+    }, -1 );
+  }
+
+  bool _isDown = false;
+  WxPoint _start = WxPoint.zero;
+
+  void onMotion( WxMouseEvent event )
+  {
+    if (!_isDown) return;
+    final dx = (event.getPosition().x - _start.x).toDouble();
+    final dy = (event.getPosition().y - _start.y).toDouble();
+    final dist = sqrt(dx*dx + dy*dy);
+    if (dist > 7) {
+      _isDown = false;
+      print( "Start drag" );
+      final data = WxTextDataObject( "This is so cool" );
+      final source = WxDropSource(data, this);
+      source.doDragDrop();
+      print( "End drag" );
+    }
+  }
+
+  void onPaint( WxPaintEvent event )
+  {
       final dc = WxPaintDC( this );
       dc.setBrush( wxWHITE_BRUSH );
       if (hasFocus()) {
@@ -42,9 +116,8 @@ class MyNonFocussableWindow extends WxWindow {
       } else {
         dc.setPen(wxTRANSPARENT_PEN);
         dc.drawRectangle(0, 0, getSize().x, getSize().y );
-        dc.drawText("Cannot get focus", 5, 5 );
+        dc.drawText("Cannot get focus,\nbut WxDropSource!", 5, 5 );
       }
-    });
   }
 }
 

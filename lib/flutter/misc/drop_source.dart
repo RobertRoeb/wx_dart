@@ -1,0 +1,179 @@
+// ---------------------------------------------------------------------------
+// Author:      Robert Roebling
+// Created:     2026-03-01
+// Copyright:   (c) 2026 Robert Roebling
+// Licence:     wxWindows licence
+// ---------------------------------------------------------------------------
+
+part of '../../wx_dart.dart';
+
+// ------------------------- wxDropSource ----------------------
+
+
+const int wxDRAG_COPY_ONLY = 0;
+const int wxDRAG_ALLOW_MOVE = 1;
+
+const int wxDRAG_DEFAULT_MOVE = 3;
+const int wxDRAG_RESULT_ERROR = 0;
+const int wxDRAG_RESULT_NONE = 1;
+const int wxDRAG_RESULT_COPY = 2;
+const int wxDRAG_RESULT_MOVE = 3;
+const int wxDRAG_RESULT_LINK = 4;
+const int wxDRAG_RESULT_CANCEL = 5;
+
+/// [WxDropSource] is used to initiate a Drag and Drop operation.
+/// 
+/// It has to be associated with a [WxDataObject] that contains
+/// the data and its format or formats.
+/// 
+/// Not implemented in wxDart Native yet.
+/// 
+/// See [WxDataObject], [WxTextDataObject], [WxDataFormat], [WxDropTarget]
+/// 
+/// Example usage:
+///```Dart
+///class MyDropSourceWindow extends WxWindow {
+///  MyDropSourceWindow( WxWindow parent, WxSize size ) : super( parent, -1, wxDefaultPosition, size, 0)
+///  {
+///    // Mouse code to catch a drag start operation
+///    bindLeftDownEvent((event) { _isDown = true; _start = event.getPosition(); } );
+///    bindLeftUpEvent((_) => _isDown = false );
+///    bindLeaveWindowEvent( (_) => _isDown = false );
+///    bindMotionEvent(onMotion);
+///  }
+///
+///  bool _isDown = false;
+///  WxPoint _start = WxPoint.zero;
+///
+///  void onMotion( WxMouseEvent event )
+///  {
+///    if (!_isDown) return;
+///    final dx = (event.getPosition().x - _start.x).toDouble();
+///    final dy = (event.getPosition().y - _start.y).toDouble();
+///    final dist = dx*dx + dy*dy;
+///    if (dist > 64) {
+///      // Drag has been long enough, start DnD
+///      _isDown = false;
+///
+///      // Create data object with text
+///      final data = WxTextDataObject( "This is so cool" );
+///
+///      // Create WxDropSource with data
+///      final source = WxDropSource(data, this);
+///
+///      // Start DnD
+///      source.doDragDrop();
+///    }
+///  }
+///}
+///
+///```
+/// # Drag operation constants
+/// | constant | meaning |
+/// | -------- | -------- |
+/// | wxDRAG_COPY_ONLY | 0 |
+/// | wxDRAG_ALLOW_MOVE | 1 |
+/// | wxDRAG_DEFAULT_MOVE | 3 |
+/// 
+/// # Drag resuls constants
+/// | constant | meaning |
+/// | -------- | -------- |
+/// | wxDRAG_RESULT_ERROR | 0 |
+/// | wxDRAG_RESULT_NONE | 1 |
+/// | wxDRAG_RESULT_COPY | 2 |
+/// | wxDRAG_RESULT_MOVE | 3 |
+/// | wxDRAG_RESULT_LINK | 4 |
+/// | wxDRAG_RESULT_CANCEL | 5 |
+/// 
+/// Event emitted:
+/// [DragFeedback](/wxdart/wxGetDragFeedbackEventType.html) event gets sent to allow the user to create visual feedback. |
+/// | ----------------- |
+/// | void bindDragFeedbackEvent( void function( [WxDragEvent] event) ) |
+/// | void unbindDragFeedbackEvent() |
+
+
+class WxDropSource extends WxClass {
+
+  /// Creates WxDropSource with associated [data] for [win]
+  WxDropSource( WxDataObject data, WxWindow win ) {
+    _window = win;
+    _data = data;
+  }
+
+  late WxWindow _window;
+  late WxDataObject _data;
+
+  /// Initiate Drag and Drop operation
+  int doDragDrop( { int flags = 0 } ) {
+    return wxDRAG_RESULT_ERROR;
+  }
+}
+
+// ------------------------- wxDragEvent ----------------------
+
+typedef OnDragEventFunc = void Function( WxDragEvent event );
+
+/// @nodoc
+
+class WxDragEventTableEntry extends WxEventTableEntry {
+  WxDragEventTableEntry( super.eventType, super.id, this.func );
+  final OnDragEventFunc func;
+
+  @override
+  bool matches( int eventTypeTested, int idTested ) {
+    return (eventType == eventTypeTested) && ((id == wxID_ANY) || (id == idTested));
+  }
+
+  @override
+  void doCallFunction( WxEvent event ) {
+    if (event is WxDragEvent) {
+      func( event );
+    }
+  }
+}
+
+/// Event sent out by [WxDropTarget]
+/// # Drag operation constants
+/// | constant | meaning |
+/// | -------- | -------- |
+/// | wxDRAG_COPY_ONLY | 0 |
+/// | wxDRAG_ALLOW_MOVE | 1 |
+/// | wxDRAG_DEFAULT_MOVE | 3 |
+
+class WxDragEvent extends WxNotifyEvent {
+  WxDragEvent( int id ) : super( wxGetDragFeedbackEventType(), id );
+
+  int _feedback= wxDRAG_COPY_ONLY;
+
+  /// Sets which operation to give feedback for, called internally
+  void setFeedback( int feedback ) {
+    _feedback = feedback;
+  }
+
+  /// Returns the operaiton to give feedback for
+  /// 
+  /// # Drag operation constants
+  /// | constant | meaning |
+  /// | -------- | -------- |
+  /// | wxDRAG_COPY_ONLY | 0 |
+  /// | wxDRAG_ALLOW_MOVE | 1 |
+  /// | wxDRAG_DEFAULT_MOVE | 3 |
+  int getFeedback() {
+    return _feedback;
+  }
+}
+
+/// @nodoc
+
+extension DragFeedbackEventBinder on WxEvtHandler {
+  void bindDragFeedbackEvent( OnDragEventFunc func, int id ) {
+    _eventTable.add( WxDragEventTableEntry(wxGetDragFeedbackEventType(), id, func));
+  }
+
+  void unbindDragFeedbackEvent( int id )
+  {
+    _eventTable.removeWhere( (entry) => entry.matches(wxGetDragFeedbackEventType(), id));
+  }
+}
+
+
