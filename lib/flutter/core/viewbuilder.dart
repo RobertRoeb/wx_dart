@@ -1,8 +1,11 @@
 part of '../../wx_dart.dart';
 
 
-/// Calls [viewBuilder] for every view added to the app to obtain the widget to
-/// render into that view. The current view can be looked up with [View.of].
+// Calls [viewBuilder] for every view added to the app to obtain the widget to
+// render into that view. The current view can be looked up with [View.of].
+
+/// @nodoc
+
 class MultiViewApp extends StatefulWidget {
   const MultiViewApp({super.key, required this.viewBuilder});
 
