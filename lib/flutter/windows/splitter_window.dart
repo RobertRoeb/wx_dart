@@ -127,6 +127,39 @@ const int wxSP_3D = (wxSP_3DBORDER | wxSP_3DSASH);
 /// splitter sash around. If the wxSP_PERMIT_UNSPLIT flag is set, then the
 /// user can unsplit the window, i.e. one window gets hidden. 
 /// 
+/// Main interface:
+/// * [splitVertically]
+/// * [splitHorizontally]
+/// * [setSashPosition]
+/// * [setMinimumPaneSize]
+/// 
+/// Example usage with user unsplitting:
+/// ```dart
+///class MyMainWindow extends WxSplitterWindow
+///{
+///  MyMainWindow( MyFrame parent ) : super( parent, -1, style: wxSP_LIVE_UPDATE|wxSP_PERMIT_UNSPLIT )
+///  {
+///    // Create two windows
+///    _leftWindow = MyWindow(this);
+///    _rightWindow = MyWindow(this);
+///
+///    // Tell WxSplitterWindow how to split them
+///    splitVertically(_leftWindow, _rightWindow);
+///
+///    // Set initial split/sash position
+///    setSashPosition(450);
+///
+///    bindSplitterUnsplitEvent( (_) {
+///      // User unsplit, do something.
+///    }, -1 );
+///  }
+///
+///  late MyWindow _leftWindow;
+///  late MyWindow _rightWindow;
+///}
+///```
+///
+/// Example usage without user unsplitting:
 /// ```dart
 ///class MyMainWindow extends WxSplitterWindow
 ///{
@@ -143,7 +176,7 @@ const int wxSP_3D = (wxSP_3DBORDER | wxSP_3DSASH);
 ///    setMinimumPaneSize(100);
 ///
 ///    // Set initial split/sash position
-///    setSashPosition(450);    
+///    setSashPosition(450);
 ///  }
 ///
 ///  late MyWindow _leftWindow;
@@ -166,7 +199,7 @@ const int wxSP_3D = (wxSP_3DBORDER | wxSP_3DSASH);
 /// | void unbindSplitterUnsplitEvent() |
 /// [SplitterDoubleClick](/wxdart/wxGetSplitterDoubleClickEventType.html) event gets sent when the user double clicks on the sash |
 /// | ----------------- |
-/// | void bindSplitterDoubleClickEvent( OnSplitterEventFunc ) |
+/// | void bindSplitterDoubleClickEvent( void function( [WxSplitterEvent] event ) ) |
 /// | void unbindSplitterDoubleClickEvent() |
 /// 
 /// # Window styles
