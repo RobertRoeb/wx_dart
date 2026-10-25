@@ -465,6 +465,7 @@ class WxWindow extends WxEvtHandler {
   WxWindow? _sliverView;
   bool _hasSentWindowCreateEvent = false;
   int _centreOnParent = 0;
+  WxDropTarget? _dropTarget;
 
   /// Gets called before the window is destroyed and can be used to e.g.
   /// close a database or network connection or to stop a [WxTimer].
@@ -2086,6 +2087,15 @@ class WxWindow extends WxEvtHandler {
   void setWindowStyle( int style ) {
     _style = style;
     _setState();
+  }
+
+  /// Associates the given drop target to this window. This
+  /// allows data to be dropped on this window from a drag and
+  /// drop operation.
+  /// 
+  /// See [WxDropTarget]
+  void setDropTarget( WxDropTarget? target ) {
+    _dropTarget = target;
   }
 
   void printChildren() {
