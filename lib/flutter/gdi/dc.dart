@@ -317,7 +317,6 @@ class WxDC extends WxReadOnlyDC {
         text: TextSpan(
             text: text, 
             style: _convertTextStyle(_currentTextForeground, _font)), 
-            maxLines: 1, 
             textDirection: TextDirection.ltr)
       ..layout(minWidth: 0, maxWidth: double.infinity);
 

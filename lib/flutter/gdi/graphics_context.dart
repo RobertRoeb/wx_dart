@@ -392,7 +392,6 @@ class WxGraphicsContext extends WxGraphicsObject {
         text: TextSpan(
             text: text, 
             style: _convertTextStyle(null, _font)), 
-            maxLines: 1, 
             textDirection: TextDirection.ltr)
       ..layout(minWidth: 0, maxWidth: double.infinity);
     return WxSize( textPainter.size.width.floor(), textPainter.size.height.floor() );
@@ -409,7 +408,6 @@ class WxGraphicsContext extends WxGraphicsObject {
         text: TextSpan(
             text: text, 
             style: _convertTextStyle(_textColour, _font)), 
-            maxLines: 1, 
             textDirection: TextDirection.ltr)
       ..layout(minWidth: 0, maxWidth: double.infinity);
 

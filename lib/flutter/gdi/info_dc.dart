@@ -44,7 +44,6 @@ class WxReadOnlyDC extends WxObject {
         text: TextSpan(
             text: text, 
             style: _convertTextStyle(null, _font)), 
-            maxLines: 1, 
             textDirection: TextDirection.ltr)
       ..layout(minWidth: 0, maxWidth: double.infinity);
     final returnValue = WxSize( textPainter.size.width.floor(), textPainter.size.height.floor() );
