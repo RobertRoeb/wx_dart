@@ -13,22 +13,22 @@ part of '../../wx_dart.dart';
 /// [WxWindow.setDropTarget] so that data can be dropped on the
 /// window using Drag and Drop operations.
 /// 
-/// A [WxDataObject] needs to associated with the window and it
-/// will receive the data in end when you decide to call [getData].
-/// 
-/// Not implemented in wxDart Native yet.
-/// 
 /// While the wxWidgets C++ library uses overloaded functions,
 /// wxDart uses events as the main interface for [WxDropTarget]. 
+/// 
+/// A [WxDataObject] needs to assigned to the [WxDropTarget] and it
+/// will receive the data in DragData where you can call [getData].
+/// 
+/// Not implemented in wxDart Native yet.
 /// 
 /// Example usage:
 /// ```Dart
 /// class MyDropWindow extends WxWindow {
 ///   MyDropWindow( WxWindow parent, WxSize size ) : super( parent, -1, wxDefaultPosition, size, 0)
 ///   {  
-///     _data = WxTextDataObject( "" );
-///     _target = WxDropTarget( _data );
-///     setDropTarget( _target );
+///     _dataObject = WxTextDataObject( "" );
+///     _dropTarget = WxDropTarget( _dataObject );
+///     setDropTarget( _dropTarget );
 /// 
 ///     bindDropEnterEvent( (_) { 
 ///       // Show some highlight
@@ -44,8 +44,8 @@ part of '../../wx_dart.dart';
 ///     bindDropDataEvent( onData, -1);
 ///   }
 /// 
-///   late WxTextDataObject _data;
-///   late WxDropTarget _target;
+///   late WxTextDataObject _dataObject;
+///   late WxDropTarget _dropTarget;
 ///   String _dropText = "";
 /// 
 ///   void onDrop( WxDropEvent event )
@@ -56,11 +56,11 @@ part of '../../wx_dart.dart';
 ///   void onData( WxDropEvent event )
 ///   {
 ///     // The data has arrived. Now transfer it
-///     // from [WxDropTarget] to the [WxDataObject]
-///     _target.getData();
+///     // from _dropTarget to the _dataObject
+///     _dropTarget.getData();
 /// 
 ///     // We got it!
-///     _dropText = _data.getText();
+///     _dropText = _dataObject.getText();
 /// 
 ///     // Update window (or something else)
 ///     refresh();
