@@ -56,7 +56,7 @@ extension NotebookPageChangedEventBinder on WxEvtHandler {
     _eventTable.add( WxNotebookEventTableEntry(wxGetNotebookPageChangedEventType(), id, func));
   }
   void unbindNotebookPageChangedEvent( OnNotebookEventFunc func, int id ) { 
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetNotebookPageChangedEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetNotebookPageChangedEventType(), id) ));
   }
 }
 
@@ -67,7 +67,7 @@ extension NotebookPageChangingEventBinder on WxEvtHandler {
     _eventTable.add( WxNotebookEventTableEntry(wxGetNotebookPageChangingEventType(), id, func));
   }
   void unbindNotebookPageChangingEvent( OnNotebookEventFunc func, int id ) { 
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetNotebookPageChangingEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetNotebookPageChangingEventType(), id) ));
   }
 }
 

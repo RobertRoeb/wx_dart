@@ -19,7 +19,7 @@ extension MenuEventBinder on WxEvtHandler {
   }
 
   void unbindMenuEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetMenuEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetMenuEventType(), id) ));
   }
 }
 
@@ -53,7 +53,7 @@ extension MenuOpenEventBinder on WxEvtHandler {
     _eventTable.add( WxMenuEventTableEntry(wxGetMenuOpenEventType(), -1, func));
   }
   void unbindMenuOpenEvent() {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetMenuOpenEventType(), -1));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetMenuOpenEventType(), -1) ));
   }
 }
 
@@ -64,7 +64,7 @@ extension MenuCloseEventBinder on WxEvtHandler {
     _eventTable.add( WxMenuEventTableEntry(wxGetMenuCloseEventType(), -1, func));
   }
   void unbindMenuCloseEvent() {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetMenuCloseEventType(), -1));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetMenuCloseEventType(), -1) ));
   }
 }
 
@@ -75,7 +75,7 @@ extension MenuHighlightEventBinder on WxEvtHandler {
     _eventTable.add( WxMenuEventTableEntry(wxGetMenuHighlightEventType(), -1, func));
   }
   void unbindMenuHighlightEvent() {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetMenuHighlightEventType(), -1));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetMenuHighlightEventType(), -1) ));
   }
 }
 

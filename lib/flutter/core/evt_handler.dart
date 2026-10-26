@@ -55,6 +55,74 @@ class WxCommandEventTableEntry extends WxEventTableEntry {
 
 /// Base class for all event handling in wxDart. All event matching and
 /// callback calling occurs in [processEvent].
+///  
+/// Both the wxWidgets C++ library and wxPython use Bind() with an event type constant
+///
+/// Example, how to bind to an event in wxWidgets C++:
+/// ```C++
+///    button->Bind( wxEVT_BUTTON, &MyWindow::OnHello, idHello ); 
+///```
+/// Example, how to bind to an event in wxPython:
+///```Python
+///    self.Bind(wx.EVT_BUTTON, self.OnHello, self.btn_hello)
+///```
+///
+/// wxDart uses class extensions that provide an own function per event type: 
+///
+/// Example, how to bind to an event in wxDart:
+///```Dart
+///  {
+///    final button = WxButton( this, -1, "Hello" );
+///    button.bindButtonEvent( onHello, -1 );
+///  }
+/// 
+///  void onHello( WxCommandEvent event ) {
+///    // do something
+///  }
+///```
+///
+/// It is very common in Dart to use lambda functions (or anonymous functions
+/// or closures) to reduce typing and to keep code compact, like this:
+///```Dart
+///  final button = WxButton( this, -1, "Hello" );
+///  button.bindButtonEvent( (_) {
+///    // do something
+///  }, -1 );
+///```
+///
+/// There are scenarios where you no longer want to receive events
+/// of a certain type. This can be done using the unbind functions:
+///```Dart
+///  final button = WxButton( this, -1, "Hello" );
+/// 
+///  // bind to button event
+///  button.bindButtonEvent( (_) {
+///    // do something
+///  }, -1 );
+/// 
+///  // somewhere else: unbind again
+///  button.unbindButtonEvent( -1 );
+///```
+/// This unbinds the most recently added matching event handler from [WxEvtHandler].
+/// This works with lambda functions as well (see example above) because unbind 
+/// does not take the event handling function as a parameter.
+/// 
+/// If you want to bind and unbind a specific button event handler (because you
+/// have several), use an id: 
+///```Dart
+///  const int idHello = 100;
+/// 
+///  final button = WxButton( this, idHello, "Hello" );
+/// 
+///  // bind to button event
+///  button.bindButtonEvent( (_) {
+///    // do something
+///  }, idHello );
+/// 
+///  // somewhere else: unbind again
+///  button.unbindButtonEvent( idHello );
+///```
+
 class WxEvtHandler extends WxObject {
   WxEvtHandler();
 
@@ -96,18 +164,13 @@ class WxEvtHandler extends WxObject {
       return false;
     }
 
-    //  for (final entry in _eventTable) { 
     // go backwards to allow overloading
     for (int i = _eventTable.length-1; i >= 0; i--) {
       final entry = _eventTable[i];
       if (entry.matches(event.getEventType(), event.getId())) {
+        event.skip( skip: false );
         entry.doCallFunction(event);
-        if (!event.getSkipped()) {
-          return true;
-        } else {
-          // unset skip flag again
-          event.skip( skip: false );
-        }
+        if (!event.getSkipped()) return true;
       }
     }
 

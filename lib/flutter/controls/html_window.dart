@@ -38,7 +38,7 @@ extension HtmlLinkEventBinder on WxEvtHandler {
   }
 
   void unbindHtmlLinkClickEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetHtmlLinkClickEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetHtmlLinkClickEventType(), id) ));
   }
 }
 

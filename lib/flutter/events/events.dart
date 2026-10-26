@@ -202,7 +202,7 @@ extension PanGestureEventBinder on WxEvtHandler {
   }
 
   void unbindGesturePanEvent() {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetGesturePanEventType(), -1));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetGesturePanEventType(), -1) ));
   }
 }
 
@@ -264,7 +264,7 @@ extension ZoomGestureEventBinder on WxEvtHandler {
   }
 
   void unbindGestureZoomEvent() {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetGestureZoomEventType(), -1));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetGestureZoomEventType(), -1) ));
   }
 }
 
@@ -350,7 +350,7 @@ extension WindowCreateEventBinder on WxEvtHandler {
   }
 
   void unbindWindowCreateEvent(int id) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetWindowCreateEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetWindowCreateEventType(), -1) ));
   }
 }
 
@@ -1997,7 +1997,7 @@ extension InitDialogEventBinder on WxEvtHandler {
   }
 
   void unbindInitDialogEvent() {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetInitDialogEventType(), -1));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetInitDialogEventType(), -1) ));
   }
 }
 
@@ -2011,7 +2011,7 @@ extension DialogValidateEventBinder on WxEvtHandler {
   }
 
   void unbindDialogValidateEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetDialogValidateEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetDialogValidateEventType(), id) ));
   }
 }
 
@@ -2025,7 +2025,7 @@ extension UpdateUIEventBinder on WxEvtHandler {
   }
 
   void unbindUpdateUIEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetUpdateUIEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetUpdateUIEventType(), id) ));
   }
 }
 
@@ -2039,7 +2039,7 @@ extension DPIChangedEventBinder on WxEvtHandler {
   }
 
   void unbindDPIChangedEvent() {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetDPIChangedEventType(), -1));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetDPIChangedEventType(), -1) ));
   }
 }
 
@@ -2053,7 +2053,7 @@ extension SysColourChangedEventBinder on WxEvtHandler {
   }
 
   void unbindSysColourChangedEvent() {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetSysColourChangedEventType(), -1));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetSysColourChangedEventType(), -1) ));
   }
 }
 
@@ -2067,7 +2067,7 @@ extension ActivateAppEventBinder on WxEvtHandler {
   }
 
   void unbindActivateAppEvent() {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetActivateAppEventType(), -1));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetActivateAppEventType(), -1) ));
   }
 }
 
@@ -2079,7 +2079,7 @@ extension ActivateEventBinder on WxEvtHandler {
   }
 
   void unbindActivateEvent() {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetActivateEventType(), -1));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetActivateEventType(), -1) ));
   }
 }
 
@@ -2091,7 +2091,7 @@ extension HibernateEventBinder on WxEvtHandler {
   }
 
   void unbindHibernateEvent() {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetHibernateEventType(), -1));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetHibernateEventType(), -1) ));
   }
 }
 
@@ -2105,7 +2105,7 @@ extension KeyDownEventBinder on WxEvtHandler {
   }
 
   void unbindKeyDownEvent() {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetKeyDownEventType(), -1));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetKeyDownEventType(), -1) ));
   }
 }
 
@@ -2117,7 +2117,7 @@ extension KeyUpEventBinder on WxEvtHandler {
   }
 
   void unbindKeyUpEvent() {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetKeyUpEventType(), -1));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetKeyUpEventType(), -1) ));
   }
 }
 
@@ -2129,7 +2129,7 @@ extension CharEventBinder on WxEvtHandler {
   }
 
   void unbindCharEvent() {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetCharEventType(), -1));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetCharEventType(), -1) ));
   }
 }
 
@@ -2141,7 +2141,7 @@ extension CharHookEventBinder on WxEvtHandler {
   }
 
   void unbindCharHookEvent() {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetCharHookEventType(), -1));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetCharHookEventType(), -1) ));
   }
 }
 
@@ -2155,7 +2155,7 @@ extension SetFocusEventBinder on WxEvtHandler {
   }
 
   void unbindSetFocusEvent() {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetSetFocusEventType(), -1));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetSetFocusEventType(), -1) ));
   }
 }
 
@@ -2167,7 +2167,7 @@ extension KillFocusEventBinder on WxEvtHandler {
   }
 
   void unbindKillFocusEvent() {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetKillFocusEventType(), -1));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetKillFocusEventType(), -1) ));
   }
 }
 
@@ -2181,7 +2181,7 @@ extension ScrollWinEventBinder on WxEvtHandler {
   }
 
   void unbindScrollWinEvent() {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetScrollWinThumbTrackEventType(), -1));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetScrollWinThumbTrackEventType(), -1) ));
   }
 }
 
@@ -2195,7 +2195,7 @@ extension MoveEventBinder on WxEvtHandler {
   }
 
   void unbindMoveEvent() {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetMoveEventType(), -1));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetMoveEventType(), -1) ) );
   }
 }
 
@@ -2209,7 +2209,7 @@ extension ShowEventBinder on WxEvtHandler {
   }
 
   void unbindShowEvent() {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetShowEventType(), -1));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetShowEventType(), -1) ));
   }
 }
 
@@ -2223,7 +2223,7 @@ extension CloseWindowEventBinder on WxEvtHandler {
   }
 
   void unbindCloseWindowEvent() {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetCloseWindowEventType(), -1));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetCloseWindowEventType(), -1) ));
   }
 }
 
@@ -2237,7 +2237,7 @@ extension IdleEventBinder on WxEvtHandler {
   }
 
   void unbindIdleEvent() {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetIdleEventType(), -1));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetIdleEventType(), -1) ));
   }
 }
 
@@ -2251,7 +2251,7 @@ extension TimerEventBinder on WxEvtHandler {
   }
 
   void unbindTimerEvent() {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetTimerEventType(), -1));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetTimerEventType(), -1) ));
   }
 }
 
@@ -2265,7 +2265,7 @@ extension LeftDownEventBinder on WxEvtHandler {
   }
 
   void unbindLeftDownEvent() {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetLeftDownEventType(), -1));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetLeftDownEventType(), -1) ));
   }
 }
 
@@ -2277,7 +2277,7 @@ extension RightDownEventBinder on WxEvtHandler {
   }
 
   void unbindRightDownEvent() {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetRightDownEventType(), -1));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetRightDownEventType(), -1) ));
   }
 }
 
@@ -2289,7 +2289,7 @@ extension MiddleDownEventBinder on WxEvtHandler {
   }
 
   void unbindMiddleDownEvent() {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetMiddleDownEventType(), -1));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetMiddleDownEventType(), -1) ));
   }
 }
 
@@ -2301,7 +2301,7 @@ extension LeftUpEventBinder on WxEvtHandler {
   }
 
   void unbindLeftUpEvent() {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetLeftUpEventType(), -1));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetLeftUpEventType(), -1) ) );
   }
 }
 
@@ -2313,7 +2313,7 @@ extension RightUpEventBinder on WxEvtHandler {
   }
 
   void unbindRightUpEvent() {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetRightUpEventType(), -1));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetRightUpEventType(), -1) ));
   }
 }
 
@@ -2325,7 +2325,7 @@ extension MiddleUpEventBinder on WxEvtHandler {
   }
 
   void unbindMiddleUpEvent() {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetMiddleUpEventType(), -1));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetMiddleUpEventType(), -1) ));
   }
 }
 
@@ -2337,7 +2337,7 @@ extension LeftDClickEventBinder on WxEvtHandler {
   }
 
   void unbindLeftDClickEvent() {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetLeftDClickEventType(), -1));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetLeftDClickEventType(), -1) ));
   }
 }
 
@@ -2349,7 +2349,7 @@ extension RightDClickEventBinder on WxEvtHandler {
   }
 
   void unbindRightDClickEvent() {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetRightDClickEventType(), -1));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetRightDClickEventType(), -1) ));
   }
 }
 
@@ -2361,7 +2361,7 @@ extension MiddleDClickEventBinder on WxEvtHandler {
   }
 
   void unbindMiddleDClickEvent() {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetMiddleDClickEventType(), -1));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetMiddleDClickEventType(), -1) ));
   }
 }
 
@@ -2373,7 +2373,7 @@ extension MotionEventBinder on WxEvtHandler {
   }
 
   void unbindMotionEvent() {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetMotionEventType(), -1));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetMotionEventType(), -1) ) );
   }
 }
 
@@ -2385,7 +2385,7 @@ extension EnterWindowEventBinder on WxEvtHandler {
   }
 
   void unbindEnterWindowEvent() {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetEnterWindowEventType(), -1));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetEnterWindowEventType(), -1) ));
   }
 }
 
@@ -2397,7 +2397,7 @@ extension LeaveWindowEventBinder on WxEvtHandler {
   }
 
   void unbindLeaveWindowEvent() {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetLeaveWindowEventType(), -1));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetLeaveWindowEventType(), -1) ));
   }
 }
 
@@ -2409,7 +2409,7 @@ extension MouseWheelEventBinder on WxEvtHandler {
   }
 
   void unbindMouseWheelEvent() {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetMouseWheelEventType(), -1));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetMouseWheelEventType(), -1) ));
   }
 }
 
@@ -2421,6 +2421,6 @@ extension MagnifyEventBinder on WxEvtHandler {
   }
 
   void unbindMagnifyEvent() {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetMagnifyEventType(), -1));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetMagnifyEventType(), -1) ));
   }
 }

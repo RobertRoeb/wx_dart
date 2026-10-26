@@ -22,13 +22,15 @@ typedef OnCommandEventFunc = void Function( WxCommandEvent event );
 /// [WxCheckBox], [WxListBox], [WxTextCtrl], [WxChoice], [WxComboBox]
 /// and [WxMenu] and [WxToolBar].
 /// 
-/// Other controls have their specilized event classes deriving from
+/// Other controls have their specialized event classes deriving from
 /// [WxCommandEvent] like [WxNotebookEvent] for [WxNotebook],
 /// [WxTreeEvent] for [WxTreeCtrl], [WxSpinEvent] for [WxSpinCtrl]
-/// and [WxDataViewEvent] for [WxDataViewCtrl]-
+/// and [WxDataViewEvent] for [WxDataViewCtrl].
 
 class WxCommandEvent extends WxEvent {
-  WxCommandEvent( super._eventType, super._id );
+
+  /// Creates the command event with the gicen event type and (window) id.
+  WxCommandEvent( super.eventType, super.id );
 
   int _int = 0;
   int _extraLong = 0;

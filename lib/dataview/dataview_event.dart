@@ -101,7 +101,7 @@ extension DataViewCacheHintEventBinder on WxEvtHandler {
   }
 
   void unbindDataViewCacheHintEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetDataViewCacheHintEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetDataViewCacheHintEventType(), id) ));
   }
 }
 
@@ -114,7 +114,7 @@ extension DataViewSelectionChangedEventBinder on WxEvtHandler {
   }
 
   void unbindDataViewSelectionChangedEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetDataViewSelectionChangedEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetDataViewSelectionChangedEventType(), id) ));
   }
 }
 
@@ -126,7 +126,7 @@ extension DataViewItemActivatedEventBinder on WxEvtHandler {
   }
 
   void unbindDataViewItemActivatedEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetDataViewItemActivatedEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetDataViewItemActivatedEventType(), id) ));
   }
 }
 
@@ -138,7 +138,7 @@ extension DataViewItemCollapsingEventBinder on WxEvtHandler {
   }
 
   void unbindDataViewItemCollapsingEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetDataViewItemCollapsingEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetDataViewItemCollapsingEventType(), id) ));
   }
 }
 
@@ -150,7 +150,7 @@ extension DataViewItemCollapsedEventBinder on WxEvtHandler {
   }
 
   void unbindDataViewItemCollapsedEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetDataViewItemCollapsedEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetDataViewItemCollapsedEventType(), id) ));
   }
 }
 
@@ -162,7 +162,7 @@ extension DataViewItemExpandingEventBinder on WxEvtHandler {
   }
 
   void unbindDataViewItemExpandingEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetDataViewItemExpandingEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetDataViewItemExpandingEventType(), id) ));
   }
 }
 
@@ -174,7 +174,7 @@ extension DataViewItemExpandedEventBinder on WxEvtHandler {
   }
 
   void unbindDataViewItemExpandedEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetDataViewItemExpandedEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetDataViewItemExpandedEventType(), id) ));
   }
 }
 
@@ -186,7 +186,7 @@ extension DataViewItemValueChangedEventBinder on WxEvtHandler {
   }
 
   void unbindDataViewItemValueChangedEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetDataViewItemValueChangedEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetDataViewItemValueChangedEventType(), id) ));
   }
 }
 
@@ -198,7 +198,7 @@ extension DataViewItemStartEditingEventBinder on WxEvtHandler {
   }
 
   void unbindDataViewItemStartEditingEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetDataViewItemStartEditingEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetDataViewItemStartEditingEventType(), id) ));
   }
 }
 
@@ -210,7 +210,7 @@ extension DataViewItemEditingStartedEventBinder on WxEvtHandler {
   }
 
   void unbindDataViewItemEditingStartedEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetDataViewItemEditingStartedEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetDataViewItemEditingStartedEventType(), id) ));
   }
 }
 
@@ -222,7 +222,7 @@ extension DataViewItemEditingDoneEventBinder on WxEvtHandler {
   }
 
   void unbindDataViewItemEditingDoneEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetDataViewItemEditingDoneEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetDataViewItemEditingDoneEventType(), id) ));
   }
 }
 
@@ -234,7 +234,7 @@ extension DataViewItemContextMenuEventBinder on WxEvtHandler {
   }
 
   void unbindDataViewItemContextMenuEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetDataViewItemContextMenuEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetDataViewItemContextMenuEventType(), id) ));
   }
 }
 
@@ -246,7 +246,7 @@ extension DataViewColumnHeaderClickEventBinder on WxEvtHandler {
   }
 
   void unbindDataViewColumnHeaderClickEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetDataViewColumnHeaderClickEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetDataViewColumnHeaderClickEventType(), id) ));
   }
 }
 
@@ -258,7 +258,7 @@ extension DataViewColumnHeaderRightClickEventBinder on WxEvtHandler {
   }
 
   void unbindDataViewColumnHeaderRightClickEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetDataViewColumnHeaderRightClickEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetDataViewColumnHeaderRightClickEventType(), id) ));
   }
 }
 
@@ -270,7 +270,7 @@ extension DataViewColumnSortedEventBinder on WxEvtHandler {
   }
 
   void unbindDataViewColumnSortedEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetDataViewColumnSortedEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetDataViewColumnSortedEventType(), id) ));
   }
 }
 
@@ -282,7 +282,7 @@ extension DataViewColumnReorderedEventBinder on WxEvtHandler {
   }
 
   void unbindDataViewColumnReorderedEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetDataViewColumnReorderedEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetDataViewColumnReorderedEventType(), id) ));
   }
 }
 

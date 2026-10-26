@@ -38,7 +38,7 @@ extension CollapsiblePaneEventBinder on WxEvtHandler {
   }
 
   void unbindCollapsiblePaneChangedEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetCollapsiblePaneChangedEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetCollapsiblePaneChangedEventType(), id) ));
   }
 }
 

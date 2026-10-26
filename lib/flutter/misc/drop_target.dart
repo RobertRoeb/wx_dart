@@ -221,7 +221,7 @@ extension DropDropEventBinder on WxEvtHandler {
   }
 
   void unbindDropDropEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetDropDropEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetDropDropEventType(), id) ));
   }
 }
 
@@ -233,7 +233,7 @@ extension DropDragOverEventBinder on WxEvtHandler {
   }
 
   void unbindDropDragOverEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetDropDragOverEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetDropDragOverEventType(), id) ));
   }
 }
 
@@ -245,7 +245,7 @@ extension DropDataEventBinder on WxEvtHandler {
   }
 
   void unbindDropDataEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetDropDataEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetDropDataEventType(), id) ));
   }
 }
 
@@ -257,7 +257,7 @@ extension DropEnterEventBinder on WxEvtHandler {
   }
 
   void unbindDropEnterEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetDropEnterEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetDropEnterEventType(), id) ));
   }
 }
 
@@ -269,6 +269,6 @@ extension DropLeaveEventBinder on WxEvtHandler {
   }
 
   void unbindDropLeaveEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetDropLeaveEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetDropLeaveEventType(), id) ));
   }
 }

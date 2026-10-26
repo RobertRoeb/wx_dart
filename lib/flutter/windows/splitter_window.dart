@@ -38,7 +38,7 @@ extension SplitterSashPosChangingEventBinder on WxEvtHandler {
   }
 
   void unbindSplitterSashPosChangingEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetSplitterSashPosChangingEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetSplitterSashPosChangingEventType(), id) ));
   }
 }
 
@@ -50,7 +50,7 @@ extension SplitterSashPosChangedEventBinder on WxEvtHandler {
   }
 
   void unbindSplitterSashPosChangedEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetSplitterSashPosChangedEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetSplitterSashPosChangedEventType(), id) ));
   }
 }
 
@@ -62,7 +62,7 @@ extension SplitterUnsplitEventBinder on WxEvtHandler {
   }
 
   void unbindSplitterUnsplitEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetSplitterUnsplitEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetSplitterUnsplitEventType(), id) ));
   }
 }
 
@@ -74,7 +74,7 @@ extension SplitterDoubleClickEventBinder on WxEvtHandler {
   }
 
   void unbindSplitterDoubleClickEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetSplitterDoubleClickEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetSplitterDoubleClickEventType(), id) ));
   }
 }
 

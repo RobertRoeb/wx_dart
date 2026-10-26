@@ -38,7 +38,7 @@ extension SpinCtrlDoubleEventBinder on WxEvtHandler {
   }
 
   void unbindSpinCtrlDoubleEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetSpinCtrlDoubleEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetSpinCtrlDoubleEventType(), id) ));
   }
 }
 

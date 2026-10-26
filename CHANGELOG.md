@@ -1,3 +1,11 @@
+## 0.9.25
+
+* Aligned the ports that the bind functions append new handlers to the end
+* Aligned the ports that the most recently added handler is executed first
+* Aligned semantics if WxEvent.skip() logic in both ports
+* Changed unbind function to only remove the most recently added matching handler
+* Documented this behaviour in WxEvtHandler
+
 ## 0.9.24
 
 * Lots of updates to docs (also, to make them more AI friendly)

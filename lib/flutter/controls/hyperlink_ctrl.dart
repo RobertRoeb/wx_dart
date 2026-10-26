@@ -38,7 +38,7 @@ extension HyperlinkEventBinder on WxEvtHandler {
   }
 
   void unbindHyperlinkEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetHyperlinkEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetHyperlinkEventType(), id) ));
   }
 }
 

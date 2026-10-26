@@ -102,11 +102,33 @@ class WxDropSource extends WxClass {
 
   late WxWindow _window;
   late WxDataObject _data;
+  bool _isDragging = false;
 
   /// Initiate Drag and Drop operation
-  int doDragDrop( { int flags = 0 } ) {
+  int doDragDrop( { int flags = 0 } )
+  {
+    _isDragging = true;
+    _window.captureMouse();
+
+    _window.bindMotionEvent( (event) {
+      print( "Dragging in ${event.getPosition().x},${event.getPosition().y}" );
+    } );
+
+    _window.bindLeftUpEvent( (_) {
+      if (!_isDragging) {
+        wxLogError( "Not currently dragging." );
+        return;
+      }
+      _isDragging = false;
+      _window.releaseMouse();
+      _window.unbindLeftUpEvent();
+      _window.unbindMotionEvent();
+    } );
+
+
     return wxDRAG_RESULT_ERROR;
   }
+  
 }
 
 // ------------------------- wxDragEvent ----------------------
@@ -170,9 +192,8 @@ extension DragFeedbackEventBinder on WxEvtHandler {
     _eventTable.add( WxDragEventTableEntry(wxGetDragFeedbackEventType(), id, func));
   }
 
-  void unbindDragFeedbackEvent( int id )
-  {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetDragFeedbackEventType(), id));
+  void unbindDragFeedbackEvent( int id ) {
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetDragFeedbackEventType(), id) ));
   }
 }
 

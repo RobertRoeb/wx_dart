@@ -77,7 +77,9 @@ class MyNonFocussableWindow extends WxWindow {
 
     bindPaintEvent( onPaint );
     bindLeftDownEvent((event) {_isDown = true; _start = event.getPosition(); } );
-    bindLeftUpEvent((_) => _isDown = false );
+    bindLeftUpEvent((_) {
+      _isDown = false;
+    } );
     bindLeaveWindowEvent( (_) => _isDown = false );
     bindMotionEvent(onMotion);
 
@@ -101,7 +103,6 @@ class MyNonFocussableWindow extends WxWindow {
       final data = WxTextDataObject( "This is so cool" );
       final source = WxDropSource(data, this);
       source.doDragDrop();
-      print( "End drag" );
     }
   }
 

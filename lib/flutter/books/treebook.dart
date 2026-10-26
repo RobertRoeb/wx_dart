@@ -16,7 +16,7 @@ extension TreebookPageChangedEventBinder on WxEvtHandler {
     _eventTable.add( WxNotebookEventTableEntry(wxGetTreebookPageChangedEventType(), id, func));
   }
   void unbindTreebookPageChangedEvent( OnNotebookEventFunc func, int id ) { 
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetTreebookPageChangedEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetTreebookPageChangedEventType(), id) ));
   }
 }
 
@@ -27,7 +27,7 @@ extension TreebookPageChangingEventBinder on WxEvtHandler {
     _eventTable.add( WxNotebookEventTableEntry(wxGetTreebookPageChangingEventType(), id, func));
   }
   void unbindTreebookPageChangingEvent( OnNotebookEventFunc func, int id ) { 
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetTreebookPageChangingEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetTreebookPageChangingEventType(), id) ));
   }
 }
 
@@ -38,7 +38,7 @@ extension TreebookNodeCollapsedEventBinder on WxEvtHandler {
     _eventTable.add( WxNotebookEventTableEntry(wxGetTreebookNodeCollapsedEventType(), id, func));
   }
   void unbindTreebookNodeCollapsedEvent( OnNotebookEventFunc func, int id ) { 
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetTreebookNodeCollapsedEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetTreebookNodeCollapsedEventType(), id) ));
   }
 }
 
@@ -49,7 +49,7 @@ extension TreebookNodeExpandedEventBinder on WxEvtHandler {
     _eventTable.add( WxNotebookEventTableEntry(wxGetTreebookNodeExpandedEventType(), id, func));
   }
   void unbindTreebookNodeExpandedEvent( OnNotebookEventFunc func, int id ) { 
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetTreebookNodeExpandedEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetTreebookNodeExpandedEventType(), id) ));
   }
 }
 

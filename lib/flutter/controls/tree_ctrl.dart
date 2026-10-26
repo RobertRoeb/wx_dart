@@ -38,7 +38,7 @@ extension TreeItemActivatedEventBinder on WxEvtHandler {
   }
 
   void unbindTreeItemActivatedEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetTreeItemActivatedEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetTreeItemActivatedEventType(), id) ));
   }
 }
 
@@ -50,7 +50,7 @@ extension TreeSelChangedEventBinder on WxEvtHandler {
   }
 
   void unbindTreeSelChangedEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetTreeSelChangedEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetTreeSelChangedEventType(), id) ));
   }
 }
 
@@ -62,7 +62,7 @@ extension TreeItemExpandedEventBinder on WxEvtHandler {
   }
 
   void unbindTreeItemExpandedEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetTreeItemExpandedEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetTreeItemExpandedEventType(), id) ));
   }
 }
 
@@ -74,7 +74,7 @@ extension TreeItemCollapsedEventBinder on WxEvtHandler {
   }
 
   void unbindTreeItemCollapsedEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetTreeItemCollapsedEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetTreeItemCollapsedEventType(), id) ));
   }
 }
 
@@ -86,7 +86,7 @@ extension TreeDeleteItemEventBinder on WxEvtHandler {
   }
 
   void unbindTreeDeleteItemEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetTreeDeleteItemEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetTreeDeleteItemEventType(), id) ));
   }
 }
 

@@ -225,12 +225,12 @@ class WxToolBarToolBase extends WxObject {
 /// * [toggleTool]
 /// * [getToolState]
 /// 
-/// # Event emitted
+/// # Event emitted (Tool event is the same es Menu event)
 /// 
-/// [Menu](/wxdart/wxGetMenuEventType.html) event gets sent when user selects a menu item |
+/// [Tool](/wxdart/wxGetToolEventType.html) event gets sent when user selects a toolbar or menu item |
 /// | ----------------- |
-/// | void bindMenuEvent( void Function( WxCommandEvent event ) ) |
-/// | void unbindMenuEvent() |
+/// | void bindToolEvent( void Function( WxCommandEvent event ) ) |
+/// | void unbindToolEvent() |
 
 class WxToolBar extends WxControl {
 

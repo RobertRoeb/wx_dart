@@ -1311,7 +1311,7 @@ extension HeaderCtrlClickEventBinder on WxEvtHandler {
   }
 
   void unbindHeaderCtrlClickEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetHeaderCtrlClickEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetHeaderCtrlClickEventType(), id) ));
   }
 }
 
@@ -1323,7 +1323,7 @@ extension HeaderCtrlRightClickEventBinder on WxEvtHandler {
   }
 
   void unbindHeaderCtrlRightClickEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetHeaderCtrlRightClickEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetHeaderCtrlRightClickEventType(), id) ));
   }
 }
 
@@ -1335,7 +1335,7 @@ extension HeaderCtrlDClickEventBinder on WxEvtHandler {
   }
 
   void unbindHeaderCtrlDClickEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetHeaderCtrlDClickEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetHeaderCtrlDClickEventType(), id) ));
   }
 }
 
@@ -1347,7 +1347,7 @@ extension HeaderCtrlRightDClickEventBinder on WxEvtHandler {
   }
 
   void unbindHeaderCtrlRightDClickEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetHeaderCtrlRightDClickEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetHeaderCtrlRightDClickEventType(), id) ));
   }
 }
 
@@ -1359,7 +1359,7 @@ extension HeaderCtrlSeparatorDClickEventBinder on WxEvtHandler {
   }
 
   void unbindHeaderCtrlSeparatorDClickEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetHeaderCtrlSeparatorDClickEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetHeaderCtrlSeparatorDClickEventType(), id) ));
   }
 }
 
@@ -1371,7 +1371,7 @@ extension HeaderCtrlBeginResizeEventBinder on WxEvtHandler {
   }
 
   void unbindHeaderCtrlBeginResizeEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetHeaderCtrlBeginResizeEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetHeaderCtrlBeginResizeEventType(), id) ));
   }
 }
 
@@ -1383,7 +1383,7 @@ extension HeaderCtrlResizingEventBinder on WxEvtHandler {
   }
 
   void unbindHeaderCtrlResizingEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetHeaderCtrlResizingEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetHeaderCtrlResizingEventType(), id) ));
   }
 }
 
@@ -1395,7 +1395,7 @@ extension HeaderCtrlEndResizeEventBinder on WxEvtHandler {
   }
 
   void unbindHeaderCtrlEndResizeEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetHeaderCtrlEndResizeEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetHeaderCtrlEndResizeEventType(), id) ));
   }
 }
 
@@ -1407,7 +1407,7 @@ extension HeaderCtrlBeginReorderEventBinder on WxEvtHandler {
   }
 
   void unbindHeaderCtrlBeginReorderEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetHeaderCtrlBeginReorderEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetHeaderCtrlBeginReorderEventType(), id) ));
   }
 }
 
@@ -1419,7 +1419,7 @@ extension HeaderCtrlEndReorderEventBinder on WxEvtHandler {
   }
 
   void unbindHeaderCtrlEndReorderEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetHeaderCtrlEndReorderEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetHeaderCtrlEndReorderEventType(), id) ));
   }
 }
 
@@ -1431,18 +1431,7 @@ extension HeaderCtrlDraggingCancelledEventBinder on WxEvtHandler {
   }
 
   void unbindHeaderCtrlDraggingCancelledEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetHeaderCtrlDraggingCancelledEventType(), id));
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetHeaderCtrlDraggingCancelledEventType(), id) ));
   }
 }
-
-
-
-
-
-
-
-
-
-
-
 
