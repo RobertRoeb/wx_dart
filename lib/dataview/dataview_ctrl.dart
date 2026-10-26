@@ -4293,7 +4293,7 @@ class WxDataViewCtrlCachedColWidthInfo {
 /// * [getColumnAt]
 /// * [getColumnCount]
 /// * [getColumnPosition]
-/// * [setExpanderColumn]
+/// * [getExpanderColumn]
 /// * [setExpanderColumn]
 /// 
 /// Editing interface
