@@ -466,6 +466,7 @@ class WxWindow extends WxEvtHandler {
   bool _hasSentWindowCreateEvent = false;
   int _centreOnParent = 0;
   WxDropTarget? _dropTarget;
+  WxDropSource? _dropSource;
 
   /// Gets called before the window is destroyed and can be used to e.g.
   /// close a database or network connection or to stop a [WxTimer].
@@ -790,6 +791,10 @@ class WxWindow extends WxEvtHandler {
   Widget _build( BuildContext context )
   {
     Widget child = _doBuildChildrenWithOrWithoutSizer( context ); 
+
+    if ((_dropSource != null) && (_dropSource!._isInDrag())) {
+      child = _dropSource!._buildOverlay( context, child );
+    }
 
     child = _doBuildSystemEventHandlers( context, child );
 

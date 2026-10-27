@@ -99,7 +99,6 @@ class MyNonFocussableWindow extends WxWindow {
     final dist = sqrt(dx*dx + dy*dy);
     if (dist > 7) {
       _isDown = false;
-      print( "Start drag" );
       final data = WxTextDataObject( "This is so cool" );
       final source = WxDropSource(data, this);
       source.doDragDrop();

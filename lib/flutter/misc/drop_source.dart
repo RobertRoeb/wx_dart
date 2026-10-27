@@ -103,15 +103,60 @@ class WxDropSource extends WxClass {
   late WxWindow _window;
   late WxDataObject _data;
   bool _isDragging = false;
+  WxPoint _dragPosition = WxPoint.zero;
+  OverlayPortalController? _controller;
+  bool _isMove = false;
+
+  @override
+  void dispose() {
+    _removeOverlay();
+    super.dispose();
+  }
+
+  void _removeOverlay() {
+    _controller = null;
+  }
+
+  bool _isInDrag() {
+    return _controller != null;
+  }
+
+  Widget _buildOverlay( BuildContext context, Widget child ) {
+    return
+      OverlayPortal(
+          controller: _controller!,
+          child: child,
+          overlayChildBuilder: (BuildContext context) {
+            return Positioned(
+              left: _dragPosition.x.toDouble() + 7,
+              top: _dragPosition.y.toDouble() + 7,
+              child: Icon( _isMove ? Icons.copy_all : Icons.content_copy_rounded, color: Colors.grey[700] ) );
+          } );
+  }
+
+  void _createOverlay() {
+    _controller = OverlayPortalController();
+    _controller!.show();
+  }
 
   /// Initiate Drag and Drop operation
   int doDragDrop( { int flags = 0 } )
   {
+    _window._dropSource = this;
     _isDragging = true;
     _window.captureMouse();
+    _createOverlay();
 
     _window.bindMotionEvent( (event) {
-      print( "Dragging in ${event.getPosition().x},${event.getPosition().y}" );
+      WxPoint pos = event.getPosition();
+      _isMove = event._shiftDown;
+      WxWindow? current = _window;
+      while (current is! WxTopLevelWindow && current != null) {
+        pos = WxPoint( pos.x + current.getPosition().x, pos.y + current.getPosition().y );
+        current = current.getParent();
+      }
+      _dragPosition = pos;
+      _window._setState();
     } );
 
     _window.bindLeftUpEvent( (_) {
@@ -123,6 +168,9 @@ class WxDropSource extends WxClass {
       _window.releaseMouse();
       _window.unbindLeftUpEvent();
       _window.unbindMotionEvent();
+      _removeOverlay();
+      _window._dropSource = null;
+      _window._setState();
     } );
 
 
