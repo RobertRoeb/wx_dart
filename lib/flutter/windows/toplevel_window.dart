@@ -230,11 +230,20 @@ class WxTopLevelWindow extends WxNonOwnedWindow {
     processEvent(event);
   }
 
-  // Returns the position of the window on screen. This is unsupported
-  // in wxDart Flutter.
+  /// Returns the position of the window on screen. The returned position
+  // is relative to the top lever FlutterView in wxDart Flutter.
   @override
   WxPoint getPosition() {
-    return WxPoint( _position.x, _position.y );
+    final RenderObject? renderObject = _widgetKey.currentContext?.findRenderObject();
+    if (renderObject == null) {
+      return WxPoint(-1, -1);
+    }
+    final RenderBox renderBox = renderObject as RenderBox;
+    final Offset offset = renderBox.localToGlobal(Offset.zero);
+    if ((offset.dx.isNaN) || (offset.dx.isInfinite) || (offset.dy.isNaN) || (offset.dy.isInfinite)) {
+      return WxPoint(-1, -1);
+    }
+    return WxPoint( offset.dx.floor(), offset.dy.floor());
   }
 
   // Set the position of the window on screen. This is unsupported

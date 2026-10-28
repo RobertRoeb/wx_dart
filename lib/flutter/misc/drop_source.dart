@@ -148,14 +148,8 @@ class WxDropSource extends WxClass {
     _createOverlay();
 
     _window.bindMotionEvent( (event) {
-      WxPoint pos = event.getPosition();
       _isMove = event._shiftDown;
-      WxWindow? current = _window;
-      while (current is! WxTopLevelWindow && current != null) {
-        pos = WxPoint( pos.x + current.getPosition().x, pos.y + current.getPosition().y );
-        current = current.getParent();
-      }
-      _dragPosition = pos;
+      _dragPosition = _window.clientToScreen( event.getPosition() );
       _window._setState();
     } );
 

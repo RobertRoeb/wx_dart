@@ -555,14 +555,76 @@ class WxWindow extends WxEvtHandler {
   }
 
   /// Returns minimal size as determined by the system and/or
-  /// the initial size
+  /// the initial size.
   WxSize getMinSize() {
     return _initialSize;
   }
 
-  /// Returns the current actual size, if known aleady
+  /// Returns the current actual size, if known aleady.
   WxSize getSize() {
     return _size;
+  }
+
+  /// Converts the [point] from local client coordinates
+  /// to coordinates on screen.
+  /// 
+  /// Currently uses the top level FlutterView as the
+  /// definition of screen in wxDart Flutter.
+  /// 
+  /// See [screenToClient].
+  WxPoint clientToScreen( WxPoint point ) {
+    WxPoint pos = point;
+    WxWindow? current = this;
+    while (current != null) {
+      if (current is WxTopLevelWindow) {
+        // All frames are at 0,0 for now. WxDialog and
+        // future WxMiniFrame and WxPopupWindow should
+        // report position relative to the FlutterView.
+        pos = WxPoint( pos.x + current.getPosition().x, pos.y + current.getPosition().y );
+        break;
+      }
+      pos = WxPoint( pos.x + current.getPosition().x, pos.y + current.getPosition().y );
+      current = current.getParent();
+    }
+    return pos;
+  }
+
+  /// Converts the [point] from screen coordinates
+  /// to local client coordinates.
+  /// 
+  /// Currently uses the top level FlutterView as the
+  /// definition of screen in wxDart Flutter.
+  /// 
+  /// See [clientToScreen].
+  WxPoint screenToClient( WxPoint point ) {
+    WxPoint pos = point;
+    WxWindow? current = this;
+    while (current != null) {
+      if (current is WxTopLevelWindow) {
+        // All frames are at 0,0 for now. WxDialog and
+        // future WxMiniFrame and WxPopupWindow should
+        // report position relative to the FlutterView.
+        pos = WxPoint( pos.x - current.getPosition().x, pos.y- current.getPosition().y );
+        break;
+      }
+      pos = WxPoint( pos.x - current.getPosition().x, pos.y - current.getPosition().y );
+      current = current.getParent();
+    }
+    return pos;
+  }
+
+  /// Converts client area size size to corresponding window size.
+  /// In other words, the returned value is what would [getSize] 
+  /// return if this window had client area of given size.
+  WxSize clientToWindowSize( WxSize size ) {
+    return size;
+  }
+
+  /// Converts window size size to corresponding client area size.
+  /// In other words, the returned value is what would [getClientSize]
+  /// return if this window had given window size.
+  WxSize windowToClientSize( WxSize size ) {
+    return size;
   }
 
   /// Sets the requested size of the control with -1 indicating that
