@@ -106,6 +106,7 @@ class WxDropSource extends WxClass {
   WxPoint _dragPosition = WxPoint.zero;
   OverlayPortalController? _controller;
   bool _isMove = false;
+  bool _giveFeedback = true;
 
   @override
   void dispose() {
@@ -122,6 +123,9 @@ class WxDropSource extends WxClass {
   }
 
   Widget _buildOverlay( BuildContext context, Widget child ) {
+    if (!_giveFeedback) {
+      return child;
+    }
     return
       OverlayPortal(
           controller: _controller!,
@@ -150,7 +154,14 @@ class WxDropSource extends WxClass {
     _window.bindMotionEvent( (event) {
       _isMove = event._shiftDown;
       _dragPosition = _window.clientToScreen( event.getPosition() );
-      _window._setState();
+      final devent = WxDragEvent( _window.getId() );
+      devent.setEventObject( _window );
+      _window.processEvent( devent );
+      final oldGiveFeedback = _giveFeedback;
+      _giveFeedback = devent.isAllowed();
+      if (_giveFeedback || oldGiveFeedback) {
+        _window._setState();
+      }
     } );
 
     _window.bindLeftUpEvent( (_) {
@@ -167,10 +178,8 @@ class WxDropSource extends WxClass {
       _window._setState();
     } );
 
-
     return wxDRAG_RESULT_ERROR;
   }
-  
 }
 
 // ------------------------- wxDragEvent ----------------------
