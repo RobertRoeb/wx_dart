@@ -84,7 +84,7 @@ const int wxDATAOBJECT_DIR_BOTH = 2;
 /// and clipboard operations.
 /// 
 /// The class can hold multiple formats. See concrete implementations
-/// [WxTextDataObject], [WxBitmapDataObject] and [WxFileDataObject].
+/// [WxTextDataObject], WxBitmapDataObject and WxFileDataObject.
 /// 
 /// # Constants
 /// | constant | meaning |
@@ -158,6 +158,7 @@ class WxTextDataObject extends WxDataObject {
     return _text;
   }
 
+  /// Sets raw data and converts is to a String
   @override
   void setData( WxDataFormat format, Uint8List data )
   {
@@ -187,7 +188,7 @@ class WxTextDataObject extends WxDataObject {
     return WxDataFormat( wxDF_TEXT );
   }
 
-  /// Returns true of WxDataFormat( wxDF_TEXT ) or WxDataFormat( wxDF_UNICODETEXT )
+  /// Returns true if [format] is WxDataFormat( wxDF_TEXT ) or WxDataFormat( wxDF_UNICODETEXT )
   @override
   bool isSupported( WxDataFormat format, { int direction = wxDATAOBJECT_DIR_GET } ) {
     return (format.getType() == wxDF_TEXT) || (format.getType() == wxDF_UNICODETEXT);
