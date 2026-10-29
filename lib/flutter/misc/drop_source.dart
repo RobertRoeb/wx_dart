@@ -26,7 +26,12 @@ const int wxDRAG_RESULT_CANCEL = 5;
 /// It has to be associated with a [WxDataObject] that contains
 /// the data and its format or formats.
 /// 
-/// Not implemented in wxDart Native yet.
+/// In wxDart Flutter only implemented for Drag and Drop within
+/// the application.
+/// 
+/// By default, [WxDropSource] gives visual feedback if a copy
+/// or a move operation is intended. You can override this by
+/// catching a the [WxDragEvent] and call [WxDragEvent.veto].
 /// 
 /// See [WxDataObject], [WxTextDataObject], [WxDataFormat], [WxDropTarget]
 /// 
@@ -92,21 +97,47 @@ const int wxDRAG_RESULT_CANCEL = 5;
 /// | void unbindDragFeedbackEvent() |
 
 
+WxWindow? _wxFindWindowAtPointRecursive( WxWindow current, WxPoint pos )
+{
+  final currentPos = current.getPosition();
+  final rect = WxRect.fromPositionAndSize( currentPos, current.getSize() );
+  if (!rect.containsPoint(pos)) return null;
+  final newPos = WxPoint( pos.x - currentPos.x, pos.y - currentPos.y );
+  for (final child in current._getChildren())
+  {
+    if (!child.isShown()) continue;
+    final res = _wxFindWindowAtPointRecursive( child, newPos );
+    if (res != null) return res;
+  }
+  return current;
+}
+
+WxWindow? wxFindWindowAtPoint( WxPoint pos )
+{
+  for (int i = _topLevelWindows.length-1; i >= 0; i--) {
+    final tlw = _topLevelWindows[i];
+    final res = _wxFindWindowAtPointRecursive( tlw, pos );
+    if (res != null) return res;
+  }
+  return null;
+}
+
 class WxDropSource extends WxClass {
 
   /// Creates WxDropSource with associated [data] for [win]
   WxDropSource( WxDataObject data, WxWindow win ) {
     _window = win;
-    _data = data;
+    _dataObject = data;
   }
 
   late WxWindow _window;
-  late WxDataObject _data;
+  late WxDataObject _dataObject;
   bool _isDragging = false;
   WxPoint _dragPosition = WxPoint.zero;
   OverlayPortalController? _controller;
   bool _isMove = false;
   bool _giveFeedback = true;
+  bool _isNoEntry = false;
 
   @override
   void dispose() {
@@ -134,7 +165,7 @@ class WxDropSource extends WxClass {
             return Positioned(
               left: _dragPosition.x.toDouble() + 7,
               top: _dragPosition.y.toDouble() + 7,
-              child: Icon( _isMove ? Icons.copy_all : Icons.content_copy_rounded, color: Colors.grey[700] ) );
+              child: Icon( _isNoEntry ? Icons.block : (_isMove ? Icons.copy_all : Icons.content_copy_rounded), color: Colors.grey[700] ) );
           } );
   }
 
@@ -154,6 +185,27 @@ class WxDropSource extends WxClass {
     _window.bindMotionEvent( (event) {
       _isMove = event._shiftDown;
       _dragPosition = _window.clientToScreen( event.getPosition() );
+
+      // Target window there to get data?
+      _isNoEntry = true;
+      final winUnderMouse = wxFindWindowAtPoint( _dragPosition );
+      if (winUnderMouse != null) {
+        if (winUnderMouse._dropTarget != null) {
+          final target = winUnderMouse._dropTarget!;
+          // for (int i = 0; i < _data.getFormatCount(); i++)
+          final format = target._dataObject.getPreferredFormat();
+          if (_dataObject.isSupported(format)) {
+            final dropEvent = WxDropEvent( wxGetDropDragOverEventType(), winUnderMouse.getId() );
+            dropEvent.setEventObject( winUnderMouse );
+            winUnderMouse.processEvent( dropEvent );
+            if (dropEvent.getResult() != wxDRAG_RESULT_NONE) {
+              _isNoEntry = false;
+            }
+          }
+        }
+      }
+
+      // Give chance to give hint?
       final devent = WxDragEvent( _window.getId() );
       devent.setEventObject( _window );
       _window.processEvent( devent );
@@ -169,6 +221,28 @@ class WxDropSource extends WxClass {
         wxLogError( "Not currently dragging." );
         return;
       }
+
+      final winUnderMouse = wxFindWindowAtPoint( _dragPosition );
+      if (winUnderMouse != null) {
+        if (winUnderMouse._dropTarget != null) {
+          final target = winUnderMouse._dropTarget!;
+          // for (int i = 0; i < _data.getFormatCount(); i++)
+          final format = target._dataObject.getPreferredFormat();
+          if (_dataObject.isSupported(format)) {
+            final dropEvent = WxDropEvent( wxGetDropDropEventType(), winUnderMouse.getId() );
+            dropEvent.setEventObject( winUnderMouse );
+            winUnderMouse.processEvent( dropEvent );
+            if (dropEvent.isAllowed()) {
+              target._receivedDataObject = _dataObject;
+              dropEvent.setEventType( wxGetDropDataEventType() );
+              /// Targget has to request data copy in this event
+              winUnderMouse.processEvent(dropEvent);
+              target._receivedDataObject = null;
+            }
+          }
+        }
+      }
+
       _isDragging = false;
       _window.releaseMouse();
       _window.unbindLeftUpEvent();

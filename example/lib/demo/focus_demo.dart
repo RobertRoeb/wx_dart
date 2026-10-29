@@ -37,7 +37,7 @@ class MyFocussableWindow extends WxWindow {
   }
   void onData( WxDropEvent event )
   {
-    print( "onDrop" );
+    print( "onData" );
     _target.getData();
     _dropText = _data.getText();
     refresh();
@@ -51,17 +51,17 @@ class MyFocussableWindow extends WxWindow {
         dc.setPen(wxBLACK_PEN);
         dc.drawRectangle(0, 0, getSize().x, getSize().y );
         if (_dropText.isNotEmpty) {
-          dc.drawText("Droptext:\n$_dropText", 5, 5 );
+          dc.drawText("Has focus.\nReceived: $_dropText", 5, 5 );
         } else {
-          dc.drawText("Has focus,\nis WxDropTarget!", 5, 5 );
+          dc.drawText("Has focus.\nThis is a WxDropTarget!", 5, 5 );
         }
       } else {
         dc.setPen(wxTRANSPARENT_PEN);
         dc.drawRectangle(0, 0, getSize().x, getSize().y );
         if (_dropText.isNotEmpty) {
-          dc.drawText("Droptext:\n$_dropText", 5, 5 );
+          dc.drawText("Doesn't have focus.\nReceived: $_dropText", 5, 5 );
         } else {
-          dc.drawText("Doesn't have focus,\nis WxDropTarget!", 5, 5 );
+          dc.drawText("Doesn't have focus.\nThis is a WxDropTarget!", 5, 5 );
         }
       }
   }
@@ -90,6 +90,11 @@ class MyNonFocussableWindow extends WxWindow {
 
   bool _isDown = false;
   WxPoint _start = WxPoint.zero;
+  String _dropText = "DropText";
+
+  void setDropText( String text ) {
+    _dropText = text;
+  }
 
   void onMotion( WxMouseEvent event )
   {
@@ -99,7 +104,7 @@ class MyNonFocussableWindow extends WxWindow {
     final dist = sqrt(dx*dx + dy*dy);
     if (dist > 7) {
       _isDown = false;
-      final data = WxTextDataObject( "This is so cool" );
+      final data = WxTextDataObject( _dropText );
       final source = WxDropSource(data, this);
       source.doDragDrop();
     }
@@ -116,7 +121,7 @@ class MyNonFocussableWindow extends WxWindow {
       } else {
         dc.setPen(wxTRANSPARENT_PEN);
         dc.drawRectangle(0, 0, getSize().x, getSize().y );
-        dc.drawText("Cannot get focus,\nbut WxDropSource!", 5, 5 );
+        dc.drawText("Cannot get focus.\nThis is a WxDropSource!", 5, 5 );
       }
   }
 }
@@ -134,15 +139,19 @@ class MyFocusWindow extends WxScrolledWindow {
     final topSizer = WxFlexGridSizer(2);
     topPanel.setSizer(topSizer);
 
-    topSizer.add( WxTextCtrl(topPanel, -1, size: WxSize(150,-1) ), flag: wxALL, border: 10 );
-    topSizer.add( WxStaticText(topPanel, -1, "WxStaticText 1"), flag: wxALL, border: 10 );
-    topSizer.add( MyFocussableWindow(topPanel, WxSize(150,40)), flag: wxALL, border: 10 );
+    _dragTextCtrl1 = WxTextCtrl(topPanel, -1, value: "wxDart is cool 1", size: WxSize(220,-1) );
+    topSizer.add( _dragTextCtrl1, flag: wxALL, border: 10 );
+    topSizer.add( WxStaticText(topPanel, -1, "Drag and Drop text 1"), flag: wxALL, border: 10 );
+    topSizer.add( MyFocussableWindow(topPanel, WxSize(220,40)), flag: wxALL, border: 10 );
     topSizer.add( WxStaticText(topPanel, -1, "WxStaticText 2"), flag: wxALL, border: 10 );
-    topSizer.add( MyNonFocussableWindow(topPanel, WxSize(150,40)), flag: wxALL, border: 10 );
+    _dropSourceWindow1 = MyNonFocussableWindow(topPanel, WxSize(220,40));
+    topSizer.add( _dropSourceWindow1, flag: wxALL, border: 10 );
     topSizer.add( WxStaticText(topPanel, -1, "WxStaticText 4"), flag: wxALL, border: 10 );
-    topSizer.add( MyFocussableWindow(topPanel, WxSize(150,40)), flag: wxALL, border: 10 );
+    topSizer.add( MyFocussableWindow(topPanel, WxSize(220,40)), flag: wxALL, border: 10 );
     topSizer.add( WxStaticText(topPanel, -1, "WxStaticText 6"), flag: wxALL, border: 10 );
-    topSizer.add( WxTextCtrl(topPanel, -1, size: WxSize(150,-1) ), flag: wxALL, border: 10 );
+    topSizer.add( WxTextCtrl(topPanel, -1, size: WxSize(220,-1) ), flag: wxALL, border: 10 );
+    _dropSourceWindow1.setDropText( _dragTextCtrl1.getValue() );
+    _dragTextCtrl1.bindTextEvent( (event) => _dropSourceWindow1.setDropText( event.getString() ), -1 );
 
     final bottomPanel = WxPanel(this, -1);
     bottomPanel.setBackgroundColour(wxYELLOW);
@@ -151,16 +160,23 @@ class MyFocusWindow extends WxScrolledWindow {
     final bottomSizer = WxFlexGridSizer(2);
     bottomPanel.setSizer(bottomSizer);
 
-    bottomSizer.add( WxTextCtrl(bottomPanel, -1, size: WxSize(150,-1) ), flag: wxALL, border: 10 );
-    bottomSizer.add( WxStaticText(bottomPanel, -1, "WxStaticText 1"), flag: wxALL, border: 10 );
-    bottomSizer.add( MyFocussableWindow(bottomPanel, WxSize(150,40)), flag: wxALL, border: 10 );
+    _dragTextCtrl2 = WxTextCtrl(bottomPanel, -1, value: "wxDart is cool 2", size: WxSize(220,-1) );
+    bottomSizer.add( _dragTextCtrl2, flag: wxALL, border: 10 );
+    bottomSizer.add( WxStaticText(bottomPanel, -1, "Drag and Drop text 2"), flag: wxALL, border: 10 );
+    bottomSizer.add( MyFocussableWindow(bottomPanel, WxSize(220,40)), flag: wxALL, border: 10 );
     bottomSizer.add( WxStaticText(bottomPanel, -1, "WxStaticText 2"), flag: wxALL, border: 10 );
-    bottomSizer.add( MyNonFocussableWindow(bottomPanel, WxSize(150,40)), flag: wxALL, border: 10 );
+    _dropSourceWindow2 = MyNonFocussableWindow(bottomPanel, WxSize(220,40));
+    bottomSizer.add( _dropSourceWindow2, flag: wxALL, border: 10 );
     bottomSizer.add( WxStaticText(bottomPanel, -1, "WxStaticText 4"), flag: wxALL, border: 10 );
-    bottomSizer.add( MyFocussableWindow(bottomPanel, WxSize(150,40)), flag: wxALL, border: 10 );
+    bottomSizer.add( MyFocussableWindow(bottomPanel, WxSize(220,40)), flag: wxALL, border: 10 );
     bottomSizer.add( WxStaticText(bottomPanel, -1, "WxStaticText 6"), flag: wxALL, border: 10 );
-    bottomSizer.add( WxTextCtrl(bottomPanel, -1, size: WxSize(150,-1) ), flag: wxALL, border: 10 );
-
+    bottomSizer.add( WxTextCtrl(bottomPanel, -1, size: WxSize(220,-1) ), flag: wxALL, border: 10 );
+    _dropSourceWindow2.setDropText( _dragTextCtrl2.getValue() );
+    _dragTextCtrl2.bindTextEvent( (event) => _dropSourceWindow2.setDropText( event.getString() ), -1 );
   }
 
+  late MyNonFocussableWindow _dropSourceWindow1;
+  late MyNonFocussableWindow _dropSourceWindow2;
+  late WxTextCtrl _dragTextCtrl1;
+  late WxTextCtrl _dragTextCtrl2;
 }

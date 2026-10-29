@@ -95,14 +95,32 @@ const int wxDATAOBJECT_DIR_BOTH = 2;
 
 abstract class WxDataObject extends WxClass {
 
-  /// Returns the number of supported formats
-  int getFormatCount( ) {
-    return 0;
+  /// Returns a list of supported formats in the given [direction]
+  List<WxDataFormat> getFormats( { int direction = wxDATAOBJECT_DIR_GET } ) {
+    return [];
   }
 
+  /// Returns the preferred format in the given [direction]
+  WxDataFormat getPreferredFormat( { int direction = wxDATAOBJECT_DIR_GET } );
+
   /// Returns true if the [format] is supported in the given [direction].
-  bool isSupported( WxDataFormat format, { int direction = wxDATAOBJECT_DIR_BOTH } ) {
+  bool isSupported( WxDataFormat format, { int direction = wxDATAOBJECT_DIR_GET } ) {
     return false;
+  }
+
+  /// Needs to be called to transfers actual data to the [WxDataObject]
+  /// in the given [format]
+  /// 
+  /// It is up the concrete implementation of this class to convert it
+  /// to a usuable format such as a string or an image.
+  void setData( WxDataFormat format, Uint8List data ) {
+  }
+
+  /// Gets the data from the [WxDataObject] in the given format.
+  /// 
+  /// Returns null if no such data is available.
+  Uint8List? getData( WxDataFormat format ) {
+    return null;
   }
 }
 
@@ -123,6 +141,7 @@ abstract class WxDataObject extends WxClass {
 ///```
 
 class WxTextDataObject extends WxDataObject {
+  /// Creates a [WxTextDataObject] containing the [text]
   WxTextDataObject( String text ) {
     _text = text;
   }
@@ -139,15 +158,38 @@ class WxTextDataObject extends WxDataObject {
     return _text;
   }
 
-  /// Returns 1
   @override
-  int getFormatCount( ) {
-    return 1;
+  void setData( WxDataFormat format, Uint8List data )
+  {
+    if (format.getId() != "text/plain") {
+      wxLogError( "Wrong data transferred to WxTextDataObject (${format.getId()})." );
+      _text = "";
+      return;
+    }
+    final utf8Decoder = utf8.decoder;
+    _text = utf8Decoder.convert( data );
+  }
+
+  @override
+  Uint8List? getData( WxDataFormat format ) {
+    final utf8Encoder = utf8.encoder;
+    return utf8Encoder.convert( _text );
+  }
+  /// Returns WxDataFormat( wxDF_TEXT )
+  @override
+  List<WxDataFormat> getFormats( { int direction = wxDATAOBJECT_DIR_GET } ) {
+    return [ WxDataFormat( wxDF_TEXT ) ];
+  }
+
+  /// Returns WxDataFormat( wxDF_TEXT )
+  @override
+  WxDataFormat getPreferredFormat( { int direction = wxDATAOBJECT_DIR_BOTH } ) {
+    return WxDataFormat( wxDF_TEXT );
   }
 
   /// Returns true of WxDataFormat( wxDF_TEXT ) or WxDataFormat( wxDF_UNICODETEXT )
   @override
-  bool isSupported( WxDataFormat format, { int direction = wxDATAOBJECT_DIR_BOTH } ) {
+  bool isSupported( WxDataFormat format, { int direction = wxDATAOBJECT_DIR_GET } ) {
     return (format.getType() == wxDF_TEXT) || (format.getType() == wxDF_UNICODETEXT);
   }
 }

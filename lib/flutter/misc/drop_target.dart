@@ -99,14 +99,26 @@ class WxDropTarget extends WxClass {
 /// Creates a drop target with given [data]. A [WxDropTarget] needs
 /// to be associated with a [WxWindow] by calling [WxWindow.setDropTarget].
   WxDropTarget( WxDataObject data ) {
-    _data = data;
+    _dataObject = data;
   }
 
-  late WxDataObject _data;
+  late WxDataObject _dataObject;
+  WxDataObject? _receivedDataObject;
 
   /// Tells the drop target to acquire the data. This needs to be
   /// called from with bindDragDrop(). See example.
-  bool getData( ) {
+  bool getData( )
+  {
+    // TODO: what if a non-preferred format was negotiated
+    final format = _dataObject.getPreferredFormat();
+
+    if (_receivedDataObject != null) {
+      final dataReceived = _receivedDataObject!.getData( format );
+      if (dataReceived != null) {
+        _dataObject.setData( format, dataReceived );
+        return true;
+      }
+    }
     return false;
   }
 
