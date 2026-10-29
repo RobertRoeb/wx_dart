@@ -549,6 +549,20 @@ class MyMicroFrame extends WxFrame {
 
       createStatusBar( number: 1 );
 
+    bindMenuEvent((_)  {
+      final dialog = WxMessageDialog( this, "Welcome to wxDart", caption: "Welcome" );
+      if (wxUsesFlutter()) {
+        dialog.setExtendedMessage("This is wxDart using the Flutter backend." );
+      } else {
+        dialog.setExtendedMessage("This is wxDart using the wxWidgets backend." );
+      }
+      dialog.showModal( (returnValue, data) {
+      if (returnValue == wxID_OK) {
+        wxLogStatus( this, "Pressed OK" );
+      }
+      });
+    }, idAbout );
+
     const int test = 3;
 
     if (test == 0)
