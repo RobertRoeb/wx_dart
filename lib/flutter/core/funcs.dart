@@ -294,6 +294,9 @@ WxWindow? _wxFindWindowAtPointRecursive( WxWindow current, WxPoint pos )
   return current;
 }
 
+/// Returns the window under the screen position given by [pos]
+/// 
+/// Uses the FlutterView under wxDart Flutter as the screen.
 WxWindow? wxFindWindowAtPoint( WxPoint pos )
 {
   for (int i = _topLevelWindows.length-1; i >= 0; i--) {
