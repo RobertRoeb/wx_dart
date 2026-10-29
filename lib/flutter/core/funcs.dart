@@ -277,6 +277,33 @@ WxBitmapBundle wxLoadSVGFromResource( String filename, WxSize size, { String sub
     return WxBitmapBundle.fromSVGAsset( path, size );
 }
 
+// -------------------- wxFindWindowAtPoint -----------------------
+
+WxWindow? _wxFindWindowAtPointRecursive( WxWindow current, WxPoint pos )
+{
+  final currentPos = current.getPosition();
+  final rect = WxRect.fromPositionAndSize( currentPos, current.getSize() );
+  if (!rect.containsPoint(pos)) return null;
+  final newPos = WxPoint( pos.x - currentPos.x, pos.y - currentPos.y );
+  for (final child in current._getChildren())
+  {
+    if (!child.isShown()) continue;
+    final res = _wxFindWindowAtPointRecursive( child, newPos );
+    if (res != null) return res;
+  }
+  return current;
+}
+
+WxWindow? wxFindWindowAtPoint( WxPoint pos )
+{
+  for (int i = _topLevelWindows.length-1; i >= 0; i--) {
+    final tlw = _topLevelWindows[i];
+    final res = _wxFindWindowAtPointRecursive( tlw, pos );
+    if (res != null) return res;
+  }
+  return null;
+}
+
 // -------------------- wxGetMousePosition -----------------------
 
 /// Returns the position of the mouse on the screen
