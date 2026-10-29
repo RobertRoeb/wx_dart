@@ -1,10 +1,15 @@
 ## 0.9.25
 
+* First implementation of in-app Drag and Drop in wxDart Flutter
+* Added WxDataObject, WxTextDataObject, WxDropTarget and WxDropSource to wxDart Flutter
+* Added WxDataObject.getFormats(), getData() and setData() to both ports
 * Aligned the ports that the bind functions append new handlers to the end
 * Aligned the ports that the most recently added handler is executed first
-* Aligned semantics if WxEvent.skip() logic in both ports
+* Aligned semantics of WxEvent.skip() logic in both ports
 * Changed unbind function to only remove the most recently added matching handler
 * Documented this behaviour in WxEvtHandler
+* Added WxWindow.screenToClient() and .clientToScreen()
+* Added wxFindWindowAtPoint()
 
 ## 0.9.24
 
