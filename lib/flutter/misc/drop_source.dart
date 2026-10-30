@@ -35,6 +35,9 @@ const int wxDRAG_RESULT_CANCEL = 5;
 /// 
 /// See [WxDataObject], [WxTextDataObject], [WxDataFormat], [WxDropTarget]
 /// 
+/// Main interface:
+/// * [doDragDrop]
+/// 
 /// Example usage:
 ///```Dart
 ///class MyDropSourceWindow extends WxWindow {

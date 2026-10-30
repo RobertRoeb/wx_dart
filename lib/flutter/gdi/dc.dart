@@ -28,6 +28,53 @@ const int wxWINDING_RULE = 2;
 /// [WxGraphicsContext] group of classes in both wxDart Native and wxDart Flutter.
 /// It uses Direct2D under Windows, CoreGraphics on MacOS, Cairo on Linux and
 /// Impeller when using the Flutter backend.
+/// 
+/// Coordinate system and scaling interface;
+/// * [setAxisOrientation]
+/// * [setUserScale]
+/// 
+/// Style and colour interface:
+/// * [setPen]
+/// * [setBrush]
+/// * [setFont]
+/// * [setTextForeground]
+/// * [setTextBackground] 
+/// * [setBackgroundMode]
+/// 
+/// Text measurement:
+/// * [getTextExtent]
+/// 
+/// Drawing interface:
+/// * [drawLine]
+/// * [drawLinePts]
+/// * [drawLines]
+/// * [drawPolygon]
+/// * [drawSpline]
+/// * [drawRectangle]
+/// * [drawRectangleRect]
+/// * [drawRoundedRectangle]
+/// * [drawRoundedRectangleRect]
+/// * [drawBitmap]
+/// * [drawText]
+/// * [drawArc]
+/// * [drawArcPts]
+/// * [drawEllipticArc]
+/// * [drawCircle]
+/// * [gradientFillConcentric]
+/// * [gradientFillConcentricWithCenter]
+/// * [gradientFillLinear]
+/// 
+/// Device to logical mapping:
+/// * [setDeviceOrigin]
+/// * [getDeviceOrigin]
+/// * [deviceToLogicalX]
+/// * [deviceToLogicalXRel]
+/// * [deviceToLogicalY]
+/// * [deviceToLogicalYRel]
+/// * [logicalToDeviceX]
+/// * [logicalToDeviceXRel]
+/// * [logicalToDeviceY]
+/// * [logicalToDeviceYRel]
 
 class WxDC extends WxReadOnlyDC {
   WxDC() {

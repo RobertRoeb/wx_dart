@@ -22,7 +22,7 @@ part of '../../wx_dart.dart';
 /// 
 /// Here is an example of a how [WxPaintDC] is used.
 /// 
-/// Example:
+/// Example usage:
 ///```dart
 /// // Derive new class from WxWindow
 /// class MyWindow extends WxWindow {
@@ -81,6 +81,53 @@ part of '../../wx_dart.dart';
 ///   }
 /// }
 /// ```
+/// 
+/// Coordinate system and scaling interface;
+/// * [setAxisOrientation]
+/// * [setUserScale]
+/// 
+/// Style and colour interface:
+/// * [setPen]
+/// * [setBrush]
+/// * [setFont]
+/// * [setTextForeground]
+/// * [setTextBackground] 
+/// * [setBackgroundMode]
+/// 
+/// Text measurement:
+/// * [getTextExtent]
+/// 
+/// Drawing interface:
+/// * [drawLine]
+/// * [drawLinePts]
+/// * [drawLines]
+/// * [drawPolygon]
+/// * [drawSpline]
+/// * [drawRectangle]
+/// * [drawRectangleRect]
+/// * [drawRoundedRectangle]
+/// * [drawRoundedRectangleRect]
+/// * [drawBitmap]
+/// * [drawText]
+/// * [drawArc]
+/// * [drawArcPts]
+/// * [drawEllipticArc]
+/// * [drawCircle]
+/// * [gradientFillConcentric]
+/// * [gradientFillConcentricWithCenter]
+/// * [gradientFillLinear]
+/// 
+/// Device to logical mapping:
+/// * [setDeviceOrigin]
+/// * [getDeviceOrigin]
+/// * [deviceToLogicalX]
+/// * [deviceToLogicalXRel]
+/// * [deviceToLogicalY]
+/// * [deviceToLogicalYRel]
+/// * [logicalToDeviceX]
+/// * [logicalToDeviceXRel]
+/// * [logicalToDeviceY]
+/// * [logicalToDeviceYRel]
 
 class WxPaintDC extends WxDC {
   WxPaintDC( this._window ) {

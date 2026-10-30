@@ -13,13 +13,16 @@ part of '../../wx_dart.dart';
 /// [WxWindow.setDropTarget] so that data can be dropped on the
 /// window using Drag and Drop operations.
 /// 
-/// While the wxWidgets C++ library uses overloaded functions,
-/// wxDart uses events as the main interface for [WxDropTarget]. 
-/// 
 /// A [WxDataObject] needs to assigned to the [WxDropTarget] and it
 /// will receive the data in DragData where you can call [getData].
 /// 
-/// Not implemented in wxDart Native yet.
+/// In wxDart Flutter, drag and drop is only implemented within the app.
+/// 
+/// While the wxWidgets C++ library uses overloaded functions,
+/// wxDart uses events as the main interface for [WxDropTarget]. 
+/// 
+/// Main interface:
+/// * [getData]
 /// 
 /// Example usage:
 /// ```Dart

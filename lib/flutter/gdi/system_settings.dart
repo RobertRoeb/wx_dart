@@ -9,15 +9,21 @@ part of '../../wx_dart.dart';
 
 // -------------------- wxSystemSettings -----------------------
 
-WxSystemSettings? theSystemSettings;
+WxSystemSettings? _theSystemSettings;
 
+/// Global function to access [WxSystemSettings]
+/// 
+/// Example usage:
+/// ```dart
+///   final font = wxGetSystemSettings.getFont( wxSYS_DEFAULT_GUI_FONT );
+/// ```
 WxSystemSettings wxGetSystemSettings() {
-  if (theSystemSettings != null) {
-    return theSystemSettings!;
+  if (_theSystemSettings != null) {
+    return _theSystemSettings!;
   }
 
-  theSystemSettings = WxSystemSettings();
-  return theSystemSettings!;
+  _theSystemSettings = WxSystemSettings();
+  return _theSystemSettings!;
 }
 
 // ------------------------- wxSystemSettings ----------------------
@@ -41,10 +47,15 @@ const int wxSYS_SCREEN_Y = 22;
 /// fonts or certain metrics. The the global getter to access this
 /// class:
 /// 
-/// Example:
+/// Example usage:
 /// ```dart
 ///   final font = wxGetSystemSettings.getFont( wxSYS_DEFAULT_GUI_FONT );
 /// ```
+/// 
+/// Main interface:
+/// * [getFont]
+/// * [getColour]
+/// * [getMetric]
 /// 
 /// # System fonts
 /// | constant | meaning |
@@ -78,7 +89,24 @@ class WxSystemSettings extends WxClass {
   /// Returns the respective colour on the current platform
   /// 
   /// This can change following changes in user settings or
-  /// changes between dark and light modes
+  /// changes between dark and light modes.
+  /// 
+  /// See [WxColour]
+  /// 
+  /// # System colours
+  /// | constant | meaning |
+  /// | -------- | -------- |
+  /// | wxSYS_COLOUR_WINDOW | 5 (standard background) |
+  /// | wxSYS_COLOUR_WINDOWTEXT | 8 |
+  /// | wxSYS_COLOUR_HIGHLIGHT | 13 |
+  /// | wxSYS_COLOUR_HIGHLIGHTTEXT | 14 |
+  /// | wxSYS_COLOUR_BTNTEXT | 18 |
+  /// | wxSYS_COLOUR_LISTBOX | 25 |
+  /// | wxSYS_COLOUR_LISTBOXTEXT | 31 |
+  /// | wxSYS_COLOUR_LISTBOXHIGHLIGHTTEXT | 32 |
+  /// | wxSYS_COLOUR_LISTBOXHIGHLIGHT | 34 (standard selection colour) |
+  /// | wxSYS_COLOUR_GRIDLINES | 33 |
+
   WxColour getColour( int colour ) {
     if (wxTheApp.isDark())
     {
@@ -152,6 +180,13 @@ class WxSystemSettings extends WxClass {
   /// wxSYS_DEFAULT_GUI_FONT which is identical to wxNORMAL_FONT,
   /// but wxNORMAL_FONT may not get updated if the default font
   /// is chamged during run-time of the app.
+  /// 
+  /// See [WxFont]
+  /// 
+  /// # System fonts
+  /// | constant | meaning |
+  /// | -------- | -------- |
+  /// | wxSYS_DEFAULT_GUI_FONT | 17 |
   WxFont getFont( { int font = wxSYS_DEFAULT_GUI_FONT } ) {
     return wxNORMAL_FONT; 
   }
