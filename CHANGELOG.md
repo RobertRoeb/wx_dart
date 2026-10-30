@@ -1,3 +1,8 @@
+## 0.9.26
+
+* Added wxSetLogTargetNull() and wxUnsetLogTargetNull()
+* Added WxBitmapDataObject and WxFileDataObject
+
 ## 0.9.25
 
 * First implementation of in-app Drag and Drop in wxDart Flutter

@@ -84,7 +84,7 @@ const int wxDATAOBJECT_DIR_BOTH = 2;
 /// and clipboard operations.
 /// 
 /// The class can hold multiple formats. See concrete implementations
-/// [WxTextDataObject], WxBitmapDataObject and WxFileDataObject.
+/// [WxTextDataObject], [WxBitmapDataObject] and [WxFileDataObject].
 /// 
 /// # Constants
 /// | constant | meaning |
@@ -92,6 +92,8 @@ const int wxDATAOBJECT_DIR_BOTH = 2;
 /// | wxDATAOBJECT_DIR_GET | 0 |
 /// | wxDATAOBJECT_DIR_SET | 1 |
 /// | wxDATAOBJECT_DIR_BOTH | 2 |
+///
+/// To be used with [WxDropSource], [WxDropTarget]
 
 abstract class WxDataObject extends WxClass {
 
@@ -139,6 +141,8 @@ abstract class WxDataObject extends WxClass {
 ///  // Start DnD
 ///  source.doDragDrop();
 ///```
+/// 
+/// To be used with [WxDropSource], [WxDropTarget]
 
 class WxTextDataObject extends WxDataObject {
   /// Creates a [WxTextDataObject] containing the [text]
@@ -195,3 +199,78 @@ class WxTextDataObject extends WxDataObject {
   }
 }
 
+// ------------------------- wxFileDataObject ----------------------
+
+/// Specialized [WxDataObject] to hold a list of file names/paths.
+/// 
+/// To be used with [WxDropSource], [WxDropTarget]
+
+class WxFileDataObject extends WxDataObject {
+  WxFileDataObject( );
+
+  final List <String> _filenames = [];
+
+  void addFile( String file ) {
+    _filenames.add( file );
+  }
+
+  List<String> getFilenames( ) {
+    return _filenames;
+  }
+
+  /// Returns WxDataFormat( wxDF_FILENAME )
+  @override
+  List<WxDataFormat> getFormats( { int direction = wxDATAOBJECT_DIR_GET } ) {
+    return [ WxDataFormat( wxDF_FILENAME ) ];
+  }
+  /// Returns WxDataFormat( wxDF_FILENAME )
+  @override
+  WxDataFormat getPreferredFormat( { int direction = wxDATAOBJECT_DIR_BOTH } ) {
+    return WxDataFormat( wxDF_FILENAME );
+  }
+
+  /// Returns true if [format] is WxDataFormat( wxDF_FILENAME ) ´
+  @override
+  bool isSupported( WxDataFormat format, { int direction = wxDATAOBJECT_DIR_GET } ) {
+    return (format.getType() == wxDF_FILENAME);
+  }
+}
+
+// ------------------------- wxBitmapDataObject ----------------------
+
+/// Specialized [WxDataObject] to hold a [WxBitmap]
+/// 
+/// To be used with [WxDropSource], [WxDropTarget]
+
+
+class WxBitmapDataObject extends WxDataObject {
+  WxBitmapDataObject( WxBitmap bitmap ) {
+    _bitmap = bitmap;
+  }
+
+  WxBitmap? _bitmap;
+
+  void setBitmap( WxBitmap bitmap ) {
+    _bitmap = bitmap;
+  }
+
+  WxBitmap? getBitmap( ) {
+    return _bitmap;
+  }
+  /// Returns WxDataFormat( wxDF_BITMAP )
+  @override
+  List<WxDataFormat> getFormats( { int direction = wxDATAOBJECT_DIR_GET } ) {
+    return [ WxDataFormat( wxDF_BITMAP ) ];
+  }
+  /// Returns WxDataFormat( wxDF_BITMAP )
+  @override
+  WxDataFormat getPreferredFormat( { int direction = wxDATAOBJECT_DIR_BOTH } ) {
+    return WxDataFormat( wxDF_BITMAP );
+  }
+
+  /// Returns true if [format] is WxDataFormat( wxDF_BITMAP ) ´
+  @override
+  bool isSupported( WxDataFormat format, { int direction = wxDATAOBJECT_DIR_GET } ) {
+    return (format.getType() == wxDF_BITMAP);
+  }
+}
