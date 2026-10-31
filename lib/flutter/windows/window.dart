@@ -936,6 +936,8 @@ class WxWindow extends WxEvtHandler {
       }
     } 
 
+    child = _doBuildDropZone( context, child );
+
     child = _doBuildBackgroundAndBorder( context, child );
 
     child = _doBuildMouseEventHandler(context, child);
@@ -943,6 +945,56 @@ class WxWindow extends WxEvtHandler {
     child = _doBuildRadioButtonGroup(context, child);
 
     return _doBuildSizeEventHandler( context, child );
+  }
+
+  Widget _doBuildDropZone( BuildContext context, Widget child )
+  {
+    if (!wxIsWeb()) return child;
+    if (_dropTarget == null) return child;
+
+    final object = _dropTarget!._dataObject;
+    if (object.isSupported(WxDataFormat( wxDF_TEXT))) {
+      return Stack(
+        children: [
+          DropzoneView(
+            operation: DragOperation.copy,
+            mime: [ "text/plain"],
+            onHover: () {
+              if (!_dropTarget!._hasSentEnterEvent) {
+                _dropTarget!._hasSentEnterEvent = true;
+                final dropEvent = WxDropEvent( wxGetDropEnterEventType(), getId() );
+                dropEvent.setEventObject( this );
+                processEvent( dropEvent );
+              }
+              final dropEvent = WxDropEvent( wxGetDropDragOverEventType(), getId() );
+              dropEvent.setEventObject( this );
+              processEvent( dropEvent );
+            },
+            onLeave: () {
+              final dropEvent = WxDropEvent( wxGetDropLeaveEventType(), getId() );
+              dropEvent.setEventObject( this );
+              processEvent( dropEvent );
+              _dropTarget!._hasSentEnterEvent = false;
+            },
+            onDropString: (text) {
+              final dropEvent = WxDropEvent( wxGetDropDropEventType(), getId() );
+              dropEvent.setEventObject( this );
+              processEvent( dropEvent );
+              if (dropEvent.isAllowed()) {
+                dropEvent.setEventType( wxGetDropDataEventType() );
+                final sourceData = WxTextDataObject( text );
+                _dropTarget!._receivedDataObject = sourceData;
+                processEvent(dropEvent);
+                _dropTarget!._receivedDataObject = null;
+              }
+            },
+          ),
+          child
+        ],
+      );
+    }
+
+    return child;
   }
 
   Widget _doBuildRadioButtonGroup( BuildContext context, Widget widget )
@@ -1352,6 +1404,11 @@ class WxWindow extends WxEvtHandler {
           processEvent(wxevent);
         },
         onPointerMove: (event) {
+          // The MouseRegion code in app.dart only catches the global mouse
+          // position for hover events, not when a mouse button is pressed.
+          // This code complements it for those cases, when a button is pressed.
+          _globalMousePosition = WxPoint( event.position.dx.floor(), event.position.dy.floor() );
+
           final x = event.localPosition.dx.floor();
           final y = event.localPosition.dy.floor();
           if (_isCoveredByChild(x,y)) return;

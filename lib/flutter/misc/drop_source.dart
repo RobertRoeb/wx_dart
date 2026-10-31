@@ -115,6 +115,7 @@ class WxDropSource extends WxClass {
   bool _isMove = false;
   bool _giveFeedback = true;
   bool _isNoEntry = false;
+  WxWindow? _oldWindowUnterMouse;
 
   @override
   void dispose() {
@@ -166,12 +167,24 @@ class WxDropSource extends WxClass {
       // Target window there to get data?
       _isNoEntry = true;
       final winUnderMouse = wxFindWindowAtPoint( _dragPosition );
+      if ((_oldWindowUnterMouse != null) && (_oldWindowUnterMouse != winUnderMouse)) {
+        final dropEvent = WxDropEvent( wxGetDropLeaveEventType(), _oldWindowUnterMouse!.getId() );
+        dropEvent.setEventObject( _oldWindowUnterMouse! );
+        _oldWindowUnterMouse!.processEvent( dropEvent );
+        _oldWindowUnterMouse = null;
+      }
       if (winUnderMouse != null) {
         if (winUnderMouse._dropTarget != null) {
           final target = winUnderMouse._dropTarget!;
           // for (int i = 0; i < _data.getFormatCount(); i++)
           final format = target._dataObject.getPreferredFormat();
           if (_dataObject.isSupported(format)) {
+            if (_oldWindowUnterMouse == null) {
+              final dropEvent = WxDropEvent( wxGetDropEnterEventType(), winUnderMouse.getId() );
+              dropEvent.setEventObject( winUnderMouse );
+              winUnderMouse.processEvent( dropEvent );
+              _oldWindowUnterMouse = winUnderMouse;
+            }
             final dropEvent = WxDropEvent( wxGetDropDragOverEventType(), winUnderMouse.getId() );
             dropEvent.setEventObject( winUnderMouse );
             winUnderMouse.processEvent( dropEvent );
@@ -212,7 +225,7 @@ class WxDropSource extends WxClass {
             if (dropEvent.isAllowed()) {
               target._receivedDataObject = _dataObject;
               dropEvent.setEventType( wxGetDropDataEventType() );
-              /// Targget has to request data copy in this event
+              /// Target has to request data copy in this event
               winUnderMouse.processEvent(dropEvent);
               target._receivedDataObject = null;
             }

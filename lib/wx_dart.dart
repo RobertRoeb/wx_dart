@@ -27,6 +27,7 @@ import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart
 import 'package:file_picker/file_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:desktop_window/desktop_window.dart';
+import 'package:flutter_dropzone/flutter_dropzone.dart';
 import 'package:flutter_angle/flutter_angle.dart';
 part 'webgl_constants.dart';
 part 'enums.dart';

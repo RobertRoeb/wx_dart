@@ -16,7 +16,9 @@ part of '../../wx_dart.dart';
 /// A [WxDataObject] needs to assigned to the [WxDropTarget] and it
 /// will receive the data in DragData where you can call [getData].
 /// 
-/// In wxDart Flutter, drag and drop is only implemented within the app.
+/// In wxDart Flutter, drag and drop is only implemented within the app,
+/// except for wxDart Flutter on the Web, where you can also drop text from
+/// other apps into a [WxDropTarget] holding a [WxTextDataObject]).
 /// 
 /// While the wxWidgets C++ library uses overloaded functions,
 /// wxDart uses events as the main interface for [WxDropTarget]. 
@@ -107,6 +109,7 @@ class WxDropTarget extends WxClass {
 
   late WxDataObject _dataObject;
   WxDataObject? _receivedDataObject;
+  bool _hasSentEnterEvent = false;
 
   /// Tells the drop target to acquire the data. This needs to be
   /// called from with bindDragDrop(). See example.
