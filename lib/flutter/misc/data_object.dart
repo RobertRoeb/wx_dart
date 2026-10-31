@@ -162,7 +162,7 @@ class WxTextDataObject extends WxDataObject {
     return _text;
   }
 
-  /// Sets raw data and converts is to a String
+  /// Sets raw data (UTF8) and converts is to a String
   @override
   void setData( WxDataFormat format, Uint8List data )
   {
@@ -175,8 +175,14 @@ class WxTextDataObject extends WxDataObject {
     _text = utf8Decoder.convert( data );
   }
 
+  /// Converts the text to the raw data (in UTF8)
   @override
   Uint8List? getData( WxDataFormat format ) {
+    if (format.getId() != "text/plain") {
+      wxLogError( "Wrong data format request." );
+      _text = "";
+      return null;
+    }
     final utf8Encoder = utf8.encoder;
     return utf8Encoder.convert( _text );
   }
@@ -208,14 +214,88 @@ class WxTextDataObject extends WxDataObject {
 class WxFileDataObject extends WxDataObject {
   WxFileDataObject( );
 
-  final List <String> _filenames = [];
+  List <String> _filenames = [];
 
+  /// Add file URI to the data object
   void addFile( String file ) {
     _filenames.add( file );
   }
 
+  /// Returns the list of file URIs in the data object
   List<String> getFilenames( ) {
     return _filenames;
+  }
+
+  int _getPosOfCRLFOrEnd( Uint8List data, int start ) {
+    int pos = start;
+    for (; pos < data.buffer.lengthInBytes-1; pos++) {
+      if ((data[pos] == 13) && (pos < data.buffer.lengthInBytes-1) && (data[pos+1] == 10)) {
+        return pos;
+      }
+    }
+ 
+    return pos == start ? -1 : pos+1;
+  }
+
+  /// Sets raw data in "text/uri-list" format and converts is to list of file URIs
+  @override
+  void setData( WxDataFormat format, Uint8List data )
+  {
+    _filenames = [];
+    if (format.getId() != "text/uri-list") {
+      wxLogError( "Wrong data transferred to WxFileDataObject (${format.getId()})." );
+      return;
+    }
+    final utf8Decoder = utf8.decoder;
+    int start = 0;
+    int end = _getPosOfCRLFOrEnd( data, start );
+    while (end != -1) {
+      final uri = utf8Decoder.convert( data, start, end );
+      _filenames.add( uri );
+      start = end+2;
+      end = _getPosOfCRLFOrEnd( data, start );
+    }
+  }
+
+  /// Returns the file URIs to the "text/uri-list" format
+  @override
+  Uint8List? getData( WxDataFormat format ) {
+    if (format.getId() != "text/uri-list") {
+      wxLogError( "Wrong data format request." );
+      return null;
+    }
+    late Uint8List data;
+    int size = 0;
+    final utf8Encoder = utf8.encoder;
+    for (int i = 0; i < _filenames.length; i++) {
+      final fileData = utf8Encoder.convert( _filenames[i] );
+      if (size > 0) {
+        final newData = Uint8List( size + 2 + fileData.buffer.lengthInBytes );
+        int pos = 0;
+        for ( ; pos < size; pos++) {
+          print( "#1 copy letter at pos: $pos" );
+          newData[pos] = data[pos];
+        }
+        print( "#2 copy 13 at pos: $pos" );
+        newData[pos] = 13;
+        pos++;
+        print( "#2 copy 10 at pos: $pos" );
+        newData[pos] = 10;
+        pos++;
+        int filePos = 0;
+        for ( ; pos < size + 2 + fileData.buffer.lengthInBytes; pos++) {
+          print( "#3 copy new letter at pos: $pos" );
+          newData[pos] = fileData[filePos];
+          filePos++;
+        }
+        data = newData;
+        size = data.buffer.lengthInBytes;
+      } else {
+        data = fileData;
+        size = data.buffer.lengthInBytes;
+      }
+    }
+    return data;
   }
 
   /// Returns WxDataFormat( wxDF_FILENAME )
