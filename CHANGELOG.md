@@ -2,6 +2,9 @@
 
 * Added wxSetLogTargetNull() and wxUnsetLogTargetNull()
 * Added WxBitmapDataObject and WxFileDataObject
+* Implemented WxDropTarget for external drag and drop for wxDart Flutter Web
+* Added WxDropTarget DropEnter and DropLeave events
+* Improved wxGetMousePosition()
 
 ## 0.9.25
 
