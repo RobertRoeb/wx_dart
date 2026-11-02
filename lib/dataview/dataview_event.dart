@@ -286,8 +286,6 @@ extension DataViewColumnReorderedEventBinder on WxEvtHandler {
   }
 }
 
-/// @nodoc
-
 /// Event sent from [WxDataViewCtrl]
 /// 
 /// This is an example of an event written in generic wxDart, so this event and 
