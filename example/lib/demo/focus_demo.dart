@@ -24,17 +24,13 @@ class MyFocussableWindow extends WxWindow {
     }
     setDropTarget( _target );
 
-    bindDropEnterEvent( (_) { 
-      final frame = wxTheApp.getTopWindow();
-      if (frame is WxFrame) {
-        frame.showInfoBar("Enter event from Drag and Drop", duration: 1500 );
-      }
+    bindDropEnterEvent( (_) {
+      _highlight = true;
+      refresh();
     }, -1 );
     bindDropLeaveEvent( (_) {
-      final frame = wxTheApp.getTopWindow();
-      if (frame is WxFrame) {
-        frame.showInfoBar("Leave event from Drag and Drop", duration: 1500 );
-      }
+      _highlight = false;
+      refresh();
     }, -1 );
     bindDropDropEvent( onDrop, -1);
     bindDropDataEvent( onData, -1);
@@ -45,6 +41,7 @@ class MyFocussableWindow extends WxWindow {
   late WxDropTarget _target;
   String _dropText = "";
   bool _isFile = false;
+  bool _highlight = false;
 
   void onDrop( WxDropEvent event )
   {
@@ -52,6 +49,8 @@ class MyFocussableWindow extends WxWindow {
     if (frame is WxFrame) {
       frame.showInfoBar("Received drop from Drag and Drop", duration: 1500 );
     }
+    _highlight = false;
+    refresh();
   }
   void onData( WxDropEvent event )
   {
@@ -72,7 +71,7 @@ class MyFocussableWindow extends WxWindow {
       final dc = WxPaintDC( this );
       dc.setBrush( wxTRANSPARENT_BRUSH );
       if (hasFocus()) {
-        dc.setPen(WxPen(wxTheApp.getAccentColour()));
+        dc.setPen(WxPen(wxTheApp.getAccentColour(), width: _highlight ? 3 : 1 ));
         dc.drawRectangle(0, 0, getSize().x, getSize().y );
         if (_dropText.isNotEmpty) {
           dc.drawText("Has focus.\nReceived: $_dropText", 5, 5 );
@@ -84,7 +83,7 @@ class MyFocussableWindow extends WxWindow {
           }
         }
       } else {
-        dc.setPen(wxGREY_PEN);
+        dc.setPen(WxPen( wxGREY, width: _highlight ? 3 : 1 ));
         dc.drawRectangle(0, 0, getSize().x, getSize().y );
         if (_dropText.isNotEmpty) {
           dc.drawText("Doesn't have focus.\nReceived: $_dropText", 5, 5 );
