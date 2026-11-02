@@ -26,12 +26,14 @@ const int wxDRAG_RESULT_CANCEL = 5;
 /// It has to be associated with a [WxDataObject] that contains
 /// the data and its format or formats.
 /// 
-/// In wxDart Flutter only implemented for Drag and Drop within
-/// the application.
+/// In wxDart Flutter, drag and drop is only implemented within the app,
+/// except for wxDart Flutter on the Web, where you can also drop text from
+/// other apps into a [WxDropTarget] holding a [WxTextDataObject]).
+/// 
 /// 
 /// By default, [WxDropSource] gives visual feedback if a copy
 /// or a move operation is intended. You can override this by
-/// catching a the [WxDragEvent] and call [WxDragEvent.veto].
+/// catching the [WxDragEvent] and call [WxDragEvent.veto].
 /// 
 /// See [WxDataObject], [WxTextDataObject], [WxDataFormat], [WxDropTarget]
 /// 
