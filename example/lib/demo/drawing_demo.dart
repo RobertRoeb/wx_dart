@@ -2,8 +2,57 @@
 import 'dart:async';
 
 import 'package:wx_dart/wx_dart.dart';
-import 'dart:math';
 import 'dart:ui' as ui;
+
+// ------------------------- MyClippingWindow ----------------------
+
+class MyClippingWindow extends WxScrolledWindow {
+  MyClippingWindow( WxWindow parent, int style ) : super( parent, -1, pos: wxDefaultPosition, size: WxSize( 200, 200) )
+  {
+    setVirtualSize(WxSize(600,400));
+    setScrollRate(10, 10);
+
+    bindPaintEvent( onPaint );
+  }
+
+  void onPaint( WxPaintEvent event )
+  {
+    final dc = WxPaintDC( this );
+    doPrepareDC(dc);
+
+    final gc = WxGraphicsContext.fromDC(dc);
+
+    final size = getClientSize();
+
+    dc.setPen(wxRED_PEN);
+    dc.setClippingRegion(5, 5, 50, size.y-10 );
+    for (int i = 0; i < size.y; i += 4) {
+      dc.drawLine(5, i, size.x-10, i);
+    }
+    dc.drawText("This is very long text", -10, 30 );
+    dc.destroyClippingRegion();
+
+    dc.setPen(wxBLUE_PEN);
+    dc.setClippingRegion(65, 35, 50, size.y-30 );
+    dc.setClippingRegion(65, 5, 50, 70 );
+    for (int i = 0; i < size.y; i += 4) {
+      dc.drawLine(5, i, size.x-10, i);
+    }
+    dc.drawText("This is very long text", -10+60, 30 );
+    dc.destroyClippingRegion();
+
+    dc.setUserScale(2.0, 1.0);
+    dc.setPen(wxGREEN_PEN);
+    dc.setClippingRegion(65, 35, 50, size.y-30 );
+    dc.setClippingRegion(65, 5, 50, 70 );
+    for (int i = 0; i < size.y; i += 4) {
+      dc.drawLine(5, i, size.x-10, i);
+    }
+    dc.drawText("This is very long text", -10+60, 30 );
+    dc.destroyClippingRegion();
+  }
+
+}
 
 // ------------------------- MyGraphicsPathWindow ----------------------
 
@@ -667,6 +716,10 @@ class MyDrawingWindow extends WxScrolledWindow {
     sbs = WxStaticBoxSizer(wxVERTICAL, this, "Simple lines, wxBORDER_SIMPLE" );
     mainSizer.addSizer(sbs, flag: wxEXPAND|wxALL, border: 5 );
     sbs.add( MyLinesWindow(sbs.getStaticBox(), wxSIMPLE_BORDER, true), flag: wxEXPAND|wxALL, border: 5 );
+
+    sbs = WxStaticBoxSizer(wxVERTICAL, this, "Clipping regions" );
+    mainSizer.addSizer(sbs, flag: wxEXPAND|wxALL, border: 5 );
+    sbs.add( MyClippingWindow(sbs.getStaticBox(), wxSIMPLE_BORDER ), flag: wxEXPAND|wxALL, border: 5 );
 
     sbs = WxStaticBoxSizer(wxVERTICAL, this, "WxGraphicsBitmap" );
     mainSizer.addSizer(sbs, flag: wxEXPAND|wxALL, border: 5 );

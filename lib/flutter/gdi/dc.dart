@@ -102,6 +102,7 @@ class WxDC extends WxReadOnlyDC {
   WxColour _currentTextForeground = wxBLACK;
   WxColour _currentTextBackground = wxWHITE;
   int _backgroundMode = wxBRUSHSTYLE_TRANSPARENT;
+  Rect? _clipBox;
 
   @override
   void _recalcMatrix()
@@ -109,21 +110,55 @@ class WxDC extends WxReadOnlyDC {
     super._recalcMatrix();
     _canvas.restore();
     _canvas.save();
+
+    if (_clipBox != null) {
+      _canvas.clipRect( _clipBox!, doAntiAlias: false );
+    }
+
     // Since we use native scrolling in wxDart Flutter, deviceOrigin
     // and deviceLocalOrigin always become 0
     // _canvas.translate( (_deviceOriginX + _deviceLocalOriginX).toDouble(), (_deviceOriginY + _deviceLocalOriginY).toDouble());
     _canvas.scale(_scaleX*_signX, _scaleY*_signY );
   }
 
+  /// Returns the current clipping box in logical coordiantes, or null
+  WxRect? getClippingBox() 
+  {
+    if (_clipBox == null) return null;
+    final x1 = deviceToLogicalX(_clipBox!.left.round() );
+    final x2 = deviceToLogicalX(_clipBox!.right.round() );
+    final y1 = deviceToLogicalY(_clipBox!.top.round() );
+    final y2 = deviceToLogicalY(_clipBox!.bottom.round() );
+    return WxRect( min(x1,x2), min(y1,y2), (x1-x2).abs(), (y1-y2).abs() );
+  }
+
   /// Sets the clipping region for this device context to the intersection of the given region described
   /// by the parameters of this method and the previously set clipping region.
   /// 
   /// Clipping region should be given in logical coordinates.
-  void setClippingRegion( int x, int y, int width, int height ) {
+  void setClippingRegion( int x, int y, int width, int height )
+  {
+    var box = Rect.fromPoints( 
+      Offset( logicalToDeviceX(x).toDouble(), logicalToDeviceY(y).toDouble() ),
+      Offset( logicalToDeviceX(x+width).toDouble(), logicalToDeviceY(y+height).toDouble() ),
+    );
+    final old = _clipBox;
+    if (old != null) {
+      box = box.intersect( old );
+      if ((box.width <= 0) || (box.height <= 0)) {
+        box = Rect.zero;
+      }
+    }
+    _clipBox = box;
+    _recalcMatrix();
   }
 
   /// Destroys the current clipping region so that none of the DC is clipped.
-  void destroyClippingRegion( ) {
+  void destroyClippingRegion( )
+  {
+    if (_clipBox == null) return;
+    _clipBox = null;
+    _recalcMatrix();
   }
 
   /// Draws a line form [x1],[y1] to [x2],[y2] using the current [WxPen]

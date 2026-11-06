@@ -155,42 +155,42 @@ class WxReadOnlyDC extends WxObject {
 
   /// Conversion between logical and device. Used internally.
   int deviceToLogicalX( int x ) {
-    return (((x - _deviceOriginX - _deviceLocalOriginX) * _signX) / _scaleX ).floor() + _logicalOriginX ;
+    return (((x - _deviceOriginX - _deviceLocalOriginX) * _signX) / _scaleX ).round() + _logicalOriginX ;
   }
 
   /// Conversion between logical and device. Used internally.
   int deviceToLogicalXRel( int x ) {
-    return (x / _scaleX ).floor();
+    return (x / (_scaleX* _signX) ).round();
   }
 
   /// Conversion between logical and device. Used internally.
   int deviceToLogicalY( int y ) {
-    return (((y - _deviceOriginY - _deviceLocalOriginY) * _signY) / _scaleY ).floor() + _logicalOriginY ;
+    return (((y - _deviceOriginY - _deviceLocalOriginY) * _signY) / _scaleY ).round() + _logicalOriginY ;
   }
 
   /// Conversion between logical and device. Used internally.
   int deviceToLogicalYRel( int y ) {
-    return (y / _scaleY ).floor();
+    return (y / (_scaleY* _signY) ).round();
   }
 
   /// Conversion between logical and device. Used internally.
   int logicalToDeviceX( int x ) {
-    return ( ((x - _logicalOriginX) * _signX) * _scaleX).floor() + _deviceOriginX + _deviceLocalOriginX;
+    return ( ((x - _logicalOriginX) * _signX) * _scaleX).round() + _deviceOriginX + _deviceLocalOriginX;
   }
 
   /// Conversion between logical and device. Used internally.
   int logicalToDeviceXRel( int x ) {
-    return (x * _scaleX).floor();
+    return (x * _scaleX * _signX).round();
   }
 
   /// Conversion between logical and device. Used internally.
   int logicalToDeviceY( int y ) {
-    return ( ((y - _logicalOriginY) * _signY) * _scaleY).floor() + _deviceOriginY + _deviceLocalOriginY;
+    return ( ((y - _logicalOriginY) * _signY) * _scaleY).round() + _deviceOriginY + _deviceLocalOriginY;
   }
 
   /// Conversion between logical and device. Used internally.
   int logicalToDeviceYRel( int y ) {
-    return (y * _scaleY).floor();
+    return (y * _scaleY * _signY).round();
   }
 }
 
