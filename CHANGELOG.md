@@ -4,6 +4,9 @@
 * Implemented within-app image, file and text drag and drop in wxDart Flutter (all)
 * Implemented WxDC.getTextExtentEx() including the descent and externalLeading
 * Implemented WxDC.getPartialTextExtents
+* Implemented WxDC.setClippingRegion() .destroyClippingRegion() and .getClippingBox()
+* Correct radius of WxDC.drawCircle() if user scaling is applied
+* Correct deviceToLogical etc. calculations if axes are inverted
 
 ## 0.9.26
 
