@@ -10,8 +10,10 @@ part of '../../wx_dart.dart';
 
 // ------------------------- WxTextExtent ----------------------
 
+/// Helper class as a return value of [WxReadOnlyDC.getTextExtentEx]
+
 class WxTextExtent {
-  WxTextExtent( this.width, this.height, this.descent, this.externalLeading );
+  const WxTextExtent( this.width, this.height, this.descent, this.externalLeading );
   final int width;
   final int height;
   final int descent;

@@ -427,6 +427,23 @@ class MyFontWindow extends WxWindow {
           dc.drawText( "Hello at size $pointSize, w: ${size.getWidth()} h: ${size.getHeight()}", x, y );
           y += size.y + 5;
       }
+
+      y += 5;
+      final extent = dc.getTextExtentEx("Hello");
+      dc.drawText("Hello", x, y );
+      dc.setPen(wxBLUE_PEN);
+      dc.setBrush(wxTRANSPARENT_BRUSH);
+      dc.drawRectangle(x, y, extent.width, extent.height );
+      dc.setPen(wxRED_PEN);
+      dc.drawRectangle(x, y, extent.width, extent.height+extent.descent );
+
+      x += 70;
+      final extents = dc.getPartialTextExtents("Hello");
+      dc.drawText("Hello", x, y );
+      dc.setPen(wxBLUE_PEN);
+      for (int letter in extents) {
+        dc.drawRectangle(x, y, letter, extent.height );
+      }
     } );
   }
 }
