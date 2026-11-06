@@ -521,12 +521,12 @@ class WxDC extends WxReadOnlyDC {
     if (_currentBrush.isNonTransparent())
     {
       final Offset centre = Offset( x+0.5, y+0.5 );
-      _canvas.drawCircle( centre, radius*_scaleX, _brushPaint );
+      _canvas.drawCircle( centre, radius.toDouble(), _brushPaint );
     }
     if (_currentPen.isNonTransparent())
     {
       final Offset centre = Offset( x+0.5, y+0.5 );
-      _canvas.drawCircle( centre, radius*_scaleX, _penPaint );
+      _canvas.drawCircle( centre, radius.toDouble(), _penPaint );
     }
   }
 
