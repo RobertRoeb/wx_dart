@@ -7,6 +7,17 @@
 
 part of '../../wx_dart.dart';
 
+
+// ------------------------- WxTextExtent ----------------------
+
+class WxTextExtent {
+  WxTextExtent( this.width, this.height, this.descent, this.externalLeading );
+  final int width;
+  final int height;
+  final int descent;
+  final int externalLeading;
+}
+
 // ------------------------- wxReadOnlyDC ----------------------
 
 /// Base class for [WxDC], [WxPaintDC] and [WxInfoDC] 
@@ -38,6 +49,8 @@ class WxReadOnlyDC extends WxObject {
   }
 
   /// Returns the size in pixels of [text] using the current font
+  /// 
+  /// See also getTextExtentEx
   WxSize getTextExtent( String text )
   {
     TextPainter textPainter = TextPainter(
@@ -46,7 +59,7 @@ class WxReadOnlyDC extends WxObject {
             style: _convertTextStyle(null, _font)), 
             textDirection: TextDirection.ltr)
       ..layout(minWidth: 0, maxWidth: double.infinity);
-    final returnValue = WxSize( textPainter.size.width.floor(), textPainter.size.height.floor() );
+    final returnValue = WxSize( textPainter.size.width.ceil(), textPainter.size.height.ceil() );
     textPainter.dispose();
     return returnValue;
   }
@@ -147,6 +160,11 @@ class WxReadOnlyDC extends WxObject {
 
 /// Implements a light weight device context for querying metrics only.
 /// Typically used to call [WxDC.setFont] and [WxDC.getTextExtent].
+/// 
+/// Main interface:
+/// * [setFont]
+/// * [getTextExtent]
+/// * [getTextExtentEx]
 /// 
 /// Example:
 /// ```dart

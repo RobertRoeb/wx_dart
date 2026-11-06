@@ -43,6 +43,7 @@ const int wxWINDING_RULE = 2;
 /// 
 /// Text measurement:
 /// * [getTextExtent]
+/// * [getTextExtentEx]
 /// 
 /// Drawing interface:
 /// * [drawLine]

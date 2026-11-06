@@ -2,6 +2,7 @@
 
 * Implemented image and text dropping from external app in wxDart Flutter Web
 * Implemented within-app image, file and text drag and drop in wxDart Flutter (all)
+* Implement WxDC.getTextExtentEx() including the descent and externalLeading
 
 ## 0.9.26
 
