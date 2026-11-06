@@ -109,10 +109,21 @@ class WxDC extends WxReadOnlyDC {
     super._recalcMatrix();
     _canvas.restore();
     _canvas.save();
-    // Since we use native scrolling in wxDart Flutter,‚ deviceOrigin
+    // Since we use native scrolling in wxDart Flutter, deviceOrigin
     // and deviceLocalOrigin always become 0
     // _canvas.translate( (_deviceOriginX + _deviceLocalOriginX).toDouble(), (_deviceOriginY + _deviceLocalOriginY).toDouble());
     _canvas.scale(_scaleX*_signX, _scaleY*_signY );
+  }
+
+  /// Sets the clipping region for this device context to the intersection of the given region described
+  /// by the parameters of this method and the previously set clipping region.
+  /// 
+  /// Clipping region should be given in logical coordinates.
+  void setClippingRegion( int x, int y, int width, int height ) {
+  }
+
+  /// Destroys the current clipping region so that none of the DC is clipped.
+  void destroyClippingRegion( ) {
   }
 
   /// Draws a line form [x1],[y1] to [x2],[y2] using the current [WxPen]
