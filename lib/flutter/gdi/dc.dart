@@ -66,6 +66,11 @@ const int wxWINDING_RULE = 2;
 /// * [gradientFillConcentricWithCenter]
 /// * [gradientFillLinear]
 /// 
+/// Clipping:
+/// * [setClippingRegion]
+/// * [destroyClippingRegion]
+/// * [getClippingBox]
+/// 
 /// Device to logical mapping:
 /// * [setDeviceOrigin]
 /// * [getDeviceOrigin]

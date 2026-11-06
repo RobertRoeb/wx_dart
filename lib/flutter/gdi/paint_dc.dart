@@ -119,6 +119,11 @@ part of '../../wx_dart.dart';
 /// * [gradientFillConcentricWithCenter]
 /// * [gradientFillLinear]
 /// 
+/// Clipping:
+/// * [setClippingRegion]
+/// * [destroyClippingRegion]
+/// * [getClippingBox]
+/// 
 /// Device to logical mapping:
 /// * [setDeviceOrigin]
 /// * [getDeviceOrigin]
