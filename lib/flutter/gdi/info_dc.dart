@@ -48,20 +48,56 @@ class WxReadOnlyDC extends WxObject {
     _font = font;
   }
 
-  /// Returns the size in pixels of [text] using the current font
-  /// 
-  /// See also getTextExtentEx
-  WxSize getTextExtent( String text )
-  {
-    TextPainter textPainter = TextPainter(
+  TextPainter _layoutText( String text ) {
+    return TextPainter(
         text: TextSpan(
             text: text, 
             style: _convertTextStyle(null, _font)), 
             textDirection: TextDirection.ltr)
       ..layout(minWidth: 0, maxWidth: double.infinity);
-    final returnValue = WxSize( textPainter.size.width.ceil(), textPainter.size.height.ceil() );
+  }
+
+  /// Returns the size in pixels of [text] using the current font
+  /// 
+  /// See also [getTextExtentEx], [getPartialTextExtents]
+  WxSize getTextExtent( String text )
+  {
+    final textPainter = _layoutText( text );
+    final result = WxSize( textPainter.size.width.ceil(), textPainter.size.height.ceil() );
     textPainter.dispose();
-    return returnValue;
+    return result;
+  }
+
+  /// Returns the full metrics of [text] using the current font
+  /// 
+  /// See also [getTextExtent], [getPartialTextExtents]
+  WxTextExtent getTextExtentEx( String text )
+  {
+    final textPainter = _layoutText( text );
+    final baseline = textPainter.computeDistanceToActualBaseline( TextBaseline.alphabetic );
+    final height = textPainter.size.height;
+    final result = WxTextExtent( textPainter.size.width.ceil(), height.ceil(),
+      (height - baseline).round(), 0 );
+    textPainter.dispose();
+    return result;
+  }
+
+  /// Returns for every character of [text] the width of the text up
+  /// to the end and including that character
+  /// 
+  /// See also [getTextExtent], [getTextExtentEx]
+  List<int> getPartialTextExtents( String text )
+  {
+    final result = <int> [];
+    if (text.isEmpty) return result;
+    final textPainter = _layoutText( text );
+    int end = 0;
+    for (final rune in text.runes) {
+      end += rune > 0xFFFF ? 2 : 1;
+      result.add( textPainter.getOffsetForCaret( TextPosition( offset: end), Rect.zero).dx.round() );
+    }
+    textPainter.dispose();
+    return result;
   }
 
   void _recalcMatrix() {
@@ -165,6 +201,7 @@ class WxReadOnlyDC extends WxObject {
 /// * [setFont]
 /// * [getTextExtent]
 /// * [getTextExtentEx]
+/// * [getPartialTextExtents]
 /// 
 /// Example:
 /// ```dart

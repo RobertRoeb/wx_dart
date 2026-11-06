@@ -97,6 +97,7 @@ part of '../../wx_dart.dart';
 /// Text measurement:
 /// * [getTextExtent]
 /// * [getTextExtentEx]
+/// * [getPartialTextExtents]
 /// 
 /// Drawing interface:
 /// * [drawLine]
