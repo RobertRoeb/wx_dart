@@ -133,7 +133,6 @@ class WxPaintDC extends WxDC {
   WxPaintDC( this._window ) {
     if (_window._canvas != null) {
       _canvas = _window._canvas!;
-      _canvas.save();
       if (_window._scrollOwnerWindow != null) {
         _deviceLocalOriginX = _window._scrollOwnerWindow!.getDeviceOffsetX();
         _deviceLocalOriginY = _window._scrollOwnerWindow!.getDeviceOffsetY();

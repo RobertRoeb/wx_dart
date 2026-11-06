@@ -1,3 +1,8 @@
+## 0.9.27
+
+* Implemented image and text dropping from external app in wxDart Flutter Web
+* Implemented within-app image, file and text drag and drop in wxDart Flutter (all)
+
 ## 0.9.26
 
 * Added wxSetLogTargetNull() and wxUnsetLogTargetNull()

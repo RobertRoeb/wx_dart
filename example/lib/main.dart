@@ -196,7 +196,7 @@ class MyMainFrame extends WxAdaptiveFrame {
 
     databook.appendPage( chapter1, null, "Other controls", MyControlsWindow(databook) );
 
-    databook.appendPage( chapter1, null, "Focus tests", MyFocusWindow(databook) );
+    databook.appendPage( chapter1, null, "Drag and Drop tests", MyFocusWindow(databook) );
 
     databook.appendPage( chapter1, null, "Tiles", MyTileDataView(databook) );
 

@@ -17,8 +17,9 @@ part of '../../wx_dart.dart';
 /// will receive the data in DragData where you can call [getData].
 /// 
 /// In wxDart Flutter, drag and drop is only implemented within the app,
-/// except for wxDart Flutter on the Web, where you can also drop text from
-/// other apps into a [WxDropTarget] holding a [WxTextDataObject]).
+/// except for wxDart Flutter on the Web, where you can also drop text or
+/// and a bitmap from other apps into a [WxDropTarget] holding a [WxTextDataObject]
+/// or a [WxBitmapDataObject].
 /// 
 /// While the wxWidgets C++ library uses overloaded functions,
 /// wxDart uses events as the main interface for [WxDropTarget]. 

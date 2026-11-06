@@ -142,23 +142,23 @@ const int wxBITMAP_TYPE_ANY = 50;
 
 class WxBitmap extends WxObject {
 
-/// Loads in image from a resource with the given format.
-/// 
-/// [path] is relative to [WxStandardPaths.getResourcesDir]
-/// 
-/// # Image file format constants
-/// * wxBITMAP_TYPE_BMP
-/// * wxBITMAP_TYPE_GIF
-/// * wxBITMAP_TYPE_PNG
-/// * wxBITMAP_TYPE_JPEG
-/// * wxBITMAP_TYPE_WEBP
-/// * wxBITMAP_TYPE_ANY
-/// 
-/// Example:
-/// ```dart
-///    // create bitmap from lib/assets/images/MyImage.png
-///    final bitmap = WxBitmap.fromAsset( "images/MyImage.png", wxBITMAP_TYPE_PNG ); 
-/// ```
+  /// Loads in image from a resource with the given format.
+  /// 
+  /// [path] is relative to [WxStandardPaths.getResourcesDir]
+  /// 
+  /// # Image file format constants
+  /// * wxBITMAP_TYPE_BMP
+  /// * wxBITMAP_TYPE_GIF
+  /// * wxBITMAP_TYPE_PNG
+  /// * wxBITMAP_TYPE_JPEG
+  /// * wxBITMAP_TYPE_WEBP
+  /// * wxBITMAP_TYPE_ANY
+  /// 
+  /// Example:
+  /// ```dart
+  ///    // create bitmap from lib/assets/images/MyImage.png
+  ///    final bitmap = WxBitmap.fromAsset( "images/MyImage.png", wxBITMAP_TYPE_PNG ); 
+  /// ```
   WxBitmap.fromAsset( String path, int format )
   {
     final resourcePath = "${wxGetStandardPaths().getResourcesDir()}/$path";
@@ -169,19 +169,35 @@ class WxBitmap extends WxObject {
         listener._setState();
       }
     } );
-}
+  }
 
-Future<ui.Image> _buildAsset(String path, int height, int width) async
-{
-  final ByteData assetImageByteData = await rootBundle.load( path );
-  final codec = await ui.instantiateImageCodec(
-    assetImageByteData.buffer.asUint8List(),
-    targetHeight: height == -1 ? null : height,
-    targetWidth: width == -1 ? null : width,
-  );
-  return (await codec.getNextFrame()).image;
-}
+  Future<ui.Image> _buildAsset(String path, int height, int width) async
+  {
+    final ByteData assetImageByteData = await rootBundle.load( path );
+    final codec = await ui.instantiateImageCodec(
+      assetImageByteData.buffer.asUint8List(),
+      targetHeight: height == -1 ? null : height,
+      targetWidth: width == -1 ? null : width,
+    );
+    return (await codec.getNextFrame()).image;
+  }
 
+  WxBitmap._fromUint8List( Uint8List pngData )
+  {
+    _buildFromUint8List(pngData).then( (image ) {
+      _image = image;
+      // notify owning classes
+      for (final listener in _listeners) {
+        listener._setState();
+      }
+    } );
+  }
+
+  Future<ui.Image> _buildFromUint8List( Uint8List data ) async
+  {
+    final codec = await ui.instantiateImageCodec( data );
+    return (await codec.getNextFrame()).image;
+  }
 
   ui.Image? _image;
   final List <WxWindow> _listeners = [];

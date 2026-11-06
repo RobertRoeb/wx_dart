@@ -6,7 +6,7 @@ import 'dart:math';
 
 
 class MyFocussableWindow extends WxWindow {
-  MyFocussableWindow( WxWindow parent, WxSize size, { bool isFile = false } ) : super( parent, -1, wxDefaultPosition, size, 0)
+  MyFocussableWindow( WxWindow parent, WxSize size, { bool isFile = false, bool isBitmap = false } ) : super( parent, -1, wxDefaultPosition, size, 0)
   {  
     bindKillFocusEvent((_)=>refresh() );
     bindSetFocusEvent((_)=>refresh() );
@@ -14,9 +14,15 @@ class MyFocussableWindow extends WxWindow {
     bindPaintEvent( onPaint );
 
     _isFile = isFile;
+    _isBitmap = isBitmap;
 
     _textDataObject = WxTextDataObject( "" );
     _fileDataObject = WxFileDataObject();
+    _bitmapDataObject = WxBitmapDataObject( WxBitmap.fromAsset("wxWidgets.png", wxBITMAP_TYPE_PNG) );
+
+    if (_isBitmap) {
+      _target = WxDropTarget( _bitmapDataObject );
+    } else
     if (_isFile) {
       _target = WxDropTarget( _fileDataObject );
     } else {
@@ -38,10 +44,13 @@ class MyFocussableWindow extends WxWindow {
 
   late WxTextDataObject _textDataObject;
   late WxFileDataObject _fileDataObject;
+  late WxBitmapDataObject _bitmapDataObject;
   late WxDropTarget _target;
   String _dropText = "";
   bool _isFile = false;
+  bool _isBitmap = false;
   bool _highlight = false;
+  WxBitmap? _bitmap;
 
   void onDrop( WxDropEvent event )
   {
@@ -55,6 +64,10 @@ class MyFocussableWindow extends WxWindow {
   void onData( WxDropEvent event )
   {
     _target.getData();
+    if (_isBitmap) {
+      _bitmap = _bitmapDataObject.getBitmap();
+      refresh();
+    } else
     if (_isFile) {
       final files = _fileDataObject.getFilenames();
       if (files.isNotEmpty) {
@@ -76,6 +89,13 @@ class MyFocussableWindow extends WxWindow {
         if (_dropText.isNotEmpty) {
           dc.drawText("Has focus.\nReceived: $_dropText", 5, 5 );
         } else {
+          if (_isBitmap) {
+            dc.drawText("Has focus.\nThis is a WxDropTarget for bitmaps!", 5, 5 );
+            if (_bitmap != null) {
+              int width = _bitmap!.getWidth();
+              dc.drawBitmap(_bitmap!, getSize().x - width - 5, 5 );
+            }
+          } else 
           if (_isFile) {
             dc.drawText("Has focus.\nThis is a WxDropTarget for files!", 5, 5 );
           } else {
@@ -88,6 +108,13 @@ class MyFocussableWindow extends WxWindow {
         if (_dropText.isNotEmpty) {
           dc.drawText("Doesn't have focus.\nReceived: $_dropText", 5, 5 );
         } else {
+          if (_isBitmap) {
+            dc.drawText("Doesn't have focus.\nThis is a WxDropTarget for bitmaps!", 5, 5 );
+            if (_bitmap != null) {
+              int width = _bitmap!.getWidth();
+              dc.drawBitmap(_bitmap!, getSize().x - width - 5, 5 );
+            }
+          } else 
           if (_isFile) {
             dc.drawText("Doesn't have focus.\nThis is a WxDropTarget for files!", 5, 5 );
           } else {
@@ -99,11 +126,16 @@ class MyFocussableWindow extends WxWindow {
 }
 
 class MyNonFocussableWindow extends WxWindow {
-  MyNonFocussableWindow( WxWindow parent, WxSize size, { bool isFile= false} ) : super( parent, -1, wxDefaultPosition, size, 0)
+  MyNonFocussableWindow( WxWindow parent, WxSize size, { bool isFile= false, bool isBitmap = false} ) : super( parent, -1, wxDefaultPosition, size, 0)
   {
     setCanFocus(false);
 
     _isFile = isFile;
+    _isBitmap = isBitmap;
+
+    if (_isBitmap) {
+      _bitmap = WxBitmap.fromAsset("wxWidgets.png", wxBITMAP_TYPE_PNG );
+    }
 
     bindKillFocusEvent((_)=>refresh() );
     bindSetFocusEvent((_)=>refresh() );
@@ -125,6 +157,8 @@ class MyNonFocussableWindow extends WxWindow {
   WxPoint _start = WxPoint.zero;
   String _dropText = "DropText";
   bool _isFile = false;
+  bool _isBitmap = false;
+  WxBitmap? _bitmap;
 
   void setDropText( String text ) {
     _dropText = text;
@@ -138,6 +172,11 @@ class MyNonFocussableWindow extends WxWindow {
     final dist = sqrt(dx*dx + dy*dy);
     if (dist > 7) {
       _isDown = false;
+      if (_isBitmap) {
+        final data = WxBitmapDataObject( _bitmap! );
+        final source = WxDropSource(data, this);
+        source.doDragDrop();
+      } else
       if (_isFile) {
         final data = WxFileDataObject( );
         final path = wxGetStandardPaths().getExecutablePath();
@@ -164,6 +203,13 @@ class MyNonFocussableWindow extends WxWindow {
       } else {
         dc.setPen( WxPen( wxTheApp.getAccentColour() ) );
         dc.drawRectangle(0, 0, getSize().x, getSize().y );
+        if (_isBitmap) {
+          dc.drawText("Cannot get focus.\nThis is a WxDropSource for:", 5, 5 );
+          if (_bitmap != null) {
+            final width = _bitmap!.getWidth();
+            dc.drawBitmap(_bitmap!, getSize().x - width - 5, 5 );
+          }
+        } else 
         if (_isFile) {
           dc.drawText("Cannot get focus.\nThis is a WxDropSource for files!", 5, 5 );
         } else {
@@ -184,40 +230,41 @@ class MyFocusWindow extends WxScrolledWindow {
     mainSizer.add( topPanel, flag: wxEXPAND, proportion: 1 ); 
 
     final topSizer = WxFlexGridSizer(2);
+    topSizer.addGrowableCol(0);
     topPanel.setSizer(topSizer);
 
-    _dragTextCtrl1 = WxTextCtrl(topPanel, -1, value: "wxDart is cool", size: WxSize(220,-1) );
-    topSizer.add( _dragTextCtrl1, flag: wxALL, border: 10 );
-    topSizer.add( WxStaticText(topPanel, -1, "Drag and Drop text"), flag: wxALL, border: 10 );
-    topSizer.add( MyFocussableWindow(topPanel, WxSize(250,40)), flag: wxALL, border: 10 );
-    topSizer.add( WxStaticText(topPanel, -1, "WxStaticText 2"), flag: wxALL, border: 10 );
-    _dropSourceWindow1 = MyNonFocussableWindow(topPanel, WxSize(250,40));
-    topSizer.add( _dropSourceWindow1, flag: wxALL, border: 10 );
-    topSizer.add( WxStaticText(topPanel, -1, "WxStaticText 4"), flag: wxALL, border: 10 );
-    topSizer.add( MyFocussableWindow(topPanel, WxSize(250,40), isFile: true ), flag: wxALL, border: 10 );
-    topSizer.add( WxStaticText(topPanel, -1, "WxStaticText 6"), flag: wxALL, border: 10 );
-    topSizer.add( WxTextCtrl(topPanel, -1, size: WxSize(250,-1) ), flag: wxALL, border: 10 );
-    _dropSourceWindow1.setDropText( _dragTextCtrl1.getValue() );
-    _dragTextCtrl1.bindTextEvent( (event) => _dropSourceWindow1.setDropText( event.getString() ), -1 );
+    topSizer.add( MyFocussableWindow(topPanel, WxSize(250,40)), flag: wxALL|wxEXPAND, border: 10 );
+    topSizer.add( WxStaticText(topPanel, -1, "<- WxDropTarget for text"), flag: wxALL|wxALIGN_CENTER_VERTICAL, border: 10 );
+
+    topSizer.add( MyFocussableWindow(topPanel, WxSize(250,60), isBitmap: true ), flag: wxALL|wxEXPAND, border: 10 );
+    topSizer.add( WxStaticText(topPanel, -1, "<- WxDropTarget for bitmap"), flag: wxALL|wxALIGN_CENTER_VERTICAL, border: 10 );
+
+    topSizer.add( MyFocussableWindow(topPanel, WxSize(250,40), isFile: true ), flag: wxALL|wxEXPAND, border: 10 );
+    topSizer.add( WxStaticText(topPanel, -1, "<- WxDropTarget for files"), flag: wxALL|wxALIGN_CENTER_VERTICAL, border: 10 );
 
     final bottomPanel = WxPanel(this, -1);
-    // bottomPanel.setBackgroundColour(wxYELLOW);
     mainSizer.add( bottomPanel, flag: wxEXPAND, proportion: 1 ); 
 
     final bottomSizer = WxFlexGridSizer(2);
     bottomPanel.setSizer(bottomSizer);
 
-    bottomSizer.add( MyFocussableWindow(bottomPanel, WxSize(250,40)), flag: wxALL, border: 10 );
-    bottomSizer.add( WxStaticText(bottomPanel, -1, "WxStaticText 2"), flag: wxALL, border: 10 );
-    _dropSourceWindow2 = MyNonFocussableWindow(bottomPanel, WxSize(250,40), isFile: true );
-    bottomSizer.add( _dropSourceWindow2, flag: wxALL, border: 10 );
-    bottomSizer.add( WxStaticText(bottomPanel, -1, "WxStaticText 4"), flag: wxALL, border: 10 );
-    bottomSizer.add( MyFocussableWindow(bottomPanel, WxSize(250,40), isFile: true ), flag: wxALL, border: 10 );
-    bottomSizer.add( WxStaticText(bottomPanel, -1, "WxStaticText 6"), flag: wxALL, border: 10 );
-    bottomSizer.add( WxTextCtrl(bottomPanel, -1, size: WxSize(250,-1) ), flag: wxALL, border: 10 );
+    _dragTextCtrl1 = WxTextCtrl(bottomPanel, -1, value: "wxDart is cool", size: WxSize(220,-1) );
+    bottomSizer.add( _dragTextCtrl1, flag: wxALL, border: 10 );
+    bottomSizer.add( WxStaticText(bottomPanel, -1, "Drag and Drop text"), flag: wxALL, border: 10 );
+    _dropSourceWindow1 = MyNonFocussableWindow(bottomPanel, WxSize(250,40) );
+    _dropSourceWindow1.setDropText( _dragTextCtrl1.getValue() );
+    _dragTextCtrl1.bindTextEvent( (event) => _dropSourceWindow1.setDropText( event.getString() ), -1 );
+    bottomSizer.add( _dropSourceWindow1, flag: wxALL, border: 10 );
+    bottomSizer.add( WxStaticText(bottomPanel, -1, "<- WxDropSource for text"), flag: wxALL|wxALIGN_CENTER_VERTICAL, border: 10 );
+
+    bottomSizer.add( MyNonFocussableWindow(bottomPanel, WxSize(250,40), isFile: true ), flag: wxALL, border: 10 );
+    bottomSizer.add( WxStaticText(bottomPanel, -1, "<- WxDropSource for files"), flag: wxALL|wxALIGN_CENTER_VERTICAL, border: 10 );
+    
+    bottomSizer.add( MyNonFocussableWindow(bottomPanel, WxSize(250,60), isBitmap: true ), flag: wxALL, border: 10 );
+    bottomSizer.add( WxStaticText(bottomPanel, -1, "<- WxDropSource for bitmap"), flag: wxALL|wxALIGN_CENTER_VERTICAL, border: 10 );
+    
   }
 
   late MyNonFocussableWindow _dropSourceWindow1;
-  late MyNonFocussableWindow _dropSourceWindow2;
   late WxTextCtrl _dragTextCtrl1;
 }

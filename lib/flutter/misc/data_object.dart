@@ -38,11 +38,11 @@ class WxDataFormat extends WxClass {
         _id = "text/plain";
         return;
       case wxDF_BITMAP: 
-        _type = wxDF_PNG;
+        _type = wxDF_BITMAP;
         _id = "image/png";
         return;
       case wxDF_PNG: 
-        _type = wxDF_PNG;
+        _type = wxDF_BITMAP;
         _id = "image/png";
         return;
       case wxDF_FILENAME:
@@ -237,7 +237,7 @@ class WxFileDataObject extends WxDataObject {
     return pos == start ? -1 : pos+1;
   }
 
-  /// Sets raw data in "text/uri-list" format and converts is to list of file URIs
+  /// Sets raw data in "text/uri-list" format and converts is to a list of file URIs
   @override
   void setData( WxDataFormat format, Uint8List data )
   {
@@ -273,18 +273,14 @@ class WxFileDataObject extends WxDataObject {
         final newData = Uint8List( size + 2 + fileData.buffer.lengthInBytes );
         int pos = 0;
         for ( ; pos < size; pos++) {
-          print( "#1 copy letter at pos: $pos" );
           newData[pos] = data[pos];
         }
-        print( "#2 copy 13 at pos: $pos" );
         newData[pos] = 13;
         pos++;
-        print( "#2 copy 10 at pos: $pos" );
         newData[pos] = 10;
         pos++;
         int filePos = 0;
         for ( ; pos < size + 2 + fileData.buffer.lengthInBytes; pos++) {
-          print( "#3 copy new letter at pos: $pos" );
           newData[pos] = fileData[filePos];
           filePos++;
         }
@@ -326,12 +322,62 @@ class WxFileDataObject extends WxDataObject {
 class WxBitmapDataObject extends WxDataObject {
   WxBitmapDataObject( WxBitmap bitmap ) {
     _bitmap = bitmap;
+    _createPNG().then( (data) {
+      _data = data;
+    } );
+  }
+
+  WxBitmapDataObject._fromUint8List( Uint8List data ) {
+    _data = data;
+    _bitmap = WxBitmap._fromUint8List(data);
   }
 
   WxBitmap? _bitmap;
+  Uint8List? _data;
 
   void setBitmap( WxBitmap bitmap ) {
     _bitmap = bitmap;
+    _createPNG().then( (data) {
+      _data = data;
+    } );
+  }
+
+  /// Sets raw data in "image/pmg" format and converts is to a [WxBitmap]
+  @override
+  void setData( WxDataFormat format, Uint8List data )
+  {
+    _bitmap = null;
+    if (format.getId() != "image/png") {
+      wxLogError( "Wrong data transferred to WxBitmapDataObject (${format.getId()})." );
+      return;
+    }
+    _bitmap = WxBitmap._fromUint8List(data);
+  }
+
+  @override
+  Uint8List? getData( WxDataFormat format ) {
+    if (format.getId() != "image/png") {
+      wxLogError( "Wrong data format request." );
+      return null;
+    }
+    return _data;
+  }
+
+  Future<Uint8List?> _createPNG() async
+  {
+    if (_bitmap == null) {
+      return null;
+    }
+    if (_bitmap!._image == null) {
+      return null;
+    }
+    final byteData = await _bitmap!._image!.toByteData(format: ui.ImageByteFormat.png);
+    if (byteData == null) {
+      wxLogError( "Could not convert bitmap to PNG" );
+      return null;
+    }
+    final Uint8List pngBytes = byteData.buffer.asUint8List();
+    return pngBytes;
   }
 
   WxBitmap? getBitmap( ) {

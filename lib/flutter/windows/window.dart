@@ -65,8 +65,10 @@ class WxCustomPainter extends CustomPainter {
     final rect = Rect.fromLTWH(0, 0, size.width, size.height);
     canvas.clipRect(rect);
     window._canvas = canvas;
+    canvas.save();
     WxPaintEvent event = WxPaintEvent(window);
     window.processEvent(event);
+    canvas.restore();
     window._canvas = null;
     canvas.restore();
   }
@@ -467,6 +469,7 @@ class WxWindow extends WxEvtHandler {
   int _centreOnParent = 0;
   WxDropTarget? _dropTarget;
   WxDropSource? _dropSource;
+  DropzoneViewController? _dropZoneController;
 
   /// Gets called before the window is destroyed and can be used to e.g.
   /// close a database or network connection or to stop a [WxTimer].
@@ -953,7 +956,7 @@ class WxWindow extends WxEvtHandler {
     if (_dropTarget == null) return child;
 
     final object = _dropTarget!._dataObject;
-    if (object.isSupported(WxDataFormat( wxDF_TEXT))) {
+    if (object.isSupported(WxDataFormat( wxDF_TEXT ))) {
       return Stack(
         children: [
           DropzoneView(
@@ -992,8 +995,53 @@ class WxWindow extends WxEvtHandler {
           child
         ],
       );
+    } else 
+    if (object.isSupported(WxDataFormat( wxDF_BITMAP ))) {
+      return Stack(
+        children: [
+          DropzoneView(
+            operation: DragOperation.copy,
+            mime: [ "image/png", "image/jpeg"],
+            onHover: () {
+              if (!_dropTarget!._hasSentEnterEvent) {
+                _dropTarget!._hasSentEnterEvent = true;
+                final dropEvent = WxDropEvent( wxGetDropEnterEventType(), getId() );
+                dropEvent.setEventObject( this );
+                processEvent( dropEvent );
+              }
+              final dropEvent = WxDropEvent( wxGetDropDragOverEventType(), getId() );
+              dropEvent.setEventObject( this );
+              processEvent( dropEvent );
+            },
+            onLeave: () {
+              final dropEvent = WxDropEvent( wxGetDropLeaveEventType(), getId() );
+              dropEvent.setEventObject( this );
+              processEvent( dropEvent );
+              _dropTarget!._hasSentEnterEvent = false;
+            },
+            onCreated: (ctrl) {
+              _dropZoneController = ctrl;
+            },
+            onDropFile: (fileinfo) {
+              if (_dropZoneController == null) return;
+              final dropEvent = WxDropEvent( wxGetDropDropEventType(), getId() );
+              dropEvent.setEventObject( this );
+              processEvent( dropEvent );
+              if (dropEvent.isAllowed()) {
+                _dropZoneController!.getFileData(fileinfo).then( (data) {
+                  dropEvent.setEventType( wxGetDropDataEventType() );
+                  final sourceData = WxBitmapDataObject._fromUint8List( data );
+                  _dropTarget!._receivedDataObject = sourceData;
+                  processEvent(dropEvent);
+                  _dropTarget!._receivedDataObject = null;
+                });
+              }
+            },
+          ),
+          child
+        ],
+      );
     }
-
     return child;
   }
 
