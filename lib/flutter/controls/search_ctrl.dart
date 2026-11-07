@@ -148,11 +148,11 @@ class WxSearchCtrl extends WxTextEntry {
       {
         searchButton= 
           Row( 
-            mainAxisSize: .min,
+            mainAxisSize: MainAxisSize.min,
             children: [
               IconButton(
                 padding: EdgeInsets.all( 0 ),
-                visualDensity: wxTheApp.isTouch() ? null : .compact,
+                visualDensity: wxTheApp.isTouch() ? null : VisualDensity.compact,
                 iconSize: fromDIP(24).toDouble(),
                 icon: const Icon( Icons.search ),
                 onPressed: () {
@@ -163,7 +163,7 @@ class WxSearchCtrl extends WxTextEntry {
               }),
               IconButton(
                 padding: EdgeInsets.all( 0 ),
-                visualDensity: wxTheApp.isTouch() ? null : .compact,
+                visualDensity: wxTheApp.isTouch() ? null : VisualDensity.compact,
                 iconSize: fromDIP(24).toDouble(),
                 icon: Padding(
                   padding: EdgeInsetsGeometry.only(left: 2),
@@ -182,7 +182,7 @@ class WxSearchCtrl extends WxTextEntry {
       {
         searchButton= IconButton(
               padding: EdgeInsets.all( 0 ),
-              visualDensity: wxTheApp.isTouch() ? null : .compact,
+              visualDensity: wxTheApp.isTouch() ? null : VisualDensity.compact,
               iconSize: fromDIP(24).toDouble(),
               icon: const Icon( Icons.search ),
               onPressed: () {
@@ -203,7 +203,7 @@ class WxSearchCtrl extends WxTextEntry {
             prefix: searchButton,
             suffix: (_showCancelButton) ? IconButton(
               padding: EdgeInsets.all( 0 ),
-              visualDensity: wxTheApp.isTouch() ? null : .compact,
+              visualDensity: wxTheApp.isTouch() ? null : VisualDensity.compact,
               iconSize: fromDIP(24).toDouble(),
               icon: const Icon( Icons.cancel ),
               onPressed: () {

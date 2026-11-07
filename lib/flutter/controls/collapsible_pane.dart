@@ -186,8 +186,8 @@ class WxCollapsiblePane extends WxControl {
                   : IntrinsicHeight( child: _pane._build( context ) ),
         ),
       expansibleBuilder: (context, header, body, animation) => Column(
-          mainAxisSize: .min,
-          crossAxisAlignment: .start,
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [header, body],
         )  );
 
