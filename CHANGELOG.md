@@ -1,3 +1,8 @@
+## 0.9.28
+
+* Remove dot-shorthand code since Dart does not accept that on Windows
+* Regenerate docs
+
 ## 0.9.27
 
 * Implemented image and text dropping from external app in wxDart Flutter Web
