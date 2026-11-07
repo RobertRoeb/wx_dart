@@ -233,13 +233,13 @@ class MyFocusWindow extends WxScrolledWindow {
     topSizer.addGrowableCol(0);
     topPanel.setSizer(topSizer);
 
-    topSizer.add( MyFocussableWindow(topPanel, WxSize(250,40)), flag: wxALL|wxEXPAND, border: 10 );
+    topSizer.add( MyFocussableWindow(topPanel, WxSize(250,50)), flag: wxALL|wxEXPAND, border: 10 );
     topSizer.add( WxStaticText(topPanel, -1, "<- WxDropTarget for text"), flag: wxALL|wxALIGN_CENTER_VERTICAL, border: 10 );
 
     topSizer.add( MyFocussableWindow(topPanel, WxSize(250,60), isBitmap: true ), flag: wxALL|wxEXPAND, border: 10 );
     topSizer.add( WxStaticText(topPanel, -1, "<- WxDropTarget for bitmap"), flag: wxALL|wxALIGN_CENTER_VERTICAL, border: 10 );
 
-    topSizer.add( MyFocussableWindow(topPanel, WxSize(250,40), isFile: true ), flag: wxALL|wxEXPAND, border: 10 );
+    topSizer.add( MyFocussableWindow(topPanel, WxSize(250,50), isFile: true ), flag: wxALL|wxEXPAND, border: 10 );
     topSizer.add( WxStaticText(topPanel, -1, "<- WxDropTarget for files"), flag: wxALL|wxALIGN_CENTER_VERTICAL, border: 10 );
 
     final bottomPanel = WxPanel(this, -1);
@@ -251,13 +251,13 @@ class MyFocusWindow extends WxScrolledWindow {
     _dragTextCtrl1 = WxTextCtrl(bottomPanel, -1, value: "wxDart is cool", size: WxSize(220,-1) );
     bottomSizer.add( _dragTextCtrl1, flag: wxALL, border: 10 );
     bottomSizer.add( WxStaticText(bottomPanel, -1, "Drag and Drop text"), flag: wxALL, border: 10 );
-    _dropSourceWindow1 = MyNonFocussableWindow(bottomPanel, WxSize(250,40) );
+    _dropSourceWindow1 = MyNonFocussableWindow(bottomPanel, WxSize(250,50) );
     _dropSourceWindow1.setDropText( _dragTextCtrl1.getValue() );
     _dragTextCtrl1.bindTextEvent( (event) => _dropSourceWindow1.setDropText( event.getString() ), -1 );
     bottomSizer.add( _dropSourceWindow1, flag: wxALL, border: 10 );
     bottomSizer.add( WxStaticText(bottomPanel, -1, "<- WxDropSource for text"), flag: wxALL|wxALIGN_CENTER_VERTICAL, border: 10 );
 
-    bottomSizer.add( MyNonFocussableWindow(bottomPanel, WxSize(250,40), isFile: true ), flag: wxALL, border: 10 );
+    bottomSizer.add( MyNonFocussableWindow(bottomPanel, WxSize(250,50), isFile: true ), flag: wxALL, border: 10 );
     bottomSizer.add( WxStaticText(bottomPanel, -1, "<- WxDropSource for files"), flag: wxALL|wxALIGN_CENTER_VERTICAL, border: 10 );
     
     bottomSizer.add( MyNonFocussableWindow(bottomPanel, WxSize(250,60), isBitmap: true ), flag: wxALL, border: 10 );

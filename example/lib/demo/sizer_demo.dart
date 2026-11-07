@@ -76,19 +76,19 @@ class MySizerWindow extends WxScrolledWindow {
 
     final buttons = WxRow();
     final textForGrid = WxTextCtrl(parent, -1, value: "Test", size: WxSize(120,-1) );
-    buttons.add(textForGrid, flag: WxSizerFlags.borderAll(valign: .center), border: 5);
-    buttons.add( WxStaticText(parent, -1, "Border:"), flag: WxSizerFlags.borderAll(valign: .center), border: 5 );
+    buttons.add(textForGrid, flag: WxSizerFlags.borderAll(valign: WxVAlignment.center), border: 5);
+    buttons.add( WxStaticText(parent, -1, "Border:"), flag: WxSizerFlags.borderAll(valign: WxVAlignment.center), border: 5 );
     final borderForGrid = WxSpinCtrl(parent, -1, "5", min: 0, max: 15 );
-    buttons.add( borderForGrid, flag: WxSizerFlags.borderAll(valign: .center), border: 5 );
+    buttons.add( borderForGrid, flag: WxSizerFlags.borderAll(valign: WxVAlignment.center), border: 5 );
     final addToGrid = WxButton(parent, -1, "Add item" );
-    buttons.add( addToGrid, flag: WxSizerFlags.borderAll(valign: .center), border: 5 );
+    buttons.add( addToGrid, flag: WxSizerFlags.borderAll(valign: WxVAlignment.center), border: 5 );
     addToGrid.bindButtonEvent( (_) {
       grid.add( WxStaticText( parent, -1, textForGrid.getValue() ), 
         flag: wxALL, border: borderForGrid.getValue() );
       layout();
     }, -1);
     final removeFromGrid = WxButton(parent, -1, "Remove #1" );
-    buttons.add( removeFromGrid, flag: WxSizerFlags.borderAll(valign: .center), border: 5 );
+    buttons.add( removeFromGrid, flag: WxSizerFlags.borderAll(valign: WxVAlignment.center), border: 5 );
     removeFromGrid.bindButtonEvent( (_) {
       if (grid.getItemCount() > 0) {
         final item = grid.getItem(0);
@@ -99,7 +99,7 @@ class MySizerWindow extends WxScrolledWindow {
       }
     }, -1);
     final addSpacer = WxButton(parent, -1, "Add sizer" );
-    buttons.add( addSpacer, flag: WxSizerFlags.borderAll(valign: .center), border: 5 );
+    buttons.add( addSpacer, flag: WxSizerFlags.borderAll(valign: WxVAlignment.center), border: 5 );
     addSpacer.bindButtonEvent( (_) {
       final row = WxRow();
       row.add( WxStaticText(parent, -1, 'left left left'), flag: wxALL, border: 2 );
@@ -139,19 +139,19 @@ class MySizerWindow extends WxScrolledWindow {
 
     final buttons = WxRow();
     final textForGrid = WxTextCtrl(parent, -1, value: "Test", size: WxSize(120,-1) );
-    buttons.add(textForGrid, flag: WxSizerFlags.borderAll(valign: .center), border: 5);
-    buttons.add( WxStaticText(parent, -1, "Border:"), flag: WxSizerFlags.borderAll(valign: .center), border: 5 );
+    buttons.add(textForGrid, flag: WxSizerFlags.borderAll(valign: WxVAlignment.center), border: 5);
+    buttons.add( WxStaticText(parent, -1, "Border:"), flag: WxSizerFlags.borderAll(valign: WxVAlignment.center), border: 5 );
     final borderForGrid = WxSpinCtrl(parent, -1, "5", min: 0, max: 15 );
-    buttons.add( borderForGrid, flag: WxSizerFlags.borderAll(valign: .center), border: 5 );
+    buttons.add( borderForGrid, flag: WxSizerFlags.borderAll(valign: WxVAlignment.center), border: 5 );
     final addToGrid = WxButton(parent, -1, "Add item" );
-    buttons.add( addToGrid, flag: WxSizerFlags.borderAll(valign: .center), border: 5 );
+    buttons.add( addToGrid, flag: WxSizerFlags.borderAll(valign: WxVAlignment.center), border: 5 );
     addToGrid.bindButtonEvent( (_) {
       flex.add( WxStaticText( parent, -1, textForGrid.getValue() ), 
         flag: wxALL, border: borderForGrid.getValue() );
       layout();
     }, -1);
     final removeFromGrid = WxButton(parent, -1, "Remove #1" );
-    buttons.add( removeFromGrid, flag: WxSizerFlags.borderAll(valign: .center), border: 5 );
+    buttons.add( removeFromGrid, flag: WxSizerFlags.borderAll(valign: WxVAlignment.center), border: 5 );
     removeFromGrid.bindButtonEvent( (_) {
       if (flex.getItemCount() > 0) {
         final item = flex.getItem(0);
@@ -162,7 +162,7 @@ class MySizerWindow extends WxScrolledWindow {
       }
     }, -1);
     final addSpacer = WxButton(parent, -1, "Add sizer" );
-    buttons.add( addSpacer, flag: WxSizerFlags.borderAll(valign: .center), border: 5 );
+    buttons.add( addSpacer, flag: WxSizerFlags.borderAll(valign: WxVAlignment.center), border: 5 );
     addSpacer.bindButtonEvent( (_) {
       final row = WxRow();
       row.add( WxStaticText(parent, -1, 'left left left'), flag: wxALL, border: 2 );
