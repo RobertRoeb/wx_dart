@@ -1,5 +1,5 @@
 
-part of 'wx_dart.dart';
+part of '../wx_dart.dart';
 
 class WebGL {
   // OpenGL 2.0
