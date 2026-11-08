@@ -33,7 +33,9 @@ typedef OnCommandEventFunc = void Function( WxCommandEvent event );
 class WxCommandEvent extends WxEvent {
 
   /// Creates the command event with the gicen event type and (window) id.
-  WxCommandEvent( super.eventType, super.id );
+  WxCommandEvent( super.eventType, super.id ) {
+    _propagationLevel = 65000;
+  }
 
   int _int = 0;
   int _extraLong = 0;

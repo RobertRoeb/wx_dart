@@ -233,11 +233,12 @@ class WxEvtHandler extends WxObject {
       }
     }
 
-    if (event is! WxCommandEvent) {
+    // filter out system events
+    if (event.getPropagationLevel() < 1) {
       return false;
     }
 
-    // command events
+    // go on with command events
 
     if (event.getEventType() >= wxFIRST_CUSTOM_EVENT_TYPE)
     {

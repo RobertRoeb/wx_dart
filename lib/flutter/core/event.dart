@@ -28,6 +28,9 @@ int wxNewEventType() {
 
 // ------------------------- wxEvent ----------------------
 
+/// Constant indicating no event propagation up the window hierarchy
+const int wxEVENT_PROPAGATE_NONE = 0;
+
 /// Base class for all events in wxDart.
 /// 
 /// Requires a unique event type. If you define a new custom event type
@@ -148,13 +151,34 @@ class WxEvent extends WxObject {
     _eventObject = object;
   }
 
-  /// Gets the object from which the event originates
+  /// Returns the object from which the event originates
   WxObject? getEventObject() {
     return _eventObject;
+  }
+
+  /// Returns the propagation level, zero indicating no propagation
+  /// up the window hierarchy
+  int getPropagationLevel() {
+    return _propagationLevel;
+  }
+
+  /// Sets the propagation level to zero indicating no propagation
+  /// up the window hierarchy, and returns the previous level
+  int stopPropagation() {
+    final result = _propagationLevel;
+    _propagationLevel = 0;
+    return result;
+  }
+
+  /// Sets the propagation level, zero indicating no propagation
+  /// up the window hierarchy
+  void resumePropagation( int level ) {
+    _propagationLevel = level;
   }
 
   late int     _id;
   late int     _eventType;
   bool        _skipped = false;
   WxObject ?  _eventObject;
+  int         _propagationLevel = wxEVENT_PROPAGATE_NONE;
 }
