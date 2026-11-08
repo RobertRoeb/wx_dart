@@ -1,5 +1,5 @@
 
-part of 'wx_dart.dart';
+part of '../wx_dart.dart';
 
 // ----------------------------- wxDart version ---------------------------
 
