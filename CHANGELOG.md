@@ -1,3 +1,15 @@
+## 0.9.29
+
+* Added WxColour.getLuminance()
+* Added WxEvtHandler.tryFirst() and tryAfter() for custom events
+* Added WxEvtHandler.getEventTable() to allow creating custom events externally
+* Added example code how to create custom event
+* Added WxEvent.stopPropagation(), .resumePropagation() and .getPropagationLevel()
+* Decide propagation on that, not if event is of type WxCommandEvent (no real change)
+* Moved common code into new folder "common"
+* Moved WxStopWatch into its own file
+* Regenerated controls2.dart for wxDart Native (that had stopped events for some controls)
+
 ## 0.9.28
 
 * Remove dot-shorthand code since Dart does not accept that on Windows
