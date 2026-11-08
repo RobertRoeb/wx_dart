@@ -109,6 +109,10 @@ class WxColour {
   int getGreen() {
     return green;
   }
+  /// Returns the luminance (perceived brightness) between 0 and 1.
+  double getLuminance() {
+    return 0.299*red + 0.587*green + 0.114*blue;
+  } 
   /// Returns the RGB compoments as a single int
   int getRGB() {
     return red | (green << 8) | (blue << 16);
