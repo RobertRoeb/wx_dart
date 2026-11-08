@@ -52,9 +52,15 @@ class WxClass {
 /// Corresponds to a wxObject class in wxWidgets and acts
 /// as a shadow class for its C++ counterpart.
 /// 
-/// The key function in wxDart Native is to correctly delete
-/// the C++ class instance by calling the virtual destructor
-/// of the C++ wxObject.
+/// The key function of [WxObject] in wxDart Native is to
+/// correctly delete the C++ class instance when the garbage
+/// collector destroys the Dart class and to make sure that 
+/// [dispose] is called before the C++ has been deleted.
+/// 
+/// When dealing with window classes deriving from [WxWindow]
+/// call [WxWindow.destroy] to delete/destroy the window
+/// safely and override [WxWindow.dispose] to clean up, e.g.
+/// closing network connections or other resource use.
 
 class WxObject extends WxClass {
   WxObject();
