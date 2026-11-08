@@ -128,6 +128,21 @@ class WxEvtHandler extends WxObject {
 
   final WxEventTable _eventTable = [];
 
+  /// Returns the [WxEventTable] of this [WxEvtHandler].
+  /// 
+  /// In wxDart Native, this event table only holds the event handlers
+  /// of generic events created in pure Dart (e.g. [WxDataViewEvent] or 
+  /// [WxHeaderCtrlEvent] as these classes are implemented in pur Dart),
+  /// but it does not (currently) contain the event handlers from the 
+  /// native library, like [WxSizeEvent], [WxPaintEvent] and most
+  /// [WxCommandEvent]s.
+  /// 
+  /// In wxDart Flutter, this event tables holds all event handlers.
+  
+  WxEventTable getEventTable() {
+    return _eventTable;
+  }
+
   /// Central place for all event processing. Once an event has been created
   /// by the system or a user event from any new code, it needs to be processed
   /// by this function in the respective window (or other class deriving from

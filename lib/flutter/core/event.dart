@@ -17,7 +17,8 @@ const int wxFIRST_CUSTOM_EVENT_TYPE = 5000;
 /// Last event type given to an event
 int wxLastEventType = wxFIRST_CUSTOM_EVENT_TYPE;
 
-/// Use this to register a new event types for user defined events.
+/// Use this to register a new event types for user defined events. See
+/// [WxEvent] for an example of a user defined event.
 /// 
 /// The function returns a unique event ID above [wxFIRST_CUSTOM_EVENT_TYPE].
 int wxNewEventType() {
@@ -37,6 +38,70 @@ int wxNewEventType() {
 /// 
 /// The event will also usually contain the event object (window or
 /// something else) from which the event originates.
+/// 
+/// Example code showing how to define a new custom event in wxDart:
+///```dart
+///
+/// // Define unique id for new event type
+/// final _myCoolEventType = wxNewEventType();
+/// int getMyCoolEventType()         { return _myCoolEventType; }
+/// 
+/// // Function type for function handling MyCoolEvent events
+/// typedef OnMyCoolEventFunc = void Function( MyCoolEvent event );
+/// 
+/// // Event table entry for MyCoolEvent events
+/// class MyCoolEventTableEntry extends WxEventTableEntry {
+///   MyCoolEventTableEntry( super.eventType, super.id, this.func );
+///   final OnMyCoolEventFunc func;
+/// 
+///   // Returns true if the handler matches the event
+///   @override
+///   bool matches( int eventTypeTested, int idTested ) {
+///     return (eventType == eventTypeTested) && ((id == wxID_ANY) || (id == idTested));
+///   }
+/// 
+///   // Gets called if event handler was found for given event
+///   @override
+///   void doCallFunction( WxEvent event ) {
+///     if (event is MyCoolEvent) {
+///       func( event );
+///     }
+///   }
+/// }
+/// 
+/// // define WxEvtHandler extension for binding and unbinding
+/// 
+/// extension MyCoolEventBinder on WxEvtHandler {
+/// 
+///   // bind method
+///   void bindMyCoolEvent( OnMyCoolEventFunc func, int id ) {
+///     getEventTable().add( MyCoolEventTableEntry(getMyCoolEventType(), id, func));
+///   }
+/// 
+///   // unbind method
+///   void unbindMyCoolEvent( int id ) {
+///     getEventTable().remove( getEventTable().lastWhere( (entry) => entry.matches(getMyCoolEventType(), id) ));
+///   }
+/// }
+/// 
+/// // Your new event
+/// class MyCoolEvent extends WxNotifyEvent {
+///   MyCoolEvent( super.eventType, super.id, String data ) {
+///       _data = data;
+///   }
+/// 
+///   String _data = "";
+/// 
+///   // Gets your data
+///   String getData() {
+///     return _data;
+///   }
+///   /// Sets your data
+///   void setData( String data ) {
+///     _data = data;
+///   }
+/// }
+///```
 
 class WxEvent extends WxObject {
   /// Creates the event. Pay attention to the order of [eventType] and [id] should

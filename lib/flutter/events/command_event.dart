@@ -26,6 +26,9 @@ typedef OnCommandEventFunc = void Function( WxCommandEvent event );
 /// [WxCommandEvent] like [WxNotebookEvent] for [WxNotebook],
 /// [WxTreeEvent] for [WxTreeCtrl], [WxSpinEvent] for [WxSpinCtrl]
 /// and [WxDataViewEvent] for [WxDataViewCtrl].
+/// 
+/// You can also define your own custom event in pure wxDart. See
+/// [WxEvent] for an example of a user defined event.
 
 class WxCommandEvent extends WxEvent {
 
@@ -35,7 +38,7 @@ class WxCommandEvent extends WxEvent {
   int _int = 0;
   int _extraLong = 0;
   String _text = "";
-  dynamic _data;
+  dynamic _clientData;
 
   /// Sets string content, usually by the system.
   void setString( String text ) {
@@ -86,13 +89,13 @@ class WxCommandEvent extends WxEvent {
 
   /// Set client data associated with the event
   void setClientData( dynamic data ) {
-    _data = data;
+    _clientData = data;
   }
 
   /// Retrieves client data, typically associated with an item
   /// using [WxItemContainer.setClientData] inherited by [WxListBox]
   /// [WxChoice], [WxComboBox] and [WxRadioBox]
   dynamic getClientData() {
-    return _data;
+    return _clientData;
   }
 }

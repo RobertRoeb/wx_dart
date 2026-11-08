@@ -97,11 +97,11 @@ class WxDataViewEventTableEntry extends WxEventTableEntry {
 
 extension DataViewCacheHintEventBinder on WxEvtHandler {
   void bindDataViewCacheHintEvent( OnDataViewEventFunc func, int id ) {
-    _eventTable.add( WxDataViewEventTableEntry(wxGetDataViewCacheHintEventType(), id, func));
+    getEventTable().add( WxDataViewEventTableEntry(wxGetDataViewCacheHintEventType(), id, func));
   }
 
   void unbindDataViewCacheHintEvent( int id ) {
-    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetDataViewCacheHintEventType(), id) ));
+    getEventTable().remove( getEventTable().lastWhere( (entry) => entry.matches(wxGetDataViewCacheHintEventType(), id) ));
   }
 }
 
@@ -110,11 +110,11 @@ extension DataViewCacheHintEventBinder on WxEvtHandler {
 extension DataViewSelectionChangedEventBinder on WxEvtHandler {
   /// Binds an DataViewSelectionChanged event to [func]
   void bindDataViewSelectionChangedEvent( OnDataViewEventFunc func, int id ) {
-    _eventTable.add( WxDataViewEventTableEntry(wxGetDataViewSelectionChangedEventType(), id, func));
+    getEventTable().add( WxDataViewEventTableEntry(wxGetDataViewSelectionChangedEventType(), id, func));
   }
 
   void unbindDataViewSelectionChangedEvent( int id ) {
-    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetDataViewSelectionChangedEventType(), id) ));
+    getEventTable().remove( getEventTable().lastWhere( (entry) => entry.matches(wxGetDataViewSelectionChangedEventType(), id) ));
   }
 }
 
@@ -122,11 +122,11 @@ extension DataViewSelectionChangedEventBinder on WxEvtHandler {
 
 extension DataViewItemActivatedEventBinder on WxEvtHandler {
   void bindDataViewItemActivatedEvent( OnDataViewEventFunc func, int id ) {
-    _eventTable.add( WxDataViewEventTableEntry(wxGetDataViewItemActivatedEventType(), id, func));
+    getEventTable().add( WxDataViewEventTableEntry(wxGetDataViewItemActivatedEventType(), id, func));
   }
 
   void unbindDataViewItemActivatedEvent( int id ) {
-    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetDataViewItemActivatedEventType(), id) ));
+    getEventTable().remove( getEventTable().lastWhere( (entry) => entry.matches(wxGetDataViewItemActivatedEventType(), id) ));
   }
 }
 
@@ -134,11 +134,11 @@ extension DataViewItemActivatedEventBinder on WxEvtHandler {
 
 extension DataViewItemCollapsingEventBinder on WxEvtHandler {
   void bindDataViewItemCollapsingEvent( OnDataViewEventFunc func, int id ) {
-    _eventTable.add( WxDataViewEventTableEntry(wxGetDataViewItemCollapsingEventType(), id, func));
+    getEventTable().add( WxDataViewEventTableEntry(wxGetDataViewItemCollapsingEventType(), id, func));
   }
 
   void unbindDataViewItemCollapsingEvent( int id ) {
-    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetDataViewItemCollapsingEventType(), id) ));
+    getEventTable().remove( getEventTable().lastWhere( (entry) => entry.matches(wxGetDataViewItemCollapsingEventType(), id) ));
   }
 }
 
@@ -146,11 +146,11 @@ extension DataViewItemCollapsingEventBinder on WxEvtHandler {
 
 extension DataViewItemCollapsedEventBinder on WxEvtHandler {
   void bindDataViewItemCollapsedEvent( OnDataViewEventFunc func, int id ) {
-    _eventTable.add( WxDataViewEventTableEntry(wxGetDataViewItemCollapsedEventType(), id, func));
+    getEventTable().add( WxDataViewEventTableEntry(wxGetDataViewItemCollapsedEventType(), id, func));
   }
 
   void unbindDataViewItemCollapsedEvent( int id ) {
-    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetDataViewItemCollapsedEventType(), id) ));
+    getEventTable().remove( getEventTable().lastWhere( (entry) => entry.matches(wxGetDataViewItemCollapsedEventType(), id) ));
   }
 }
 
@@ -158,11 +158,11 @@ extension DataViewItemCollapsedEventBinder on WxEvtHandler {
 
 extension DataViewItemExpandingEventBinder on WxEvtHandler {
   void bindDataViewItemExpandingEvent( OnDataViewEventFunc func, int id ) {
-    _eventTable.add( WxDataViewEventTableEntry(wxGetDataViewItemExpandingEventType(), id, func));
+    getEventTable().add( WxDataViewEventTableEntry(wxGetDataViewItemExpandingEventType(), id, func));
   }
 
   void unbindDataViewItemExpandingEvent( int id ) {
-    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetDataViewItemExpandingEventType(), id) ));
+    getEventTable().remove( getEventTable().lastWhere( (entry) => entry.matches(wxGetDataViewItemExpandingEventType(), id) ));
   }
 }
 
@@ -170,11 +170,11 @@ extension DataViewItemExpandingEventBinder on WxEvtHandler {
 
 extension DataViewItemExpandedEventBinder on WxEvtHandler {
   void bindDataViewItemExpandedEvent( OnDataViewEventFunc func, int id ) {
-    _eventTable.add( WxDataViewEventTableEntry(wxGetDataViewItemExpandedEventType(), id, func));
+    getEventTable().add( WxDataViewEventTableEntry(wxGetDataViewItemExpandedEventType(), id, func));
   }
 
   void unbindDataViewItemExpandedEvent( int id ) {
-    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetDataViewItemExpandedEventType(), id) ));
+    getEventTable().remove( getEventTable().lastWhere( (entry) => entry.matches(wxGetDataViewItemExpandedEventType(), id) ));
   }
 }
 
@@ -182,11 +182,11 @@ extension DataViewItemExpandedEventBinder on WxEvtHandler {
 
 extension DataViewItemValueChangedEventBinder on WxEvtHandler {
   void bindDataViewItemValueChangedEvent( OnDataViewEventFunc func, int id ) {
-    _eventTable.add( WxDataViewEventTableEntry(wxGetDataViewItemValueChangedEventType(), id, func));
+    getEventTable().add( WxDataViewEventTableEntry(wxGetDataViewItemValueChangedEventType(), id, func));
   }
 
   void unbindDataViewItemValueChangedEvent( int id ) {
-    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetDataViewItemValueChangedEventType(), id) ));
+    getEventTable().remove( getEventTable().lastWhere( (entry) => entry.matches(wxGetDataViewItemValueChangedEventType(), id) ));
   }
 }
 
@@ -194,11 +194,11 @@ extension DataViewItemValueChangedEventBinder on WxEvtHandler {
 
 extension DataViewItemStartEditingEventBinder on WxEvtHandler {
   void bindDataViewItemStartEditingEvent( OnDataViewEventFunc func, int id ) {
-    _eventTable.add( WxDataViewEventTableEntry(wxGetDataViewItemStartEditingEventType(), id, func));
+    getEventTable().add( WxDataViewEventTableEntry(wxGetDataViewItemStartEditingEventType(), id, func));
   }
 
   void unbindDataViewItemStartEditingEvent( int id ) {
-    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetDataViewItemStartEditingEventType(), id) ));
+    getEventTable().remove( getEventTable().lastWhere( (entry) => entry.matches(wxGetDataViewItemStartEditingEventType(), id) ));
   }
 }
 
@@ -206,11 +206,11 @@ extension DataViewItemStartEditingEventBinder on WxEvtHandler {
 
 extension DataViewItemEditingStartedEventBinder on WxEvtHandler {
   void bindDataViewItemEditingStartedEvent( OnDataViewEventFunc func, int id ) {
-    _eventTable.add( WxDataViewEventTableEntry(wxGetDataViewItemEditingStartedEventType(), id, func));
+    getEventTable().add( WxDataViewEventTableEntry(wxGetDataViewItemEditingStartedEventType(), id, func));
   }
 
   void unbindDataViewItemEditingStartedEvent( int id ) {
-    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetDataViewItemEditingStartedEventType(), id) ));
+    getEventTable().remove( getEventTable().lastWhere( (entry) => entry.matches(wxGetDataViewItemEditingStartedEventType(), id) ));
   }
 }
 
@@ -218,11 +218,11 @@ extension DataViewItemEditingStartedEventBinder on WxEvtHandler {
 
 extension DataViewItemEditingDoneEventBinder on WxEvtHandler {
   void bindDataViewItemEditingDoneEvent( OnDataViewEventFunc func, int id ) {
-    _eventTable.add( WxDataViewEventTableEntry(wxGetDataViewItemEditingDoneEventType(), id, func));
+    getEventTable().add( WxDataViewEventTableEntry(wxGetDataViewItemEditingDoneEventType(), id, func));
   }
 
   void unbindDataViewItemEditingDoneEvent( int id ) {
-    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetDataViewItemEditingDoneEventType(), id) ));
+    getEventTable().remove( getEventTable().lastWhere( (entry) => entry.matches(wxGetDataViewItemEditingDoneEventType(), id) ));
   }
 }
 
@@ -230,11 +230,11 @@ extension DataViewItemEditingDoneEventBinder on WxEvtHandler {
 
 extension DataViewItemContextMenuEventBinder on WxEvtHandler {
   void bindDataViewItemContextMenuEvent( OnDataViewEventFunc func, int id ) {
-    _eventTable.add( WxDataViewEventTableEntry(wxGetDataViewItemContextMenuEventType(), id, func));
+    getEventTable().add( WxDataViewEventTableEntry(wxGetDataViewItemContextMenuEventType(), id, func));
   }
 
   void unbindDataViewItemContextMenuEvent( int id ) {
-    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetDataViewItemContextMenuEventType(), id) ));
+    getEventTable().remove( getEventTable().lastWhere( (entry) => entry.matches(wxGetDataViewItemContextMenuEventType(), id) ));
   }
 }
 
@@ -242,11 +242,11 @@ extension DataViewItemContextMenuEventBinder on WxEvtHandler {
 
 extension DataViewColumnHeaderClickEventBinder on WxEvtHandler {
   void bindDataViewColumnHeaderClickEvent( OnDataViewEventFunc func, int id ) {
-    _eventTable.add( WxDataViewEventTableEntry(wxGetDataViewColumnHeaderClickEventType(), id, func));
+    getEventTable().add( WxDataViewEventTableEntry(wxGetDataViewColumnHeaderClickEventType(), id, func));
   }
 
   void unbindDataViewColumnHeaderClickEvent( int id ) {
-    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetDataViewColumnHeaderClickEventType(), id) ));
+    getEventTable().remove( getEventTable().lastWhere( (entry) => entry.matches(wxGetDataViewColumnHeaderClickEventType(), id) ));
   }
 }
 
@@ -254,11 +254,11 @@ extension DataViewColumnHeaderClickEventBinder on WxEvtHandler {
 
 extension DataViewColumnHeaderRightClickEventBinder on WxEvtHandler {
   void bindDataViewColumnHeaderRightClickEvent( OnDataViewEventFunc func, int id ) {
-    _eventTable.add( WxDataViewEventTableEntry(wxGetDataViewColumnHeaderRightClickEventType(), id, func));
+    getEventTable().add( WxDataViewEventTableEntry(wxGetDataViewColumnHeaderRightClickEventType(), id, func));
   }
 
   void unbindDataViewColumnHeaderRightClickEvent( int id ) {
-    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetDataViewColumnHeaderRightClickEventType(), id) ));
+    getEventTable().remove( getEventTable().lastWhere( (entry) => entry.matches(wxGetDataViewColumnHeaderRightClickEventType(), id) ));
   }
 }
 
@@ -266,11 +266,11 @@ extension DataViewColumnHeaderRightClickEventBinder on WxEvtHandler {
 
 extension DataViewColumnSortedEventBinder on WxEvtHandler {
   void bindDataViewColumnSortedEvent( OnDataViewEventFunc func, int id ) {
-    _eventTable.add( WxDataViewEventTableEntry(wxGetDataViewColumnSortedEventType(), id, func));
+    getEventTable().add( WxDataViewEventTableEntry(wxGetDataViewColumnSortedEventType(), id, func));
   }
 
   void unbindDataViewColumnSortedEvent( int id ) {
-    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetDataViewColumnSortedEventType(), id) ));
+    getEventTable().remove( getEventTable().lastWhere( (entry) => entry.matches(wxGetDataViewColumnSortedEventType(), id) ));
   }
 }
 
@@ -278,11 +278,11 @@ extension DataViewColumnSortedEventBinder on WxEvtHandler {
 
 extension DataViewColumnReorderedEventBinder on WxEvtHandler {
   void bindDataViewColumnReorderedEvent( OnDataViewEventFunc func, int id ) {
-    _eventTable.add( WxDataViewEventTableEntry(wxGetDataViewColumnReorderedEventType(), id, func));
+    getEventTable().add( WxDataViewEventTableEntry(wxGetDataViewColumnReorderedEventType(), id, func));
   }
 
   void unbindDataViewColumnReorderedEvent( int id ) {
-    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetDataViewColumnReorderedEventType(), id) ));
+    getEventTable().remove( getEventTable().lastWhere( (entry) => entry.matches(wxGetDataViewColumnReorderedEventType(), id) ));
   }
 }
 
@@ -303,10 +303,10 @@ class WxDataViewEvent extends WxNotifyEvent {
     setEventObject(dvc);
   }
 
-  late final int _modelColumn;
-  late final WxDataViewColumn? _column;
-  late final WxDataViewItem _item;
-  late final dynamic _value;
+  late int _modelColumn;
+  late WxDataViewColumn? _column;
+  late WxDataViewItem _item;
+  late dynamic _value;
   WxDataViewModel? _model;
   int _cacheFrom = 0;
   int _cacheTo = 0;
