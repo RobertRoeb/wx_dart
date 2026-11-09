@@ -1,5 +1,6 @@
 ## 0.9.29
 
+* Allow overriding WxWindow.getMinSize() in both wxDart ports to ease porting complex third-party libraries to wxDart
 * Added WxColour.getLuminance()
 * Added WxEvtHandler.tryFirst() and tryAfter() for custom events
 * Added WxEvtHandler.getEventTable() to allow creating custom events externally

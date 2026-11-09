@@ -166,6 +166,17 @@ const int wxTOUCH_RAW_EVENTS = 0x0020;
 /// }
 /// ```
 /// 
+/// # Request size
+/// 
+/// It is usually enough to call [setSize] or [setMinSize]
+/// to set the size request for a given window. However, since
+/// it is quite common in wxWidgets C++ and wxPython to override
+/// [getMinSize], this sole function can be overridden in user
+/// code to allow more complex size request calculation.
+/// 
+/// Other than [getMinSize] no other method of [WxWindow] can be
+/// overridden - the code will not get called in wxDart Native.
+/// 
 /// # Constants
 /// 
 /// These are used in the context of centering windows on screen or on 
@@ -558,7 +569,13 @@ class WxWindow extends WxEvtHandler {
   }
 
   /// Returns minimal size as determined by the system and/or
-  /// the initial size.
+  /// the initial size. 
+  /// 
+  /// It is usually enough to call [setSize] or [setMinSize]
+  /// to set the size request for a given window. However, since
+  /// it is quite common in wxWidgets C++ and wxPython to override
+  /// [getMinSize], this sole function can be overridden in user
+  /// code to allow more complex size request calculation.
   WxSize getMinSize() {
     return _initialSize;
   }
@@ -633,7 +650,7 @@ class WxWindow extends WxEvtHandler {
   /// Sets the requested size of the control with -1 indicating that
   /// the control should calculate the dimension itself or do a guess.
   /// 
-  /// see [setSize]
+  /// see [setSize], [getMinSize]
   void setMinSize( WxSize size ) {
     _initialSize = size;
     _setState();

@@ -52,6 +52,14 @@ class MyFocussableWindow extends WxWindow {
   bool _highlight = false;
   WxBitmap? _bitmap;
 
+  @override
+  WxSize getMinSize() {
+    if (_isBitmap) {
+      return WxSize( 250, 120);
+    }
+    return WxSize(250,60);
+  }
+
   void onDrop( WxDropEvent event )
   {
     final frame = wxTheApp.getTopWindow();
