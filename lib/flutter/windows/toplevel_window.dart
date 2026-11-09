@@ -147,6 +147,7 @@ class WxTopLevelWindow extends WxNonOwnedWindow {
   bool _isFullScreen = false;
   int _fullScreenFlags = 0;
   static bool _hasSentInitialIdleEvent = false;
+  WxPopupWindow? _popup; 
 
   /// Shows window, or hides it if [show] is false.
   @override
@@ -420,7 +421,7 @@ class WxTopLevelWindow extends WxNonOwnedWindow {
         } );
     }
 
-    final finalWidget = IdleDetector(
+    Widget finalWidget = IdleDetector(
       onIdle: () {
         _hasRequestedMoreIdleEvents = false;
         _callRecursiveOnInternalIdle( this );
@@ -432,6 +433,11 @@ class WxTopLevelWindow extends WxNonOwnedWindow {
       },
       idleTime: Duration(milliseconds: 0), 
       child: child );
+
+    if (_popup != null) {
+      finalWidget = _popup!._buildOverlay(context, finalWidget);
+    }
+
     return finalWidget;
   }
 

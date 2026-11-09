@@ -544,7 +544,7 @@ class WxWindow extends WxEvtHandler {
     }
     WxWindow? res;
     for (final child in _children) {
-      if (child is WxTopLevelWindow) continue;
+      if (child is WxNonOwnedWindow) continue;
       res = child.findWindow( id );
       if (res != null) {
         return res;
@@ -597,7 +597,7 @@ class WxWindow extends WxEvtHandler {
     WxPoint pos = point;
     WxWindow? current = this;
     while (current != null) {
-      if (current is WxTopLevelWindow) {
+      if (current is WxNonOwnedWindow) {
         // All frames are at 0,0 for now. WxDialog and
         // future WxMiniFrame and WxPopupWindow should
         // report position relative to the FlutterView.
@@ -621,7 +621,7 @@ class WxWindow extends WxEvtHandler {
     WxPoint pos = point;
     WxWindow? current = this;
     while (current != null) {
-      if (current is WxTopLevelWindow) {
+      if (current is WxNonOwnedWindow) {
         // All frames are at 0,0 for now. WxDialog and
         // future WxMiniFrame and WxPopupWindow should
         // report position relative to the FlutterView.
@@ -1155,7 +1155,7 @@ class WxWindow extends WxEvtHandler {
     }
     for (final WxWindow child in _children)
     {
-      if (!child.isShown() || (child is WxTopLevelWindow)) continue;
+      if (!child.isShown() || (child is WxNonOwnedWindow)) continue;
       final extent = WxRect.fromPositionAndSize( child.getPosition(), child.getSize() );
       if (extent.isEmpty()) continue;
       if (extent.contains(x, y)) {
@@ -1351,7 +1351,7 @@ class WxWindow extends WxEvtHandler {
                 for (int i = 0; i < _children.length; i++) {
                   final WxWindow child = _children[i];
                   if (!child.isShown()) continue;
-                  if (child is WxTopLevelWindow) continue;
+                  if (child is WxNonOwnedWindow) continue;
                   if (child.hasFocus()) {
                     // try to steal the focus from the child widget
                     // print( "Steal focus from: " );
@@ -1524,7 +1524,7 @@ class WxWindow extends WxEvtHandler {
                 for (int i = 0; i < _children.length; i++) {
                   final WxWindow child = _children[i];
                   if (!child.isShown()) continue;
-                  if (child is WxTopLevelWindow) continue;
+                  if (child is WxNonOwnedWindow) continue;
                   if (child.hasFocus()) {
                     // try to steal the focus from the child widget
                     // print( "Steal focus from: " );
@@ -1895,12 +1895,12 @@ class WxWindow extends WxEvtHandler {
           height: height > 0 ? height.toDouble() : double.infinity );
     }
 
-    if (/* (this is WxPanel) || */(this is WxTopLevelWindow))
+    if (/* (this is WxPanel) || */(this is WxNonOwnedWindow))
     {
       int nonTLWs = 0;
       WxWindow? onlyChild;
       for (WxWindow child in _children) {
-        if (child is WxTopLevelWindow) continue;
+        if (child is WxNonOwnedWindow) continue;
         if (!child.isShown())
         {
           // If there are hidden windows, don't try this
@@ -1920,7 +1920,7 @@ class WxWindow extends WxEvtHandler {
     for (WxWindow child in _children)
     {
       if (!child.isShown()) continue;
-      if (child is WxTopLevelWindow) continue;
+      if (child is WxNonOwnedWindow) continue;
       WxPoint pos = child._position;  // don't use getPosition to avoid correction for scrolling
       WxSize childSize = child._initialSize;
         stack.children.add( 
@@ -2114,7 +2114,7 @@ class WxWindow extends WxEvtHandler {
 
     bool hidden = !isShown();
     WxWindow? current = this;
-    while (!hidden && (this is! WxTopLevelWindow)) {
+    while (!hidden && (this is! WxNonOwnedWindow)) {
       current = current!.getParent();
       if (current == null) break;
       hidden = !current.isShown();

@@ -13,6 +13,13 @@ class MyFocussableWindow extends WxWindow {
 
     bindPaintEvent( onPaint );
 
+    _popupTimer = WxTimer.withOwner(this);
+    bindTimerEvent( (_) {
+      if (_popup != null) {
+        _popup!.hide();
+      }
+    } );
+
     _isFile = isFile;
     _isBitmap = isBitmap;
 
@@ -42,15 +49,23 @@ class MyFocussableWindow extends WxWindow {
     bindDropDataEvent( onData, -1);
   }
 
+  @override
+  void dispose() {
+    _popupTimer.stop();
+    super.dispose();
+  }
+
   late WxTextDataObject _textDataObject;
   late WxFileDataObject _fileDataObject;
   late WxBitmapDataObject _bitmapDataObject;
   late WxDropTarget _target;
+  late WxTimer _popupTimer;
   String _dropText = "";
   bool _isFile = false;
   bool _isBitmap = false;
   bool _highlight = false;
   WxBitmap? _bitmap;
+  WxPopupWindow? _popup;
 
   @override
   WxSize getMinSize() {
@@ -62,6 +77,22 @@ class MyFocussableWindow extends WxWindow {
 
   void onDrop( WxDropEvent event )
   {
+    if (_popup == null) {
+      _popup = WxPopupWindow(null);
+      final panel = WxPanel( _popup!, -1 );
+      panel.setBackgroundColour(wxRED);
+      final sizer = WxColumn();
+      sizer.add( WxStaticText( panel, -1, "This is a wonderful popup" ) );
+      sizer.add( WxStaticText( panel, -1, "Second line" ) );
+      panel.setSizerAndFit(sizer);
+      _popup!.setClientSize( panel.getSize() );
+    }
+
+    WxPoint pos = clientToScreen( WxPoint(0,0) );
+    _popup!.position( pos, getSize() );
+    _popup!.show();
+    _popupTimer.startOnce( milliseconds: 3000 );
+
     final frame = wxTheApp.getTopWindow();
     if (frame is WxFrame) {
       frame.showInfoBar("Received drop from Drag and Drop", duration: 1500 );
@@ -134,7 +165,8 @@ class MyFocussableWindow extends WxWindow {
 }
 
 class MyNonFocussableWindow extends WxWindow {
-  MyNonFocussableWindow( WxWindow parent, WxSize size, { bool isFile= false, bool isBitmap = false} ) : super( parent, -1, wxDefaultPosition, size, 0)
+  MyNonFocussableWindow( WxWindow parent, WxSize size, { bool isFile= false, bool isBitmap = false} ) 
+  : super( parent, -1, wxDefaultPosition, size, 0 )
   {
     setCanFocus(false);
 
@@ -244,10 +276,10 @@ class MyFocusWindow extends WxScrolledWindow {
     topSizer.add( MyFocussableWindow(topPanel, WxSize(250,50)), flag: wxALL|wxEXPAND, border: 10 );
     topSizer.add( WxStaticText(topPanel, -1, "<- WxDropTarget for text"), flag: wxALL|wxALIGN_CENTER_VERTICAL, border: 10 );
 
-    topSizer.add( MyFocussableWindow(topPanel, WxSize(250,60), isBitmap: true ), flag: wxALL|wxEXPAND, border: 10 );
+    topSizer.add( MyFocussableWindow(topPanel, WxSize(250,60), isBitmap: true ), flag: wxALL|wxALIGN_RIGHT, border: 10 );
     topSizer.add( WxStaticText(topPanel, -1, "<- WxDropTarget for bitmap"), flag: wxALL|wxALIGN_CENTER_VERTICAL, border: 10 );
 
-    topSizer.add( MyFocussableWindow(topPanel, WxSize(250,50), isFile: true ), flag: wxALL|wxEXPAND, border: 10 );
+    topSizer.add( MyFocussableWindow(topPanel, WxSize(250,50), isFile: true ), flag: wxALL|wxALIGN_LEFT, border: 10 );
     topSizer.add( WxStaticText(topPanel, -1, "<- WxDropTarget for files"), flag: wxALL|wxALIGN_CENTER_VERTICAL, border: 10 );
 
     final bottomPanel = WxPanel(this, -1);
