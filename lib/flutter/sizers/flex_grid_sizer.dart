@@ -116,30 +116,6 @@ class WxFlexGridSizer extends WxGridSizer {
   int _totalVerticalProportion = 0;  // TODO assume all have proportion 1 for now
 */
 
-  @override
-  WxSizerItem add( WxWindow window, { int proportion = 0, int flag = 0, int border = 0 } ) {
-    if ((flag & wxEXPAND) != 0) {
-      window._initialSize = WxSize( -1, window._initialSize.y );
-    }
-    return super.add( window, proportion: proportion, flag: flag, border: border );
-  }
-
-  @override
-  WxSizerItem prepend( WxWindow window, { int proportion = 0, int flag = 0, int border = 0 } ) {
-    if ((flag & wxEXPAND) != 0) {
-      window._initialSize = WxSize( -1, window._initialSize.y );
-    }
-    return super.prepend( window, proportion: proportion, flag: flag, border: border );
-  }
-
-  @override
-  WxSizerItem insert( int index, WxWindow window, { int proportion = 0, int flag = 0, int border = 0 } ) {
-    if ((flag & wxEXPAND) != 0) {
-      window._initialSize = WxSize( -1, window._initialSize.y );
-    }
-    return super.insert( index, window, proportion: proportion, flag: flag, border: border );
-  }
-
 /*
   void distributeHeightAmongGrowableRows( int totalHeight ) {
     for (int i = 0; i < getEffectiveRowsCount(); i++) {
@@ -244,7 +220,7 @@ class WxFlexGridSizer extends WxGridSizer {
             WxSize size = item._window!.getMinSize();
             if ((size.x != -1) || (size.y != -1)) {
               finalWidget = SizedBox(
-                width: (size.x != -1) ? size.x.toDouble() : null,
+                width: (item._flag & wxEXPAND != 0) ? double.infinity : (size.x != -1) ? size.x.toDouble() : null,
                 height: (size.y != -1) ? size.y.toDouble() : null,
                 child: finalWidget
               );
