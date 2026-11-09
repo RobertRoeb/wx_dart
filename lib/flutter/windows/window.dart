@@ -261,6 +261,7 @@ const int wxTOUCH_RAW_EVENTS = 0x0020;
 /// 
 /// Position, sizing and hints
 /// * [setSize]
+/// * [setClientSize]
 /// * [setMinSize]
 /// * [getSize]
 /// * [getMinSize]
@@ -665,6 +666,24 @@ class WxWindow extends WxEvtHandler {
     }
     if (size.y > 0) {
       _initialSize = WxSize( _initialSize.x, size.y );
+    }
+    _setState();
+  }
+
+  /// Sets the requested client size of the control with -1 indicating
+  /// no change, adding space for a border.
+  /// 
+  /// see [setSize], [setMinSize]
+  void setClientSize( WxSize size ) {
+    int borderSize = 0;
+    if (hasFlag(wxSIMPLE_BORDER)) {
+      borderSize = 1;
+    }
+    if (size.x > 0) {
+      _initialSize = WxSize( size.x, _initialSize.y+2*borderSize );
+    }
+    if (size.y > 0) {
+      _initialSize = WxSize( _initialSize.x+2*borderSize, size.y );
     }
     _setState();
   }
