@@ -143,7 +143,7 @@ class WxGraphicsContext extends WxGraphicsObject {
     _penPaint.strokeJoin = StrokeJoin.miter;
     _brushPaint = Paint();
     _brushPaint.style = PaintingStyle.fill;
-    setBrush( wxWHITE_BRUSH );
+    setBrush( wxTRANSPARENT_BRUSH );
     if (wxTheApp.isDark()) {
       _textColour = wxWHITE;
     }
