@@ -711,8 +711,10 @@ class WxWindow extends WxEvtHandler {
       return;
     }
     if (((_eventHandlers != null) || (_onSizeFunc != null))) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         WxSizeEvent event = WxSizeEvent( _size, id: getId() );
         processEvent(event);
+      } );
     }
     if (((_style & wxFULL_REPAINT_ON_RESIZE) != 0) &&
          ((_eventHandlers != null) || (_onPaintFunc != null))) {
@@ -1648,8 +1650,11 @@ class WxWindow extends WxEvtHandler {
       key: _widgetKey,
       child: child, 
       onSizeChange: (size) {
+        // Update size immediately, but send size event deferred
+        _setSizeInternal( WxSize(size.width.round(),size.height.round()) );
+
+        // Send window creation event deferred
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          _setSizeInternal( WxSize(size.width.round(),size.height.round()) );
           // The window must have been created if it received a size
           // from the layout algorithm
           if (!_hasSentWindowCreateEvent) {
