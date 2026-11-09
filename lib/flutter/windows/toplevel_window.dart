@@ -9,7 +9,7 @@ part of '../../wx_dart.dart';
 
 // ------------------------- wxNonOwnedWindow ----------------------
 
-/// Base class for [WxTopLevelWindow] and a future, frameless WxPopUpWindow
+/// Base class for [WxTopLevelWindow] and [WxPopupWindow]
 
 class WxNonOwnedWindow extends WxWindow {
   WxNonOwnedWindow( WxWindow? parent, int id, { WxPoint pos = wxDefaultPosition, WxSize size = wxDefaultSize, int style = 0 } ) 

@@ -53,6 +53,7 @@ part 'flutter/windows/panel.dart';
 part 'flutter/windows/toplevel_window.dart';
 part 'flutter/windows/frame.dart';
 part 'flutter/windows/dialog.dart';
+part 'flutter/windows/popup_window.dart';
 part 'flutter/windows/scrolled_window.dart';
 part 'flutter/windows/splitter_window.dart';
 part 'flutter/windows/status_bar.dart';

@@ -189,6 +189,7 @@ of the Dart classes as well as the C++ classes which wxDart Native uses internal
 | [WxTopLevelWindow](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxTopLevelWindow-class.html) | [wxTopLevelWindow](https://docs.wxwidgets.org/trunk/classwx_top_level_window.html) |
 | [WxDialog](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDialog-class.html) | [wxDialog](https://docs.wxwidgets.org/trunk/classwx_dialog.html) |
 | [WxFrame](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxFrame-class.html) | [wxFrame](https://docs.wxwidgets.org/trunk/classwx_frame.html) |
+| [WxPopupWindow](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxPopupWindow-class.html) | [wxPopupWindow](https://docs.wxwidgets.org/trunk/classwx_popup_window.html) |
 
 ## Book controls
 

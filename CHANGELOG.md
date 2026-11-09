@@ -1,5 +1,8 @@
 ## 0.9.29
 
+* Implemented WxPopupWindow
+* Corrected size setting and deferred sending of WxSizeEvent
+* Implemented expanded items (and other alignment) in a growable column in WxFlexGridSizer
 * Allow overriding WxWindow.getMinSize() in both wxDart ports to ease porting complex third-party libraries to wxDart
 * Added WxColour.getLuminance()
 * Added WxEvtHandler.tryFirst() and tryAfter() for custom events
