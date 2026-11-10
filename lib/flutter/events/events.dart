@@ -61,16 +61,17 @@ int wxGetKeyUpEventType()           { return 151; }
 int wxGetCharEventType()            { return 152; }
 int wxGetCharHookEventType()        { return 153; }
 
-int wxGetActivateEventType()     { return 161; }
+int wxGetActivateEventType()        { return 161; }
 int wxGetHibernateEventType()       { return 160; }
 int wxGetActivateAppEventType()     { return 161; }
 
-int wxGetDPIChangedEventType()        { return 162; }
-int wxGetSysColourChangedEventType()  { return 163; }
+int wxGetDPIChangedEventType()         { return 162; }
+int wxGetSysColourChangedEventType()   { return 163; }
 
-int wxGetInitDialogEventType()      { return 170; }
-int wxGetDialogValidateEventType()  { return 171; }
-int wxGetWindowCreateEventType()    { return 172; }
+int wxGetInitDialogEventType()         { return 170; }
+int wxGetDialogValidateEventType()     { return 171; }
+int wxGetWindowCreateEventType()       { return 172; }
+int wxGetPopupWindowDismissEventType() { return 173; }
 
 int wxGetButtonEventType()          { return 200; }
 int wxGetCheckboxEventType()        { return 201; }

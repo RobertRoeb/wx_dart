@@ -13,13 +13,6 @@ class MyFocussableWindow extends WxWindow {
 
     bindPaintEvent( onPaint );
 
-    _popupTimer = WxTimer.withOwner(this);
-    bindTimerEvent( (_) {
-      if (_popup != null) {
-        _popup!.hide();
-      }
-    } );
-
     _isFile = isFile;
     _isBitmap = isBitmap;
 
@@ -49,23 +42,15 @@ class MyFocussableWindow extends WxWindow {
     bindDropDataEvent( onData, -1);
   }
 
-  @override
-  void dispose() {
-    _popupTimer.stop();
-    super.dispose();
-  }
-
   late WxTextDataObject _textDataObject;
   late WxFileDataObject _fileDataObject;
   late WxBitmapDataObject _bitmapDataObject;
   late WxDropTarget _target;
-  late WxTimer _popupTimer;
   String _dropText = "";
   bool _isFile = false;
   bool _isBitmap = false;
   bool _highlight = false;
   WxBitmap? _bitmap;
-  WxPopupWindow? _popup;
 
   @override
   WxSize getMinSize() {
@@ -77,22 +62,6 @@ class MyFocussableWindow extends WxWindow {
 
   void onDrop( WxDropEvent event )
   {
-    if (_popup == null) {
-      _popup = WxPopupWindow(null);
-      final panel = WxPanel( _popup!, -1 );
-      panel.setBackgroundColour(wxRED);
-      final sizer = WxColumn();
-      sizer.add( WxStaticText( panel, -1, "This is a wonderful popup" ) );
-      sizer.add( WxStaticText( panel, -1, "Second line" ) );
-      panel.setSizerAndFit(sizer);
-      _popup!.setClientSize( panel.getSize() );
-    }
-
-    WxPoint pos = clientToScreen( WxPoint(0,0) );
-    _popup!.position( pos, getSize() );
-    _popup!.show();
-    _popupTimer.startOnce( milliseconds: 3000 );
-
     final frame = wxTheApp.getTopWindow();
     if (frame is WxFrame) {
       frame.showInfoBar("Received drop from Drag and Drop", duration: 1500 );
@@ -259,9 +228,42 @@ class MyNonFocussableWindow extends WxWindow {
   }
 }
 
+const int idPopupWindowButton = 100;
+const int idPopupTransientWindowButton = 101;
+
 class MyFocusWindow extends WxScrolledWindow {
   MyFocusWindow( WxWindow parent ) : super( parent, -1, style: wxVSCROLL )
   {
+    _popup = WxPopupWindow(this);
+      final panel1 = WxPanel( _popup, -1 );
+      panel1.setBackgroundColour(wxRED);
+      final sizer1 = WxColumn();
+      sizer1.add( WxStaticText( panel1, -1, "This is a wonderful WxPopupwindow" ) );
+      sizer1.add( WxStaticText( panel1, -1, "Second line" ) );
+      panel1.setSizerAndFit(sizer1);
+      _popup.setClientSize( panel1.getSize() );
+
+    _popupTransient = WxPopupTransientWindow(this);
+      final panel2 = WxPanel( _popupTransient, -1 );
+      panel2.setBackgroundColour(wxGREEN);
+      final sizer2 = WxColumn();
+      sizer2.add( WxStaticText( panel2, -1, "This is a wonderful WxTransientPopupwindow" ) );
+      sizer2.add( WxStaticText( panel2, -1, "Second line" ) );
+      panel2.setSizerAndFit(sizer2);
+      _popupTransient.setClientSize( panel2.getSize() );
+
+    _popupTimer = WxTimer.withOwner(this);
+    bindTimerEvent( (_) {
+        _popup.hide();
+    } );
+
+    _popupTransient.bindPopupWindowDismissEvent( (event) {
+      final frame = wxTheApp.getTopWindow();
+      if (frame is WxFrame) {
+        frame.showInfoBar("Dismissed popup - but did not veto", duration: 1500 );
+      }
+    }, -1 );
+
     final mainSizer = WxColumn();
     setSizer( mainSizer );
 
@@ -272,6 +274,39 @@ class MyFocusWindow extends WxScrolledWindow {
     final topSizer = WxFlexGridSizer(2);
     topSizer.addGrowableCol(0);
     topPanel.setSizer(topSizer);
+
+    final buttonSizer = WxRow();
+    buttonSizer.add( WxButton( topPanel, idPopupWindowButton, "WxPopupWindow"), flag: wxALL, border: 5 );
+    // buttonSizer.addStretchSpacer();
+    buttonSizer.add( WxButton( topPanel, idPopupTransientWindowButton, "WxTransientPopupWindow"), flag: wxALL, border: 5 );
+    topSizer.addSizer(buttonSizer);
+    topSizer.add( WxStaticText(topPanel, -1, "<- Popup window tests"), flag: wxALL|wxALIGN_CENTER_VERTICAL, border: 10 );
+
+    bindButtonEvent( (_) {
+      final window = findWindow(idPopupWindowButton);
+      if (window != null) {
+        WxPoint pos = clientToScreen( window.getPosition() );
+        _popup.position( pos, window.getSize() );
+        _popup.show();
+        _popupTimer.startOnce( milliseconds: 4000 );
+      }
+    }, idPopupWindowButton );
+    bindButtonEvent( (_) {
+      final window = findWindow(idPopupTransientWindowButton);
+      if (window != null) {
+        WxPoint pos = clientToScreen( window.getPosition() );
+        _popupTransient.position( pos, window.getSize() );
+        _popupTransient.popup(null);
+      }
+    }, idPopupTransientWindowButton );
+
+    final buttonSizer2 = WxRow();
+    buttonSizer2.add( WxButton( topPanel, -1, "Button 1"), flag: wxALL, border: 5 );
+    buttonSizer2.addStretchSpacer();
+    buttonSizer2.add( WxButton( topPanel, -1, "Button 2"), flag: wxALL, border: 5 );
+    topSizer.addSizer(buttonSizer2,flag: wxEXPAND);
+    topSizer.add( WxStaticText(topPanel, -1, "<- stretch spacer test"), flag: wxALL|wxALIGN_CENTER_VERTICAL, border: 10 );
+
 
     topSizer.add( MyFocussableWindow(topPanel, WxSize(250,50)), flag: wxALL|wxEXPAND, border: 10 );
     topSizer.add( WxStaticText(topPanel, -1, "<- WxDropTarget for text"), flag: wxALL|wxALIGN_CENTER_VERTICAL, border: 10 );
@@ -297,7 +332,7 @@ class MyFocusWindow extends WxScrolledWindow {
     bottomSizer.add( _dropSourceWindow1, flag: wxALL, border: 10 );
     bottomSizer.add( WxStaticText(bottomPanel, -1, "<- WxDropSource for text"), flag: wxALL|wxALIGN_CENTER_VERTICAL, border: 10 );
 
-    bottomSizer.add( MyNonFocussableWindow(bottomPanel, WxSize(250,50), isFile: true ), flag: wxALL, border: 10 );
+    bottomSizer.add( MyNonFocussableWindow(bottomPanel, WxSize(250,50), isFile: true ), flag: wxALL|wxEXPAND, border: 10 );
     bottomSizer.add( WxStaticText(bottomPanel, -1, "<- WxDropSource for files"), flag: wxALL|wxALIGN_CENTER_VERTICAL, border: 10 );
     
     bottomSizer.add( MyNonFocussableWindow(bottomPanel, WxSize(250,60), isBitmap: true ), flag: wxALL, border: 10 );
@@ -305,6 +340,16 @@ class MyFocusWindow extends WxScrolledWindow {
     
   }
 
+  late WxPopupWindow _popup;
+  late WxPopupTransientWindow _popupTransient;
+
   late MyNonFocussableWindow _dropSourceWindow1;
   late WxTextCtrl _dragTextCtrl1;
+  late WxTimer _popupTimer;
+
+  @override
+  void dispose() {
+    _popupTimer.stop();
+    super.dispose();
+  }
 }
