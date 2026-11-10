@@ -304,6 +304,42 @@ Uint8List getRGBA()
     return _alpha!.buffer.asByteData().getUint8( 2 + (x + y*_width) );
   }
 
+  /// Replaces the colour specified by [r1],[g1],[b1] with [r2],[g2],[b2]
+  void replace( int r1, int g1, int b1, int r2, int g2, int b2 ) {
+    final rgb = getData();
+    int rgbIndex = 0;
+    for (int y = 0; y < getHeight(); y++) {
+      for (int x = 0; x < getWidth(); x++) {
+        if ((rgb[rgbIndex] == r1) && (rgb[rgbIndex+1] == g1) && (rgb[rgbIndex+2] == b1)) {
+          rgb[rgbIndex] == r2;
+          rgb[rgbIndex+1] == g2;
+          rgb[rgbIndex+2] == b2;
+        }
+        rgbIndex += 3; 
+      }
+    }
+  }
+
+  /// Returns a deep copy of the image, or null if this
+  /// image is not valid
+  WxImage? copy( ) {
+    final image = WxImage( getWidth(), getHeight() );
+    final data = image.getData();
+    data.setAll(0, _rgb);
+    if (_alpha != null) {
+      image.initAlpha();
+      final alpha = image.getAlphaData();
+      alpha!.setAll(0,_alpha!);
+    }
+    return image;
+  }
+
+  /// Returns a subimage if [rect] fits completely in this image
+  /// or null
+  WxImage? getSubImage( WxRect rect ) {
+    return null;
+  }
+
   late int _width;
   late int _height;
   late Uint8List _rgb;
