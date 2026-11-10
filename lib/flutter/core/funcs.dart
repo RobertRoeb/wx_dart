@@ -288,6 +288,7 @@ WxWindow? _wxFindWindowAtPointRecursive( WxWindow current, WxPoint pos )
   for (final child in current._getChildren())
   {
     if (!child.isShown()) continue;
+    if (child is WxNonOwnedWindow) continue;
     final res = _wxFindWindowAtPointRecursive( child, newPos );
     if (res != null) return res;
   }
