@@ -318,11 +318,18 @@ class WxFlexGridSizer extends WxGridSizer {
       rows.add(row);
     }
 
-    Table table = Table(
+    Widget table = Table(
       columnWidths: _growableColumns.isEmpty ? null : columnWidths,
       defaultColumnWidth: IntrinsicColumnWidth(),
       children: rows,
     );
+
+    if (_growableColumns.isEmpty) {
+      table = Row(
+        mainAxisSize: MainAxisSize.min,
+        children:  [ table ] 
+      );
+    }
 
     return ReportSize( child: table, 
           onSizeChange: (size) {
