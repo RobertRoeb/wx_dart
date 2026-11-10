@@ -23,15 +23,32 @@ class WxSize {
   static WxSize zero = WxSize(0, 0);
   final int x;
   final int y;
+
+  /// Returns true if either width or height are zero or less
   bool isEmpty() {
     return (x <= 0) || (y <= 0);
   }
+
+  /// Returns the height
   int getHeight() {
     return y;
   }
+
+  /// Returns the width
   int getWidth() {
     return x;
   }
+  int get width => x;
+  int get height => y;
+
+  /// Equality
+  @override
+  bool operator == (Object other) {
+    return (other is WxSize) && (x == other.x) && (y == other.y);
+  }
+
+  @override
+  int get hashCode => x * y;
 }
 
 /// Constant describing default size, or no size at all
@@ -55,6 +72,14 @@ class WxPoint {
   static WxPoint zero = WxPoint(0, 0);
   final int x;
   final int y;
+
+  @override
+  bool operator == (Object other) {
+    return (other is WxPoint) && (x == other.x) && (y == other.y);
+  }
+
+  @override
+  int get hashCode => x * y;
 }
 
 /// Constant describing the default position, or no position at all
@@ -176,36 +201,50 @@ class WxRect {
     x = pos.x;
     y = pos.y;
   }
+
+  /// Returns the size of the rectangle
   WxSize getSize() {
     return WxSize(width,height);
   }
+
+  /// Returns true of the rectangle is empty
   bool isEmpty() {
     return (width <= 0) || (height <= 0);
   }
+
+  /// Returns the top left corner of the rectangle
   WxPoint getTopLeft() {
     return WxPoint(x, y);
   }
+  /// Returns the top right corner of the rectangle
   WxPoint getTopRight() {
     return WxPoint(x+width-1, y);
   }
+  /// Returns the bottom left corner of the rectangle
   WxPoint getBottomLeft() {
     return WxPoint(x,y+height-1);
   }
+  /// Returns the bottom right corner of the rectangle
   WxPoint getBottomRight() {
     return WxPoint(x+width-1,y+height-1);
   }
+  /// Returns the position of the left side of the rectangle
   int getLeft() {
     return x;
   }
+  /// Returns the position of the top side of the rectangle
   int getTop() {
     return y;
   }
+  /// Returns the position of the right side of the rectangle
   int getRight() {
     return x+width-1;
   }
+  /// Returns the position of the bottom side of the rectangle
   int getBottom() {
     return y+height-1;
   }
+  /// Returns true if the rectangle contains the point defined by [x1] and [y1]
   bool contains( int x1, int y1 ) {
     return ( (x1 >= x) && (y1 >= y) && ((y1 - y) < height) && ((x1 - x) < width) );
   }
@@ -246,4 +285,13 @@ class WxRect {
     final y2 = min( getBottom(), rect.getBottom() );
     return (x2 - x1 + 1 > 0) && (y2 - y1 + 1 > 0);
   }
+
+  /// Returns true of the other rectangle has the same size and position
+  @override
+  bool operator == (Object other) {
+    return (other is WxRect) && (x == other.x) && (y == other.y) && (height == other.height) && (width == other.width);
+  }
+
+  @override
+  int get hashCode => x * y * width * height;
 }
