@@ -1,5 +1,6 @@
 ## 0.9.29
 
+* Added WxImage.replace() and WxImage.copy()
 * Implemented WxPopupWindow
 * Implemented WxPopupTransientWindow and PopupWindowDismiss event
 * Corrected size setting and deferred sending of WxSizeEvent
