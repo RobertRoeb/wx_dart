@@ -86,6 +86,12 @@ const int wxSYS_SCREEN_Y = 22;
 class WxSystemSettings extends WxClass {
   WxSystemSettings();
 
+  /// Returns either [colForLight] or [colForDark] depending on 
+  /// whether or not the app is in light mode or dark mode
+  WxColour selectLightDark( WxColour colForLight, WxColour colForDark ) {
+    return wxTheApp.isDark() ? colForDark : colForLight;
+  }
+
   /// Returns the respective colour on the current platform
   /// 
   /// This can change following changes in user settings or
