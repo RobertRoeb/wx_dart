@@ -794,9 +794,9 @@ abstract class WxHeaderCtrl extends WxHeaderCtrlBase {
     }
 
     // all the other events only make sense when they happen over a column
-    if ( col == -1 )
+    if ( col == -1 ) {
         return;
-
+    }
 
     // enter various dragging modes on left mouse press
     if ( mevent.leftDown() )
