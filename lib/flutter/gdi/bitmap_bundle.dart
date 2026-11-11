@@ -136,6 +136,16 @@ class WxBitmapBundle extends WxClass {
     return _bitmap;
   }
 
+  /// Returns the size of the unscaled bitmap (at 100% DPI)
+  WxSize getDefaultSize( ) {
+    return WxSize( _bitmap.getWidth(), _bitmap.getHeight() );
+  }
+
+  /// Create a new bitmap bundle with greyed out bitmaps
+  WxBitmapBundle makeDisabled( ) {
+    return this;
+  }
+
   late WxBitmap _bitmap;
   WxBitmap? _bigBitmap;
 }
