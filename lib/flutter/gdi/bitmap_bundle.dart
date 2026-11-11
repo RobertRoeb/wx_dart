@@ -95,8 +95,9 @@ class WxBitmapBundle extends WxClass {
     // create default bitmap
     _bitmap = WxBitmap.fromSVGAsset( path, sizeDef.x, sizeDef.y );
 
+    final resourcePath = "${wxGetStandardPaths().getResourcesDir()}/$path";
     // Load SVG string and make this bundle and SVG bundle
-    rootBundle.loadString(path).then( (svg) {
+    rootBundle.loadString(resourcePath).then( (svg) {
       _isSVG = true;
       _svg = svg;
     } );
@@ -158,6 +159,17 @@ class WxBitmapBundle extends WxClass {
       return _bigBitmap!;
     }
     return _bitmap;
+  }
+
+  WxBitmap getBitmap( WxSize size ) {
+    if ((size.x == _bitmap.getWidth()) && (size.y == _bitmap.getHeight())) {
+      return _bitmap;
+    }
+    if (_isSVG) {
+      return WxBitmap.fromSVG( _svg, size.x, size.y );
+    }
+
+    return WxBitmap._withNewSize( _bitmap, size.x, size.y );
   }
 
   /// Returns the size of the unscaled bitmap (at 100% DPI)

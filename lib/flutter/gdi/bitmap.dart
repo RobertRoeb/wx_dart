@@ -201,6 +201,7 @@ class WxBitmap extends WxObject {
 
   ui.Image? _image;
   final List <WxWindow> _listeners = [];
+  final List <WxBitmap> _derivedBitmaps = [];
   // needed ro rebuilding with new colour
   bool _isMaterialIcon = false;
   int _materialIconWidth = -1;
@@ -244,14 +245,46 @@ class WxBitmap extends WxObject {
   }
 
   /// Creates a bitmap from an [WxImage]
-  WxBitmap.fromImage( WxImage image )
+  WxBitmap.fromImage( WxImage image ) {
+    _buildWxImage( image );
+  }
+
+  WxBitmap._withNewSize( WxBitmap bitmap, int width, int height )
   {
-    final width = image.getWidth();
-    final height = image.getHeight();
+    _knownSize = WxSize( width, height );
+    if (bitmap.isOk()) {
+      _buildDerived( bitmap._image! );
+    }
+    bitmap._addDerivedBitmap(this);
+  }
+
+  void _buildDerived( ui.Image image ) async
+  {
+    final byteData = await image.toByteData();
+    if (byteData == null) {
+      wxLogError( "Failed to retrieve RGBA data from image" );
+      return;
+    }
+    // convert to WxImage
+    final wximage = WxImage.fromRGBA( image.width, image.height, byteData.buffer.asUint8List() );
+    // scale
+    final scaled = wximage.scale( _knownSize.x, _knownSize.y );
+    if (scaled == null) {
+      wxLogError( "Failed to scale image" );
+      return;
+    }
+    // create ui.image from it
+    _buildWxImage( scaled );
+  }
+
+  void _buildWxImage( WxImage wximage )
+  {
+    final width = wximage.getWidth();
+    final height = wximage.getHeight();
     _knownSize = WxSize( width, height );
     final rgba = Uint8List.fromList( List.filled(width * height * 4, 255) );
     final bitmapByteData = rgba.buffer.asByteData();
-    final imageByteData = image.getData().buffer.asByteData();
+    final imageByteData = wximage.getData().buffer.asByteData();
     int bitmapOffset = 0;
     int imageOffset = 0;
     for (int y = 0; y < height; y++) {
@@ -269,9 +302,9 @@ class WxBitmap extends WxObject {
         bitmapOffset++;
       }
     }
-    if (image.getAlphaData() != null)
+    if (wximage.getAlphaData() != null)
     {
-      final alphaByteData = image.getAlphaData()!.buffer.asByteData();
+      final alphaByteData = wximage.getAlphaData()!.buffer.asByteData();
       int bitmapOffset = 3;
       int alphaOffset = 0;
       for (int y = 0; y < height; y++) {
@@ -285,11 +318,19 @@ class WxBitmap extends WxObject {
 
     _buildImage(rgba,width,height).then( (image ) {
       _image = image;
-      // notify owning classes
-      for (final listener in _listeners) {
-        listener._setState();
-      }
+      _notify();
     } );
+  }
+
+  void _notify() {
+    // notify owning classes
+    for (final listener in _listeners) {
+      listener._setState();
+    }
+    // notify derived bitmaps
+    for (final bitmap in _derivedBitmaps) {
+      bitmap._buildDerived( _image! );
+      }
   }
 
   /// Creates a bitmap with a given size. This is actually
@@ -304,16 +345,19 @@ class WxBitmap extends WxObject {
     }
     _buildImage(rgba,width,height).then( (image ) {
       _image = image;
-      // notify owning classes
-      for (final listener in _listeners) {
-        listener._setState();
-      }
+      _notify();
     } );
   }
 
   void _addListener( WxWindow window ) {
     if (!_listeners.contains(window)) {
       _listeners.add( window );
+    }
+  }
+
+  void _addDerivedBitmap( WxBitmap bitmap ) {
+    if (!_derivedBitmaps.contains(bitmap)) {
+      _derivedBitmaps.add( bitmap );
     }
   }
 
@@ -327,10 +371,7 @@ class WxBitmap extends WxObject {
     final resourcePath = "${wxGetStandardPaths().getResourcesDir()}/$path";
     _buildSVGAsset(resourcePath,width,height).then( (image ) {
       _image = image;
-      // notify owning classes
-      for (final listener in _listeners) {
-        listener._setState();
-      }
+      _notify();
     } );
   }
 
@@ -432,9 +473,7 @@ class WxBitmap extends WxObject {
     _image = null;
     _buildPicture(picture, (_materialIconWidth*dpr).floor(), (_materialIconHeight*dpr).floor() ).then( (image ) {
       _image = image;
-      for (final listener in _listeners) {
-        listener._setState();
-      }
+      _notify();
     } );  
   } 
 
@@ -443,9 +482,7 @@ class WxBitmap extends WxObject {
     _knownSize = WxSize( width, height );
     _buildPicture(picture, width, height ).then( (image ) {
       _image = image;
-      for (final listener in _listeners) {
-        listener._setState();
-      }
+      _notify();
     } );
   }
 
@@ -462,10 +499,7 @@ class WxBitmap extends WxObject {
     _knownSize = WxSize( width, height );
     _buildSVG(svg,width,height).then( (image ) {
       _image = image;
-      // notify owning classes
-      for (final listener in _listeners) {
-        listener._setState();
-      }
+      _notify();
     } );
   }
 
