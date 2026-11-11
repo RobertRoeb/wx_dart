@@ -151,7 +151,7 @@ extension PopupWindowDismissEventBinder on WxEvtHandler {
 /// # Events emitted
 /// [PopupWindowDismiss](/wxdart/wxGetPopupWindowDismissEventType.html) event gets sent when the clicks or taps outside of it |
 /// | ----------------- |
-/// | void bindPopupWindowDismissEvent( function( WxNotifyEvent event ) ) |
+/// | void bindPopupWindowDismissEvent( void function( WxNotifyEvent event ), int id ) |
 /// | void unbindPopupWindowDismissEvent() |
 
 class WxPopupTransientWindow extends WxPopupWindow {
