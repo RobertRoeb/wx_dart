@@ -56,11 +56,11 @@ final wxLIGHT_GREY = WxColour( 192, 192, 192 );
 ///     final dc = WxPaintDC( this );
 /// 
 ///     // draw lie with wxBLACK
-///     dc.setPen( wxBLACK, 2 );
+///     dc.setPen( WxPen( wxBLACK, width: 2) ); 
 ///     dc.drawLine( 10, 10, 100, 100 );
 /// 
 ///     // draw lie with newly defined colour using RGB and alpha channel
-///     dc.setPen( WxColour(123,123,123,alpha:100), 2 );
+///     dc.setPen( WxPen( WxColour(123,123,123,alpha:100), width: 2) );
 ///     dc.drawLine( 10, 10, 100, 100 );
 ///   }
 /// }
