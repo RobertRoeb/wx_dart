@@ -91,7 +91,15 @@ class WxBitmapBundle extends WxClass {
   /// final bitmap = WxBitmapBundle.fromSVGAsset( "images/MyImage.svg", WxSize(20,20) ); 
   /// ```
   WxBitmapBundle.fromSVGAsset( String path, WxSize sizeDef )  {
+    _defaultSize = sizeDef;
+    // create default bitmap
     _bitmap = WxBitmap.fromSVGAsset( path, sizeDef.x, sizeDef.y );
+
+    // Load SVG string and make this bundle and SVG bundle
+    rootBundle.loadString(path).then( (svg) {
+      _isSVG = true;
+      _svg = svg;
+    } );
   }
 
   /// Creates a bitmap bundle from one of more than 2000 included Material icons. If
@@ -105,6 +113,9 @@ class WxBitmapBundle extends WxClass {
 
   /// Creates a bitmap bundle from an SVG string
   WxBitmapBundle.fromSVG( String svg, WxSize sizeDef )  {
+    _isSVG = true;
+    _svg = svg;
+    _defaultSize = sizeDef;
     _bitmap = WxBitmap.fromSVG( svg, sizeDef.x, sizeDef.y );
   }
 
@@ -129,8 +140,21 @@ class WxBitmapBundle extends WxClass {
   /// bitmap if two (or more) are bitmaps are available.
   /// 
   /// Picks bitmap based on [WxWindow.getDPIScaleFactor] from [window]
-  WxBitmap getBitmapFor( WxWindow window ) {
-    if ((window.getDPIScaleFactor() > 1.25) && (_bigBitmap != null)) {
+  WxBitmap getBitmapFor( WxWindow window )
+  {
+    final scale = window.getDPIScaleFactor();
+    if (_isSVG && (scale > 1.25)) {
+      final size = WxSize( (_defaultSize.x*scale).round(), (_defaultSize.y*scale).round() );
+      if (_bigBitmap != null) {
+        // Did we already create the right one?
+        if ((_bigBitmap!.getWidth() == size.x) && (_bigBitmap!.getHeight() == size.y)) {
+          return _bigBitmap!;
+        }
+        _bigBitmap = WxBitmap.fromSVG( _svg, size.x, size.y );
+        return _bigBitmap!;
+      }
+    }
+    if ((scale > 1.25) && (_bigBitmap != null)) {
       return _bigBitmap!;
     }
     return _bitmap;
@@ -148,4 +172,7 @@ class WxBitmapBundle extends WxClass {
 
   late WxBitmap _bitmap;
   WxBitmap? _bigBitmap;
+  bool _isSVG = false;
+  String _svg = "";
+  WxSize _defaultSize = WxSize.zero;
 }

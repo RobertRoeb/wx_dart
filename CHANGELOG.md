@@ -2,6 +2,10 @@
 
 * Implement getSelection() in WxComboBox
 * Change selected item if an item above it or all items were deleted
+* Added WxBitmapBundle().makeDisabled() and .getDefaultSize()
+* Added WxWindow.setToolTip(), .unsetToolTip() and getToolTipText()
+* Corrected WxColour.getLuminance() calculation (normalize to 0 to 1)
+* Progress on DPI aware WxBitmapBundle
 
 ## 0.9.29
 
