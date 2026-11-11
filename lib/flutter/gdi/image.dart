@@ -10,7 +10,7 @@ part of '../../wx_dart.dart';
 // ------------------------- wxImage ----------------------
 
 /// Resize quality for [WxImage.scale]: simplest and fastest algorithm
-const int wxIMAGE_QUALITY_NEAREST = 0;
+const int wxIMAGE_QUALITY_NEAREST = 5;
 
 /// Resize quality: compromise between nearest and bicubic
 const int wxIMAGE_QUALITY_BILINEAR = 1;
@@ -23,11 +23,11 @@ const int wxIMAGE_QUALITY_BICUBIC = 2;
 const int wxIMAGE_QUALITY_BOX_AVERAGE = 3;
 
 /// Resize quality: default, currently the same as [wxIMAGE_QUALITY_NEAREST]
-const int wxIMAGE_QUALITY_NORMAL = 4;
+const int wxIMAGE_QUALITY_NORMAL = 0;
 
 /// Resize quality: best algorithm. Box average if both new width and height
 /// are smaller than the original size, otherwise bicubic.
-const int wxIMAGE_QUALITY_HIGH = 5;
+const int wxIMAGE_QUALITY_HIGH = 4;
 
 /// This class encapsulates a platform-independent image.
 ///
@@ -76,7 +76,7 @@ const int wxIMAGE_QUALITY_HIGH = 5;
 /// ```dart
 ///   wxLoadImageFromResource( "myimage.png", (image) {
 ///     // do something with image ...
-///   }
+///   } );
 /// ```
 /// 
 /// Constructors
@@ -347,6 +347,9 @@ Uint8List getRGBA()
   /// Returns a deep copy of the image, or null if this
   /// image is not valid
   WxImage? copy( ) {
+    if ((getWidth() < 1) || (getHeight() < 1)) {
+      return null;
+    }
     final image = WxImage( getWidth(), getHeight() );
     final data = image.getData();
     data.setAll(0, _rgb);
@@ -360,7 +363,8 @@ Uint8List getRGBA()
 
   /// Returns a subimage if [rect] fits completely in this image
   /// or null. The alpha channel is copied if present.
-  WxImage? getSubImage( WxRect rect ) {
+  WxImage? getSubImage( WxRect rect )
+  {
     if (!isOk()) return null;
     if (rect.width <= 0 || rect.height <= 0) return null;
     if (rect.x < 0 || rect.y < 0 ||
@@ -388,11 +392,47 @@ Uint8List getRGBA()
     return image;
   }
 
-  /// Returns a scaled version of the image
-  WxImage scale( int width, int height, int quality ) {
-    final image = WxImage( width, height );
-    // TODO
-    return image;
+  /// Returns a scaled version of the image, or null if this
+  /// image is not valid or the conversion failed.
+  /// 
+  /// # quality
+  /// | constant | meaning |
+  /// | -------- | -------- |
+  /// | wxIMAGE_QUALITY_NORMAL | 0|
+  /// | wxIMAGE_QUALITY_BILINEAR | 1 |
+  /// | wxIMAGE_QUALITY_BICUBIC | 2 |
+  /// | wxIMAGE_QUALITY_BOX_AVERAGE | 3 |
+  /// | wxIMAGE_QUALITY_HIGH | 4 |
+  /// | wxIMAGE_QUALITY_NEAREST | 5 |
+
+  WxImage? scale( int width, int height, { int quality = wxIMAGE_QUALITY_NORMAL } )
+  {
+    if (!isOk() || width <= 0 || height <= 0 || _width <= 0 || _height <= 0) {
+      return null;
+    }
+
+    if (width == _width && height == _height) return copy();
+
+    switch (quality) {
+      case wxIMAGE_QUALITY_HIGH:
+        if (width < _width && height < _height) {
+          return _resampleBox( width, height );
+        }
+        return _resampleBicubic( width, height );
+      case wxIMAGE_QUALITY_BICUBIC:
+        return _resampleBicubic( width, height );
+      case wxIMAGE_QUALITY_BILINEAR:
+        return _resampleBilinear( width, height );
+      case wxIMAGE_QUALITY_BOX_AVERAGE:
+        return _resampleBox( width, height );
+      default:
+        // NEAREST and NORMAL
+        if (_width % width == 0 && _width >= width &&
+            _height % height == 0 && _height >= height) {
+          return _shrinkBy( _width ~/ width, _height ~/ height );
+        }
+        return _resampleNearest( width, height );
+    }
   }
 
   late int _width;
@@ -400,4 +440,247 @@ Uint8List getRGBA()
   late Uint8List _rgb;
   Uint8List? _alpha;
   final bool _hasMask = false;
+
+  // Shrinks the image by integer factors, averaging each block of pixels
+  // (C++: wxImage::ShrinkBy)
+  WxImage _shrinkBy( int xFactor, int yFactor ) {
+    final width = _width ~/ xFactor;
+    final height = _height ~/ yFactor;
+    final image = WxImage( width, height, clear: false );
+    final dst = image._rgb;
+    final srcAlpha = _alpha;
+    Uint8List? dstAlpha;
+    if (srcAlpha != null) {
+      image.initAlpha();
+      dstAlpha = image._alpha;
+    }
+
+    final count = xFactor * yFactor;
+    for (int y = 0; y < height; y++) {
+      for (int x = 0; x < width; x++) {
+        int r = 0, g = 0, b = 0, a = 0;
+        for (int j = 0; j < yFactor; j++) {
+          for (int i = 0; i < xFactor; i++) {
+            final sx = x * xFactor + i;
+            final sy = y * yFactor + j;
+            final si = 3 * (sx + sy * _width);
+            r += _rgb[si];
+            g += _rgb[si + 1];
+            b += _rgb[si + 2];
+            if (srcAlpha != null) a += srcAlpha[sx + sy * _width];
+          }
+        }
+        final di = 3 * (x + y * width);
+        dst[di] = r ~/ count;
+        dst[di + 1] = g ~/ count;
+        dst[di + 2] = b ~/ count;
+        if (dstAlpha != null) dstAlpha[x + y * width] = a ~/ count;
+      }
+    }
+    return image;
+  }
+
+  // Nearest neighbour sampling with 16.16 fixed point arithmetic
+  // (C++: the default branch of wxImage::Scale)
+  WxImage _resampleNearest( int width, int height ) {
+    final image = WxImage( width, height, clear: false );
+    final dst = image._rgb;
+    final srcAlpha = _alpha;
+    Uint8List? dstAlpha;
+    if (srcAlpha != null) {
+      image.initAlpha();
+      dstAlpha = image._alpha;
+    }
+
+    final xDelta = (_width << 16) ~/ width;
+    final yDelta = (_height << 16) ~/ height;
+
+    int di = 0;
+    int da = 0;
+    int y = 0;
+    for (int j = 0; j < height; j++) {
+      final srcRow = (y >> 16) * _width;
+      int x = 0;
+      for (int i = 0; i < width; i++) {
+        final sp = srcRow + (x >> 16);
+        dst[di] = _rgb[3 * sp];
+        dst[di + 1] = _rgb[3 * sp + 1];
+        dst[di + 2] = _rgb[3 * sp + 2];
+        di += 3;
+        if (dstAlpha != null) dstAlpha[da++] = srcAlpha![sp];
+        x += xDelta;
+      }
+      y += yDelta;
+    }
+    return image;
+  }
+
+  // Box averaging, meant for shrinking (C++: wxImage::ResampleBox).
+  //
+  // With an alpha channel the colours are weighted by alpha, so transparent
+  // pixels (often black) don't darken the edges of the result.
+  WxImage _resampleBox( int width, int height ) {
+    final image = WxImage( width, height, clear: false );
+    final dst = image._rgb;
+    final srcAlpha = _alpha;
+    Uint8List? dstAlpha;
+    if (srcAlpha != null) {
+      image.initAlpha();
+      dstAlpha = image._alpha;
+    }
+
+    final scaleX = _width / width;
+    final scaleY = _height / height;
+
+    for (int y = 0; y < height; y++) {
+      int y0 = (y * scaleY).floor();
+      int y1 = ((y + 1) * scaleY).ceil();
+      if (y1 <= y0) y1 = y0 + 1;
+      if (y1 > _height) y1 = _height;
+      if (y0 >= y1) y0 = y1 - 1;
+
+      for (int x = 0; x < width; x++) {
+        int x0 = (x * scaleX).floor();
+        int x1 = ((x + 1) * scaleX).ceil();
+        if (x1 <= x0) x1 = x0 + 1;
+        if (x1 > _width) x1 = _width;
+        if (x0 >= x1) x0 = x1 - 1;
+
+        double r = 0, g = 0, b = 0, a = 0, wsum = 0;
+        for (int j = y0; j < y1; j++) {
+          for (int i = x0; i < x1; i++) {
+            final si = 3 * (i + j * _width);
+            final w = srcAlpha != null ? srcAlpha[i + j * _width].toDouble() : 1.0;
+            r += w * _rgb[si];
+            g += w * _rgb[si + 1];
+            b += w * _rgb[si + 2];
+            a += srcAlpha != null ? w : 0.0;
+            wsum += w;
+          }
+        }
+        final count = (x1 - x0) * (y1 - y0);
+        final di = 3 * (x + y * width);
+        _storePixel( dst, di, dstAlpha, x + y * width, r, g, b, a, wsum, count );
+      }
+    }
+    return image;
+  }
+
+  // Writes one resampled pixel. [r], [g], [b] are sums of weight*colour,
+  // [a] the sum of weight*alpha (only with alpha channel), [wsum] the sum of
+  // the colour weights (weight is alpha with alpha channel, otherwise 1)
+  // and [count] the number of source pixels (alpha channel average).
+  static void _storePixel( Uint8List dst, int di, Uint8List? dstAlpha, int ai,
+      double r, double g, double b, double a, double wsum, int count ) {
+    if (wsum > 0) {
+      dst[di] = (r / wsum).round().clamp( 0, 255 );
+      dst[di + 1] = (g / wsum).round().clamp( 0, 255 );
+      dst[di + 2] = (b / wsum).round().clamp( 0, 255 );
+    } else {
+      dst[di] = 0;
+      dst[di + 1] = 0;
+      dst[di + 2] = 0;
+    }
+    if (dstAlpha != null) {
+      dstAlpha[ai] = (a / count).round().clamp( 0, 255 );
+    }
+  }
+
+  // Bilinear interpolation (C++: wxImage::ResampleBilinear)
+  WxImage _resampleBilinear( int width, int height ) =>
+      _resampleSeparable( width, height, 0, 1, _bilinearWeight );
+
+  // Bicubic interpolation with the cubic B-spline kernel
+  // (C++: wxImage::ResampleBicubic)
+  WxImage _resampleBicubic( int width, int height ) =>
+      _resampleSeparable( width, height, -1, 2, _splineWeight );
+
+  static double _bilinearWeight( double offset ) {
+    final d = offset.abs();
+    return d < 1.0 ? 1.0 - d : 0.0;
+  }
+
+  static double _splineCube( double value ) => value <= 0.0 ? 0.0 : value * value * value;
+
+  // Weight of the cubic B-spline for the distance [value]
+  static double _splineWeight( double value ) =>
+      (_splineCube( value + 2 ) - 4 * _splineCube( value + 1 ) +
+          6 * _splineCube( value ) - 4 * _splineCube( value - 1 )) / 6;
+
+  // Calculates for every pixel of one target axis the source indices
+  // ([first]..[last] taps relative to the left source pixel) and their
+  // weights. Indices are clamped to the image, weights are normalised.
+  static ( Int32List, Float64List ) _axisTaps( int srcSize, int dstSize,
+      int first, int last, double Function( double ) weight ) {
+    final taps = last - first + 1;
+    final idx = Int32List( dstSize * taps );
+    final w = Float64List( dstSize * taps );
+    final scale = srcSize / dstSize;
+    for (int d = 0; d < dstSize; d++) {
+      // pixel centres are at +0.5
+      final src = (d + 0.5) * scale - 0.5;
+      final base = src.floor();
+      final frac = src - base;
+      double sum = 0;
+      for (int k = 0; k < taps; k++) {
+        final tap = first + k;
+        final wk = weight( tap - frac );
+        w[d * taps + k] = wk;
+        sum += wk;
+        idx[d * taps + k] = (base + tap).clamp( 0, srcSize - 1 );
+      }
+      if (sum != 0) {
+        for (int k = 0; k < taps; k++) {
+          w[d * taps + k] /= sum;
+        }
+      }
+    }
+    return ( idx, w );
+  }
+
+  // Common code of bilinear and bicubic. The kernel covers the taps
+  // [first]..[last] around the left source pixel.
+  //
+  // With an alpha channel the colours are weighted by alpha, see [_resampleBox].
+  WxImage _resampleSeparable( int width, int height, int first, int last,
+      double Function( double ) weight )
+  {
+    final image = WxImage( width, height, clear: false );
+    final dst = image._rgb;
+    final srcAlpha = _alpha;
+    Uint8List? dstAlpha;
+    if (srcAlpha != null) {
+      image.initAlpha();
+      dstAlpha = image._alpha;
+    }
+
+    final taps = last - first + 1;
+    final (xIdx, xW) = _axisTaps( _width, width, first, last, weight );
+    final (yIdx, yW) = _axisTaps( _height, height, first, last, weight );
+
+    for (int y = 0; y < height; y++) {
+      for (int x = 0; x < width; x++) {
+        double r = 0, g = 0, b = 0, a = 0, wsum = 0;
+        for (int ky = 0; ky < taps; ky++) {
+          final sy = yIdx[y * taps + ky];
+          final wy = yW[y * taps + ky];
+          for (int kx = 0; kx < taps; kx++) {
+            final sx = xIdx[x * taps + kx];
+            final wgt = wy * xW[x * taps + kx];
+            final si = 3 * (sx + sy * _width);
+            final alpha = srcAlpha != null ? srcAlpha[sx + sy * _width] : 255;
+            final wc = srcAlpha != null ? wgt * alpha : wgt;
+            r += wc * _rgb[si];
+            g += wc * _rgb[si + 1];
+            b += wc * _rgb[si + 2];
+            wsum += wc;
+            a += wgt * alpha;
+          }
+        }
+        // alpha is the weighted sum itself (weights sum to 1), so count is 1
+        _storePixel( dst, 3 * (x + y * width), dstAlpha, x + y * width, r, g, b, a, wsum, 1 );
+      }
+    }
+    return image;
+  }
 }
