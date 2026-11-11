@@ -142,7 +142,6 @@ class WxSystemSettings extends WxClass {
           final int b = (color.b*255).floor();
           return WxColour(r,g,b);
 
-
         default: 
           return wxLIGHT_GREY;
       }

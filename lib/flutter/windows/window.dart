@@ -859,7 +859,7 @@ class WxWindow extends WxEvtHandler {
   }
   /// Returns background colour
   WxColour getBackgroundColour() {
-    if (_backgroundColour == null) return wxTheApp.isDark() ? WxColour(42,48,50) : wxWHITE;
+    if (_backgroundColour == null) return wxGetSystemSettings().getColour( wxSYS_COLOUR_WINDOW );
     return _backgroundColour!;
   }
   /// Returns true if a specific, non-default, foreground colour has been

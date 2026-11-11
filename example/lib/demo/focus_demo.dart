@@ -236,7 +236,7 @@ class MyFocusWindow extends WxScrolledWindow {
   {
     _popup = WxPopupWindow(this);
       final panel1 = WxPanel( _popup, -1 );
-      panel1.setBackgroundColour(wxRED);
+      // panel1.setBackgroundColour(wxRED);
       final sizer1 = WxColumn();
       sizer1.add( WxStaticText( panel1, -1, "This is a wonderful WxPopupwindow" ) );
       sizer1.add( WxStaticText( panel1, -1, "Second line" ) );

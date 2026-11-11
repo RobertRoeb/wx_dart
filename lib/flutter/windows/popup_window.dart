@@ -68,6 +68,7 @@ class WxPopupWindow extends WxNonOwnedWindow {
 
   Widget _buildOverlay(BuildContext context, Widget child)
   {
+    final bkColor = wxGetSystemSettings().getColour( wxSYS_COLOUR_WINDOW );
     Widget finalWidget = OverlayPortal(
         controller: _controller!,
         child: child,
@@ -82,7 +83,7 @@ class WxPopupWindow extends WxNonOwnedWindow {
               Material(
                 child:
                   Container(
-                    color: Colors.white,
+                    color: Color( bkColor.getRGBA() ),
                     child: _doBuildChildrenWithOrWithoutSizer( context )
                 ) )
           );
@@ -170,16 +171,18 @@ class WxPopupTransientWindow extends WxPopupWindow {
   @override 
   Widget _buildOverlay(BuildContext context, Widget child)
   {
+    final bkColor = wxGetSystemSettings().getColour( wxSYS_COLOUR_WINDOW );
     Widget finalWidget = OverlayPortal(
         controller: _controller!,
         child: child,
-        overlayChildBuilder: (BuildContext context) {          
+        overlayChildBuilder: (BuildContext context) {
+          final size = getMinSize();
           return 
             Positioned(
               left: (_origin.x + _sizeOfParent.x).toDouble(),
               top: (_origin.y + _sizeOfParent.y).toDouble(),
-              width: getSize().x == -1 ? null : getSize().x.toDouble(),
-              height: getSize().y == -1 ? null : getSize().y.toDouble(),
+              width: size.x == -1 ? null : size.x.toDouble(),
+              height: size.y == -1 ? null : size.y.toDouble(),
               child:
                 Material(
                   child:
@@ -193,7 +196,7 @@ class WxPopupTransientWindow extends WxPopupWindow {
                     },
                     child: 
                       Container(
-                        color: Colors.white,
+                        color: Color( bkColor.getRGBA() ),
                         child: _doBuildChildrenWithOrWithoutSizer( context )
                     )
                   )
