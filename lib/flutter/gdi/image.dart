@@ -9,6 +9,26 @@ part of '../../wx_dart.dart';
 
 // ------------------------- wxImage ----------------------
 
+/// Resize quality for [WxImage.scale]: simplest and fastest algorithm
+const int wxIMAGE_QUALITY_NEAREST = 0;
+
+/// Resize quality: compromise between nearest and bicubic
+const int wxIMAGE_QUALITY_BILINEAR = 1;
+
+/// Resize quality: highest quality of the interpolating methods, but slowest
+const int wxIMAGE_QUALITY_BICUBIC = 2;
+
+/// Resize quality: averages the surrounding pixels, typically used when
+/// reducing the size of an image
+const int wxIMAGE_QUALITY_BOX_AVERAGE = 3;
+
+/// Resize quality: default, currently the same as [wxIMAGE_QUALITY_NEAREST]
+const int wxIMAGE_QUALITY_NORMAL = 4;
+
+/// Resize quality: best algorithm. Box average if both new width and height
+/// are smaller than the original size, otherwise bicubic.
+const int wxIMAGE_QUALITY_HIGH = 5;
+
 /// This class encapsulates a platform-independent image.
 ///
 /// An image can be created directly from data or from a file in a
@@ -89,6 +109,10 @@ part of '../../wx_dart.dart';
 /// * [getGreen]
 /// * [getBlue]
 /// * [getAlpha]
+/// 
+/// Scaling and cropping
+/// * [scale]
+/// * [getSubImage]
 
 class WxImage extends WxObject {
 /// Creates an image with given [width] and [height] and clears it to black
@@ -335,9 +359,33 @@ Uint8List getRGBA()
   }
 
   /// Returns a subimage if [rect] fits completely in this image
-  /// or null
+  /// or null. The alpha channel is copied if present.
   WxImage? getSubImage( WxRect rect ) {
-    return null;
+    if (!isOk()) return null;
+    if (rect.width <= 0 || rect.height <= 0) return null;
+    if (rect.x < 0 || rect.y < 0 ||
+        rect.x + rect.width > _width || rect.y + rect.height > _height) {
+      return null;
+    }
+
+    final image = WxImage( rect.width, rect.height, clear: false );
+    final dstRgb = image._rgb;
+    final rowBytes = rect.width * 3;
+    for (int row = 0; row < rect.height; row++) {
+      final src = 3 * (rect.x + (rect.y + row) * _width);
+      dstRgb.setRange( row * rowBytes, (row + 1) * rowBytes, _rgb, src );
+    }
+
+    final srcAlpha = _alpha;
+    if (srcAlpha != null) {
+      image.initAlpha();
+      final dstAlpha = image._alpha!;
+      for (int row = 0; row < rect.height; row++) {
+        final src = rect.x + (rect.y + row) * _width;
+        dstAlpha.setRange( row * rect.width, (row + 1) * rect.width, srcAlpha, src );
+      }
+    }
+    return image;
   }
 
   /// Returns a scaled version of the image
