@@ -4,6 +4,66 @@ import 'dart:async';
 import 'package:wx_dart/wx_dart.dart';
 import 'dart:ui' as ui;
 
+// ------------------------- MyScalingWindow ----------------------
+
+class MyScalingWindow extends WxWindow {
+  MyScalingWindow( WxWindow parent, int style ) : super( parent, -1, wxDefaultPosition, WxSize( 200, 200), 0 )
+  {
+    wxLoadImageFromResource( "toucan.png", (image) async {
+
+      _normal = WxBitmap.fromImage(image);
+      refresh();
+      await Future.delayed(Duration.zero);
+
+      final small = image.scale( (image.getWidth() / 1.5).round(), (image.getHeight() / 1.5).round() );
+      if (small != null) {
+        _small = WxBitmap.fromImage( small );
+        refresh();
+      }
+      await Future.delayed(Duration.zero);
+
+      final mini = image.scale( image.getWidth() ~/ 2, image.getHeight() ~/ 2 );
+      if (mini != null) {
+        _mini = WxBitmap.fromImage( mini );
+        refresh();
+      }
+      await Future.delayed(Duration.zero);
+
+      final big = image.scale( (image.getWidth() * 2.5).round(), (image.getHeight() * 2.5).round(), quality: wxIMAGE_QUALITY_BILINEAR );
+      if (big != null) {
+        _big = WxBitmap.fromImage( big );
+        refresh();
+      }
+    } );
+
+
+    bindPaintEvent( onPaint );
+  }
+
+  WxBitmap? _normal;
+  WxBitmap? _small;
+  WxBitmap? _mini;
+  WxBitmap? _big;
+
+  void onPaint( WxPaintEvent event )
+  {
+    final dc = WxPaintDC( this );
+
+    if (_normal != null) {
+      dc.drawBitmap( _normal!, 10, 10 );
+    }
+    if (_small != null) {
+      dc.drawBitmap( _small!, 10, 80 );
+    }
+    if (_mini != null) {
+      dc.drawBitmap( _mini!, 10, 130 );
+    }
+    if (_big != null) {
+      dc.drawBitmap( _big!, 150, 10 );
+    }
+
+  }
+}
 // ------------------------- MyClippingWindow ----------------------
 
 class MyClippingWindow extends WxScrolledWindow {
@@ -705,6 +765,11 @@ class MyDrawingWindow extends WxScrolledWindow {
     setSizer( mainSizer );
 
     late WxStaticBoxSizer sbs;
+
+    sbs = WxStaticBoxSizer(wxVERTICAL, this, "Scaling and WxBitmapBundle" );
+    mainSizer.addSizer(sbs, flag: wxEXPAND|wxALL, border: 5 );
+    sbs.add( MyScalingWindow(sbs.getStaticBox(), wxSIMPLE_BORDER ), flag: wxEXPAND|wxALL, border: 5 );
+
     sbs = WxStaticBoxSizer(wxVERTICAL, this, "Simple lines, no background" );
     mainSizer.addSizer(sbs, flag: wxEXPAND|wxALL, border: 5  );
     sbs.add( MyLinesWindow(sbs.getStaticBox(), 0, false), flag: wxEXPAND|wxALL, border: 5 );
