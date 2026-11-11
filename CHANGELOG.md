@@ -1,3 +1,8 @@
+## 0.9.30
+
+* Implement getSelection() in WxComboBox
+* Change selected item if an item above it or all items were deleted
+
 ## 0.9.29
 
 * Added WxImage.replace() and WxImage.copy()

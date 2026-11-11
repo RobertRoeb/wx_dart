@@ -81,6 +81,15 @@ class WxItemContainerImmutable extends WxControl {
     return -1;
   }
 
+  int _findIdenticalString( String str ) {
+    int count = 0; 
+    for (final item in _items) {
+      if (identical(item.text, str)) return count;
+      count++;
+    }
+    return -1;
+  }
+
   /// Set selection to item at position [index]
   /// 
   /// Same as [select]
@@ -140,12 +149,19 @@ class WxItemContainer extends WxItemContainerImmutable {
   /// Clears the list items in the control
   void clear( ) {
     _items.clear();
+    _selection = -1;
     _setState();
   }
 
   /// Delete item at [index]
   void delete( int index ) {
     _items.removeAt(index);
+    if (index == _selection) {
+      _selection = -1;
+    } else 
+    if (index < _selection) {
+      _selection--;
+    }
     _setState();
   }
 

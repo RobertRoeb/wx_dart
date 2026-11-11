@@ -213,8 +213,12 @@ class WxComboBox extends WxItemContainer {
           WxCommandEvent event = WxCommandEvent( wxGetComboboxEventType(), getId() );
           event.setEventObject( this );
           if (value != null) {
+            _selection = _findIdenticalString(value);
+            event.setInt( _selection );
             event.setString( value );
-            event.setClientData( getClientData(findString(value)) );
+            event.setClientData( getClientData(_selection) );
+          } else {
+            _selection = -1;
           }
           processEvent(event);
           
