@@ -301,7 +301,7 @@ Uint8List getRGBA()
   int getAlpha( int x, int y ) {
     if (_alpha == null) return 0;
     if ((x < 0) || (x >= _width) || (y < 0) || (y >= _height)) return 0;
-    return _alpha!.buffer.asByteData().getUint8( 2 + (x + y*_width) );
+    return _alpha!.buffer.asByteData().getUint8( x + y*_width );
   }
 
   /// Replaces the colour specified by [r1],[g1],[b1] with [r2],[g2],[b2]
@@ -311,9 +311,9 @@ Uint8List getRGBA()
     for (int y = 0; y < getHeight(); y++) {
       for (int x = 0; x < getWidth(); x++) {
         if ((rgb[rgbIndex] == r1) && (rgb[rgbIndex+1] == g1) && (rgb[rgbIndex+2] == b1)) {
-          rgb[rgbIndex] == r2;
-          rgb[rgbIndex+1] == g2;
-          rgb[rgbIndex+2] == b2;
+          rgb[rgbIndex] = r2;
+          rgb[rgbIndex+1] = g2;
+          rgb[rgbIndex+2] = b2;
         }
         rgbIndex += 3; 
       }
@@ -338,6 +338,13 @@ Uint8List getRGBA()
   /// or null
   WxImage? getSubImage( WxRect rect ) {
     return null;
+  }
+
+  /// Returns a scaled version of the image
+  WxImage scale( int width, int height, int quality ) {
+    final image = WxImage( width, height );
+    // TODO
+    return image;
   }
 
   late int _width;
