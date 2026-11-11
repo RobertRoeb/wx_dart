@@ -287,6 +287,14 @@ const int wxTOUCH_RAW_EVENTS = 0x0020;
 /// * [setCursor]
 /// * [getCursor]
 /// 
+/// Drag and drop (target)
+/// * [setDropTarget]
+/// 
+/// Tooltip
+/// * [setToolTip]
+/// * [unsetToolTip]
+/// * [getToolTipText]
+/// 
 /// Sizer
 /// * [setSizer]
 /// * [setSizerAndFit]
@@ -482,6 +490,7 @@ class WxWindow extends WxEvtHandler {
   WxDropTarget? _dropTarget;
   WxDropSource? _dropSource;
   DropzoneViewController? _dropZoneController;
+  String? _tooltip;
 
   /// Gets called before the window is destroyed and can be used to e.g.
   /// close a database or network connection or to stop a [WxTimer].
@@ -2310,6 +2319,30 @@ class WxWindow extends WxEvtHandler {
   void setDropTarget( WxDropTarget? target ) {
     _dropTarget = target;
   }
+
+  /// Sets the tooltip for the window
+  /// 
+  /// See [unsetToolTip]
+  void setToolTip( String tip ) {
+    _tooltip = tip;
+    _setState();
+  }
+
+  /// Removes the tooltip from the window
+  /// 
+  /// See [setToolTip]
+  void unsetToolTip( ) {
+    _tooltip = null;
+    _setState();
+  }
+
+  /// Returns the tooltip text
+  /// 
+  /// See [setToolTip]
+  String getToolTipText( ) {
+    return _tooltip ?? "";
+  }
+
 
   void printChildren() {
     for (WxWindow child in _children) {
