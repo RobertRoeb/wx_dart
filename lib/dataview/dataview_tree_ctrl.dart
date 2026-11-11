@@ -183,16 +183,20 @@ class WxDataViewTreeStore extends WxDataViewModel
 /// similar to [WxTreeCtrl]. As for [WxTreeCtrl], you can set a bitmap, text and
 /// any user data (client data) for an item.
 /// 
+/// Example usage:
 /// ```dart
 /// final tree = WxDataViewTreeCtrl( this, -1 );
-/// final root = tree.appendItem( WxDataViewItem(), null, "Root" ); // there can be several roots
-/// tree.appendItem( root, null, "Branch 1" ); 
-/// tree.appendItem( root, null, "Branch 2" ); 
-/// tree.appendItem( root, null, "Branch 3" ); 
+/// 
+/// // there can be several roots
+/// final root = tree.appendItem( WxDataViewItem(), "Root" ); 
+/// tree.appendItem( root, "Branch 1" ); 
+/// tree.appendItem( root, "Branch 2" ); 
+/// tree.appendItem( root, "Branch 3" ); 
 /// ```
 /// 
 /// Adding/removing items:
 /// * [appendItem]
+/// * [insertItem]
 /// * [deleteItem]
 /// * [deleteAllItems]
 /// 
