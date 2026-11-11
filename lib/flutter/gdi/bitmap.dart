@@ -342,7 +342,25 @@ class WxBitmap extends WxObject {
        SvgStringLoader(svg),
       null,
     );
-    final ui.Image image = await pictureInfo.picture.toImage(width,height);
+    return _renderSVGPicture( pictureInfo, width, height );
+  }
+
+  // Renders the picture of a loaded SVG scaled from its own size
+  // (width/height or viewBox of the SVG) to [width] x [height] pixels.
+  Future<ui.Image> _renderSVGPicture( PictureInfo pictureInfo, int width, int height ) async
+  {
+    final svgSize = pictureInfo.size;
+    // fall back to no scaling if the SVG does not tell its size
+    final scaleX = (svgSize.width > 0) ? width / svgSize.width : 1.0;
+    final scaleY = (svgSize.height > 0) ? height / svgSize.height : 1.0;
+
+    final recorder = ui.PictureRecorder();
+    final canvas = Canvas(recorder);
+    canvas.scale( scaleX, scaleY );
+    canvas.drawPicture( pictureInfo.picture );
+    final picture = recorder.endRecording();
+    final image = await picture.toImage( width, height );
+    picture.dispose();
     pictureInfo.picture.dispose();
     return image;
   }
@@ -459,24 +477,7 @@ class WxBitmap extends WxObject {
       clipViewbox: false, 
     );
 
-    /*
-    // simple way with no scaling
-    final ui.Image image = await pictureInfo.picture.toImage(width,height);
-    */
-
-    // with scaling to desired size
-    final recorder = ui.PictureRecorder(); 
-    final canvas = Canvas(recorder); 
-    // TODO: read original width and height from SVG
-    canvas.scale(width/24, height/24 ); 
-    canvas.drawPicture(pictureInfo.picture); 
-    final image = await recorder.endRecording().toImage( 
-      width, 
-      height, 
-    ); 
-
-    pictureInfo.picture.dispose();
-    return image;
+    return _renderSVGPicture( pictureInfo, width, height );
   }
 
   Future<ui.Image> _buildImage( Uint8List rgba, int width, int height ) async
