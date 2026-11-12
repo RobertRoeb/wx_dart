@@ -7,6 +7,7 @@
 * Corrected WxColour.getLuminance() calculation (normalize to 0 to 1)
 * Progress on DPI aware WxBitmapBundle also when using async loading
 * Added WxBitmap.getScaleFactor(), .getLogicalHWidth() and getLogicalHeight()
+* Added wxBitmapBundle.getBitmapForSize() that scales the bitmap, no change to scale
 
 ## 0.9.29
 

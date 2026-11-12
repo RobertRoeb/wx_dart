@@ -157,6 +157,7 @@ const int wxBITMAP_TYPE_ANY = 50;
 /// 
 /// Scaling (for DPI) interface
 /// * [getScaleFactor]
+/// * [setScaleFactor]
 /// * [getLogicalWidth]
 /// * [getLogicalHeight]
 
@@ -227,6 +228,7 @@ class WxBitmap extends WxObject {
   WxSize _knownSize = WxSize.zero;
   double _scaleFactor = 1.0;
   bool _calcScaleFactorLater = false;
+  bool _calcSizeLater = false;
 
   /// Returns the scale factor of this bitmap.
   /// 
@@ -238,10 +240,16 @@ class WxBitmap extends WxObject {
     return _scaleFactor;
   }
 
+  /// Sets the scale factor. This is very, very rarely needed.
+  void setScaleFactor( double scale ) {
+    _scaleFactor = scale;
+    _calcScaleFactorLater = false;
+  }
+
   /// Returns the width of the bitmap in logical pixels.
   /// 
   /// For the platforms using DPI-independent pixels (such as wxOSX or wxGTK 3)
-  /// this function returns the physical size of the bitmap, as returned by getWidth(),
+  /// this function returns the physical size of the bitmap, as returned by [getWidth],
   /// divided by its scale factor.
   /// 
   /// see [getScaleFactor]
@@ -249,10 +257,10 @@ class WxBitmap extends WxObject {
     return getWidth() / _scaleFactor;
   }
 
-  /// Returns the width of the bitmap in logical pixels.
+  /// Returns the height of the bitmap in logical pixels.
   /// 
   /// For the platforms using DPI-independent pixels (such as wxOSX or wxGTK 3)
-  /// this function returns the physical size of the bitmap, as returned by getWidth(),
+  /// this function returns the physical size of the bitmap, as returned by [getHeight],
   /// divided by its scale factor.
   /// 
   /// see [getScaleFactor]
@@ -303,6 +311,8 @@ class WxBitmap extends WxObject {
   {
     _knownSize = WxSize( width, height );
     _scaleFactor = scale;
+    _calcScaleFactorLater = false;
+    _calcSizeLater = false;
     if (bitmap.isOk()) {
       _buildDerived( bitmap );
       return;
@@ -322,6 +332,7 @@ class WxBitmap extends WxObject {
     // figure out the scale factor once we have
     // the size of the original bitmap  
     _calcScaleFactorLater = true;
+    _calcSizeLater = true;
     bitmap._addDerivedBitmap(this);
   }
 
@@ -330,10 +341,12 @@ class WxBitmap extends WxObject {
     if (_calcScaleFactorLater) {
       _scaleFactor = _knownSize.y / original.getHeight();
       _calcScaleFactorLater = false;
-    } else {
+    }
+    if (_calcSizeLater) {
       _knownSize = WxSize( 
           (original._knownSize.x*_scaleFactor).round(), 
           (original._knownSize.y*_scaleFactor).round() );
+      _calcSizeLater = false;
     }
 
     if (original._isSVG) {

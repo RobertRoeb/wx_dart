@@ -161,10 +161,40 @@ class WxBitmapBundle extends WxClass {
     return _bitmap;
   }
 
+  /// Returns bitmap for given size taking the window's DPI into
+  /// account. While [getBitmap] is essentially an internal 
+  /// method needed when the DPI changes, this will create a
+  /// bitmap with a smaller size on screen. [dipSize] is the 
+  /// logical size, not the size in pixels
+  WxBitmap getBitmapForSize( WxWindow window, WxSize dipSize )
+  {
+    final sz = WxSize( window.fromDIP( dipSize.width ),
+                         window.fromDIP( dipSize.height ) );
+    final scale = sz.height / dipSize.height;
+
+    // original size and scale
+    if ((sz.x == _bitmap.getWidth()) && (sz.y == _bitmap.getHeight()) && (_bitmap.getScaleFactor() == scale)) {
+      return _bitmap;
+    }
+
+    if (_bigBitmap != null) {
+      // Did we already create the right one?
+      if ((_bigBitmap!.getWidth() == sz.x) && (_bigBitmap!.getHeight() == sz.y) && (_bigBitmap!.getScaleFactor() == scale)) {
+        return _bigBitmap!;
+      }
+    }
+
+    // We know size AND scale
+    _bigBitmap = WxBitmap._withNewSizeAndScale( _bitmap, sz.x, sz.y, scale );
+    return _bigBitmap!;
+  }
+
+  /// Returns bitmap of the specified size, creating a new bitmap if necessary.
+  /// It also calculates the scaling factor of the new bitmap based on the 
+  /// height ratio.
   WxBitmap getBitmap( WxSize size )
   {
     final sz = (size == wxDefaultSize) ? WxSize( _bitmap.getWidth(), _bitmap.getHeight() ) : size;
-    final scale = sz.y / _bitmap.getHeight();
 
     // original size?
     if ((sz.x == _bitmap.getWidth()) && (sz.y == _bitmap.getHeight())) {
@@ -178,7 +208,8 @@ class WxBitmapBundle extends WxClass {
       }
     }
 
-    _bigBitmap = WxBitmap._withNewSize( _bitmap, sz.x, sz.y  );
+    // We know the new pixel size, figure out the scale
+    _bigBitmap = WxBitmap._withNewSize( _bitmap, sz.x, sz.y );
     return _bigBitmap!;
   }
 

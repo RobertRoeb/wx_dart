@@ -37,15 +37,15 @@ class MyScalingWindow extends WxWindow {
 
     _svgBundle = WxBitmapBundle.fromSVGAsset('flutter.svg', WxSize(40,40) );
     _svg = _svgBundle.getBitmapFor(this);
-    _bigSVG = _svgBundle.getBitmap( WxSize(80,80) );
+    _bigSVG = _svgBundle.getBitmapForSize( this, WxSize(80,80) );
 
     _materialBundle = WxBitmapBundle.fromMaterialIcon( WxMaterialIcon.handshake, WxSize(40,40), colour: wxRED );
     _material = _materialBundle.getBitmapFor(this);
-    _bigMaterial = _materialBundle.getBitmap( WxSize(80,80) );
+    _bigMaterial = _materialBundle.getBitmapForSize( this, WxSize(80,80) );
 
     _pngBundle = WxBitmapBundle.fromPNGAsset('wxWidgets.png' );
     _png = _pngBundle.getBitmapFor(this);
-    _bigPNG = _pngBundle.getBitmap( WxSize(80,80) );
+    _bigPNG = _pngBundle.getBitmapForSize( this, WxSize(80,80) );
 
     bindPaintEvent( onPaint );
   }
