@@ -139,6 +139,26 @@ const int wxBITMAP_TYPE_ANY = 50;
 /// * wxBITMAP_TYPE_JPEG
 /// * wxBITMAP_TYPE_WEBP
 /// * wxBITMAP_TYPE_ANY
+/// 
+/// Constructors
+/// 
+/// * [WxBitmap]
+/// * [WxBitmap.fromSVG]
+/// * [WxBitmap.fromMaterialIcon]
+/// * [WxBitmap.fromAsset]
+/// * [WxBitmap.fromSVGAsset]
+/// * [WxBitmap.fromImage]
+/// * [WxBitmap.fromUIImage]
+/// 
+/// Main interface
+/// * [isOk]
+/// * [getWidth]
+/// * [getHeight]
+/// 
+/// Scaling (for DPI) interface
+/// * [getScaleFactor]
+/// * [getLogicalWidth]
+/// * [getLogicalHeight]
 
 class WxBitmap extends WxObject {
 
@@ -163,6 +183,7 @@ class WxBitmap extends WxObject {
   {
     final resourcePath = "${wxGetStandardPaths().getResourcesDir()}/$path";
     _buildAsset(resourcePath,-1,-1).then( (image ) {
+      _knownSize = WxSize( image.width, image.height );
       _image = image;
       _notify();
     } );
@@ -204,6 +225,40 @@ class WxBitmap extends WxObject {
   WxMaterialIcon _materialIcon = WxMaterialIcon.access_alarm;
   WxColour? _materialIconColour;
   WxSize _knownSize = WxSize.zero;
+  double _scaleFactor = 1.0;
+  bool _calcScaleFactorLater = false;
+
+  /// Returns the scale factor of this bitmap.
+  /// 
+  /// Scale factor is 1 by default, but can be greater to indicate that
+  /// the size of bitmap in logical, DPI-independent pixels is smaller
+  /// than its actual size in physical pixels. Bitmaps with scale factor
+  /// greater than 1 must be used in high DPI to appear sharp on the screen.
+  double getScaleFactor() {
+    return _scaleFactor;
+  }
+
+  /// Returns the width of the bitmap in logical pixels.
+  /// 
+  /// For the platforms using DPI-independent pixels (such as wxOSX or wxGTK 3)
+  /// this function returns the physical size of the bitmap, as returned by getWidth(),
+  /// divided by its scale factor.
+  /// 
+  /// see [getScaleFactor]
+  double getLogicalWidth() {
+    return getWidth() / _scaleFactor;
+  }
+
+  /// Returns the width of the bitmap in logical pixels.
+  /// 
+  /// For the platforms using DPI-independent pixels (such as wxOSX or wxGTK 3)
+  /// this function returns the physical size of the bitmap, as returned by getWidth(),
+  /// divided by its scale factor.
+  /// 
+  /// see [getScaleFactor]
+  double getLogicalHeight() {
+    return getHeight() / _scaleFactor;
+  }
 
   /// Creates a bitmap from an Dart::UI image. This constructor is not implemented
   /// in wxDart Native. 
@@ -244,17 +299,43 @@ class WxBitmap extends WxObject {
     _buildWxImage( image );
   }
 
+  WxBitmap._withNewSizeAndScale( WxBitmap bitmap, int width, int height, double scale )
+  {
+    _knownSize = WxSize( width, height );
+    _scaleFactor = scale;
+    if (bitmap.isOk()) {
+      _buildDerived( bitmap );
+      return;
+    }
+    bitmap._addDerivedBitmap(this);
+  }
+
   WxBitmap._withNewSize( WxBitmap bitmap, int width, int height )
   {
     _knownSize = WxSize( width, height );
     if (bitmap.isOk()) {
+      // fully loaded, calc scale now
+      _scaleFactor = height / bitmap.getHeight();
       _buildDerived( bitmap );
+      return;
     }
+    // figure out the scale factor once we have
+    // the size of the original bitmap  
+    _calcScaleFactorLater = true;
     bitmap._addDerivedBitmap(this);
   }
 
   void _buildDerived( WxBitmap original ) async
   {
+    if (_calcScaleFactorLater) {
+      _scaleFactor = _knownSize.y / original.getHeight();
+      _calcScaleFactorLater = false;
+    } else {
+      _knownSize = WxSize( 
+          (original._knownSize.x*_scaleFactor).round(), 
+          (original._knownSize.y*_scaleFactor).round() );
+    }
+
     if (original._isSVG) {
       _svg = original._svg;
       _isSVG = true;

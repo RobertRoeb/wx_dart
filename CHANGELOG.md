@@ -5,7 +5,8 @@
 * Added WxBitmapBundle().makeDisabled() and .getDefaultSize()
 * Added WxWindow.setToolTip(), .unsetToolTip() and getToolTipText()
 * Corrected WxColour.getLuminance() calculation (normalize to 0 to 1)
-* Progress on DPI aware WxBitmapBundle
+* Progress on DPI aware WxBitmapBundle also when using async loading
+* Added WxBitmap.getScaleFactor(), .getLogicalHWidth() and getLogicalHeight()
 
 ## 0.9.29
 

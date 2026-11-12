@@ -362,7 +362,16 @@ class WxDC extends WxReadOnlyDC {
   void drawBitmap( WxBitmap bitmap, int x, int y )
   {
     if (bitmap.isOk()) {
-      _canvas.drawImage(bitmap._image!, Offset( x.toDouble(), y.toDouble() ), _penPaint );
+      final image = bitmap._image!;
+      if (bitmap.getScaleFactor() == 1.0) {
+        _canvas.drawImage(image, Offset( x.toDouble(), y.toDouble() ), _penPaint );
+      } else {
+        final scale = bitmap.getScaleFactor();
+        _canvas.drawImageRect(image, 
+          Rect.fromLTWH( 0, 0, image.width.toDouble(), image.height.toDouble() ),
+          Rect.fromLTWH( x.toDouble(), y.toDouble(), image.width / scale, image.height / scale ),
+         _penPaint );
+      }
     } else {
       if ((this) is WxPaintDC) {
         final paintdc = this as WxPaintDC;

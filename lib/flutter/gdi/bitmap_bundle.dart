@@ -151,8 +151,7 @@ class WxBitmapBundle extends WxClass {
         if ((_bigBitmap!.getWidth() == size.x) && (_bigBitmap!.getHeight() == size.y)) {
           return _bigBitmap!;
         }
-        _bigBitmap = WxBitmap._withNewSize( _bitmap, size.x, size.y );
-        // _bigBitmap = WxBitmap.fromSVG( _svg, size.x, size.y );
+        _bigBitmap = WxBitmap._withNewSizeAndScale( _bitmap, size.x, size.y, scale );
         return _bigBitmap!;
       }
     }
@@ -164,23 +163,26 @@ class WxBitmapBundle extends WxClass {
 
   WxBitmap getBitmap( WxSize size )
   {
+    final sz = (size == wxDefaultSize) ? WxSize( _bitmap.getWidth(), _bitmap.getHeight() ) : size;
+    final scale = sz.y / _bitmap.getHeight();
+
     // original size?
-    if ((size.x == _bitmap.getWidth()) && (size.y == _bitmap.getHeight())) {
+    if ((sz.x == _bitmap.getWidth()) && (sz.y == _bitmap.getHeight())) {
       return _bitmap;
     }
 
     if (_bigBitmap != null) {
       // Did we already create the right one?
-      if ((_bigBitmap!.getWidth() == size.x) && (_bigBitmap!.getHeight() == size.y)) {
+      if ((_bigBitmap!.getWidth() == sz.x) && (_bigBitmap!.getHeight() == sz.y)) {
         return _bigBitmap!;
       }
     }
 
-    _bigBitmap = WxBitmap._withNewSize( _bitmap, size.x, size.y );
+    _bigBitmap = WxBitmap._withNewSize( _bitmap, sz.x, sz.y  );
     return _bigBitmap!;
   }
 
-  /// Returns the size of the unscaled bitmap (at 100% DPI)
+  /// Returns the size of the unscaled smallest bitmap (at 100% DPI)
   WxSize getDefaultSize( ) {
     return WxSize( _bitmap.getWidth(), _bitmap.getHeight() );
   }

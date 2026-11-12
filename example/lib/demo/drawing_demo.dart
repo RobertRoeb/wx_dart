@@ -90,7 +90,6 @@ class MyScalingWindow extends WxWindow {
     dc.drawBitmap(_svg, 190, 20);
     dc.drawRectangle(190, 100, 80, 80);
     dc.drawBitmap(_bigSVG, 190, 100);
-    print( "_bigSVG size: ${_bigSVG.getWidth()}, ${_bigSVG.getHeight()}" );
 
     dc.drawBitmap(_material, 280, 20);
     dc.drawRectangle(280, 100, 80, 80);
