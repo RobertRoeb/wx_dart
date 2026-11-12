@@ -10,7 +10,6 @@ class MyScalingWindow extends WxWindow {
   MyScalingWindow( WxWindow parent, int style ) : super( parent, -1, wxDefaultPosition, WxSize( 200, 200), 0 )
   {
     wxLoadImageFromResource( "toucan.png", (image) async {
-
       _normal = WxBitmap.fromImage(image);
       refresh();
       await Future.delayed(Duration.zero);
@@ -36,6 +35,17 @@ class MyScalingWindow extends WxWindow {
       }
     } );
 
+    _svgBundle = WxBitmapBundle.fromSVGAsset('flutter.svg', WxSize(40,40) );
+    _svg = _svgBundle.getBitmapFor(this);
+    _bigSVG = _svgBundle.getBitmap( WxSize(80,80) );
+
+    _materialBundle = WxBitmapBundle.fromMaterialIcon( WxMaterialIcon.handshake, WxSize(40,40), colour: wxRED );
+    _material = _materialBundle.getBitmapFor(this);
+    _bigMaterial = _materialBundle.getBitmap( WxSize(80,80) );
+
+    _pngBundle = WxBitmapBundle.fromPNGAsset('wxWidgets.png' );
+    _png = _pngBundle.getBitmapFor(this);
+    _bigPNG = _pngBundle.getBitmap( WxSize(80,80) );
 
     bindPaintEvent( onPaint );
   }
@@ -44,6 +54,19 @@ class MyScalingWindow extends WxWindow {
   WxBitmap? _small;
   WxBitmap? _mini;
   WxBitmap? _big;
+
+  late WxBitmapBundle _svgBundle;
+  late WxBitmap _svg;
+  late WxBitmap _bigSVG;
+
+  late WxBitmapBundle _materialBundle;
+  late WxBitmap _material;
+  late WxBitmap _bigMaterial;
+
+  late WxBitmapBundle _pngBundle;
+  late WxBitmap _png;
+  late WxBitmap _bigPNG;
+
 
   void onPaint( WxPaintEvent event )
   {
@@ -59,9 +82,23 @@ class MyScalingWindow extends WxWindow {
       dc.drawBitmap( _mini!, 10, 130 );
     }
     if (_big != null) {
-      dc.drawBitmap( _big!, 150, 10 );
+      dc.drawBitmap( _big!, 50, 10 );
     }
 
+    dc.setPen(wxRED_PEN);
+    dc.setBrush(wxTRANSPARENT_BRUSH);
+    dc.drawBitmap(_svg, 190, 20);
+    dc.drawRectangle(190, 100, 80, 80);
+    dc.drawBitmap(_bigSVG, 190, 100);
+    print( "_bigSVG size: ${_bigSVG.getWidth()}, ${_bigSVG.getHeight()}" );
+
+    dc.drawBitmap(_material, 280, 20);
+    dc.drawRectangle(280, 100, 80, 80);
+    dc.drawBitmap(_bigMaterial, 280, 100);
+
+    dc.drawBitmap(_png, 370, 20);
+    dc.drawRectangle(370, 100, 80, 80);
+    dc.drawBitmap(_bigPNG, 370, 100);
   }
 }
 // ------------------------- MyClippingWindow ----------------------

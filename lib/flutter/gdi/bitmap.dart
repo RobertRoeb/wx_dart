@@ -164,10 +164,7 @@ class WxBitmap extends WxObject {
     final resourcePath = "${wxGetStandardPaths().getResourcesDir()}/$path";
     _buildAsset(resourcePath,-1,-1).then( (image ) {
       _image = image;
-      // notify owning classes
-      for (final listener in _listeners) {
-        listener._setState();
-      }
+      _notify();
     } );
   }
 
@@ -186,10 +183,7 @@ class WxBitmap extends WxObject {
   {
     _buildFromUint8List(pngData).then( (image ) {
       _image = image;
-      // notify owning classes
-      for (final listener in _listeners) {
-        listener._setState();
-      }
+      _notify();
     } );
   }
 
@@ -202,10 +196,11 @@ class WxBitmap extends WxObject {
   ui.Image? _image;
   final List <WxWindow> _listeners = [];
   final List <WxBitmap> _derivedBitmaps = [];
-  // needed ro rebuilding with new colour
+  // needed to rebuild with new size, or disabled colour
+  bool _isSVG = false;
+  String _svg = "";
+  // needed to building with new colour
   bool _isMaterialIcon = false;
-  int _materialIconWidth = -1;
-  int _materialIconHeight = -1;
   WxMaterialIcon _materialIcon = WxMaterialIcon.access_alarm;
   WxColour? _materialIconColour;
   WxSize _knownSize = WxSize.zero;
@@ -253,13 +248,36 @@ class WxBitmap extends WxObject {
   {
     _knownSize = WxSize( width, height );
     if (bitmap.isOk()) {
-      _buildDerived( bitmap._image! );
+      _buildDerived( bitmap );
     }
     bitmap._addDerivedBitmap(this);
   }
 
-  void _buildDerived( ui.Image image ) async
+  void _buildDerived( WxBitmap original ) async
   {
+    if (original._isSVG) {
+      _svg = original._svg;
+      _isSVG = true;
+      _buildSVG().then( (image) {
+        _image = image;
+        _notify();
+      } );
+      return;
+    }
+
+    if (original._isMaterialIcon) {
+      _materialIcon = original._materialIcon;
+      _isMaterialIcon = true;
+      _materialIconColour = original._materialIconColour;
+      _buildFromMaterialIcon();
+      return;
+    }
+
+    if (original._image == null) {
+      wxLogError( "Cannot derive image. Original not fully built." );
+      return;
+    }
+    final image = original._image!;
     final byteData = await image.toByteData();
     if (byteData == null) {
       wxLogError( "Failed to retrieve RGBA data from image" );
@@ -323,13 +341,13 @@ class WxBitmap extends WxObject {
   }
 
   void _notify() {
-    // notify owning classes
+    // notify owning classes to redraw
     for (final listener in _listeners) {
       listener._setState();
     }
-    // notify derived bitmaps
+    // notify derived bitmaps to build
     for (final bitmap in _derivedBitmaps) {
-      bitmap._buildDerived( _image! );
+      bitmap._buildDerived( this );
       }
   }
 
@@ -368,6 +386,7 @@ class WxBitmap extends WxObject {
   WxBitmap.fromSVGAsset( String path, int width, int height )
   {
     _knownSize = WxSize( width, height );
+    _isSVG = true;
     final resourcePath = "${wxGetStandardPaths().getResourcesDir()}/$path";
     _buildSVGAsset(resourcePath,width,height).then( (image ) {
       _image = image;
@@ -377,10 +396,10 @@ class WxBitmap extends WxObject {
 
   Future<ui.Image> _buildSVGAsset( String path, int width, int height ) async
   {
-    final svg = await rootBundle.loadString(path);
+    _svg = await rootBundle.loadString(path);
 
     final PictureInfo pictureInfo = await vg.loadPicture(
-       SvgStringLoader(svg),
+       SvgStringLoader(_svg),
       null,
     );
     return _renderSVGPicture( pictureInfo, width, height );
@@ -414,8 +433,6 @@ class WxBitmap extends WxObject {
     _knownSize = size;
     // needed to recreate when updating theme
     _isMaterialIcon = true;
-    _materialIconWidth = size.x;
-    _materialIconHeight = size.y;
     _materialIcon = icon;
     _materialIconColour = colour;
     _buildFromMaterialIcon();
@@ -459,7 +476,7 @@ class WxBitmap extends WxObject {
     textPainter.text = TextSpan(  
       text: String.fromCharCode(icondata.codePoint),
             style: TextStyle(
-              fontSize: _materialIconHeight.toDouble(),
+              fontSize: _knownSize.y.toDouble(),
               color: ( _materialIconColour == null) 
                      ? wxTheApp._getSeedColor() 
                      : Color.fromARGB( _materialIconColour!.alpha, _materialIconColour!.red, _materialIconColour!.green, _materialIconColour!.blue ),
@@ -471,7 +488,7 @@ class WxBitmap extends WxObject {
     final picture = recorder.endRecording();
 
     _image = null;
-    _buildPicture(picture, (_materialIconWidth*dpr).floor(), (_materialIconHeight*dpr).floor() ).then( (image ) {
+    _buildPicture(picture, _knownSize.x, _knownSize.y ).then( (image ) {
       _image = image;
       _notify();
     } );  
@@ -497,21 +514,23 @@ class WxBitmap extends WxObject {
   WxBitmap.fromSVG( String svg, int width, int height )
   {
     _knownSize = WxSize( width, height );
-    _buildSVG(svg,width,height).then( (image ) {
+    _isSVG = true;
+    _svg = svg;
+    _buildSVG().then( (image) {
       _image = image;
       _notify();
     } );
   }
 
-  Future<ui.Image> _buildSVG( String svg, int width, int height ) async
+  Future<ui.Image> _buildSVG() async
   {
     final PictureInfo pictureInfo = await vg.loadPicture(
-      SvgStringLoader(svg),
+      SvgStringLoader(_svg),
       null,
       clipViewbox: false, 
     );
 
-    return _renderSVGPicture( pictureInfo, width, height );
+    return _renderSVGPicture( pictureInfo, _knownSize.x, _knownSize.y );
   }
 
   Future<ui.Image> _buildImage( Uint8List rgba, int width, int height ) async

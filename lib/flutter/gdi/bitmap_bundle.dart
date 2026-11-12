@@ -91,6 +91,7 @@ class WxBitmapBundle extends WxClass {
   /// final bitmap = WxBitmapBundle.fromSVGAsset( "images/MyImage.svg", WxSize(20,20) ); 
   /// ```
   WxBitmapBundle.fromSVGAsset( String path, WxSize sizeDef )  {
+    _isSVG = true;
     _defaultSize = sizeDef;
     // create default bitmap
     _bitmap = WxBitmap.fromSVGAsset( path, sizeDef.x, sizeDef.y );
@@ -98,7 +99,6 @@ class WxBitmapBundle extends WxClass {
     final resourcePath = "${wxGetStandardPaths().getResourcesDir()}/$path";
     // Load SVG string and make this bundle and SVG bundle
     rootBundle.loadString(resourcePath).then( (svg) {
-      _isSVG = true;
       _svg = svg;
     } );
   }
@@ -151,7 +151,8 @@ class WxBitmapBundle extends WxClass {
         if ((_bigBitmap!.getWidth() == size.x) && (_bigBitmap!.getHeight() == size.y)) {
           return _bigBitmap!;
         }
-        _bigBitmap = WxBitmap.fromSVG( _svg, size.x, size.y );
+        _bigBitmap = WxBitmap._withNewSize( _bitmap, size.x, size.y );
+        // _bigBitmap = WxBitmap.fromSVG( _svg, size.x, size.y );
         return _bigBitmap!;
       }
     }
@@ -161,15 +162,22 @@ class WxBitmapBundle extends WxClass {
     return _bitmap;
   }
 
-  WxBitmap getBitmap( WxSize size ) {
+  WxBitmap getBitmap( WxSize size )
+  {
+    // original size?
     if ((size.x == _bitmap.getWidth()) && (size.y == _bitmap.getHeight())) {
       return _bitmap;
     }
-    if (_isSVG) {
-      return WxBitmap.fromSVG( _svg, size.x, size.y );
+
+    if (_bigBitmap != null) {
+      // Did we already create the right one?
+      if ((_bigBitmap!.getWidth() == size.x) && (_bigBitmap!.getHeight() == size.y)) {
+        return _bigBitmap!;
+      }
     }
 
-    return WxBitmap._withNewSize( _bitmap, size.x, size.y );
+    _bigBitmap = WxBitmap._withNewSize( _bitmap, size.x, size.y );
+    return _bigBitmap!;
   }
 
   /// Returns the size of the unscaled bitmap (at 100% DPI)
