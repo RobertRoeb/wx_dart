@@ -259,6 +259,16 @@ const int wxTOUCH_RAW_EVENTS = 0x0020;
 /// * [dispose]
 /// * [destroy]
 /// 
+/// Child window interface
+/// * [getChildCount]
+/// * [getChild]
+/// * [getParent]
+/// * [findWindow]
+/// * [destroyChildren]
+/// 
+/// Reparent
+/// * [reparent]
+/// 
 /// Position, sizing and hints
 /// * [setSize]
 /// * [setClientSize]
@@ -270,13 +280,6 @@ const int wxTOUCH_RAW_EVENTS = 0x0020;
 /// * [getClientSize]
 /// * [getVirtualSize]
 /// * [setVirtualSize]
-/// 
-/// Child window interface
-/// * [getChildCount]
-/// * [getChild]
-/// * [getParent]
-/// * [findWindow]
-/// * [destroyChildren]
 /// 
 /// Mouse capture
 /// * [captureMouse]
@@ -520,6 +523,16 @@ class WxWindow extends WxEvtHandler {
     }
     dispose();
     return true;
+  }
+
+  /// Removes this window from its current parent and inserts
+  /// it into [newParent]
+  void reparent( WxWindow newParent ) {
+    if (_parent != null) {
+      _parent!.removeChild(this);
+    }
+    newParent.addChild( this );
+    _setState();
   }
 
   /// Deletes all child windows
