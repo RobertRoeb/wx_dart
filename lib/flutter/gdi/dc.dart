@@ -69,6 +69,7 @@ const int wxWINDING_RULE = 2;
 /// Clipping:
 /// * [setClippingRegion]
 /// * [destroyClippingRegion]
+/// * [destroyClippingRegionRect]
 /// * [getClippingBox]
 /// 
 /// Device to logical mapping:
@@ -156,6 +157,11 @@ class WxDC extends WxReadOnlyDC {
     }
     _clipBox = box;
     _recalcMatrix();
+  }
+
+  /// Same as setClippingRegion, but with [WxRect] as the parameter
+  void setClippingRegionRect( WxRect rect ) {
+    setClippingRegion( rect.x, rect.y, rect.width, rect.height );
   }
 
   /// Destroys the current clipping region so that none of the DC is clipped.
