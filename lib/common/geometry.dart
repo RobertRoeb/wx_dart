@@ -7,6 +7,10 @@
 
 part of '../wx_dart.dart';
 
+// ------------------------- wxDefaultCoord ----------------------
+
+const int wxDefaultCoord = -1;
+
 // ------------------------- wxSize ----------------------
 
 /// Represents a size on screen. 
