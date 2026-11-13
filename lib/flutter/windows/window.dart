@@ -491,6 +491,7 @@ class WxWindow extends WxEvtHandler {
   WxDropSource? _dropSource;
   DropzoneViewController? _dropZoneController;
   String? _tooltip;
+  String _label = "";
 
   /// Gets called before the window is destroyed and can be used to e.g.
   /// close a database or network connection or to stop a [WxTimer].
@@ -560,6 +561,19 @@ class WxWindow extends WxEvtHandler {
       }
     }
     return null;
+  }
+
+  /// Sets the label of control. This can be the main text, e.g.
+  /// in a [WxButton] or name associated with the control in the
+  /// context of accessibilty
+  void setLabel( String label ) {
+    _label = label;
+    _setState();
+  }
+
+  /// Returns the current label
+  String getLabel() {
+    return _label;
   }
 
   /// Returns window size minus border and scrollbar size, of present

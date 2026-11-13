@@ -40,10 +40,16 @@ extension ButtonEventBinder on WxEvtHandler {
 ///  }, -1);
 ///```
 ///
+/// Main interface
+/// * [setLabel]
+/// * [getLabel]
+/// * [setBackgroundColour]
+/// * [getBackgroundColour]
+///
 /// # Events emitted
 /// [Button](/wxdart/wxGetButtonEventType.html) event gets sent when the button is pressed. |
 /// | ----------------- |
-/// | void bindButtonEvent( void function( [WxCommandEvent] event ) ) |
+/// | void bindButtonEvent( void function( [WxCommandEvent] event ), int id ) |
 /// | void unbindButtonEvent() |
 /// 
 /// # Windows styles
@@ -63,7 +69,6 @@ class WxButton extends WxAnyButton {
     _label = label;
   }
 
-  String _label = "";
   bool _isHover = false;
   WxColour ?_buttonColour;
 
@@ -189,9 +194,4 @@ class WxButton extends WxAnyButton {
             ) 
       ) );
     }
-
-  void setLabel( String label ) {
-    _label = label;
-    _setState();
-  }
 }

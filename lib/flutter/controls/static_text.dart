@@ -17,6 +17,16 @@ const int wxST_ELLIPSIZE_END = 0x0010;
 
 /// Represents static text on screen.
 ///
+///
+/// Example usage
+/// ```dart
+///   final label = WxStaticText( this, -1, "Information" );
+/// ```
+///
+/// Main interface
+/// * [setLabel]
+/// * [getLabel]
+/// 
 /// # Window syle
 /// 
 /// | constant | meaning |
@@ -33,15 +43,8 @@ class WxStaticText extends WxControl {
     _label = label;
   }
 
-  String _label = "";
-
   @override
   Widget _build( BuildContext context ) {
     return _buildControl( context, Text( _label, style: _convertTextStyle( _foregroundColour, _font) ) );
-  }
- 
-  void setLabel( String label ) {
-    _label = label;
-    _setState();
   }
 }

@@ -35,20 +35,24 @@ extension ToggleButtonEventBinder on WxEvtHandler {
 ///  }, -1);
 ///```
 ///
+/// Main interface
+/// * [setValue]
+/// * [getValue]
+/// * [setLabel]
+/// * [getLabel]
+/// 
 /// [ToggleButton](/wxdart/wxGetToggleButtonEventType.html) event gets sent when the button is toggled or untoggled. |
 /// | ----------------- |
-/// | void bindToggleButtonEvent( void function( [WxCommandEvent] event ) ) |
+/// | void bindToggleButtonEvent( void function( [WxCommandEvent] event ), int id ) |
 /// | void unbindToggleButtonEvent() |
 /// 
 class WxToggleButton extends WxControl {
 
   /// Creates toggle button with given [label]
-  WxToggleButton( super.parent, super.id, String label, { super.pos, super.size, super.style } )
-  {
+  WxToggleButton( super.parent, super.id, String label, { super.pos, super.size, super.style } ) {
     _label = label;
   }
 
-  String _label = "";
   bool _value = false;
 
 /*

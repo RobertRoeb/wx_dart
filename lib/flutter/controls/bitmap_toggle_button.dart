@@ -30,7 +30,7 @@ part of '../../wx_dart.dart';
 ///
 /// [ToggleButton](/wxdart/wxGetToggleButtonEventType.html) event gets sent when the button is toggled or untoggled. |
 /// | ----------------- |
-/// | void bindToggleButtonEvent( void function( [WxCommandEvent] event ) ) |
+/// | void bindToggleButtonEvent( void function( [WxCommandEvent] event ), int id ) |
 /// | void unbindToggleButtonEvent() |
 
 class WxBitmapToggleButton extends WxAnyButton {

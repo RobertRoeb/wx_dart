@@ -92,7 +92,7 @@ const int wxHL_DEFAULT_STYLE = (wxHL_CONTEXTMENU|wxNO_BORDER|wxHL_ALIGN_CENTRE);
 /// # Events emitted
 /// [Hyperlink](/wxdart/wxGetHyperlinkEventType.html) gets sent when user clicked on hyper link |
 /// | ----------------- |
-/// | void bindHyperlinkEvent( void function( [WxHyperlinkEvent] event ) ) |
+/// | void bindHyperlinkEvent( void function( [WxHyperlinkEvent] event ), int id ) |
 /// | void unbindHyperlinkEvent() |
 /// 
 /// # Windows styles
@@ -112,7 +112,6 @@ class WxHyperlinkCtrl extends WxControl {
   }
 
   String _url = "";
-  String _label = "";
   bool _visited = false;
   WxColour _visitedColour = wxBLUE;
   WxColour _normalColour = wxBLUE;
@@ -170,17 +169,6 @@ class WxHyperlinkCtrl extends WxControl {
   /// Returns URL of the link
   String getURL( ) {
     return _url;
-  }
-
-  /// Sets label text
-  void setLabel( String label ) {
-    _label = label;
-    _setState();
-  }
-
-  /// Gets label text
-  String getLabel( ) {
-    return _label;
   }
 
   @override

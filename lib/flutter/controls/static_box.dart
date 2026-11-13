@@ -13,11 +13,16 @@ part of '../../wx_dart.dart';
 /// a title/label. used to logically group controls.
 /// 
 /// Often used with [WxStaticBoxSizer].
+/// 
+/// Main interface
+/// * [setLabel]
+/// * [getLabel]
 
 class WxStaticBox extends WxControl {
-  WxStaticBox( super._parent, super._id, this._label, { super.pos = wxDefaultPosition, super.size = wxDefaultSize, super.style = 0 } );
+  WxStaticBox( super._parent, super._id, String label, { super.pos = wxDefaultPosition, super.size = wxDefaultSize, super.style = 0 } ) {
+    _label = label;
+  }
 
-  final String _label;
   WxStaticBoxSizer? _staticBoxSizer;
 
 

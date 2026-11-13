@@ -49,7 +49,7 @@ extension SpinCtrlDoubleEventBinder on WxEvtHandler {
 /// 
 /// [SpinCtrlDouble](/wxdart/wxGetSpinCtrlDoubleEventType.html) event gets sent when the user has entered a new number. |
 /// | ----------------- |
-/// | void bindSpinCtrlDoubleEvent( void function( [WxSpinDoubleEvent] event ) ) |
+/// | void bindSpinCtrlDoubleEvent( void function( [WxSpinDoubleEvent] event ), int id ) |
 /// | void unbindSpinCtrlDoubleEvent() |
 
 class WxSpinDoubleEvent extends WxNotifyEvent  {

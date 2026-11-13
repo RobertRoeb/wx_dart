@@ -45,7 +45,7 @@ const int wxCHK_UNDETERMINED = 2;
 /// # Event emitted
 /// [Checkbox](/wxdart/wxGetCheckboxEventType.html) event gets sent when the user checks or unchecks |
 /// | ----------------- |
-/// | void bindCheckboxEvent( void function( [WxCommandEvent] event ) ) |
+/// | void bindCheckboxEvent( void function( [WxCommandEvent] event ), int id ) |
 /// | void unbindCheckboxEvent() |
 /// 
 /// # Window style
@@ -63,13 +63,14 @@ const int wxCHK_UNDETERMINED = 2;
 /// * [is3State]
 /// * [set3StateValue]
 /// * [get3StateValue]
+/// * [setLabel]
+/// * [getLabel]
 
 class WxCheckBox extends WxControl {
   WxCheckBox( super.parent, super.id, String label, { super.pos = wxDefaultPosition, super.size = wxDefaultSize, super.style = 0 } ) {
     _label = label;
   }
 
-  String _label = "";
   bool? _value = false;
 
   /// Returns true if controls is checked

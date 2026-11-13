@@ -26,7 +26,7 @@ part of '../../wx_dart.dart';
 /// # Events emitted
 /// [Button](/wxdart/wxGetButtonEventType.html) event gets sent when the button is pressed. |
 /// | ----------------- |
-/// | void bindButtonEvent( void function( [WxCommandEvent] event ) ) |
+/// | void bindButtonEvent( void function( [WxCommandEvent] event ), int id ) |
 /// | void unbindButtonEvent() |
 
 class WxBitmapButton extends WxButton {

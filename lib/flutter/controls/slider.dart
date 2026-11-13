@@ -55,7 +55,7 @@ const int wxSL_INVERSE = 0x1000;
 ///
 /// [Slider](/wxdart/wxGetSliderEventType.html) event gets sent when user dragged the slider. |
 /// | ----------------- |
-/// | void bindSliderEvent( OnCommandEventFunc ) |
+/// | void bindSliderEvent( void function( [WxCommandEvent] event ), int id ) |
 /// | void unbindSliderEvent() |
 /// 
 /// # Window style constants

@@ -93,6 +93,11 @@ class WxBrush {
   WxColour colour;
   int style;
 
+  /// Returns the colour of the brush
+  WxColour getColour() {
+    return colour;
+  }
+
   /// Returns true of the brush is transparent
   bool isTransparent() {
     return (style == wxBRUSHSTYLE_TRANSPARENT);

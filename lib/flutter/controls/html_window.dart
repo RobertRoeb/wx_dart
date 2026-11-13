@@ -84,7 +84,7 @@ class WxHtmlLinkEvent extends WxCommandEvent {
 /// 
 /// [HtmlLinkClick](/wxdart/wxGetHtmlLinkClickEventType.html) event gets sent when the user clicks on a link |
 /// | ----------------- |
-/// | void bindHtmlLinkClickEvent( OnHtmlLinkEventFunc ) |
+/// | void bindHtmlLinkClickEvent( void Function( WxHtmlLinkEvent event ), int id ) |
 /// | void unbindHtmlLinkClickEvent() |
 /// 
 /// Main interface

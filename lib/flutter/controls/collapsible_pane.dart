@@ -95,6 +95,15 @@ const int wxCP_NO_TLW_RESIZE = 0x0002;
 ///  collpane.bindCollapsiblePaneChangedEvent( (_)=> layout(), -1);
 /// ```
 /// 
+/// Main interface
+/// * [getPane]
+/// * [setLabel]
+/// * [getLabel]
+/// * [collapse]
+/// * [expand]
+/// * [isCollapsed]
+/// * [isExpanded]
+/// 
 /// # Constants
 /// | constant | meaning |
 /// | -------- | -------- |
@@ -103,7 +112,7 @@ const int wxCP_NO_TLW_RESIZE = 0x0002;
 /// 
 /// [CollapsiblePaneChanged](/wxdart/wxGetCollapsiblePaneChangedEventType.html) event gets sent when the user collapses or expands the pane. |
 /// | ----------------- |
-/// | void bindCollapsiblePaneChangedEvent( void function( WxCollapsiblePaneEvent event ) ) |
+/// | void bindCollapsiblePaneChangedEvent( void function( WxCollapsiblePaneEvent event ), int id ) |
 /// | void unbindCollapsiblePaneChangedEvent() |
 
 class WxCollapsiblePane extends WxControl {
@@ -118,19 +127,8 @@ class WxCollapsiblePane extends WxControl {
     } );
   }
 
-  String _label = "";
   late WxPanel _pane;
   late ExpansibleController _controller;
-
-  /// Sets label
-  void setLabel( String label ) {
-    _label = label;
-    _setState();
-  }
-  /// Returns current label
-  String getLabel() {
-    return _label;
-  }
 
   /// Returns true if child window is hidden
   bool isCollapsed( ) {

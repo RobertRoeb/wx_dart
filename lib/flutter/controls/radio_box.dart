@@ -48,7 +48,7 @@ const int wxRA_VERTICAL = wxVERTICAL;
 /// # Event emitted
 /// [Radiobox](/wxdart/wxGetRadioboxEventType.html) event gets sent when the user selects this item. |
 /// | ----------------- |
-/// | void bindRadioboxEvent( void function( [WxCommandEvent] event ) ) |
+/// | void bindRadioboxEvent( void function( [WxCommandEvent] event ), int id ) |
 /// | void unbindRadioboxEvent() |
 /// 
 /// # Window style

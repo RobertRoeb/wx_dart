@@ -85,7 +85,7 @@ extension SpinDownEventBinder on WxEvtHandler {
 /// 
 /// [SpinCtrl](/wxdart/wxGetSpinCtrlEventType.html) event gets sent when the user has entered a new number. |
 /// | ----------------- |
-/// | void bindSpinCtrlEvent( void function( [WxSpinEvent] event ) ) |
+/// | void bindSpinCtrlEvent( void function( [WxSpinEvent] event ), int id ) |
 /// | void unbindSpinCtrlEvent() |
 
 class WxSpinEvent extends WxNotifyEvent  {

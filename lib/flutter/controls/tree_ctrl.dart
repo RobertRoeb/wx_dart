@@ -330,77 +330,77 @@ const int wxTR_DEFAULT_STYLE  = (wxTR_HAS_BUTTONS | wxTR_NO_LINES | wxTR_FULL_RO
 /// Events emitted:
 /// [TreeSelChanged](/wxdart/wxGetTreeSelChangedEventType.html) event gets sent when the selection has changed. |
 /// | ----------------- |
-/// | void bindTreeSelChangedEvent( OnTreeEventFunc ) |
+/// | void bindTreeSelChangedEvent( void Function( WxTreeEvent event ), int id |
 /// | void unbindTreeSelChangedEvent() |
 /// 
 /// [TreeSelChanging](/wxdart/wxGetTreeSelChangingEventType.html) event gets sent when the selection is about to change. |
 /// | ----------------- |
-/// | void bindTreeSelChangingEvent( OnTreeEventFunc ) |
+/// | void bindTreeSelChangingEvent( void Function( WxTreeEvent event ), int id  ) |
 /// | void unbindTreeSelChangingEvent() |
 ///
 /// [TreeDeleteItem](/wxdart/wxGetTreeDeleteItemEventType.html) event gets sent when an item has been deleted. |
 /// | ----------------- |
-/// | void bindTreeDeleteItemEvent( OnTreeEventFunc ) |
+/// | void bindTreeDeleteItemEvent( void Function( WxTreeEvent event ), int id  ) |
 /// | void unbindTreeDeleteItemEvent() |
 /// 
 /// [TreeItemActivated](/wxdart/wxGetTreeItemActivatedEventType.html) event gets sent when an item was activated (ENTER or double click) |
 /// | ----------------- |
-/// | void bindTreeItemActivatedEvent( OnTreeEventFunc ) |
+/// | void bindTreeItemActivatedEvent( void Function( WxTreeEvent event ), int id  ) |
 /// | void unbindTreeItemActivatedEvent() |
 /// 
 /// [TreeItemExpanded](/wxdart/wxGetTreeItemExpandedEventType.html) event gets sent when a tree item was expanded |
 /// | ----------------- |
-/// | void bindTreeItemExpandedEvent( OnTreeEventFunc ) |
+/// | void bindTreeItemExpandedEvent( void Function( WxTreeEvent event ), int id  ) |
 /// | void unbindTreeItemExpandedEvent() |
 /// 
 /// [TreeItemExpanding](/wxdart/wxGetTreeItemExpandingEventType.html) event gets sent when a tree item is about to be expanded |
 /// | ----------------- |
-/// | void bindTreeItemExpandingEvent( OnTreeEventFunc ) |
+/// | void bindTreeItemExpandingEvent( void Function( WxTreeEvent event ), int id  ) |
 /// | void unbindTreeItemExpandingEvent() |
 /// 
 /// [TreeItemCollapsed](/wxdart/wxGetTreeItemCollapsedEventType.html) event gets sent when a tree item was collapsed|
 /// | ----------------- |
-/// | void bindTreeItemCollapsedEvent( OnTreeEventFunc ) |
+/// | void bindTreeItemCollapsedEvent( void Function( WxTreeEvent event ), int id  ) |
 /// | void unbindTreeItemCollapsedEvent() |
 /// 
 /// [TreeItemCollapsing](/wxdart/wxGetTreeItemCollapsingEventType.html) event gets sent when a tree item is about to be collapsed |
 /// | ----------------- |
-/// | void bindTreeItemCollapsingEvent( OnTreeEventFunc ) |
+/// | void bindTreeItemCollapsingEvent( void Function( WxTreeEvent event ), int id  ) |
 /// | void unbindTreeItemCollapsingEvent() |
 ///
 /// [TreeItemMenu](/wxdart/wxGetTreeItemMenuEventType.html) event gets sent when a menu should be shown. |
 /// | ----------------- |
-/// | void bindTreeItemMenuEvent( OnTreeEventFunc ) |
+/// | void bindTreeItemMenuEvent( void Function( WxTreeEvent event ), int id  ) |
 /// | void unbindTreeItemMenuEvent() |
 /// 
 /// [TreeItemRightClick](/wxdart/wxGetTreeItemRightClickEventType.html) event gets sent when a right click occured on an item. |
 /// | ----------------- |
-/// | void bindTreeItemRightClickEvent( OnTreeEventFunc ) |
+/// | void bindTreeItemRightClickEvent( void Function( WxTreeEvent event ), int id  ) |
 /// | void unbindTreeItemRightClickEvent() |
 /// 
 /// [TreeBeginDrag](/wxdart/wxGetTreeBeginDragEventType.html) event gets sent when a drag begins. |
 /// | ----------------- |
-/// | void bindTreeBeginDragEvent( OnTreeEventFunc ) |
+/// | void bindTreeBeginDragEvent( void Function( WxTreeEvent event ), int id  ) |
 /// | void unbindTreeBeginDragEvent() |
 /// 
 /// [TreeBeginRDrag](/wxdart/wxGetTreeBeginRDragEventType.html) event gets sent when a right mouse drag begins. |
 /// | ----------------- |
-/// | void bindTreeBeginRDragEvent( OnTreeEventFunc ) |
+/// | void bindTreeBeginRDragEvent( void Function( WxTreeEvent event ), int id  ) |
 /// | void unbindTreeBeginRDragEvent() |
 /// 
 /// [TreeEndDrag](/wxdart/wxGetTreeEndDragEventType.html) event gets sent when a drag ends.  |
 /// | ----------------- |
-/// | void bindTreeEndDragEvent( OnTreeEventFunc ) |
+/// | void bindTreeEndDragEvent( void Function( WxTreeEvent event ), int id  ) |
 /// | void unbindTreeEndDragEvent() |
 /// 
 /// [TreeBeginLabelEdit](/wxdart/wxGetTreeBeginLabelEditEventType.html) event gets sent when in-place editing being. |
 /// | ----------------- |
-/// | void bindTreeBeginLabelEditEvent( OnTreeEventFunc ) |
+/// | void bindTreeBeginLabelEditEvent( void Function( WxTreeEvent event ), int id  ) |
 /// | void unbindTreeBeginLabelEditEvent() |
 /// 
 /// [TreeEndLabelEdit](/wxdart/wxGetTreeEndLabelEditEventType.html) event gets sent when in-place editing ended. |
 /// | ----------------- |
-/// | void bindTreeEndLabelEditEvent( OnTreeEventFunc ) |
+/// | void bindTreeEndLabelEditEvent( void Function( WxTreeEvent event ), int id  ) |
 /// | void unbindTreeEndLabelEditEvent() |
 
 class WxTreeCtrl extends WxControl {

@@ -59,7 +59,7 @@ const int wxLB_HSCROLL = wxHSCROLL;
 ///
 /// [Listbox](/wxdart/wxGetListboxEventType.html) event gets sent when the user selects an item. |
 /// | ----------------- |
-/// | void bindListboxEvent( void function( [WxCommandEvent] event ) ) |
+/// | void bindListboxEvent( void function( [WxCommandEvent] event ), int id ) |
 /// | void unbindListboxEvent() |
 /// 
 /// # Window styles

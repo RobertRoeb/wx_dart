@@ -48,10 +48,16 @@ const int wxRB_SINGLE = 0x0008;
 ///  }, -1 );
 /// ```
 /// 
+/// Main interface
+/// * [setValue]
+/// * [getValue]
+/// * [setLabel]
+/// * [getLabel]
+/// 
 /// # Event emitted
 /// [RadioButton](/wxdart/wxGetRadioButtonEventType.html) event gets sent when the user selects this item. |
 /// | ----------------- |
-/// | void bindRadioButtonEvent( void function( [WxCommandEvent] event ) ) |
+/// | void bindRadioButtonEvent( void function( [WxCommandEvent] event ), int id ) |
 /// | void unbindRadioButtonEvent() |
 /// 
 /// # Window style
@@ -73,7 +79,6 @@ class WxRadioButton extends WxControl {
   }
 
   int _selection = -1; // only set in wxRB_GROUP
-  String _label = "";
 
   int _getIndexOfThisRadioButton()
   {
