@@ -10,6 +10,7 @@
 * Added wxBitmapBundle.getBitmapForSize() that scales the bitmap, no change to scale
 * Correction documentation of bindXXX functions where the id parameter was missing
 * Implement WxWindow.reparent()
+* Added WxDC.setClippingRegionRect() and WxWindow.setSizeAndPosition()
 
 ## 0.9.29
 

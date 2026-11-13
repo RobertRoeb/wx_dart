@@ -277,6 +277,7 @@ const int wxTOUCH_RAW_EVENTS = 0x0020;
 /// * [getMinSize]
 /// * [setPosition]
 /// * [getPosition]
+/// * [setPositionAndSize]
 /// * [getClientSize]
 /// * [getVirtualSize]
 /// * [setVirtualSize]
@@ -591,12 +592,12 @@ class WxWindow extends WxEvtHandler {
 
   /// Returns window size minus border and scrollbar size, of present
   WxSize getClientSize() {
-    // add border calculation
+    // TODO add border calculation
     return getSize();
   }
   /// Returns client area origin relative to window origin
   WxPoint getClientAreaOrigin() {
-    // add border calculation
+    // TODO add border calculation
     return WxPoint(0,0);
   }
   /// Returns rectangle of window's client area
@@ -781,6 +782,16 @@ class WxWindow extends WxEvtHandler {
       return WxPoint(-1, -1);
     }
     return WxPoint( offset.dx.floor(), offset.dy.floor());
+  }
+
+  /// Sets the position and size of the window.
+  /// 
+  /// A value of -1 indicates default values if possible
+  void setPositionAndSize( int x, int y, int width, int height ) {
+    _position = WxPoint(x,y);
+    _initialSize = WxSize(width, height);
+    _setState();
+    // wxMoveEvent
   }
 
   /// Sets current position relative to parent window
