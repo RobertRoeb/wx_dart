@@ -399,7 +399,7 @@ class WxDC extends WxReadOnlyDC {
     {
       final Rect rect = Rect.fromPoints(
           Offset( x.toDouble(), y.toDouble() ),
-          Offset( (x+width-1).toDouble(), (y+height-1).toDouble() ) );
+          Offset( (x+width).toDouble(), (y+height).toDouble() ) );
       final rrect = RRect.fromRectAndRadius( rect, Radius.circular(radius) );
       _canvas.drawRRect( rrect, _brushPaint );      
     }
