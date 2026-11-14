@@ -23,8 +23,8 @@ const int wxPU_CONTAINS_CONTROLS = 0x0001;
 class WxPopupWindow extends WxNonOwnedWindow {
 
   /// Create the window
-  WxPopupWindow( WxWindow? parent, { int flags = wxBORDER_NONE } ) : super( parent, -1, style: flags ) {
-    _createOverlay();
+  WxPopupWindow( WxWindow parent, { int flags = wxBORDER_NONE } ) : super( parent, -1, style: flags ) {
+    _controller = OverlayPortalController();
   }
 
   WxPoint _origin = wxDefaultPosition;
@@ -36,35 +36,21 @@ class WxPopupWindow extends WxNonOwnedWindow {
     _sizeOfParent = size;
   }
 
-  OverlayPortalController? _controller;
-
-  @override
-  void dispose() {
-    _removeOverlay();
-    super.dispose();
-  }
-
-  void _removeOverlay() {
-    _controller = null;
-  }
+  late OverlayPortalController _controller;
 
   @override
   void show( { bool show = true } ) {
     _hidden = !show;
     if (show) {
       theTLW!._popup = this;
-      _controller!.show();
+      _controller.show();
       _setState();
     } else {
       theTLW!._popup = null;
-      _controller!.hide();
+      _controller.hide();
       _setState();
     }
   }  
-
-  void _createOverlay() {
-    _controller = OverlayPortalController();
-  }
 
   Widget _buildOverlay(BuildContext context, Widget child)
   {
@@ -161,6 +147,9 @@ class WxPopupTransientWindow extends WxPopupWindow {
   /// Shows the window and gives focus to [focus] if any
   void popup( WxWindow? focus ) {
     show();
+    if (focus != null) {
+      focus.setFocus();
+    }
   }
 
   /// Dismisses the window
@@ -173,7 +162,7 @@ class WxPopupTransientWindow extends WxPopupWindow {
   {
     final bkColor = wxGetSystemSettings().getColour( wxSYS_COLOUR_WINDOW );
     Widget finalWidget = OverlayPortal(
-        controller: _controller!,
+        controller: _controller,
         child: child,
         overlayChildBuilder: (BuildContext context) {
           final size = getMinSize();
