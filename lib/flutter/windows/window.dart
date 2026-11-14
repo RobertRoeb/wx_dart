@@ -457,7 +457,7 @@ class WxWindow extends WxEvtHandler {
   }
 
   final List<WxWindow> _children = [];
-  final WxWindow? _parent;
+  WxWindow? _parent;
   WxScrolledWindow? _scrollOwnerWindow;
   Canvas? _canvas;        // only valid during OnPaint();
 
@@ -533,6 +533,7 @@ class WxWindow extends WxEvtHandler {
       _parent!.removeChild(this);
     }
     newParent.addChild( this );
+    _parent = newParent;
     _setState();
   }
 
