@@ -341,5 +341,29 @@ class WxFont extends WxObject {
   void makeSmaller( ) {
     _pointSize /= 1.2;
   }
+  
+  /// Returns a bold version of the current font
+  WxFont bold( ) {
+    final font = WxFont( _pointSize, family: _family, style: _style, weight: wxFONTWEIGHT_BOLD );
+    font._underline = _underline;
+    font._strikethrough = _strikethrough;
+    return font;
+  }
+
+  /// Returns an italic version of the current font
+  WxFont italic( ) {
+    final font = WxFont( _pointSize, family: _family, style: wxFONTSTYLE_ITALIC, weight: _weight );
+    font._underline = _underline;
+    font._strikethrough = _strikethrough;
+    return font;
+  }
+
+  /// Returns a scaled version of the current font
+  WxFont scaled( double scale ) {
+    final font = WxFont( _pointSize*scale, family: _family, style: _style, weight: _weight );
+    font._underline = _underline;
+    font._strikethrough = _strikethrough;
+    return font;
+  }
 }
 
