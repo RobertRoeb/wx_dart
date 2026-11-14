@@ -55,6 +55,21 @@ class WxReadOnlyDC extends WxObject {
     return _contentScaleFactor;
   }
 
+  /// Returns the current font
+  WxFont getFont( ) {
+    if (_font != null) {
+      return _font!;
+    }
+    return wxNORMAL_FONT;
+  }
+
+  /// Converts from logical to device dependent pixels. This leaves
+  /// the values unchanged everywhere except for wxDart Native on
+  /// Windows where it gets scaled.
+  int fromDIP( int value ) {
+    return value;
+  }
+
   /// Sets the font currently used in the device context
   void setFont( WxFont? font ) {
     _font = font;
