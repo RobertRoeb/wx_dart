@@ -48,7 +48,7 @@ class WxRealMenuBar extends WxWindow {
         if ((event.getX() >= x) && (event.getX() <= x+width)) {
           final frame = _owner.getFrame();
           if (frame != null) {
-            frame.popupMenu(item).then( (_) { 
+            frame.popupMenu(item, pos: WxPoint(x,getSize().y) ).then( (_) { 
               _hover = -1;
               refresh();
             }  );
