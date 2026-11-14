@@ -143,27 +143,6 @@ class WxEvtHandler extends WxObject {
     return _eventTable;
   }
 
-  /// Allows to overload event processing, currently only for custom
-  /// events, in both wxDart Native and wxDart Flutter. As the name
-  /// suggests, [tryFirst] is called before regular event handling in
-  /// [processEvent].
-  /// 
-  /// Return true to stop further processing of [event].
-  bool tryFirst( WxEvent event ) {
-    return false;
-  }
-
-  /// Allows to overload event processing, currently only for custom
-  /// events, in both wxDart Native and wxDart Flutter. As the name
-  /// suggests, [tryAfter] is called after regular event handling in
-  /// [processEvent]. By default it will propate the event up the
-  /// window hierarchy, if this is a [WxCommandEvent].
-  /// 
-  /// Return true to stop further processing of [event].
-  bool tryAfter( WxEvent event ) {
-    return _propagateEvent( event );
-  }
-
   bool _propagateEvent( WxEvent event ) {
     if ((this is WxWindow) && (this is! WxTopLevelWindow)) {
         WxWindow window = this as WxWindow;
@@ -174,7 +153,6 @@ class WxEvtHandler extends WxObject {
           }
         }
     }
-
     return false;
   }
 
@@ -214,15 +192,6 @@ class WxEvtHandler extends WxObject {
       return false;
     }
 
-    if (event.getEventType() >= wxFIRST_CUSTOM_EVENT_TYPE)
-    {
-      // As in wxDart Native, only allow overloading custom event
-      // processing right now
-      if (tryFirst(event)) {
-        return true;
-      }
-    }
-
     // go backwards to allow overloading
     for (int i = _eventTable.length-1; i >= 0; i--) {
       final entry = _eventTable[i];
@@ -239,20 +208,8 @@ class WxEvtHandler extends WxObject {
     }
 
     // go on with command events
-
-    if (event.getEventType() >= wxFIRST_CUSTOM_EVENT_TYPE)
-    {
-      // As in wxDart Native, only allow overloading custom event
-      // processing right now
-      if (tryAfter(event)) {
-        return true;
-      }
-    }
-    else
-    {
-      if (_propagateEvent(event)) {
-        return true;
-      }
+    if (_propagateEvent(event)) {
+      return true;
     }
 
     return false;

@@ -26,7 +26,6 @@
 * Don't expand WxFlexGridSizer if no column can grow
 * Allow overriding WxWindow.getMinSize() in both wxDart ports to ease porting complex third-party libraries to wxDart
 * Added WxColour.getLuminance()
-* Added WxEvtHandler.tryFirst() and tryAfter() for custom events
 * Added WxEvtHandler.getEventTable() to allow creating custom events externally
 * Added example code how to create custom event
 * Added WxEvent.stopPropagation(), .resumePropagation() and .getPropagationLevel()
