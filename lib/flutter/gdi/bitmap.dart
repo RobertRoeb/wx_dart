@@ -559,11 +559,12 @@ class WxBitmap extends WxObject {
     canvas.drawRect(Rect.fromPoints(Offset(5,5), Offset(6,6)), paint );
     */
 
+    // All of this should be handled by WxBitmapBundle
     // this code is based on an explanation from Dan Field
-    canvas.save();
+    // canvas.save();
     // final dpr = MediaQueryData.fromView(WidgetsBinding.instance.platformDispatcher.views.first).devicePixelRatio;
-    double dpr = 1.0;
-    canvas.scale( dpr );
+    // double dpr = 1.0;
+    // canvas.scale( dpr );
     // print( "DPR ${(dpr*100).floor()}" );
     
     TextPainter textPainter = TextPainter(textDirection: TextDirection.rtl);
@@ -578,8 +579,9 @@ class WxBitmap extends WxObject {
               );
     textPainter.layout();
     textPainter.paint(canvas, Offset(0.0,0.0));
-    canvas.restore();
+    // canvas.restore();
     final picture = recorder.endRecording();
+    textPainter.dispose();
 
     _image = null;
     _buildPicture(picture, _knownSize.x, _knownSize.y ).then( (image ) {

@@ -858,8 +858,21 @@ class WxWindow extends WxEvtHandler {
     return WxSize( size.x, size.y );
   }
 
-  /// Returns the current DPI scale factor. This is 1.0 on normal screens
-  /// and a value between 1.25 and 2.0 on larger screens (maybe more).
+  /// Returns the content scale factor relevant for producing high
+  /// resolution bitmaps (e.g. 64x64) even if the logical scale on 
+  /// screen is 32x32. Used internally by [WxBitmapBundle].
+  /// 
+  /// see [getDPIScaleFactor]
+  double getContentScaleFactor( ) {
+    return MediaQueryData.fromView(WidgetsBinding.instance.platformDispatcher.views.first).devicePixelRatio;
+  }
+
+  /// Returns the current DPI scale factor on system which use device
+  /// dependent pixel scaling, essentially only wxDart Native on Windows.
+  /// All other system and wxDart Flutter on all platforms (including
+  /// Windows) return 1.0.
+  /// 
+  /// See [getContentScaleFactor];
   double getDPIScaleFactor( ) {
     return 1.0;
   }

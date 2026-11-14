@@ -44,6 +44,16 @@ class WxReadOnlyDC extends WxObject {
   int _deviceOriginY = 0;
   int _deviceLocalOriginX = 0;
   int _deviceLocalOriginY = 0;
+  double _contentScaleFactor = 1.0;
+
+  /// Returns the content scale factor relevant for producing high
+  /// resolution bitmaps (e.g. 64x64) even if the logical scale on 
+  /// screen is 32x32. 
+  /// 
+  /// see [WxWindow.getDPIScaleFactor] and [WxWindow.getContentScaleFactor]
+  double getContentScaleFactor( ) {
+    return _contentScaleFactor;
+  }
 
   /// Sets the font currently used in the device context
   void setFont( WxFont? font ) {
@@ -221,6 +231,7 @@ class WxInfoDC extends WxReadOnlyDC {
 
   /// Create a information DC for the given [window]
   WxInfoDC( this.window ) {
+    _contentScaleFactor = window.getContentScaleFactor();
       if (window._scrollOwnerWindow != null) {
         _deviceLocalOriginX = window._scrollOwnerWindow!.getDeviceOffsetX();
         _deviceLocalOriginY = window._scrollOwnerWindow!.getDeviceOffsetY();

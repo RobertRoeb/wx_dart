@@ -13,6 +13,7 @@
 * Added WxDC.setClippingRegionRect() and WxWindow.setSizeAndPosition()
 * Allow free positioning of popup menu, not just next to the mouse
 * Dispose Flutter's textcontrollers, but don't do it with OverlayPortalController
+* Added WxDC and WxWindow.getContentScaleFactor() alongside getDPIScaleFactor()
 
 ## 0.9.29
 

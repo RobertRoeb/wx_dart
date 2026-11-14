@@ -143,7 +143,7 @@ class WxBitmapBundle extends WxClass {
   /// Picks bitmap based on [WxWindow.getDPIScaleFactor] from [window]
   WxBitmap getBitmapFor( WxWindow window )
   {
-    final scale = window.getDPIScaleFactor();
+    final scale = window.getDPIScaleFactor() * window.getContentScaleFactor();
     if (_isSVG && (scale > 1.25)) {
       final size = WxSize( (_defaultSize.x*scale).round(), (_defaultSize.y*scale).round() );
       if (_bigBitmap != null) {
