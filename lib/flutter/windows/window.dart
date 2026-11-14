@@ -2010,6 +2010,10 @@ class WxWindow extends WxEvtHandler {
     if (pos == wxDefaultPosition) {
       x = _globalMousePosition.x.toDouble();
       y = _globalMousePosition.y.toDouble();
+    } else {
+      final p = clientToScreen( pos );
+      x = p.x.toDouble();
+      y = p.y.toDouble();
     }
 
     final event = WxMenuEvent( wxGetMenuOpenEventType(), -1, menu: menu );
@@ -2017,8 +2021,9 @@ class WxWindow extends WxEvtHandler {
     menu.processEvent(event);
 
     double right = MediaQuery.sizeOf(context).width - x;
+    double bottom = MediaQuery.sizeOf(context).height - y;
     await showMenu( 
-      position: RelativeRect.fromLTRB(x, y, right, 10),
+      position: RelativeRect.fromLTRB(x, y, right, bottom),
       context: context, 
       shadowColor: wxTheApp._getSeedColor(),
       popUpAnimationStyle: AnimationStyle(
