@@ -1992,9 +1992,11 @@ class WxWindow extends WxEvtHandler {
   void _updateTheme() {
   }
 
-  /// Shows a popup menu at the given [pos] or next to the mouse cursor. The
-  /// menu entries will be updated using a [WxUpdateUIEvent] event before showing
-  /// the actual menu.
+  /// Shows a popup menu at the given [pos] or next to the mouse cursor
+  /// if no [pos] is given.
+  /// 
+  /// The menu entries will be updated using a [WxUpdateUIEvent] event
+  /// before showing the actual menu.
   Future<bool> popupMenu( WxMenu menu, { WxPoint pos = wxDefaultPosition } ) async
   {
     BuildContext? context = _navigatorKey.currentContext;

@@ -2,7 +2,7 @@
 
 * Implement getSelection() in WxComboBox
 * Change selected item if an item above it or all items were deleted
-* Added WxBitmapBundle().makeDisabled() and .getDefaultSize()
+* Added WxBitmapBundle().makeDisabled() stub and .getDefaultSize()
 * Added WxWindow.setToolTip(), .unsetToolTip() and getToolTipText()
 * Corrected WxColour.getLuminance() calculation (normalize to 0 to 1)
 * Progress on DPI aware WxBitmapBundle also when using async loading
@@ -11,6 +11,8 @@
 * Correction documentation of bindXXX functions where the id parameter was missing
 * Implement WxWindow.reparent()
 * Added WxDC.setClippingRegionRect() and WxWindow.setSizeAndPosition()
+* Allow free positioning of popup menu, not just next to the mouse
+* Dispose Flutter's textcontrollers, but don't do it with OverlayPortalController
 
 ## 0.9.29
 
