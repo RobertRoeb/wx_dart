@@ -71,6 +71,12 @@ abstract class WxTextEntry extends WxControl {
   int _maxLength = -1;
   String _hint = "";
 
+  @override
+  void dispose() {
+    _textEditingController.dispose();
+    super.dispose();
+  }
+
   /// Append text to end of current text
   void appendText( String text ) {
     String value = _textEditingController.text;
