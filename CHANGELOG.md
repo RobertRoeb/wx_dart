@@ -1,3 +1,9 @@
+## 0.9.31
+
+* Implemented WxDC.drawRotatedText()
+* Implemented WxBitmap.convertToImage() async
+* Corrected some image conversion to not use pre-multiplied RGBA
+
 ## 0.9.30
 
 * Implement getSelection() in WxComboBox

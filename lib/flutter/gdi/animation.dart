@@ -143,7 +143,7 @@ class WxAnimation extends WxObject {
       final frameInfo = await codec.getNextFrame();
       final uiImage = frameInfo.image;
       final sizeRGBA = uiImage.width * uiImage.height * 4;
-      final byteData = await uiImage.toByteData();
+      final byteData = await uiImage.toByteData( format: ui.ImageByteFormat.rawStraightRgba );
       if (byteData!.lengthInBytes != sizeRGBA) {
         wxLogError( "WxAnimation frame data of $_path not available as RGBA" );
       }

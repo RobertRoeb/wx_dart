@@ -195,7 +195,7 @@ void wxLoadRGBAFromResource( String filename, void Function( Uint8List rgba, int
       final codec = await ui.instantiateImageCodec( data.buffer.asUint8List() );
       final uiImage = (await codec.getNextFrame()).image;
       final sizeRGBA = uiImage.width * uiImage.height * 4;
-      final byteData = await uiImage.toByteData();
+      final byteData = await uiImage.toByteData( format: ui.ImageByteFormat.rawStraightRgba );
       if (byteData == null) {
         wxLogError( "Failed to decode image in $path" );
         return;
@@ -249,7 +249,7 @@ void wxLoadImageFromResource( String filename, void Function( WxImage image ) re
       final codec = await ui.instantiateImageCodec( data.buffer.asUint8List() );
       final uiImage = (await codec.getNextFrame()).image;
       final sizeRGBA = uiImage.width * uiImage.height * 4;
-      final byteData = await uiImage.toByteData();
+      final byteData = await uiImage.toByteData( format: ui.ImageByteFormat.rawStraightRgba );
       if (byteData == null) {
         wxLogError( "Failed to decode image in $path" );
         return;

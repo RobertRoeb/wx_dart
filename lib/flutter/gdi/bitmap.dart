@@ -150,6 +150,9 @@ const int wxBITMAP_TYPE_ANY = 50;
 /// * [WxBitmap.fromImage]
 /// * [WxBitmap.fromUIImage]
 /// 
+/// Conversion
+/// * [convertToImage]
+/// 
 /// Main interface
 /// * [isOk]
 /// * [getWidth]
@@ -657,6 +660,29 @@ class WxBitmap extends WxObject {
       imageCompleter.complete(img);
     });
     return imageCompleter.future;
+  }
+
+  /// Converts the bitmap to a [WxImage] (including its alpha channel)
+  /// 
+  /// This is asynchronous in all ports of wxDart. Since [WxBitmap] in
+  /// wxDart Flutter may not have been fully built yet, the conversion
+  /// may not be possible and the function will return null.
+  /// 
+  /// ```dart
+  /// final image = await bitmap.convertToImage();
+  /// ```
+  Future<WxImage?> convertToImage() async {
+    final image = _image;
+    if (image == null) {
+      wxLogError( "WxBitmap.convertToImage: the bitmap is not complete yet." );
+      return null;
+    }
+    final byteData = await image.toByteData( format: ui.ImageByteFormat.rawStraightRgba );
+    if (byteData == null) {
+      wxLogError( "WxBitmap.convertToImage: failed to read the pixels." );
+      return null;
+    }
+    return WxImage.fromRGBA( image.width, image.height, byteData.buffer.asUint8List() );
   }
 
   /// Returns true if the bitmap is valid.
