@@ -14,6 +14,11 @@ bool wxUsesFlutter() {
    return true;
 }
 
+/// Returns true if the Web/Javascript backend is used
+bool wxUsesHTML() {
+   return false;
+}
+
 /// Returns true if the app is running on the web
 bool wxIsWeb() {
   return (kIsWeb);

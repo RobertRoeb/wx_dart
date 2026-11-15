@@ -3,6 +3,8 @@
 * Implemented WxDC.drawRotatedText()
 * Implemented WxBitmap.convertToImage() async
 * Corrected some image conversion to not use pre-multiplied RGBA
+* Added WxNotebook.removePage() and .advanceSelection()
+* Added wxUsesHTML() for the new HTML port
 
 ## 0.9.30
 
