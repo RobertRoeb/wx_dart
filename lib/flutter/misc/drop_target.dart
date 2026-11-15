@@ -77,27 +77,27 @@ part of '../../wx_dart.dart';
 /// Events emitted (to associated window):
 /// [DropDrop](/wxdart/wxGetDropDropEventType.html) event gets sent when user dropped the data. You can [WxDropEvent.veto] the drop. |
 /// | ----------------- |
-/// | void bindDropDropEvent( void function( [WxDropEvent] event ) ) |
+/// | void bindDropDropEvent( void function( [WxDropEvent] event ), int id ) |
 /// | void unbindDropDropEvent() |
 ///
 /// [DropData](/wxdart/wxGetDropDataEventType.html) event gets sent after a DropDrop event. Call [WxDropTarget.getData] in the handler. |
 /// | ----------------- |
-/// | void bindDropDataEvent( void function( [WxDropEvent] event ) ) |
+/// | void bindDropDataEvent( void function( [WxDropEvent] event ), int id ) |
 /// | void unbindDropDataEvent() |
 ///
 /// [DropDragOver](/wxdart/wxGetDropDragOverEventType.html) event gets sent when data is being dragged above the window. |
 /// | ----------------- |
-/// | void bindDropDragOverEvent( void function( [WxDropEvent] event ) ) |
+/// | void bindDropDragOverEvent( void function( [WxDropEvent] event ), int id ) |
 /// | void unbindDropDragOverEvent() |
 /// 
 /// [DropEnter](/wxdart/wxGetDropEnterEventType.html) event gets sent when mouse enters the drop window. Not supported everywhere. |
 /// | ----------------- |
-/// | void bindDropEnterEvent( void function( [WxDropEvent] event ) ) |
+/// | void bindDropEnterEvent( void function( [WxDropEvent] event ), int id ) |
 /// | void unbindDropEnterEvent() |
 /// 
 /// [DropLeave](/wxdart/wxGetDropLeaveEventType.html) event gets sent when mouse leaves the drop window. Not supported everywhere. |
 /// | ----------------- |
-/// | void bindDropLeaveEvent( void function( [WxDropEvent] event ) ) |
+/// | void bindDropLeaveEvent( void function( [WxDropEvent] event ), int id ) |
 /// | void unbindDropLeaveEvent() |
 
 class WxDropTarget extends WxClass {

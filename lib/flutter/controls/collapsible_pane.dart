@@ -112,7 +112,7 @@ const int wxCP_NO_TLW_RESIZE = 0x0002;
 /// 
 /// [CollapsiblePaneChanged](/wxdart/wxGetCollapsiblePaneChangedEventType.html) event gets sent when the user collapses or expands the pane. |
 /// | ----------------- |
-/// | void bindCollapsiblePaneChangedEvent( void function( WxCollapsiblePaneEvent event ), int id ) |
+/// | void bindCollapsiblePaneChangedEvent( void function( [WxCollapsiblePaneEvent] event ), int id ) |
 /// | void unbindCollapsiblePaneChangedEvent() |
 
 class WxCollapsiblePane extends WxControl {
