@@ -750,14 +750,15 @@ class WxDataViewIconTextRenderer extends WxDataViewTextRenderer {
 
   @override
   bool render( WxRect cell, WxDC dc, int state ) {
-    if (_value is WxDataViewIconTextData)
+    final value = _value;
+    if (value is WxDataViewIconTextData)
     {
       int xoffset = 0;
-      if ((_value.icon != null) && (_value.icon.isOk)) {
-        xoffset = 5 + _value.icon.getWidth() as int;
-        dc.drawBitmap( _value.icon, cell.x, cell.y );
+      if ((value.icon != null) && (value.icon!.isOk())) {
+        xoffset = 5 + value.icon!.getWidth();
+        dc.drawBitmap( value.icon!, cell.x, cell.y );
       }
-      renderText( _value.text, xoffset, cell, dc, state );
+      renderText( value.text, xoffset, cell, dc, state );
       return true;
     }
     return false;
@@ -766,15 +767,16 @@ class WxDataViewIconTextRenderer extends WxDataViewTextRenderer {
   @override
   WxSize getSize()
   {
-    if (_value is WxDataViewIconTextData)
+    final value = _value;
+    if (value is WxDataViewIconTextData)
     {
       final oldValue = _value;
-      _value = _value.text;
+      _value = value.text;
       final textSize = super.getSize();
       _value = oldValue;
-      if ((_value.icon != null) && (_value.icon.isOk)) {
-        int width = _value.icon.getWidth();
-        int height = _value.icon.getHeight();
+      if ((value.icon != null) && (value.icon!.isOk())) {
+        int width = value.icon!.getWidth();
+        int height = value.icon!.getHeight();
         return WxSize( textSize.x + 5 + width, max(height,textSize.y) );
       }
       return textSize;
