@@ -102,6 +102,7 @@ extension TreebookNodeExpandedEventBinder on WxEvtHandler {
 /// * [findPage]
 /// * [getPage]
 /// * [deletePage]
+/// * [removePage]
 /// * [deleteAllPages]
 /// * [findPage]
 /// 
@@ -116,6 +117,7 @@ extension TreebookNodeExpandedEventBinder on WxEvtHandler {
 /// 
 /// Selection interface
 /// * [setSelection]
+/// * [advanceSelection]
 /// * [getSelection]
 /// * [getCurrentPage]
 /// 
@@ -199,6 +201,38 @@ class WxTreebook extends WxBookCtrlBase {
             sel: index, oldSel: _oldSelection ); 
     event.setEventObject( this );
     processEvent( event );
+  }
+
+  @override
+  int get _pageChangingEventType => wxGetTreebookPageChangingEventType();
+  @override
+  int get _pageChangedEventType => wxGetTreebookPageChangedEventType();
+
+  /// Selects page at index [selection] without sending events and
+  /// highlights it in the tree
+  @override
+  int changeSelection( int selection ) {
+    final oldSel = super.changeSelection( selection );
+    final item = _getItemFromIndex( selection );
+    if (item.isOk()) {
+      _treeCtrl.selectItem( item );
+    }
+    return oldSel;
+  }
+
+  /// Removes the page at [page] together with its sub-pages without
+  /// destroying them
+  /// 
+  /// Returns true on success
+  @override
+  bool removePage( int page )
+  {
+    final item = _getItemFromIndex( page );
+    if (!item.isOk()) return false;
+    final count = 1 + _treeCtrl.getChildrenCount( item, recursively: true );
+    _treeCtrl.delete( item );
+    _removePageRange( page, count );
+    return true;
   }
 
   WxTreeCtrl getTreeCtrl() {
@@ -339,8 +373,9 @@ class WxTreebook extends WxBookCtrlBase {
   {
     final item = _getItemFromIndex( pos );
     if (!item.isOk()) return false;
-    final childCount = _treeCtrl.getChildrenCount( item );
-    final newPos = pos + childCount;
+    // the new page comes after the page at pos and all its descendants
+    final childCount = _treeCtrl.getChildrenCount( item, recursively: true );
+    final newPos = pos + 1 + childCount;
     _treeCtrl.appendItem( item, text, image: image );
     super.insertPage( newPos, page, text, select: select, image: image );
 

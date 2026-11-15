@@ -137,6 +137,7 @@ const int wxNB_ANIMATED_THEME = 0x1000;
 /// * [findPage]
 /// * [getPage]
 /// * [deletePage]
+/// * [removePage]
 /// * [deleteAllPages]
 /// * [findPage]
 /// 
@@ -151,6 +152,7 @@ const int wxNB_ANIMATED_THEME = 0x1000;
 /// 
 /// Selection interface
 /// * [setSelection]
+/// * [advanceSelection]
 /// * [getSelection]
 /// * [getCurrentPage]
 /// 
