@@ -58,6 +58,7 @@ const int wxWINDING_RULE = 2;
 /// * [drawRoundedRectangleRect]
 /// * [drawBitmap]
 /// * [drawText]
+/// * [drawRotatedText]
 /// * [drawArc]
 /// * [drawArcPts]
 /// * [drawEllipticArc]
@@ -451,6 +452,21 @@ class WxDC extends WxReadOnlyDC {
     Offset offset = Offset( x+0.5, y+0.5 );
     textPainter.paint(_canvas, offset);
     textPainter.dispose();
+  }
+
+  /// Draws [text] at [x],[y] rotated by [angle] degrees counter-clockwise
+  /// around [x],[y] (the top left corner of the text) using the current
+  /// [WxFont] and text foreground colour, as in wxWidgets.
+  /// 
+  /// Draws a solid background with the current text background colour
+  /// if background mode is [wxBRUSHSTYLE_SOLID]
+  void drawRotatedText( String text, int x, int y, double angle )
+  {
+    _canvas.save();
+    _canvas.translate( x.toDouble(), y.toDouble() );
+    _canvas.rotate( -angle / 180 * pi );
+    drawText( text, 0, 0 );
+    _canvas.restore();
   }
 
   /// Draws an elliptic arc centered around [x],[y] with [width] and [height] and
