@@ -1086,7 +1086,7 @@ abstract class WxGLContext extends WxObject {
   }
 
   void vertexAttribIPointer(int v0, int v1, int v2, int v3, int v4) {
-    _gl!.disableVertexAttribArray( v0 );
+    _gl!.vertexAttribIPointer( v0, v1, v2, v3, v4 );
   }
 
   void vertexAttrib2fv(int index, Float32List values) {
