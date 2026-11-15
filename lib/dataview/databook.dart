@@ -26,6 +26,14 @@ part of '../wx_dart.dart';
 /// Different from [WxNotebook] changing the selection to a new page
 /// cannot be vetoed as the underlying [WxDataViewCtrl] does not support
 /// vetoing a selection change.
+/// 
+/// Main interface
+/// * [appendChapter]
+/// * [appendPage]
+/// * [getCurrentPage]
+/// * [findPage]
+/// 
+/// The events emitted are those from the underlying [WxDataViewTreeCtrl]
 
 class WxDataViewBook extends WxWindow {
   WxDataViewBook( WxWindow parent, int id, { WxPoint pos=wxDefaultPosition, WxSize size=wxDefaultSize, int style=0 }) :
