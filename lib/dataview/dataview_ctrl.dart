@@ -2262,7 +2262,7 @@ void goToRow( WxKeyEvent kbdState,  int newCurrent)
     }
   }
 
-double _getTargetAngleFromDelta( final double dx, final double dy, final double dist )
+double _getTargetAngleFromDelta( double dx, double dy, double dist )
 {
    double targetAngle = asin(dx / dist);
    if (dy > 0)
