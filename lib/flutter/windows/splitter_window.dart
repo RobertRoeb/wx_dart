@@ -268,6 +268,7 @@ class WxSplitterWindow extends WxWindow {
     _window1 = window1;
     _window2 = window2;
     _horizontal = true;
+    _pos = sashPosition;
     _rebuildController();
     _setState();
     return true;
@@ -279,6 +280,7 @@ class WxSplitterWindow extends WxWindow {
     _horizontal = false;
     _window1 = window1;
     _window2 = window2;
+    _pos = sashPosition;
     _rebuildController();
     _setState();
     return true;
@@ -334,12 +336,20 @@ class WxSplitterWindow extends WxWindow {
       _window1Hidden = true;
       _isSplit = false;
       _setState();
+      final event = WxSplitterEvent( wxGetSplitterUnsplitEventType(), getId() );
+      event.setEventObject( this );
+      event._windowBeingRemoved = _window1;
+      processEvent( event );
       return true;
     }
     if (toRemove == _window2) {
       _window2Hidden = true;
       _isSplit = false;
       _setState();
+      final event = WxSplitterEvent( wxGetSplitterUnsplitEventType(), getId() );
+      event.setEventObject( this );
+      event._windowBeingRemoved = _window2;
+      processEvent( event );
       return true;
     }
     return false;
@@ -387,6 +397,7 @@ class WxSplitterWindow extends WxWindow {
               _isSplit = false;
               _window1Hidden = true;
               final event = WxSplitterEvent( wxGetSplitterUnsplitEventType(), getId() );
+              event.setEventObject( this );
               event._windowBeingRemoved = _window1;
               processEvent( event );
               _setState();
@@ -398,6 +409,7 @@ class WxSplitterWindow extends WxWindow {
               _isSplit = false;
               _window2Hidden = true;
               final event = WxSplitterEvent( wxGetSplitterUnsplitEventType(), getId() );
+              event.setEventObject( this );
               event._windowBeingRemoved = _window2;
               processEvent( event );
               _setState();
@@ -406,13 +418,27 @@ class WxSplitterWindow extends WxWindow {
           }
 
           final event = WxSplitterEvent( wxGetSplitterSashPosChangedEventType(), getId() );
+          event.setEventObject( this );
           event._pos = pos;
           processEvent( event );
         },
-
         onDividerDoubleTap: (int index) {
           final event = WxSplitterEvent( wxGetSplitterDoubleClickEventType(), getId() );
+          event.setEventObject( this );
+          final pos = screenToClient( wxGetMousePosition() );
+          event._x = pos.x;
+          event._y = pos.y;
           processEvent( event );
+          if ((hasFlag(wxSP_PERMIT_UNSPLIT)) && (event.isAllowed() && (_minimumPaneSize == 0)))
+          {
+              _isSplit = false;
+              _window2Hidden = true;
+              final event = WxSplitterEvent( wxGetSplitterUnsplitEventType(), getId() );
+              event.setEventObject( this );
+              event._windowBeingRemoved = _window2;
+              processEvent( event );
+              _setState();
+          }
         },
         controller: _controller,
     )) ));
