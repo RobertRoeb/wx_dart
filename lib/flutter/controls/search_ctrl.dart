@@ -119,6 +119,27 @@ class WxSearchCtrl extends WxTextEntry {
     _menu = menu;
   }
 
+  /// An icon button for the search control: compact in desktop mode
+  Widget _iconButton( Widget icon, VoidCallback onPressed, { bool narrow = false } ) {
+    if (wxTheApp.isTouch()) {
+      return IconButton(
+        padding: EdgeInsets.all( 0 ),
+        iconSize: fromDIP(24).toDouble(),
+        icon: icon,
+        onPressed: onPressed );
+    }
+    final size = fromDIP(24).toDouble();
+    return IconButton(
+      padding: EdgeInsetsGeometry.only(left: 2),
+      visualDensity: VisualDensity.compact,
+      iconSize: fromDIP(18).toDouble(),
+      // no minimum size of 40 or 48 pixels for touch targets
+      constraints: narrow ? BoxConstraints( minHeight: size ) : BoxConstraints.tightFor( width: size, height: size ),
+      style: const ButtonStyle( tapTargetSize: MaterialTapTargetSize.shrinkWrap ),
+      icon: icon,
+      onPressed: onPressed );
+  }
+
   @override
   Widget _build(BuildContext context)
   {
@@ -141,78 +162,64 @@ class WxSearchCtrl extends WxTextEntry {
       } );
     }
 
+    final touch = wxTheApp.isTouch();
+
     Widget? searchButton;
     if (_showSearchButton)
     {
+      final search = _iconButton( const Icon( Icons.search ), () {
+        final event = WxCommandEvent( wxGetSearchEventType(), getId() );
+        event.setEventObject( this );
+        event.setString( getValue() );
+        processEvent( event );
+      } );
       if (_menu != null)
       {
-        searchButton= 
-          Row( 
+        searchButton = Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              IconButton(
-                padding: EdgeInsets.all( 0 ),
-                visualDensity: wxTheApp.isTouch() ? null : VisualDensity.compact,
-                iconSize: fromDIP(24).toDouble(),
-                icon: const Icon( Icons.search ),
-                onPressed: () {
-                  final event = WxCommandEvent( wxGetSearchEventType(), getId() );
-                  event.setEventObject( this );
-                  event.setString( getValue() );
-                  processEvent( event );
-              }),
-              IconButton(
-                padding: EdgeInsets.all( 0 ),
-                visualDensity: wxTheApp.isTouch() ? null : VisualDensity.compact,
-                iconSize: fromDIP(24).toDouble(),
-                icon: Padding(
+            search,
+            _iconButton(
+              Padding(
                   padding: EdgeInsetsGeometry.only(left: 2),
                   child: CustomPaint(
-                    size: const Size(13, 30), 
-                    painter: TrianglePainter( false, border: 12, otherBorder: 10 ),
+                  size: touch ? const Size(13, 30) : const Size(13, 20),
+                    painter: TrianglePainter( false, border: 6, otherBorder: 6 ),
                   )
                 ),
-                onPressed: () {
-                  popupMenu( _menu! );
-              }),
+              () => popupMenu( _menu! ),
+              narrow: true ),
             ]
           );
       }
       else
       {
-        searchButton= IconButton(
-              padding: EdgeInsets.all( 0 ),
-              visualDensity: wxTheApp.isTouch() ? null : VisualDensity.compact,
-              iconSize: fromDIP(24).toDouble(),
-              icon: const Icon( Icons.search ),
-              onPressed: () {
-                final event = WxCommandEvent( wxGetSearchEventType(), getId() );
-                event.setEventObject( this );
-                event.setString( getValue() );
-                processEvent( event );
-            });
+        searchButton = search;
       }
     }
 
+    // icons next to the text: prefixIcon/suffixIcon are always shown and
+    // centred vertically. (prefix/suffix are only shown with focus or text
+    // and are aligned to the baseline of the text, which pushes the text
+    // down if they are higher than the text.)
+    const noMinimum = BoxConstraints( minWidth: 28, minHeight: 0 );
     Widget text = TextField(
       decoration:  
         InputDecoration(
             hintText: _descriptive.isEmpty ? null : _descriptive,
-            isDense: !wxTheApp.isTouch(),
-            contentPadding: wxTheApp.isTouch() ? null : EdgeInsets.all( hasFlag(wxNO_BORDER) ? 1 : 4 ),
-            prefix: searchButton,
-            suffix: (_showCancelButton) ? IconButton(
-              padding: EdgeInsets.all( 0 ),
-              visualDensity: wxTheApp.isTouch() ? null : VisualDensity.compact,
-              iconSize: fromDIP(24).toDouble(),
-              icon: const Icon( Icons.cancel ),
-              onPressed: () {
+            isDense: !touch,
+            contentPadding: touch ? null : EdgeInsets.symmetric( horizontal: 6, vertical: hasFlag(wxNO_BORDER) ? 2 : 8 ),
+            prefixIcon: searchButton,
+            prefixIconConstraints: touch ? null : noMinimum,
+            suffixIcon: (_showCancelButton) ? _iconButton( const Icon( Icons.cancel ), () {
                 final event = WxCommandEvent( wxGetSearchCancelEventType(), getId() );
                 event.setEventObject( this );
                 processEvent( event );
-            }) : null,
-            border: (!hasFlag(wxNO_BORDER)) ? OutlineInputBorder( borderRadius: BorderRadius.circular(8.0) ) : null ,
+              } ) : null,
+            suffixIconConstraints: touch ? null : noMinimum,
+            border: (!hasFlag(wxNO_BORDER)) ? OutlineInputBorder( borderRadius: BorderRadius.circular(touch ? 8.0 : 4.0) ) : InputBorder.none,
           ), 
+      textAlignVertical: TextAlignVertical.center,
       controller: _textEditingController,
       focusNode: _focusNode,
       maxLines: 1,

@@ -221,7 +221,7 @@ class WxTextCtrl extends WxTextEntry {
           ),
       controller: _textEditingController,
       focusNode: _focusNode,
-      textAlignVertical: TextAlignVertical.top,
+      textAlignVertical: hasFlag( wxTE_MULTILINE ) ? TextAlignVertical.top : TextAlignVertical.center,
       readOnly: !_editable,
       maxLines: hasFlag( wxTE_MULTILINE ) ? null : 1,
       maxLength: _maxLength == -1 ? null : _maxLength,

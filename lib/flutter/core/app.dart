@@ -59,7 +59,9 @@ WxPoint _globalMousePosition = WxPoint.zero;
           ),
           inputDecorationTheme: InputDecorationTheme( 
             filled: true,
-            isDense: true
+            isDense: true,
+            // desktop: 2 instead of 12 pixels left and right of the text
+            contentPadding: EdgeInsets.symmetric( horizontal: 2, vertical: 8 ),
           ),
           colorScheme: ColorScheme.fromSeed(
             seedColor: wxTheApp._getSeedColor(),
@@ -82,6 +84,8 @@ WxPoint _globalMousePosition = WxPoint.zero;
             isDense: true,
             filled: true,
             border: UnderlineInputBorder(),
+            // desktop: 2 instead of 12 pixels left and right of the text
+            contentPadding: EdgeInsets.symmetric( horizontal: 2, vertical: 8 ),
           ),
           textTheme: TextTheme(
             bodyLarge: TextStyle(fontSize: 14.0),

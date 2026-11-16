@@ -15,6 +15,11 @@
 * Fix a WxGraphicsContext composition mode that was wrongly translated
 * Use medium as bitmap filder quality in WxGraphicsContext
 * Corrected inverted parameters in WxGraphicsPath
+* Added WxGraphicsContext.drawEllipse() and .strokeLines()
+* Added WxColour.fromString() and .getAsString()
+* Added contrast colour calculations
+* Added WxHtmlColours
+* Corrected layout issues with WxTextCtrl and WxSearchCtrl in desktop mode
 
 ## 0.9.30
 
