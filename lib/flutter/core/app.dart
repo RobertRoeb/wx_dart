@@ -540,6 +540,14 @@ class WxApp extends WxEvtHandler
     }
   }
 
+  /// Returns black or white, whichever is more readable on [background]
+  /// (by default the accent colour returned by [getAccentColour]).
+  ///
+  /// See [WxColour.getContrastingColour]
+  WxColour getColourOnAccent([WxColour? background]) {
+    return (background ?? getAccentColour()).getContrastingColour();
+  }
+
   /// Returns the accent colour set by [setAccentColour] ignoring whether or
   /// not the app is in dark or light mode
   /// 
