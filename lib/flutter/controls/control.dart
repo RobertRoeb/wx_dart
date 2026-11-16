@@ -55,6 +55,26 @@ abstract class WxControl extends WxWindow {
   WxControl( WxWindow parent, int id, { WxPoint pos = wxDefaultPosition, WxSize size = wxDefaultSize, int style = 0 } ) 
     : super( parent, id, pos, size, style );
 
+  /// Sends out [WxUpdateUIEvent] events for enable, setlabel and show.
+  @override
+  void onInternalIdle()
+  {
+    super.onInternalIdle();
+    
+    final event = WxUpdateUIEvent( id: getId() );
+    event.setEventObject( this );
+    processEvent(event);
+    if (event.getSetEnabled()) {
+      enable( enable: event.getEnabled());
+    }
+    if (event.getSetText()) {
+      setLabel( event.getText() );
+    }
+    if (event.getSetShown()) {
+      show( show: event.getShown() );
+    }
+  }
+
   Widget _buildControl( BuildContext context, Widget control )
   {
     return _doBuildBackgroundAndBorder(context, 

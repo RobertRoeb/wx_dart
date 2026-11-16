@@ -4,7 +4,12 @@
 * Implemented WxBitmap.convertToImage() async
 * Corrected some image conversion to not use pre-multiplied RGBA
 * Added WxNotebook.removePage() and .advanceSelection()
-* Added wxUsesHTML() for the new HTML port
+* Added wxUsesHTML() for the new Web/HTML port
+* Corrected or added some more event handling in WxSplitterWindow
+* Added WxStaticBitmap.setBitmap()
+* Implemented WxUpdateUIEvents for WxControl descendants to .show(), .enable() and .setLabel()
+* Moved .setLabel() into WxWindow for that purpose, and possibly future accessability
+* Corrected return value of WxTreeCtrl.insertItemAfter()
 
 ## 0.9.30
 
