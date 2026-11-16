@@ -128,11 +128,14 @@ class WxGraphicsContext extends WxGraphicsObject {
   }
 
   /// Creates a graphics context from a [WxPaintDC] in a paint event handler
-  WxGraphicsContext.fromDC( WxPaintDC dc )  
+  /// or from a [WxMemoryDC]
+  WxGraphicsContext.fromDC( WxDC dc )
   {
     _canvas = dc._canvas;
     _initGC();
+    if (dc is WxPaintDC) {
     _owner = dc._window;
+  }
   }
 
   void _initGC()
@@ -143,6 +146,8 @@ class WxGraphicsContext extends WxGraphicsObject {
     _penPaint.strokeJoin = StrokeJoin.miter;
     _brushPaint = Paint();
     _brushPaint.style = PaintingStyle.fill;
+    _bitmapPaint = Paint();
+    _bitmapPaint.filterQuality = FilterQuality.medium;
     setBrush( wxTRANSPARENT_BRUSH );
     if (wxTheApp.isDark()) {
       _textColour = wxWHITE;
@@ -153,6 +158,7 @@ class WxGraphicsContext extends WxGraphicsObject {
   WxWindow? _owner;
   late Paint _penPaint;
   late Paint _brushPaint;
+  late Paint _bitmapPaint;
   WxPen _currentPen = wxBLACK_PEN;
   late WxBrush _currentBrush;
   WxFont? _font;
@@ -259,7 +265,7 @@ class WxGraphicsContext extends WxGraphicsObject {
       pushState();
       _canvas!.translate( x, y );
       _canvas!.scale( width / bitmap._bitmap!.getWidth(), height / bitmap._bitmap!.getHeight() );
-      _canvas!.drawImage(bitmap._bitmap!._image!, Offset.zero, _penPaint );
+      _canvas!.drawImage(bitmap._bitmap!._image!, Offset.zero, _bitmapPaint );
       popState();
     } else {
       if (_owner != null) {
@@ -437,23 +443,27 @@ class WxGraphicsContext extends WxGraphicsObject {
 /// | wxCOMPOSITION_DIFF | 13 |
   bool setCompositionMode( int mode )
   {
+    BlendMode blendMode;
     switch (mode) {
-      case wxCOMPOSITION_CLEAR: _penPaint.blendMode = BlendMode.clear; break;
-      case wxCOMPOSITION_SOURCE: _penPaint.blendMode = BlendMode.src; break;
-      case wxCOMPOSITION_OVER: _penPaint.blendMode = BlendMode.overlay; break;
-      case wxCOMPOSITION_IN: _penPaint.blendMode = BlendMode.srcIn; break;
-      case wxCOMPOSITION_OUT: _penPaint.blendMode = BlendMode.srcOut; break;
-      case wxCOMPOSITION_ATOP: _penPaint.blendMode = BlendMode.srcATop; break;
-      case wxCOMPOSITION_DEST: _penPaint.blendMode = BlendMode.dst; break;
-      case wxCOMPOSITION_DEST_OVER: _penPaint.blendMode = BlendMode.dstOver; break;
-      case wxCOMPOSITION_DEST_IN: _penPaint.blendMode = BlendMode.dstIn; break;
-      case wxCOMPOSITION_DEST_ATOP: _penPaint.blendMode = BlendMode.dstATop; break;
-      case wxCOMPOSITION_XOR: _penPaint.blendMode = BlendMode.xor; break;
-      case wxCOMPOSITION_ADD: _penPaint.blendMode = BlendMode.plus; break;
-      case wxCOMPOSITION_DIFF: _penPaint.blendMode = BlendMode.difference; break;
-      default: _penPaint.blendMode = BlendMode.srcOver; break;
+      case wxCOMPOSITION_CLEAR: blendMode = BlendMode.clear; break;
+      case wxCOMPOSITION_SOURCE: blendMode = BlendMode.src; break;
+      case wxCOMPOSITION_OVER: blendMode = BlendMode.srcOver; break;
+      case wxCOMPOSITION_IN: blendMode = BlendMode.srcIn; break;
+      case wxCOMPOSITION_OUT: blendMode = BlendMode.srcOut; break;
+      case wxCOMPOSITION_ATOP: blendMode = BlendMode.srcATop; break;
+      case wxCOMPOSITION_DEST: blendMode = BlendMode.dst; break;
+      case wxCOMPOSITION_DEST_OVER: blendMode = BlendMode.dstOver; break;
+      case wxCOMPOSITION_DEST_IN: blendMode = BlendMode.dstIn; break;
+      case wxCOMPOSITION_DEST_OUT: blendMode = BlendMode.dstOut; break;
+      case wxCOMPOSITION_DEST_ATOP: blendMode = BlendMode.dstATop; break;
+      case wxCOMPOSITION_XOR: blendMode = BlendMode.xor; break;
+      case wxCOMPOSITION_ADD: blendMode = BlendMode.plus; break;
+      case wxCOMPOSITION_DIFF: blendMode = BlendMode.difference; break;
+      default: return false;
     }
-
+    _penPaint.blendMode = blendMode;
+    _brushPaint.blendMode = blendMode;
+    _bitmapPaint.blendMode = blendMode;
     return true;
   }
 
