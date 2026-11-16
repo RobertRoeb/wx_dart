@@ -355,10 +355,10 @@ class WxSplitterWindow extends WxWindow {
     return false;
   }
 
-  /// In wxDart native, updates the window if the update otherwise would be deferred to idle time
+/// In wxDart Native, updates the window sizes.  This can be useful
+/// for reducing flicker by updating the sizes before a window is shown.
   void updateSize( ) {
   }
-
 
   @override
   Widget _build(BuildContext context) {
