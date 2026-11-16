@@ -29,7 +29,7 @@ extension SearchCancelEventBinder on WxEvtHandler {
     _eventTable.add( WxCommandEventTableEntry(wxGetSearchCancelEventType(), id, func));
   }
 
-  void unbindSearchEvent( int id ) {
+  void unbindSearchCancelEvent( int id ) {
     _eventTable.removeWhere( (entry) => entry.matches(wxGetSearchCancelEventType(), id));
   }
 }
