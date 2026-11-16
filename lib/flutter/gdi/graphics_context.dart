@@ -116,6 +116,48 @@ const int wxCOMPOSITION_DIFF = 13;
 ///   }
 /// }
 /// ```
+/// 
+/// Pen, brush, blend mode
+/// * [setPen]
+/// * [setPenWithConstantColour] (pen with width in double)
+/// * [setPenWithLinearGradient]
+/// * [setPenWithRadialGradient]
+/// * [setBrush]
+/// * [setCompositionMode]
+/// 
+/// States and transformations:
+/// * [pushState]
+/// * [popState]
+/// * [rotate]
+/// * [translate]
+/// * [scale]
+/// 
+/// Clipping
+/// * [clip]
+/// * [resetClip] (not supported in wxDart Flutter)
+/// 
+/// Bitmap
+/// * [createBitmap]
+/// * [createBitmapFromImage]
+/// * [drawBitmap]
+/// 
+/// Path:
+/// * [createPath]
+/// * [strokePath]
+/// * [fillPath]
+/// * [drawPath]
+/// 
+/// Drawing:
+/// * [strokeLine]
+/// * TBD strokeLines
+/// * [drawRectangle]
+/// * [drawRoundedRectangle]
+/// * TBD drawEllipse
+/// 
+/// Text:
+/// * [setFont]
+/// * [getTextExtent]
+/// * [drawText]
 
 class WxGraphicsContext extends WxGraphicsObject {
 
