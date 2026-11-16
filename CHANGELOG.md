@@ -14,6 +14,7 @@
 * Allow WxGraphicsContext creation from any wxDC, including WxMemoryDC
 * Fix a WxGraphicsContext composition mode that was wrongly translated
 * Use medium as bitmap filder quality in WxGraphicsContext
+* Corrected inverted parameters in WxGraphicsPath
 
 ## 0.9.30
 

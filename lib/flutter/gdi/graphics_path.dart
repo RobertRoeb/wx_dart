@@ -71,12 +71,12 @@ class WxGraphicsPath extends WxGraphicsObject {
   }
 
   /// Adds closed subpath with rectangle specified by [x],[y],[width],[height]
-  void addRectangle( double x, double y, double height, double width ) {
+  void addRectangle( double x, double y, double width, double height ) {
     _path.addRect( Rect.fromLTWH(x+0.5,y+0.5,width,height) );
   }
 
   /// Adds closed subpath with rounded rectangle specified by [x],[y],[width],[height] and [radius]
-  void addRoundedRectangle( double x, double y, double height, double width, double radius ) {
+  void addRoundedRectangle( double x, double y, double width, double height, double radius ) {
     _path.addRRect( RRect.fromRectAndRadius( Rect.fromLTWH(x+0.5,y+0.5,width,height), Radius.circular( radius ) ) );
   }
 
@@ -86,16 +86,32 @@ class WxGraphicsPath extends WxGraphicsObject {
   }
 
   /// Adds closed subpath with ellipse specified by [x],[y],[width],[height]
-  void addEllipse( double x, double y, double height, double width ) {
+  void addEllipse( double x, double y, double width, double height ) {
     _path.addOval( Rect.fromLTWH(x+0.5,y+0.5,width,height) );
   }
 
-  /// Adds arcspecified by [x],[y],[radius] with [startAngle] and [endAngle]
+  /// Adds an arc of a circle around [x],[y] with [radius] from [startAngle]
+  /// to [endAngle] (in radians, 0 is the 3 o'clock position). A line is added
+  /// from the current point to the start of the arc.
   void addArc( double x, double y, double radius, double startAngle, double endAngle, bool clockwise ) {
+    // the y axis points down, so positive sweep angles go clockwise on screen
+    double sweep = endAngle - startAngle;
     if (clockwise) {
-      _path.addArc( Rect.fromLTWH(x+0.5-radius,y+0.5-radius,x+0.5+radius,y+0.5+radius), startAngle, endAngle );
+      while (sweep < 0) {
+        sweep += 2*pi;
+      }
     } else {
-      _path.addArc( Rect.fromLTWH(x+0.5-radius,y+0.5-radius,x+0.5+radius,y+0.5+radius), endAngle, startAngle );
+      while (sweep > 0) {
+        sweep -= 2*pi;
+      }
+    }
+    final rect = Rect.fromLTWH( x+0.5-radius, y+0.5-radius, 2*radius, 2*radius );
+    if (sweep.abs() >= 2*pi - 1e-9) {
+      // Flutter does not draw an arc of a full circle in one step
+      _path.arcTo( rect, startAngle, sweep/2, false );
+      _path.arcTo( rect, startAngle + sweep/2, sweep/2, false );
+    } else {
+      _path.arcTo( rect, startAngle, sweep, false );
     }
   }
 }
