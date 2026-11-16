@@ -58,6 +58,8 @@ class WxGraphicsAnimation extends WxAnimation {
       _duration = 0;
       for (int i = 0; i < getFrameCount(); i++) {
         _duration += getDelay(i);
+        // a delay of -1 (show forever) counts as 100 ms when looping
+        if (getDelay(i) < 0) _duration += 100 - getDelay(i);
         final image = getFrame(i);
         if (image != null) {
           if (!image.hasAlpha()) {
@@ -97,10 +99,14 @@ class WxGraphicsAnimation extends WxAnimation {
   void draw( WxGraphicsContext context, double x, double y, double width, double height, int millis )
   {
     if (_frames.isEmpty) return;
+    if (_duration <= 0) {
+      context.drawBitmap(_frames[0], x, y, width, height );
+      return;
+    }
     millis = millis % _duration;
     int i;
-    for (i = 0; i < getFrameCount(); i++) {
-      final delay = getDelay(i);
+    for (i = 0; i < _frames.length - 1; i++) {
+      final delay = getDelay(i) < 0 ? 100 : getDelay(i);
       if (millis - delay <= 0) break;
       millis -= delay;
     }

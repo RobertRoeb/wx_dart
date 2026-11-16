@@ -10,6 +10,7 @@
 * Implemented WxUpdateUIEvents for WxControl descendants to .show(), .enable() and .setLabel()
 * Moved .setLabel() into WxWindow for that purpose, and possibly future accessability
 * Corrected return value of WxTreeCtrl.insertItemAfter()
+* Interpret a frame duration of -1 as 100ms in WxGraphicsAnimation
 
 ## 0.9.30
 
