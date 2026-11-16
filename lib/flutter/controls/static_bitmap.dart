@@ -28,7 +28,7 @@ const int wxBI_EXPAND = wxEXPAND;
 /// # Window style
 /// [ constant | meaning |
 /// | -------- | -------- |
-/// | wxBI_EXPAND | wxEXPAND |
+/// | wxBI_EXPAND | wxEXPAND (this does nothing) |
 /// 
 /// Example:
 /// ```dart
@@ -63,6 +63,12 @@ class WxStaticBitmap extends WxControl {
     _bitmap._addListener( this );
     return CircularProgressIndicator();
   }
+
+/// Sets new bitmap
+void setBitmap( WxBitmapBundle bitmap ) {
+  _bitmap = bitmap.getBitmapFor( this );
+  _setState();
+}
 
 /// Sets the scale mode of the bitmap relative to the size of the control.
 /// ## Scale mode constants
