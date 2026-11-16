@@ -149,10 +149,10 @@ const int wxCOMPOSITION_DIFF = 13;
 /// 
 /// Drawing:
 /// * [strokeLine]
-/// * TBD strokeLines
+/// * [strokeLines]
 /// * [drawRectangle]
 /// * [drawRoundedRectangle]
-/// * TBD drawEllipse
+/// * [drawEllipse]
 /// 
 /// Text:
 /// * [setFont]
@@ -353,6 +353,38 @@ class WxGraphicsContext extends WxGraphicsObject {
     }
     if (_currentPen.isNonTransparent()) {
       _canvas!.drawPath( path._path, _penPaint );
+    }
+  }
+
+  /// Draws a polyline through [points] with the current pen
+  void strokeLines( List<WxRealPoint> points ) {
+    if (_canvas == null) {
+      wxLogError("No valid canvas for graphics context" );
+      return;
+    }
+    if (points.length < 2 || !_currentPen.isNonTransparent()) return;
+    final path = Path();
+    path.moveTo( points[0].x+0.5, points[0].y+0.5 );
+    for (int i = 1; i < points.length; i++) {
+      path.lineTo( points[i].x+0.5, points[i].y+0.5 );
+    }
+    _canvas!.drawPath( path, _penPaint );
+  }
+
+  /// Draws an ellipse in the rectangle [x],[y],[width],[height], filled with
+  /// the current brush and outlined with the current pen
+  void drawEllipse( double x, double y, double width, double height )
+  {
+    if (_canvas == null) {
+      wxLogError("No valid canvas for graphics context" );
+      return;
+    }
+    final rect = Rect.fromLTWH( x+0.5, y+0.5, width, height );
+    if (_currentBrush.isNonTransparent()) {
+      _canvas!.drawOval( rect, _brushPaint );
+    }
+    if (_currentPen.isNonTransparent()) {
+      _canvas!.drawOval( rect, _penPaint );
     }
   }
 
