@@ -570,6 +570,7 @@ class WxGraphicsContext extends WxGraphicsObject {
       default:
         _penPaint.strokeJoin = StrokeJoin.round;
     }
+    _currentPen  = WxPen( colour, width: width.round(), style: style );
   }
 
   /// Sets current pen to have a linear colour gradient with the given values for all drawing operations.
@@ -606,6 +607,7 @@ class WxGraphicsContext extends WxGraphicsObject {
       default:
         _penPaint.strokeJoin = StrokeJoin.round;
     }
+    _currentPen  = WxPen( colour1, width: width.round(), style: style );
   }
 
   /// Sets current pen to have a radial colour gradient with the given values for all drawing operations.
@@ -642,6 +644,7 @@ class WxGraphicsContext extends WxGraphicsObject {
       default:
         _penPaint.strokeJoin = StrokeJoin.round;
     }
+    _currentPen  = WxPen( innerColour, width: width.round(), style: style );
   }
 
   /// Sets current [WxBrush] for all drawing operations. Set it to [wxTRANSPARENT_BRUSH]
