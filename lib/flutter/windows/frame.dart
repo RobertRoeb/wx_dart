@@ -83,16 +83,25 @@ const int wxINFOBAR_FLOATING = 2;
 /// * [canSetTransparent]
 /// * [setTransparent]
 /// 
-/// Main UI elements
+/// Menu bar
 /// * [setMenuBar]
 /// * [getMenuBar]
 /// * [findItemInMenuBar]
+/// 
+/// Tool bar
+/// * [createToolBar]
+/// * [getToolBar]
+/// 
+/// Info bar
+/// * [showInfoBar]
+/// 
+/// Status bar
 /// * [createStatusBar]
 /// * [getStatusBar]
 /// * [setStatusText]
-/// * [createToolBar]
-/// * [getToolBar]
-/// * [showInfoBar]
+/// * [pushStatusText]
+/// * [popStatusText]
+/// * [setStatusWidths]
 /// 
 /// Close/destroy/delete interface
 /// * [close]
@@ -237,18 +246,25 @@ class WxFrame extends WxTopLevelWindow {
     }
   }
 
-  /// Sets the widths of the fields.
-  /// 
-  /// For the variable width fields, specify a negative number which indicates
-  /// how the field should expand.  For example, to create one fixed width field
-  /// of width 100 in the right part of the status bar and two more fields which
-  /// get 66% and 33% of the remaining space correspondingly, you should use an
-  /// list containing -2, -1 and 100.
-  /// 
-  /// Not yet implemented.
-  void setStatusWidths( List<int> widths ) {
-
+  /// Saves the current text of the status bar field [number] and shows
+  /// [text]. See [WxStatusBar.pushStatusText]
+  void pushStatusText( String text, { int number = 0 } ) {
+    _statusBar?.pushStatusText( text, index: number );
   }
+
+  /// Restores the text saved by [pushStatusText].
+  /// See [WxStatusBar.popStatusText]
+  void popStatusText( { int number = 0 } ) {
+    _statusBar?.popStatusText( index: number );
+  }
+
+  /// Sets the widths of the status bar fields.
+  /// See [WxStatusBar.setStatusWidths].
+  void setStatusWidths( List<int> widths ) {
+    _statusBar?.setStatusWidths( widths );
+  }
+
+
   /// Sets the menu bar of the frame
   void setMenuBar( WxMenuBar menubar ) {
     _menubar = menubar;
