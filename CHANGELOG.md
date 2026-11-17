@@ -11,9 +11,9 @@
 * Moved .setLabel() into WxWindow for that purpose, and possibly future accessability
 * Corrected return value of WxTreeCtrl.insertItemAfter()
 * Interpret a frame duration of -1 as 100ms in WxGraphicsAnimation
-* Allow WxGraphicsContext creation from any wxDC, including WxMemoryDC
+* Allow WxGraphicsContext creation from a WxMemoryDC
 * Fix a WxGraphicsContext composition mode that was wrongly translated
-* Use medium as bitmap filder quality in WxGraphicsContext
+* Use medium as bitmap filter quality in WxGraphicsContext
 * Corrected inverted parameters in WxGraphicsPath
 * Added WxGraphicsContext.drawEllipse() and .strokeLines()
 * Added WxDC.drawEllipse()
