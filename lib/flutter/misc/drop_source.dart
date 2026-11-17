@@ -156,15 +156,38 @@ class WxDropSource extends WxClass {
   }
 
   /// Initiate Drag and Drop operation
-  int doDragDrop( { int flags = 0 } )
+  ///
+  /// With [flags] wxDRAG_ALLOW_MOVE, the user can request a move by
+  /// holding down Shift.
+  ///
+  /// The same in all ports of wxDart: the result is passed to [onDone]
+  /// when the drag is over (wxDRAG_RESULT_COPY, wxDRAG_RESULT_MOVE,
+  /// wxDRAG_RESULT_NONE or wxDRAG_RESULT_ERROR). In wxDart Flutter and
+  /// wxDart Web, [doDragDrop] returns immediately and [onDone] is called
+  /// later; in wxDart Native, [onDone] is called before [doDragDrop]
+  /// returns. In each case, the drop target has received the data before
+  /// [onDone] is called.
+  ///
+  /// ```dart
+  ///   source.doDragDrop( flags: wxDRAG_ALLOW_MOVE, onDone: (result) {
+  ///     if (result == wxDRAG_RESULT_MOVE) deleteSelection();
+  ///   } );
+  /// ```
+  void doDragDrop( { int flags = 0, void Function( int result )? onDone } )
   {
+    if (_isDragging) {
+      wxLogError( "Already dragging." );
+      onDone?.call( wxDRAG_RESULT_ERROR );
+      return;
+    }
+    final allowMove = (flags & wxDRAG_ALLOW_MOVE) != 0;
     _window._dropSource = this;
     _isDragging = true;
     _window.captureMouse();
     _createOverlay();
 
     _window.bindMotionEvent( (event) {
-      _isMove = event._shiftDown;
+      _isMove = allowMove && event._shiftDown;
       _dragPosition = _window.clientToScreen( event.getPosition() );
 
       // Target window there to get data?
@@ -215,6 +238,7 @@ class WxDropSource extends WxClass {
         return;
       }
 
+      int result = wxDRAG_RESULT_NONE;
       final winUnderMouse = wxFindWindowAtPoint( _dragPosition );
       if (winUnderMouse != null) {
         if (winUnderMouse._dropTarget != null) {
@@ -231,6 +255,7 @@ class WxDropSource extends WxClass {
               /// Target has to request data copy in this event
               winUnderMouse.processEvent(dropEvent);
               target._receivedDataObject = null;
+              result = _isMove ? wxDRAG_RESULT_MOVE : wxDRAG_RESULT_COPY;
             }
           }
         }
@@ -243,9 +268,8 @@ class WxDropSource extends WxClass {
       _removeOverlay();
       _window._dropSource = null;
       _window._setState();
+      onDone?.call( result );
     } );
-
-    return wxDRAG_RESULT_ERROR;
   }
 }
 
