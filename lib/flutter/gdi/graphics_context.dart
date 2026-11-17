@@ -116,6 +116,10 @@ const int wxCOMPOSITION_DIFF = 13;
 ///   }
 /// }
 /// ```
+/// Creation
+/// * [WxGraphicsContext.new]
+/// * [WxGraphicsContext.fromDC]
+/// * [WxGraphicsContext.fromMemoryDC]
 /// 
 /// Pen, brush, blend mode
 /// * [setPen]
@@ -170,14 +174,18 @@ class WxGraphicsContext extends WxGraphicsObject {
   }
 
   /// Creates a graphics context from a [WxPaintDC] in a paint event handler
-  /// or from a [WxMemoryDC]
-  WxGraphicsContext.fromDC( WxDC dc )
+  WxGraphicsContext.fromDC( WxPaintDC dc )
   {
     _canvas = dc._canvas;
     _initGC();
-    if (dc is WxPaintDC) {
     _owner = dc._window;
   }
+
+  /// Creates a graphics context from a [WxMemoryDC]
+  WxGraphicsContext.fromMemoryDC( WxMemoryDC dc )
+  {
+    _canvas = dc._canvas;
+    _initGC();
   }
 
   void _initGC()
