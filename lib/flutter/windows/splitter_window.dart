@@ -333,7 +333,7 @@ class WxSplitterWindow extends WxWindow {
   /// Returns the gravity
   /// 
   /// See [setSashGravity]
-  double getGravity() {
+  double getSashGravity() {
     return _gravity;
   }
 
