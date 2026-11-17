@@ -16,6 +16,7 @@
 * Use medium as bitmap filder quality in WxGraphicsContext
 * Corrected inverted parameters in WxGraphicsPath
 * Added WxGraphicsContext.drawEllipse() and .strokeLines()
+* Added WxDC.drawEllipse()
 * Added WxColour.fromString() and .getAsString()
 * Added contrast colour calculations
 * Added WxHtmlColours

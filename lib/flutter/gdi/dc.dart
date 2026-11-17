@@ -59,18 +59,20 @@ const int wxWINDING_RULE = 2;
 /// * [drawBitmap]
 /// * [drawText]
 /// * [drawRotatedText]
+/// * [drawCircle]
+/// * [drawEllipse]
+/// * [drawEllipseRect]
 /// * [drawArc]
 /// * [drawArcPts]
 /// * [drawEllipticArc]
-/// * [drawCircle]
 /// * [gradientFillConcentric]
 /// * [gradientFillConcentricWithCenter]
 /// * [gradientFillLinear]
 /// 
 /// Clipping:
 /// * [setClippingRegion]
+/// * [setClippingRegionRect]
 /// * [destroyClippingRegion]
-/// * [destroyClippingRegionRect]
 /// * [getClippingBox]
 /// 
 /// Device to logical mapping:
@@ -358,8 +360,7 @@ class WxDC extends WxReadOnlyDC {
   }
 
   /// Same as [drawRectangle] using a [WxRect]
-  void drawRectangleRect( WxRect rect )
-  {
+  void drawRectangleRect( WxRect rect ) {
     drawRectangle( rect.x, rect.y, rect.width, rect.height );
   }
 
@@ -469,6 +470,33 @@ class WxDC extends WxReadOnlyDC {
     _canvas.restore();
   }
 
+  /// Draws an ellipse with the given dimensions using the
+  /// current [WxPen] and filled out using the current [WxBrush]
+  /// 
+  /// Use [wxTRANSPARENT_PEN] to not draw the outline or
+  /// [wxTRANSPARENT_BRUSH] to not fill the interior.
+  void drawEllipse( int x, int y, int width, int height ) {
+    if (_currentBrush.isNonTransparent()) {
+      _canvas.drawOval( Rect.fromPoints(
+          Offset( x.toDouble(), y.toDouble() ),
+          Offset( (x+width).toDouble(), (y+height).toDouble() ) ),
+        _brushPaint );      
+    }
+    if (_currentPen.isNonTransparent()) {
+      _canvas.drawOval( Rect.fromPoints(
+          Offset( x+0.5, y+0.5 ),
+          Offset( (x+width-1)+0.5, (y+height-1)+0.5 ) ),
+      _penPaint );
+    }
+  }
+
+  /// Draws an ellipse specified by [rect]
+  /// 
+  /// See [drawEllipse]
+  void drawEllipseRect( WxRect rect ) {
+    drawEllipse( rect.x, rect.y, rect.width, rect.height );
+  }
+
   /// Draws an elliptic arc centered around [x],[y] with [width] and [height] and
   /// with [start] and [end] angles in degrees using the
   /// current [WxPen] and filled out using the current [WxBrush].
@@ -480,12 +508,10 @@ class WxDC extends WxReadOnlyDC {
     final rect = Rect.fromPoints(
           Offset( x+0.5, y+0.5 ),
           Offset( (x+width-1)+0.5, (y+height-1)+0.5 ) );
-    if (_currentBrush.isNonTransparent())
-    {
+    if (_currentBrush.isNonTransparent()) {
       _canvas.drawArc( rect, start /-180*pi, (end-start) /-180*pi, true, _brushPaint );
     }
-    if (_currentPen.isNonTransparent())
-    {
+    if (_currentPen.isNonTransparent()) {
       _canvas.drawArc( rect, start /-180*pi, (end-start) /-180*pi, false, _penPaint );
     }
   }
