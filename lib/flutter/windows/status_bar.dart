@@ -56,10 +56,31 @@ class WxStatusBar extends WxEvtHandler {
 
   /// Sets the text of a status bar field at position [index]
   void setStatusText( String text, { int index = 0 } ) {
-    if (index >= _fields.length) return;
+    if ((index >= _fields.length) || (index < 0)) return;
     WxStatusBarPane pane = _fields[index];
     pane.text = text;
     parent._setState();
+  }
+
+  /// Returns the text of the status bar. [number] indicates the field if
+  /// more than one field has been created.
+  String getStatusText( { int index = 0 } ) {
+    if ((index >= _fields.length) || (index < 0)) return "";
+    WxStatusBarPane pane = _fields[index];
+    return pane.text;
+  }
+
+  /// Sets the widths of the fields.
+  /// 
+  /// For the variable width fields, specify a negative number which indicates
+  /// how the field should expand.  For example, to create one fixed width field
+  /// of width 100 in the right part of the status bar and two more fields which
+  /// get 66% and 33% of the remaining space correspondingly, you should use an
+  /// list containing -2, -1 and 100.
+  /// 
+  /// Not yet implemented.
+  void setStatusWidths( List<int> widths ) {
+
   }
 
   /// Returns the number of fields in the status bar

@@ -90,6 +90,7 @@ const int wxINFOBAR_FLOATING = 2;
 /// * [createStatusBar]
 /// * [getStatusBar]
 /// * [setStatusText]
+/// * [getStatusText]
 /// * [createToolBar]
 /// * [getToolBar]
 /// * [showInfoBar]
@@ -237,6 +238,27 @@ class WxFrame extends WxTopLevelWindow {
     }
   }
 
+  /// Returns the text if the status bar. [number] indicates the field if
+  /// more than one field has been created with [createStatusBar].
+  String getStatusText( { int number = 0 } ) {
+    if (_statusBar != null) {
+      return _statusBar!.getStatusText(index: number);
+    }
+    return "";
+  }
+
+  /// Sets the widths of the fields.
+  /// 
+  /// For the variable width fields, specify a negative number which indicates
+  /// how the field should expand.  For example, to create one fixed width field
+  /// of width 100 in the right part of the status bar and two more fields which
+  /// get 66% and 33% of the remaining space correspondingly, you should use an
+  /// list containing -2, -1 and 100.
+  /// 
+  /// Not yet implemented.
+  void setStatusWidths( List<int> widths ) {
+
+  }
   /// Sets the menu bar of the frame
   void setMenuBar( WxMenuBar menubar ) {
     _menubar = menubar;
