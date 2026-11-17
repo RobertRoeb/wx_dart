@@ -1,10 +1,11 @@
 ## 0.9.31
 
+* Added wxUsesHTML() for the new Web/HTML port
+* Other preparation for the new Web/HTML port
 * Implemented WxDC.drawRotatedText()
 * Implemented WxBitmap.convertToImage() async
 * Corrected some image conversion to not use pre-multiplied RGBA
 * Added WxNotebook.removePage() and .advanceSelection()
-* Added wxUsesHTML() for the new Web/HTML port
 * Corrected or added some more event handling in WxSplitterWindow
 * Added WxStaticBitmap.setBitmap()
 * Implemented WxUpdateUIEvents for WxControl descendants to .show(), .enable() and .setLabel()
