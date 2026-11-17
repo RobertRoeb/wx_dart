@@ -303,13 +303,22 @@ class WxSplitterWindow extends WxWindow {
     return _isSplit;
   }
 
-  /// Returns true of the sash is visible. This can return true even if the window
-  /// is currently not actually split.
+  /// Makes the sash invisible (or visible, depending on [invisible])
+  /// 
+  /// If invisible, it is impossible for the user to resize the windows.
+  void setSashInvisible( { bool invisible = true } )
+  {
+    _sashInvisible = invisible;
+    _setState();
+  }
+
+  /// Returns true of the sash is invisible even if the window
+  /// is currently split.
   bool isSashInvisible( ) {
     return _sashInvisible;
   }
 
-  /// Retunrs the position of the sash in pixels, either from the left or the top
+  /// Retunns the position of the sash in pixels, either from the left or the top
   int getSashPosition( ) {
     if ((_window1 == null) || (_window2 == null)) {
       return 0;
@@ -325,7 +334,7 @@ class WxSplitterWindow extends WxWindow {
   /// * 0.5: both windows grow equally
   /// * 1.0: only the left/top window grows or shrinks
   /// 
-  /// Not currently implemented in wxDart Flutter
+  /// In wxDart Flutter only implemented if the sash is invisble by [setSashInvisible]
   void setSashGravity( double gravity ) {
     _gravity = gravity;
   }
@@ -335,13 +344,6 @@ class WxSplitterWindow extends WxWindow {
   /// See [setSashGravity]
   double getSashGravity() {
     return _gravity;
-  }
-
-  /// Makes the sash invisible (or visible, dependin gon [invisible])
-  void setSashInvisible( { bool invisible = true } )
-  {
-    _sashInvisible = invisible;
-    _setState();
   }
 
   /// Sets the position of the sash in pixels, either from the left or the top
@@ -394,6 +396,32 @@ class WxSplitterWindow extends WxWindow {
         return _window1!._build( context );
       }
       return Text("No content");
+    }
+
+    if (_sashInvisible) {
+      int flex1 = (100 * _gravity).round();
+      int flex2 = 100 - flex1;
+      late Widget finalWidget;
+      if (_horizontal || wxTheApp.isTouch()) {
+        finalWidget = Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Expanded( flex: flex1, child: _window1!._build( context ) ),
+            Expanded( flex: flex2, child: _window2!._build( context ) )
+            ]
+        );
+      } else {
+        finalWidget = Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Expanded( flex: flex1, child: _window1!._build( context ) ),
+            Expanded( flex: flex2, child: _window2!._build( context ) )
+            ]
+        );
+      }
+      return 
+        _doBuildBackgroundAndBorder(context, 
+          _doBuildSizeEventHandler(context, finalWidget ));
     }
 
     return _doBuildBackgroundAndBorder(context, 

@@ -21,6 +21,7 @@
 * Added contrast colour calculations
 * Added WxHtmlColours
 * Corrected layout issues with WxTextCtrl and WxSearchCtrl in desktop mode
+* Implemented WxSplitterWindow.setSashInvisible() and .setSashGravity()
 
 ## 0.9.30
 
