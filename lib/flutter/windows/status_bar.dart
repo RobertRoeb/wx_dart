@@ -30,12 +30,19 @@ class WxStatusBarPane {
 /// Represents the status bar at the bottom of a [WxFrame].
 /// 
 /// Usually created using [WxFrame.createStatusBar]
-/// 
+///
+///Example usage: 
 /// ```Dart
 ///    // Create status bar at the bottom of the frame
 ///    createStatusBar();
 ///    setStatusText( "Welcome to super app" );
 ///```
+///
+/// Main interface
+/// * [setStatusText]
+/// * [getStatusText]
+/// * [getFieldsCount]
+/// * [setFieldsCount]
 
 class WxStatusBar extends WxEvtHandler {
 

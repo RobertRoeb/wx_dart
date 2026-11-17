@@ -90,7 +90,6 @@ const int wxINFOBAR_FLOATING = 2;
 /// * [createStatusBar]
 /// * [getStatusBar]
 /// * [setStatusText]
-/// * [getStatusText]
 /// * [createToolBar]
 /// * [getToolBar]
 /// * [showInfoBar]
@@ -236,15 +235,6 @@ class WxFrame extends WxTopLevelWindow {
     if (_statusBar != null) {
       _statusBar!.setStatusText(text,index: number);
     }
-  }
-
-  /// Returns the text if the status bar. [number] indicates the field if
-  /// more than one field has been created with [createStatusBar].
-  String getStatusText( { int number = 0 } ) {
-    if (_statusBar != null) {
-      return _statusBar!.getStatusText(index: number);
-    }
-    return "";
   }
 
   /// Sets the widths of the fields.

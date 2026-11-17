@@ -23,6 +23,7 @@
 * Corrected layout issues with WxTextCtrl and WxSearchCtrl in desktop mode
 * Implemented WxSplitterWindow.setSashInvisible() and .setSashGravity()
 * Added return callback for result notification of WxDropSource.doDragDrop()
+* Made some methods of WxStatusBar public
 
 ## 0.9.30
 
