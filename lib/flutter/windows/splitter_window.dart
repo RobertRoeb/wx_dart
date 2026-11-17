@@ -130,8 +130,12 @@ const int wxSP_3D = (wxSP_3DBORDER | wxSP_3DSASH);
 /// Main interface:
 /// * [splitVertically]
 /// * [splitHorizontally]
+/// * [unsplit]
 /// * [setSashPosition]
+/// * [getSashPosition]
 /// * [setMinimumPaneSize]
+/// * [setSashGravity]
+/// * [getSashGravity]
 /// 
 /// Example usage with user unsplitting:
 /// ```dart
@@ -229,6 +233,7 @@ class WxSplitterWindow extends WxWindow {
   WxWindow? _window2;
   int _pos = -1;
   bool _sashInvisible = false;
+  double _gravity = 0.5;
 
   final MultiSplitViewController _controller = MultiSplitViewController();
 
@@ -312,6 +317,24 @@ class WxSplitterWindow extends WxWindow {
     WxSize size = _window1!.getSize();
 
     return (!_horizontal&&!wxTheApp.isTouch()) ? size.x : size.y;
+  }
+
+  /// Sets the gravity which controls position of the sash while resizing.
+  /// Value is between 0.0 and 1.0 with the following meaning:
+  /// * 0.0: only the bottom/right window grows or shrinks
+  /// * 0.5: both windows grow equally
+  /// * 1.0: only the left/top window grows or shrinks
+  /// 
+  /// Not currently implemented in wxDart Flutter
+  void setSashGravity( double gravity ) {
+    _gravity = gravity;
+  }
+
+  /// Returns the gravity
+  /// 
+  /// See [setSashGravity]
+  double getGravity() {
+    return _gravity;
   }
 
   /// Makes the sash invisible (or visible, dependin gon [invisible])
