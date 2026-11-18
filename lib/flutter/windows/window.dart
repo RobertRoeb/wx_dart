@@ -62,6 +62,7 @@ class WxCustomPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size)
   {
+    canvas.save();
     final rect = Rect.fromLTWH(0, 0, size.width, size.height);
     canvas.clipRect(rect);
     window._canvas = canvas;
