@@ -966,6 +966,15 @@ class WxTreeCtrl extends WxControl {
   /// Expands tree branch
   void expand( WxTreeItemId item )
   {
+    if (_focusNode == null) 
+    {
+      // not yet _build and controller not yet associated
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        expand(item);
+      });
+      return;
+    }
+
     final node = item._getNode();
     if (node != null) {
       if (node.children.isEmpty) return;
