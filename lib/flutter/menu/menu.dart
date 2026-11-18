@@ -181,23 +181,23 @@ const int wxMENU_TEAROFF = 0x0001;
 /// 
 /// [Menu](/wxdart/wxGetMenuEventType.html) event gets sent when user selects a menu item |
 /// | ----------------- |
-/// | void bindMenuEvent( OnCommandEventFunc ) |
-/// | void unbindMenuEvent() |
+/// | void bindMenuEvent( void function( [WxCommandEvent] event ), int id ) |
+/// | void unbindMenuEvent( int id ) |
 /// 
 /// # System event emitted
 /// [MenuOpen](/wxdart/wxGetMenuOpenEventType.html) event gets sent when the menu opens |
 /// | ----------------- |
-/// | void bindMenuOpenEvent( OnMenuEventFunc ) |
+/// | void bindMenuOpenEvent( void function( [WxMenuEvent] event ) ) |
 /// | void unbindMenuOpenEvent() |
 /// 
 /// [MenuClose](/wxdart/wxGetMenuCloseEventType.html) event gets sent when the menu is closed |
 /// | ----------------- |
-/// | void bindMenuCloseEvent( OnMenuEventFunc ) |
+/// | void bindMenuCloseEvent( void function( [WxMenuEvent] event ) ) |
 /// | void unbindMenuCloseEvent() |
 /// 
 /// [MenuHighlight](/wxdart/wxGetMenuHighlightEventType.html) event gets sent when an item gets highlighted |
 /// | ----------------- |
-/// | void bindMenuHighlightEvent( OnMenuEventFunc ) |
+/// | void bindMenuHighlightEvent( void function( [WxMenuEvent] event ) ) |
 /// | void unbindMenuHighlightEvent() |
 
 class WxMenu extends WxEvtHandler {

@@ -59,12 +59,12 @@ extension SearchCancelEventBinder on WxEvtHandler {
 /// [Search](/wxdart/wxGetSearchEventType.html) event gets sent when user presses ENTER or clicks the search icon |
 /// | ----------------- |
 /// | void bindSearchEvent( void function( [WxCommandEvent] event ), int id ) |
-/// | void unbindSearchEvent() |
+/// | void unbindSearchEvent( int id ) |
 /// 
 /// [SearchCancel](/wxdart/wxGetSearchCancelEventType.html) event gets sent when user cancel the search |
 /// | ----------------- |
 /// | void bindSearchCancelEvent( void function( [WxCommandEvent] event ), int id ) |
-/// | void unbindSearchCancelEvent() |
+/// | void unbindSearchCancelEvent( int id ) |
 
 class WxSearchCtrl extends WxTextEntry {
   WxSearchCtrl( super.parent, super.id, { super.value, super.pos, WxSize size = wxDefaultSize, super.style } ) 

@@ -22,7 +22,7 @@ const int wxFD_SHOW_HIDDEN = 0x0400;
 
 /// Standard dialog to open and save files. Uses the native dialogs in
 /// both wxDart Native and wxDart Flutter to the extent possible and 
-/// it os available also on iOS, Android and the Web. Not all flags are
+/// if it available also on iOS, Android and the Web. Not all flags are
 /// supported everywhere.
 ///```dart
 ///  final dialog = WxFileDialog(this, "Open JPEG", defaultWildCard: '*.jpg;*.jpeg' );

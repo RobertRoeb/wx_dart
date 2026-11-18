@@ -15,9 +15,9 @@ const int wxDD_MULTIPLE = 0x0400;
 const int wxDD_SHOW_HIDDEN = 0x0001;
 const int wxDD_DEFAULT_STYLE = (wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
 
-/// Standard dialog to pick a directory. Uses the native dialogs im
+/// Standard dialog to pick a directory. Uses the native dialogs in
 /// both wxDart Native and wxDart Flutter to the extent possible and 
-/// it os available also on iOS, Android and the Web. Not all flags are
+/// if it is available also on iOS, Android and the Web. Not all flags are
 /// supported everywhere.
 ///```dart
 ///  final dialog = WxDirDialog(this, "Choose directory" );

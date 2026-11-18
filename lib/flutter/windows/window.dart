@@ -2415,7 +2415,7 @@ class WxWindow extends WxEvtHandler {
   int getDeviceOffsetX() {
     return 0; 
   }
-  /// Returns the x device offset relevant for scrolling
+  /// Returns the y device offset relevant for scrolling
   int getDeviceOffsetY() {
     return 0;
   }
