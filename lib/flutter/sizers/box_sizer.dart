@@ -270,7 +270,7 @@ class WxBoxSizer extends WxSizer {
           finalWidget = item._window!._build( context );
           WxSize size = item._window!.getMinSize();
           
-          if (((size.x != -1) && (item._proportion ==0)) || (size.y != -1))
+          if (((size.x != -1) && (item._proportion == 0)) || (size.y != -1) || (item._proportion != 0))
           {
             finalWidget = SizedBox(
               width:  (item._proportion !=0) ? double.infinity : (size.x != -1) ? size.x.toDouble() : null,
@@ -357,7 +357,8 @@ class WxBoxSizer extends WxSizer {
           if (!item._window!.isShown()) continue;
           finalWidget = item._window!._build( context );
           WxSize size = item._window!.getMinSize();
-          if (((size.y != -1) && (item._proportion ==0)) || (size.x != -1)) {
+          if (((size.y != -1) && (item._proportion == 0)) || (size.x != -1) || (item._proportion != 0))
+          {
             finalWidget = SizedBox(
               width: (size.x != -1) ? size.x.toDouble() : null,
               height:  (item._proportion !=0) ? double.infinity : (size.y != -1) ? size.y.toDouble() : null,
