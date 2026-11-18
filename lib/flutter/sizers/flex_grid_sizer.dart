@@ -218,7 +218,7 @@ class WxFlexGridSizer extends WxGridSizer {
             if (!item._window!.isShown()) continue;
             finalWidget = item._window!._build( context );
             WxSize size = item._window!.getMinSize();
-            if ((size.x != -1) || (size.y != -1)) {
+            if ((size.x != -1) || (size.y != -1) || (item._flag & wxEXPAND != 0) ) {
               finalWidget = SizedBox(
                 width: (item._flag & wxEXPAND != 0) ? double.infinity : (size.x != -1) ? size.x.toDouble() : null,
                 height: (size.y != -1) ? size.y.toDouble() : null,
@@ -275,17 +275,6 @@ class WxFlexGridSizer extends WxGridSizer {
               alignment: Alignment(halignment, valignment),
               child: finalWidget
             );
-
-          // test here again like at add/prepend/insert just in case
-          // the initialSize was set again.
-          if ((item._flag & wxEXPAND) != 0) {
-            if (item._kind == WxSizerKind.window) {
-              if (item._window!._initialSize.x != -1) {
-                item._window!._initialSize = WxSize( -1, item._window!._initialSize.y );
-                wxTheApp._setState();
-              }
-            }
-          }
 
           if ((getHGap() != 0) || (getVGap() != 0)) {
               finalWidget = Padding(
