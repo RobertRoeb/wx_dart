@@ -444,6 +444,12 @@ class WxDialog extends WxTopLevelWindow {
     destroy();
   }
 
+  /// Wraps [child] in IntrinsicHeight if the dialog has no given height
+  Widget _wrapIntrinsicHeight( Widget child ) {
+    if (_initialSize.y != -1) return child;
+    return IntrinsicHeight( child: child );
+  }
+
   Future<int> _showModalAsync( ) async
   {
     BuildContext? parentContext = _navigatorKey.currentContext;
@@ -532,6 +538,13 @@ class WxDialog extends WxTopLevelWindow {
               autoCenter: (_position.x == -1) && (_position.y == -1), // FloatingDialog does this internally anyways
               child: 
               IntrinsicWidth( 
+              // Without a given height, the dialog is as high as its content
+              // needs (as with setSizerAndFit() in wxWidgets). Without
+              // IntrinsicHeight, the Expanded below would get the height of
+              // the screen, and so would items with a proportion > 0.
+              child: _wrapIntrinsicHeight(
+              // nothing may be painted outside of the dialog
+              ClipRect( 
               child: SizedBox(
                 width: _initialSize.x == -1 ? (_makeFit ? null : 500) : _initialSize.x.toDouble(),
                 height: _initialSize.y == -1 ? null : _initialSize.y.toDouble(),
@@ -563,7 +576,7 @@ class WxDialog extends WxTopLevelWindow {
                       ]
                     )
                 )
-              ) 
+              ) ) )
             ) ) );
         }
       ).whenComplete(() {
