@@ -211,19 +211,22 @@ class WxFlexGridSizer extends WxGridSizer {
         late Widget finalWidget;
 
         if (index >= _items.length) {
-          finalWidget = SizedBox();
+          finalWidget = SizedBox.shrink();
         } else {
           WxSizerItem item = _items[index];
           if (item._kind == WxSizerKind.window) {
-            if (!item._window!.isShown()) continue;
-            finalWidget = item._window!._build( context );
-            WxSize size = item._window!.getMinSize();
-            if ((size.x != -1) || (size.y != -1) || (item._flag & wxEXPAND != 0) ) {
-              finalWidget = SizedBox(
-                width: (item._flag & wxEXPAND != 0) ? double.infinity : (size.x != -1) ? size.x.toDouble() : null,
-                height: (size.y != -1) ? size.y.toDouble() : null,
-                child: finalWidget
-              );
+            if (!item._window!.isShown()) {
+              finalWidget = SizedBox.shrink();
+            } else {
+              finalWidget = item._window!._build( context );
+              WxSize size = item._window!.getMinSize();
+              if ((size.x != -1) || (size.y != -1) || (item._flag & wxEXPAND != 0) ) {
+                finalWidget = SizedBox(
+                  width: (item._flag & wxEXPAND != 0) ? double.infinity : (size.x != -1) ? size.x.toDouble() : null,
+                  height: (size.y != -1) ? size.y.toDouble() : null,
+                  child: finalWidget
+                );
+              }
             }
           } else 
           if (item._kind == WxSizerKind.sizer) {

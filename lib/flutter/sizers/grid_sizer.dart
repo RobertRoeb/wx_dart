@@ -228,44 +228,51 @@ class WxGridSizer extends WxSizer {
           finalWidget = SizedBox();
         } else {
           WxSizerItem item = _items[index];
-          if (item._kind == WxSizerKind.window) {
-            if (!item._window!.isShown()) continue;
-            finalWidget = item._window!._build( context );
-            if (_sizeKnown && !_newItems.contains(item)) {
-              double halignment = -1.0;
-              if ((item._flag & wxALIGN_CENTER_HORIZONTAL) != 0) {
-                halignment = 0.0;
-              } else 
-              if ((item._flag & wxALIGN_RIGHT) != 0) {
-                halignment = 1.0;
-              }
+          if (item._kind == WxSizerKind.window)
+          {
+            if (!item._window!.isShown()) {
+              finalWidget = SizedBox();
+            } else {
+              finalWidget = item._window!._build( context );
+              if (_sizeKnown && !_newItems.contains(item))
+              {
+                double halignment = -1.0;
+                if ((item._flag & wxALIGN_CENTER_HORIZONTAL) != 0) {
+                  halignment = 0.0;
+                } else 
+                if ((item._flag & wxALIGN_RIGHT) != 0) {
+                  halignment = 1.0;
+                }
 
-              double valignment = -1.0;
-              if ((item._flag & wxALIGN_CENTER_VERTICAL) != 0) {
-                valignment = 0.0;
-              } else 
-              if ((item._flag & wxALIGN_BOTTOM) != 0) {
-                valignment = 1.0;
-              }
-              finalWidget = Align( 
-                  alignment: Alignment(halignment, valignment),
+                double valignment = -1.0;
+                if ((item._flag & wxALIGN_CENTER_VERTICAL) != 0) {
+                  valignment = 0.0;
+                } else 
+                if ((item._flag & wxALIGN_BOTTOM) != 0) {
+                  valignment = 1.0;
+                }
+                finalWidget = Align( 
+                    alignment: Alignment(halignment, valignment),
+                    child: finalWidget
+                  );
+                finalWidget = SizedBox(
+                  width: _maxWidth.toDouble(),
+                  height: _maxHeight.toDouble(),
                   child: finalWidget
                 );
-              finalWidget = SizedBox(
-                width: _maxWidth.toDouble(),
-                height: _maxHeight.toDouble(),
-                child: finalWidget
-              );
-            } else {
-            WxSize size = item._window!.getMinSize();
-            if ((size.x != -1) || (size.y != -1)) {
-              finalWidget = SizedBox(
-                width: (size.x != -1) ? size.x.toDouble() : null,
-                height: (size.y != -1) ? size.y.toDouble() : null,
-                child: finalWidget
-              );
+              }
+              else
+              {
+                WxSize size = item._window!.getMinSize();
+                if ((size.x != -1) || (size.y != -1)) {
+                  finalWidget = SizedBox(
+                    width: (size.x != -1) ? size.x.toDouble() : null,
+                    height: (size.y != -1) ? size.y.toDouble() : null,
+                    child: finalWidget
+                  );
+                }
+              }
             }
-          }
           } else 
           if (item._kind == WxSizerKind.sizer) {
             finalWidget = item._sizer!._build(context, owner);
