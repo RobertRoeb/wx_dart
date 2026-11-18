@@ -1896,37 +1896,18 @@ class WxWindow extends WxEvtHandler {
   {
     if (_sizer != null)
     {
-      // WxSize clientSize = getClientSize();
-      if ((_virtualSize.x > 0) || (_virtualSize.y > 0))
+      Widget finalWidget = _sizer!._build( context, this );
+
+      if ((this is! WxNonOwnedWindow) && ((_initialSize.x > 0) || (_initialSize.y > 0)))
       {
-        return _sizer!._build( context, this );
-/*
-        printName();
-        print( "MyInfoPage _virtualSize ${_virtualSize.x},${_virtualSize.y}" );
-        return SizedBox(  
-           width: 500, // _virtualSize.x > 0 ? _virtualSize.x.toDouble() : 500,    // clientSize.x.toDouble(), 
-           height: 500,
-           // Ignore height as we assume the sizer will size vertically.
-           // height: size.y > 0 ? size.y.toDouble() : clientSize.y.toDouble(), 
-           child: _sizer!._build( context, this ) );
-*/
-/*
-           child: Row( 
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text( "Text" ),
-              Expanded( flex: 1, 
-              child: Align( 
-               alignment: const Alignment(0, -1.0),
-               child: TextField() ) )
-           ] ) );
-*/
-      }
-      else
-      {
-        // the underlying SizedBox is added in WxSizer
-        return _sizer!._build( context, this );
-      }
+        final minWidth = _initialSize.x > 0 ? _initialSize.x.toDouble() : 0.0;
+        final minHeight = _initialSize.y > 0 ? _initialSize.y.toDouble() : 0.0;
+        finalWidget =  ConstrainedBox(
+          constraints: BoxConstraints( minWidth: minWidth, minHeight: minHeight ),
+          child: finalWidget );
+      } 
+
+      return finalWidget;
     } 
     else 
     {
