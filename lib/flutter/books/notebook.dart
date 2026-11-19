@@ -160,13 +160,13 @@ const int wxNB_ANIMATED_THEME = 0x1000;
 /// [NotebookPageChanged](/wxdart/wxGetNotebookPageChangedEventType.html) event gets sent when the user changed the page |
 /// | ----------------- |
 /// | void bindNotebookPageChangedEvent( void Function( [WxNotebookEvent] event ), int id ) |
-/// | void unbindNotebookPageChangedEvent() |
+/// | void unbindNotebookPageChangedEvent( int id ) |
 /// 
 /// Only in wxDart Native:
 /// [NotebookPageChanging](/wxdart/wxGetNotebookPageChangingEventType.html) event gets sent when user wishes to change the page |
 /// | ----------------- |
 /// | void bindNotebookPageChangingEvent( void Function( [WxNotebookEvent] event ), int id ) ) |
-/// | void unbindNotebookPageChangingEvent() |
+/// | void unbindNotebookPageChangingEvent( int id ) |
 /// 
 /// # Window styles
 /// | constant | value |

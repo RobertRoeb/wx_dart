@@ -523,58 +523,58 @@ abstract class WxHeaderCtrlBase extends WxWindow {
 /// # Events emitted
 /// [HeaderCtrlClick](/wxdart/wxGetHeaderCtrlClickEventType.html) event gets sent when the user clicked on a header. |
 /// | ----------------- |
-/// | void bindHeaderCtrlClickEvent( void function( [WxHeaderCtrlEvent] event ) ) |
-/// | void unbindHeaderCtrlClickEvent() |
+/// | void bindHeaderCtrlClickEvent( void function( [WxHeaderCtrlEvent] event ), int id ) |
+/// | void unbindHeaderCtrlClickEvent( int id ) |
 /// 
 /// [HeaderCtrlRightClick](/wxdart/wxGetHeaderCtrlRightClickEventType.html) event gets sent when the user right clicked on a header. |
 /// | ----------------- |
-/// | void bindHeaderCtrlRightClickEvent( void function( [WxHeaderCtrlEvent] event ) ) |
-/// | void unbindHeaderCtrlRightClickEvent() |
+/// | void bindHeaderCtrlRightClickEvent( void function( [WxHeaderCtrlEvent] event ), int id ) |
+/// | void unbindHeaderCtrlRightClickEvent( int id ) |
 /// 
 /// [HeaderCtrlDClick](/wxdart/wxGetHeaderCtrlDClickEventType.html) event gets sent when the user double-clicked on a header. |
 /// | ----------------- |
-/// | void bindHeaderCtrlDClickEvent( void function( [WxHeaderCtrlEvent] event ) ) |
-/// | void unbindHeaderCtrlDClickEvent() |
+/// | void bindHeaderCtrlDClickEvent( void function( [WxHeaderCtrlEvent] event ), int id ) |
+/// | void unbindHeaderCtrlDClickEvent( int id ) |
 /// 
 /// [HeaderCtrlRightDClick](/wxdart/wxGetHeaderCtrlRightDClickEventType.html) event gets sent when the user right double-clicked on a header. |
 /// | ----------------- |
-/// | void bindHeaderCtrlRightDClickEvent( void function( [WxHeaderCtrlEvent] event ) ) |
-/// | void unbindHeaderCtrlRightDClickEvent() |
+/// | void bindHeaderCtrlRightDClickEvent( void function( [WxHeaderCtrlEvent] event ), int id ) |
+/// | void unbindHeaderCtrlRightDClickEvent( int id ) |
 /// 
 /// [HeaderCtrlSeparatorDClick](/wxdart/wxGetHeaderCtrlSeparatorDClickEventType.html) event gets sent when the user double-clicked on a separator. |
 /// | ----------------- |
-/// | void bindHeaderCtrlSeparatorDClickEvent( void function( [WxHeaderCtrlEvent] event ) ) |
-/// | void unbindHeaderCtrlSeparatorDClickEvent() |
+/// | void bindHeaderCtrlSeparatorDClickEvent( void function( [WxHeaderCtrlEvent] event ), int id ) |
+/// | void unbindHeaderCtrlSeparatorDClickEvent( int id ) |
 /// 
 /// [HeaderCtrlBeginResize](/wxdart/wxGetHeaderCtrlBeginResizeEventType.html) event gets sent when the user begins resizing. |
 /// | ----------------- |
-/// | void bindHeaderCtrlBeginResizeEvent( void function( [WxHeaderCtrlEvent] event ) ) |
-/// | void unbindHeaderCtrlBeginResizeEvent() |
+/// | void bindHeaderCtrlBeginResizeEvent( void function( [WxHeaderCtrlEvent] event ), int id ) |
+/// | void unbindHeaderCtrlBeginResizeEvent( int id ) |
 /// 
 /// [HeaderCtrlResizing](/wxdart/wxGetHeaderCtrlBeginResizingEventType.html) event gets sent when the user is resizing. |
 /// | ----------------- |
-/// | void bindHeaderCtrlResizingEvent( void function( [WxHeaderCtrlEvent] event ) ) |
-/// | void unbindHeaderCtrlResizingEvent() |
+/// | void bindHeaderCtrlResizingEvent( void function( [WxHeaderCtrlEvent] event ), int id ) |
+/// | void unbindHeaderCtrlResizingEvent( int id ) |
 /// 
 /// [HeaderCtrlEndResize](/wxdart/wxGetHeaderCtrlEndResizeEventType.html) event gets sent when the user ended resizing. |
 /// | ----------------- |
-/// | void bindHeaderCtrlEndResizeEvent( void function( [WxHeaderCtrlEvent] event ) ) |
-/// | void unbindHeaderCtrlEndResizeEvent() |
+/// | void bindHeaderCtrlEndResizeEvent( void function( [WxHeaderCtrlEvent] event ), int id ) |
+/// | void unbindHeaderCtrlEndResizeEvent( int id ) |
 /// 
 /// [HeaderCtrlBeginReorder](/wxdart/wxGetHeaderCtrlBeginReorderEventType.html) event gets sent when the user egan reordering. |
 /// | ----------------- |
-/// | void bindHeaderCtrlBeginReorderEvent( void function( [WxHeaderCtrlEvent] event ) ) |
-/// | void unbindHeaderCtrlBeginReorderEvent() |
+/// | void bindHeaderCtrlBeginReorderEvent( void function( [WxHeaderCtrlEvent] event ), int id ) |
+/// | void unbindHeaderCtrlBeginReorderEvent( int id ) |
 /// 
 /// [HeaderCtrlEndReorder](/wxdart/wxGetHeaderCtrlEndReorderEventType.html) event gets sent when the user ended reordering. |
 /// | ----------------- |
-/// | void bindHeaderCtrlEndReorderEvent( void function( [WxHeaderCtrlEvent] event ) ) |
-/// | void unbindHeaderCtrlEndReorderEvent() |
+/// | void bindHeaderCtrlEndReorderEvent( void function( [WxHeaderCtrlEvent] event ), int id ) |
+/// | void unbindHeaderCtrlEndReorderEvent( int id ) |
 /// 
 /// [HeaderCtrlDraggingCancelled](/wxdart/wxGetHeaderCtrlDraggingCancelledEventType.html) event gets sent when the user ended reordering. |
 /// | ----------------- |
-/// | void bindHeaderCtrlDraggingCancelledEvent( void function( [WxHeaderCtrlEvent] event ) ) |
-/// | void unbindHeaderCtrlDraggingCancelledEvent() |
+/// | void bindHeaderCtrlDraggingCancelledEvent( void function( [WxHeaderCtrlEvent] event ), int id ) |
+/// | void unbindHeaderCtrlDraggingCancelledEvent( int id ) |
 
 abstract class WxHeaderCtrl extends WxHeaderCtrlBase {
   WxHeaderCtrl(super.parent, super.id, { super.pos = wxDefaultPosition, super.size = wxDefaultSize, super.style = wxHD_DEFAULT_STYLE } ) {

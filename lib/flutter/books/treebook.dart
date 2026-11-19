@@ -131,24 +131,24 @@ extension TreebookNodeExpandedEventBinder on WxEvtHandler {
 /// [TreebookPageChanged](/wxdart/wxGetTreebookPageChangedEventType.html) event gets sent when the user changed the page |
 /// | ----------------- |
 /// | void bindTreebookPageChangedEvent( void Function( [WxNotebookEvent] event ), int id ) |
-/// | void unbindTreebookPageChangedEvent() |
+/// | void unbindTreebookPageChangedEvent( int id ) |
 /// 
 /// Only in wxDart Native:
 /// [TreebookPageChanging](/wxdart/wxGetTreebookPageChangingEventType.html) event gets sent when user wishes to change the page |
 /// | ----------------- |
 /// | void bindTreebookPageChangingEvent( void Function( [WxNotebookEvent] event ), int id ) ) |
-/// | void unbindTreebookPageChangingEvent() |
+/// | void unbindTreebookPageChangingEvent( int id ) |
 /// 
 /// [TreebookNodeCollapsed](/wxdart/wxGetTreebookNodeCollapsedEventType.html) event gets sent when a node collapsed |
 /// | ----------------- |
 /// | void bindTreebookNodeCollapsedEvent( void Function( [WxNotebookEvent] event ), int id ) |
-/// | void unbindTreebookNodeCollapsedEvent() |
+/// | void unbindTreebookNodeCollapsedEvent( int id ) |
 /// 
 /// 
 /// [TreebookNodeExpanded](/wxdart/wxGetTreebookNodeExpandedEventType.html) event gets sent when a node expanded |
 /// | ----------------- |
 /// | void bindTreebookNodeExpandedEvent( void Function( [WxNotebookEvent] event ), int id ) |
-/// | void unbindTreebookNodeExpandedEvent() |
+/// | void unbindTreebookNodeExpandedEvent( int id ) |
 
 class WxTreebook extends WxBookCtrlBase {
   WxTreebook( super.parent, super.id, { super.pos, super.size, int flags = 0 } ) 
