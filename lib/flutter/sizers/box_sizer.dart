@@ -263,7 +263,7 @@ class WxBoxSizer extends WxSizer {
             {
               finalWidget = SizedBox(
                 width:  (item._proportion !=0) ? double.infinity : (size.x != -1) ? size.x.toDouble() : null,
-                height: ((item._flag & wxEXPAND) == 0) ? size.y.toDouble() : null,
+                height: ((item._flag & wxEXPAND) == 0) && (size.y > 0) ? size.y.toDouble() : null,
                 child: finalWidget
               );
             }
@@ -389,7 +389,7 @@ class WxBoxSizer extends WxSizer {
             if (((size.y != -1) && (item._proportion == 0)) || (size.x != -1))
             {
               finalWidget = SizedBox(
-                width: ((item._flag & wxEXPAND) == 0) ? size.x.toDouble() : null,
+                width: ((item._flag & wxEXPAND) == 0) && (size.x > 0) ? size.x.toDouble() : null,
                 height:  (item._proportion !=0) ? double.infinity : (size.y != -1) ? size.y.toDouble() : null,
                 child: finalWidget
               );
