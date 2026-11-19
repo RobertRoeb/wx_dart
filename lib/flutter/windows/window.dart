@@ -1898,20 +1898,36 @@ class WxWindow extends WxEvtHandler {
     {
       Widget finalWidget = _sizer!._build( context, this );
 
+/*
       if ((this is! WxNonOwnedWindow) && ((_initialSize.x > 0) || (_initialSize.y > 0)))
       {
+        print("_doBuildChildrenWithOrWithoutSizer ${this.runtimeType}" );
         final minWidth = _initialSize.x > 0 ? _initialSize.x.toDouble() : 0.0;
         final minHeight = _initialSize.y > 0 ? _initialSize.y.toDouble() : 0.0;
         finalWidget =  ConstrainedBox(
           constraints: BoxConstraints( minWidth: minWidth, minHeight: minHeight ),
           child: finalWidget );
       } 
+*/
 
       return finalWidget;
     } 
     else 
     {
-      return _doBuildChildrenNoSizer(context);
+      Widget finalWidget = _doBuildChildrenNoSizer(context);
+
+/*
+      if ((this is! WxNonOwnedWindow) && ((_initialSize.x > 0) || (_initialSize.y > 0)))
+      {
+        print("adding minSize to noSizer wwindow ${this.runtimeType}" );
+        final minWidth = _initialSize.x > 0 ? _initialSize.x.toDouble() : 0.0;
+        final minHeight = _initialSize.y > 0 ? _initialSize.y.toDouble() : 0.0;
+        finalWidget =  ConstrainedBox(
+          constraints: BoxConstraints( minWidth: minWidth, minHeight: minHeight ),
+          child: finalWidget );
+      } 
+*/
+      return finalWidget;
     }
   }
 
