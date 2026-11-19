@@ -228,25 +228,9 @@ class WxBoxSizer extends WxSizer {
 
   @override
   Widget _build( BuildContext context, WxWindow owner ) {
-    if (_orientation == wxHORIZONTAL) {
-
-      Row row = Row( 
-        mainAxisSize: MainAxisSize.min,
-        children: [] );
-
-/*      row.children.add( 
-        Align( 
-               alignment: const Alignment(0, -1.0),
-               child: Text( "Text" ) )
-        );
-      row.children.add( 
-        Expanded( flex: 1, 
-              child: Align( 
-               alignment: const Alignment(0, -1.0),
-               child: TextField() ) ) );
-      return row;
-*/
-
+    if (_orientation == wxHORIZONTAL)
+    {
+      List<Widget> children = [];
       bool hasExpanded = false;
 
       for (WxSizerItem item in _items)
@@ -265,19 +249,45 @@ class WxBoxSizer extends WxSizer {
           );
           // finalWidget = SizedBox(height: item.height.toDouble());
         } else 
-        if (item._kind == WxSizerKind.window) {
+        if (item._kind == WxSizerKind.window)
+        {
           if (!item._window!.isShown()) continue;
-          finalWidget = item._window!._build( context );
+
           WxSize size = item._window!.getMinSize();
-          
-          if (((size.x != -1) && (item._proportion == 0)) || (size.y != -1) || (item._proportion != 0))
+
+          if (item._window is WxControl) 
           {
+            // -1,-1 is natural size for native control
+            finalWidget = item._window!._build( context );
+            if (((size.x != -1) && (item._proportion == 0)) || (size.y != -1))
+            {
+              finalWidget = SizedBox(
+                width:  (item._proportion !=0) ? double.infinity : (size.x != -1) ? size.x.toDouble() : null,
+                height: ((item._flag & wxEXPAND) == 0) ? size.y.toDouble() : null,
+                child: finalWidget
+              );
+            }
+          }
+          else
+          {
+            // -1 is invalid size for own controls
+            if ((size.y == -1) && ((item._flag & wxEXPAND) == 0)) {
+              wxLogError( "WxRow item with neither height nor wxEXPAND set for ${item._window.runtimeType}" );
+              children.add( Text( "Error: no height" ) );
+              continue;
+            }
+            if ((size.x == -1) && (item._proportion  == 0)) {
+              wxLogError( "WxRow item with neither width nor proportion set for ${item._window.runtimeType}" );
+              children.add( Text( "Error: no width" ) );
+              continue;
+            }
             finalWidget = SizedBox(
-              width:  (item._proportion !=0) ? double.infinity : (size.x != -1) ? size.x.toDouble() : null,
-              height: (size.y != -1) ? size.y.toDouble() : null,
-              child: finalWidget
+              width:  (item._proportion !=0) ? double.infinity : size.x.toDouble(),
+              height: ((item._flag & wxEXPAND) == 0) ? size.y.toDouble() : null,
+              child: item._window!._build( context )
             );
           }
+
         } else 
         if (item._kind == WxSizerKind.sizer) {
           finalWidget = item._sizer!._build( context, owner );
@@ -285,21 +295,25 @@ class WxBoxSizer extends WxSizer {
           return Text( 'empty WxSizerItem created');
         }
 
+        if ((item._flag & wxEXPAND) != 0) {
+          hasExpanded = true;
+        } else 
         if ((item._flag & wxALIGN_BOTTOM) != 0) {
-            finalWidget = Align( 
-               alignment: const Alignment(0, 1.0),
-               child: finalWidget );
-          } else 
-          if ((item._flag & wxEXPAND) != 0) {
-            hasExpanded = true;
-            finalWidget = Column( children: [
-              Expanded(child: finalWidget)
-            ] );
-          } else 
-          if ((item._flag & wxALIGN_CENTRE) == 0) {
-            finalWidget = Align( 
-               alignment: const Alignment(0, -1.0),
-               child: finalWidget );
+          hasExpanded = true;
+          finalWidget = Align( 
+              alignment: const Alignment(0, 1.0),
+              child: finalWidget );
+        } else 
+        if ((item._flag & wxALIGN_CENTRE) != 0) {
+          hasExpanded = true;
+          finalWidget = Align( 
+              alignment: const Alignment(0, 0.0),
+              child: finalWidget );
+        } else {
+          // top
+          finalWidget = Align( 
+              alignment: const Alignment(0, -1.0),
+              child: finalWidget );
         }
 
         if (((item._flag & wxALL) != 0) && (item._border != 0)) {
@@ -318,51 +332,86 @@ class WxBoxSizer extends WxSizer {
           finalWidget = exp;
         }
 
-        row.children.add( finalWidget );
+        children.add( finalWidget );
       }
 
-      if (hasExpanded) {
-        return ReportSize( child: row, 
+      Widget row = 
+        (hasExpanded) 
+        ? IntrinsicHeight (
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
+            children: children
+          )
+        )
+        : Row(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: children
+          );
+
+      return  ReportSize( child: row, 
           onSizeChange: (size) {
             _setSizeInternal( WxSize(size.width.floor(),size.height.floor()) );
           }
         );
-      }
-      return ReportSize( child: IntrinsicHeight( child: row ), 
-        onSizeChange: (size) {
-          _setSizeInternal( WxSize(size.width.floor(),size.height.floor()) );
-        }
-      );
     } else {
 
-      Column col = Column( 
-        mainAxisSize: MainAxisSize.min,
-        children: [] );
+      List<Widget> children = [];
       bool hasExpanded = false;
 
-      for (WxSizerItem item in _items) {
+      for (WxSizerItem item in _items)
+      {
         Widget ? finalWidget;
         if (item._kind == WxSizerKind.spacer)
         {
           item._spacerParentWindow = owner;
           finalWidget = ReportSize( 
+            child: SizedBox(
               key: item._spacerWidgetKey,
-            child: SizedBox(height: item._height.toDouble()), 
-            onSizeChange: (size) {
+              height: item._height.toDouble()), 
+              onSizeChange: (size) { 
               item._spacerSize = WxSize(size.width.floor(),size.height.floor());
-            }
+            } 
           );
+          // finalWidget = SizedBox(height: item.height.toDouble());
         } else 
-        if (item._kind == WxSizerKind.window) {
+        if (item._kind == WxSizerKind.window)
+        {
           if (!item._window!.isShown()) continue;
-          finalWidget = item._window!._build( context );
+
           WxSize size = item._window!.getMinSize();
-          if (((size.y != -1) && (item._proportion == 0)) || (size.x != -1) || (item._proportion != 0))
+
+          if (item._window is WxControl) 
           {
+            // -1,-1 is natural size for native control
+            finalWidget = item._window!._build( context );
+            if (((size.y != -1) && (item._proportion == 0)) || (size.x != -1))
+            {
+              finalWidget = SizedBox(
+                width: ((item._flag & wxEXPAND) == 0) ? size.x.toDouble() : null,
+                height:  (item._proportion !=0) ? double.infinity : (size.y != -1) ? size.y.toDouble() : null,
+                child: finalWidget
+              );
+            }
+          }
+          else
+          {
+            // -1 is invalid size for own controls
+            if ((size.x == -1) && ((item._flag & wxEXPAND) == 0)) {
+              wxLogError( "WxColumn item with neither width nor wxEXPAND set for ${item._window.runtimeType}" );
+              children.add( Text( "Error: no width" ) );
+              continue;
+            }
+            if ((size.y == -1) && (item._proportion  == 0)) {
+              wxLogError( "WxColumn item with neither height nor proportion set for ${item._window.runtimeType}" );
+              children.add( Text( "Error: no height" ) );
+              continue;
+            }
             finalWidget = SizedBox(
-              width: (size.x != -1) ? size.x.toDouble() : null,
-              height:  (item._proportion !=0) ? double.infinity : (size.y != -1) ? size.y.toDouble() : null,
-              child: finalWidget
+              width: ((item._flag & wxEXPAND) == 0) ? size.x.toDouble() : null,
+              height:  (item._proportion !=0) ? double.infinity : size.y.toDouble(),
+              child: item._window!._build( context )
             );
           }
         } else 
@@ -372,21 +421,25 @@ class WxBoxSizer extends WxSizer {
           return Text( 'empty WxSizerItem created');
         }
 
+        if ((item._flag & wxEXPAND) != 0) {
+          hasExpanded = true;
+        } else 
         if ((item._flag & wxALIGN_RIGHT) != 0) {
-            finalWidget = Align( 
-               alignment: const Alignment(1.0, 0),
-               child: finalWidget );
-          } else 
-          if ((item._flag & wxEXPAND) != 0) {
-            hasExpanded = true;
-            finalWidget = Row( children: [
-              Expanded(child: finalWidget)
-            ] );
-          } else
-          if ((item._flag & wxALIGN_CENTRE) == 0) {
-            finalWidget = Align( 
-               alignment: const Alignment(-1.0, 0),
-               child: finalWidget );
+          hasExpanded = true;
+          finalWidget = Align( 
+              alignment: const Alignment(1.0, 0),
+              child: finalWidget );
+        } else 
+        if ((item._flag & wxALIGN_CENTRE) != 0) {
+          hasExpanded = true;
+          finalWidget = Align( 
+              alignment: const Alignment(0, 0),
+              child: finalWidget );
+        } else {
+          // left
+          finalWidget = Align( 
+              alignment: const Alignment(-1.0, 0),
+              child: finalWidget );
         }
 
         if (((item._flag & wxALL) != 0) && (item._border != 0)) {
@@ -405,31 +458,29 @@ class WxBoxSizer extends WxSizer {
           finalWidget = exp;
         }
 
-        col.children.add( finalWidget );      
+        children.add( finalWidget );
       }
 
-      if (hasExpanded) {
-        return ReportSize( child: col, 
-          onSizeChange: (size)
-          {
+      Widget col = 
+        (hasExpanded) 
+        ? IntrinsicWidth (
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
+            children: children
+          )
+        )
+        : Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: children
+          );
+
+      return  ReportSize( child: col, 
+          onSizeChange: (size) {
             _setSizeInternal( WxSize(size.width.floor(),size.height.floor()) );
-            /* for (WxSizerItem item in items) {
-              if (item.kind == WxSizerKind.sizer) {
-                if (item.sizer!.isFlexGridSizerWithGrowableRow()) {
-                  WxFlexGridSizer flex = item.sizer as WxFlexGridSizer;
-                  flex.distributeHeightAmongGrowableRows( size.height.floor() );
-                  break;
-                }
-              }
-            } */
-          } 
+          }
         );
-      } 
-      return ReportSize( child: IntrinsicWidth( child: col ), 
-        onSizeChange: (size) {
-          _setSizeInternal( WxSize(size.width.floor(),size.height.floor()) );
-        } 
-      );
     }
   }
 }
