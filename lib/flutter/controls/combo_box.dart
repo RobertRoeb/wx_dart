@@ -49,15 +49,15 @@ const int wxCB_DROPDOWN = 0x0020;
 /// [Combobox](/wxdart/wxGetComboboxEventType.html) event gets sent when the user selects an item from the drop down. |
 /// | ----------------- |
 /// | void bindComboboxEvent( void function( [WxCommandEvent] event ), int id ) |
-/// | void unbindComboboxEvent() |
+/// | void unbindComboboxEvent( int id ) |
 /// [Text](/wxdart/wxGetTextEventType.html) event gets sent when the user enters text. |
 /// | ----------------- |
 /// | void bindTextEvent( void function( [WxCommandEvent] event ), int id ) |
-/// | void unbindTextEvent() |
+/// | void unbindTextEvent( int id ) |
 /// [TextEnter](/wxdart/wxGetTextEnterEventType.html) event gets sent when hits enter and the wxTE_PROCESS_ENTER style is used. |
 /// | ----------------- |
 /// | void bindTextEnterEvent( void function( [WxCommandEvent] event ), int id ) |
-/// | void unbindTextEnterEvent() |
+/// | void unbindTextEnterEvent( int id ) |
 /// 
 /// # Window styles
 /// [ constant | meaning |

@@ -46,7 +46,7 @@ const int wxCHK_UNDETERMINED = 2;
 /// [Checkbox](/wxdart/wxGetCheckboxEventType.html) event gets sent when the user checks or unchecks |
 /// | ----------------- |
 /// | void bindCheckboxEvent( void function( [WxCommandEvent] event ), int id ) |
-/// | void unbindCheckboxEvent() |
+/// | void unbindCheckboxEvent( int id ) |
 /// 
 /// # Window style
 /// | constant | meaning |

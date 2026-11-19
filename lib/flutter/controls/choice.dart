@@ -37,7 +37,7 @@ extension ChoiceEventBinder on WxEvtHandler {
 /// [Choice](/wxdart/wxGetChoiceEventType.html) event gets sent when the user has selected an item |
 /// | ----------------- |
 /// | void bindChoiceEvent( void function( [WxCommandEvent] event ), int id ) |
-/// | void unbindChoiceEvent() |
+/// | void unbindChoiceEvent( int id ) |
 /// 
 /// # Window style
 /// | constant | meaning |

@@ -44,7 +44,7 @@ extension ToggleButtonEventBinder on WxEvtHandler {
 /// [ToggleButton](/wxdart/wxGetToggleButtonEventType.html) event gets sent when the button is toggled or untoggled. |
 /// | ----------------- |
 /// | void bindToggleButtonEvent( void function( [WxCommandEvent] event ), int id ) |
-/// | void unbindToggleButtonEvent() |
+/// | void unbindToggleButtonEvent( int id ) |
 /// 
 class WxToggleButton extends WxControl {
 

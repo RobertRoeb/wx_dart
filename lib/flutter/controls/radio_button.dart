@@ -58,7 +58,7 @@ const int wxRB_SINGLE = 0x0008;
 /// [RadioButton](/wxdart/wxGetRadioButtonEventType.html) event gets sent when the user selects this item. |
 /// | ----------------- |
 /// | void bindRadioButtonEvent( void function( [WxCommandEvent] event ), int id ) |
-/// | void unbindRadioButtonEvent() |
+/// | void unbindRadioButtonEvent( int id ) |
 /// 
 /// # Window style
 /// | constant | meaning |

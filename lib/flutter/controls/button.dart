@@ -50,7 +50,7 @@ extension ButtonEventBinder on WxEvtHandler {
 /// [Button](/wxdart/wxGetButtonEventType.html) event gets sent when the button is pressed. |
 /// | ----------------- |
 /// | void bindButtonEvent( void function( [WxCommandEvent] event ), int id ) |
-/// | void unbindButtonEvent() |
+/// | void unbindButtonEvent( int id ) |
 /// 
 /// # Windows styles
 /// | constant | meaning |

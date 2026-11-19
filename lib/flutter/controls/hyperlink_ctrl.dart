@@ -93,7 +93,7 @@ const int wxHL_DEFAULT_STYLE = (wxHL_CONTEXTMENU|wxNO_BORDER|wxHL_ALIGN_CENTRE);
 /// [Hyperlink](/wxdart/wxGetHyperlinkEventType.html) gets sent when user clicked on hyper link |
 /// | ----------------- |
 /// | void bindHyperlinkEvent( void function( [WxHyperlinkEvent] event ), int id ) |
-/// | void unbindHyperlinkEvent() |
+/// | void unbindHyperlinkEvent( int id ) |
 /// 
 /// # Windows styles
 /// | constant | meaning |
