@@ -143,6 +143,9 @@ class WxPaintDC extends WxDC {
       if (_window._scrollOwnerWindow != null) {
         _deviceLocalOriginX = _window._scrollOwnerWindow!.getDeviceOffsetX();
         _deviceLocalOriginY = _window._scrollOwnerWindow!.getDeviceOffsetY();
+      } else {
+        _deviceLocalOriginX = _window.getDeviceOffsetX();
+        _deviceLocalOriginY = _window.getDeviceOffsetY();
       }
     } else {
       wxLogError( "No canvas to draw onto." );
