@@ -10,11 +10,26 @@ part of '../../wx_dart.dart';
 // ------------------------- wxNonOwnedWindow ----------------------
 
 /// Base class for [WxTopLevelWindow] and [WxPopupWindow]
+/// 
+/// Destroy/delete interface
+/// * [destroy]
+/// * [isBeingDeleted]
 
 class WxNonOwnedWindow extends WxWindow {
   WxNonOwnedWindow( WxWindow? parent, int id, { WxPoint pos = wxDefaultPosition, WxSize size = wxDefaultSize, int style = 0 } ) 
     : super( parent, id, pos, size, style );
     
+  /// Returns true if this toplevel window has been scheduled for deletion
+  /// 
+  /// Toplevel windows do not get deleted immediately. Howerever, using
+  /// [isBeingDeleted] is not a safe way to test against the early 
+  /// destruction of the underlying C++ window in wxDart Native. 
+  /// Override [WxWindow.dispose] instead.
+  bool isBeingDeleted() {
+    return _isBeingDeleted;
+  }
+
+  bool _isBeingDeleted = false;
 }
 
 // ------------------------- wxTopLevelWindow ----------------------
@@ -141,7 +156,6 @@ class WxTopLevelWindow extends WxNonOwnedWindow {
   }
 
   String _title;
-  bool _isBeingDeleted = false;
   bool _hasRequestedMoreIdleEvents = false;
   bool _isTouch = false;
   bool _isFullScreen = false;
@@ -214,13 +228,6 @@ class WxTopLevelWindow extends WxNonOwnedWindow {
     _topLevelWindows.remove( this );
 
     return super.destroy();
-  }
-
-  /// Returns true if this toplevel window has been scheduled for deletion
-  /// 
-  /// Toplevel windows do not get deleted immediately.
-  bool isBeingDeleted() {
-    return _isBeingDeleted;
   }
 
   /// Requests to close the window. Don't allow a veto if [force] is true.
