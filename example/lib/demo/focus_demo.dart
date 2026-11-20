@@ -234,6 +234,9 @@ const int idPopupTransientWindowButton = 101;
 class MyFocusWindow extends WxScrolledWindow {
   MyFocusWindow( WxWindow parent ) : super( parent, -1, style: wxVSCROLL )
   {
+    final mainSizer = WxColumn();
+    setSizer( mainSizer );
+
     _popup = WxPopupWindow(this);
       final panel1 = WxPanel( _popup, -1 );
       // panel1.setBackgroundColour(wxRED);
@@ -264,12 +267,8 @@ class MyFocusWindow extends WxScrolledWindow {
       }
     }, -1 );
 
-    final mainSizer = WxColumn();
-    setSizer( mainSizer );
-
     final topPanel = WxPanel(this, -1);
-    // topPanel.setBackgroundColour(wxGREEN);
-    mainSizer.add( topPanel, flag: wxEXPAND, proportion: 1 ); 
+    mainSizer.add( topPanel, flag: wxEXPAND ); 
 
     final topSizer = WxFlexGridSizer(2);
     topSizer.addGrowableCol(0);
@@ -307,7 +306,6 @@ class MyFocusWindow extends WxScrolledWindow {
     topSizer.addSizer(buttonSizer2,flag: wxEXPAND);
     topSizer.add( WxStaticText(topPanel, -1, "<- stretch spacer test"), flag: wxALL|wxALIGN_CENTER_VERTICAL, border: 10 );
 
-
     topSizer.add( MyFocussableWindow(topPanel, WxSize(250,50)), flag: wxALL|wxEXPAND, border: 10 );
     topSizer.add( WxStaticText(topPanel, -1, "<- WxDropTarget for text"), flag: wxALL|wxALIGN_CENTER_VERTICAL, border: 10 );
 
@@ -318,7 +316,7 @@ class MyFocusWindow extends WxScrolledWindow {
     topSizer.add( WxStaticText(topPanel, -1, "<- WxDropTarget for files"), flag: wxALL|wxALIGN_CENTER_VERTICAL, border: 10 );
 
     final bottomPanel = WxPanel(this, -1);
-    mainSizer.add( bottomPanel, flag: wxEXPAND, proportion: 1 ); 
+    mainSizer.add( bottomPanel, flag: wxEXPAND ); 
 
     final bottomSizer = WxFlexGridSizer(2);
     bottomPanel.setSizer(bottomSizer);
@@ -326,6 +324,7 @@ class MyFocusWindow extends WxScrolledWindow {
     _dragTextCtrl1 = WxTextCtrl(bottomPanel, -1, value: "wxDart is cool", size: WxSize(220,-1) );
     bottomSizer.add( _dragTextCtrl1, flag: wxALL, border: 10 );
     bottomSizer.add( WxStaticText(bottomPanel, -1, "Drag and Drop text"), flag: wxALL, border: 10 );
+
     _dropSourceWindow1 = MyNonFocussableWindow(bottomPanel, WxSize(250,50) );
     _dropSourceWindow1.setDropText( _dragTextCtrl1.getValue() );
     _dragTextCtrl1.bindTextEvent( (event) => _dropSourceWindow1.setDropText( event.getString() ), -1 );
@@ -337,7 +336,6 @@ class MyFocusWindow extends WxScrolledWindow {
     
     bottomSizer.add( MyNonFocussableWindow(bottomPanel, WxSize(250,60), isBitmap: true ), flag: wxALL, border: 10 );
     bottomSizer.add( WxStaticText(bottomPanel, -1, "<- WxDropSource for bitmap"), flag: wxALL|wxALIGN_CENTER_VERTICAL, border: 10 );
-    
   }
 
   late WxPopupWindow _popup;
