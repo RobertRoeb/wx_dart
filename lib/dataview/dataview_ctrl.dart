@@ -4443,7 +4443,20 @@ class WxDataViewCtrl extends WxScrolledWindow {
     setScrollbars( 20, 20, 40, 80 );
 
     bindIdleEvent(onIdle);
+
+    // The header follows horizontal scrolling of the
+    // client area (as wxDataViewMainWindow::ScrollWindow in wxWidgets)
+    bindScrollWinEvent( (event) {
+      if (event.getOrientation() == wxHORIZONTAL && _headerArea != null) {
+        final x = getViewStartPixels().x;
+        _headerArea!.scrollWindow( _headerScrollX - x, 0 );
+        _headerScrollX = x;
+      }
+      event.skip();
+    });
   }
+
+  int _headerScrollX = 0;
 
   @override
   void printName() {
