@@ -255,7 +255,7 @@ class WxBoxSizer extends WxSizer {
 
           WxSize size = item._window!.getMinSize();
 
-          if (item._window is WxControl) 
+          if ((item._window is WxControl) || (item._window!._sizer != null))
           {
             // -1,-1 is natural size for native control
             finalWidget = item._window!._build( context );
@@ -270,7 +270,7 @@ class WxBoxSizer extends WxSizer {
           }
           else
           {
-            // -1 is invalid size for own controls
+            // -1 is an invalid size for own controls (unless they have a sizer, see above)
             if ((size.y == -1) && ((item._flag & wxEXPAND) == 0)) {
               wxLogError( "WxRow item with neither height nor wxEXPAND set for ${item._window.runtimeType}" );
               children.add( Text( "Error: no height" ) );
@@ -382,7 +382,7 @@ class WxBoxSizer extends WxSizer {
 
           WxSize size = item._window!.getMinSize();
 
-          if (item._window is WxControl) 
+          if ((item._window is WxControl) || (item._window!._sizer != null))
           {
             // -1,-1 is natural size for native control
             finalWidget = item._window!._build( context );
@@ -397,7 +397,7 @@ class WxBoxSizer extends WxSizer {
           }
           else
           {
-            // -1 is invalid size for own controls
+            // -1 is an invalid size for own controls (unless they have a sizer, see above)
             if ((size.x == -1) && ((item._flag & wxEXPAND) == 0)) {
               wxLogError( "WxColumn item with neither width nor wxEXPAND set for ${item._window.runtimeType}" );
               children.add( Text( "Error: no width" ) );
