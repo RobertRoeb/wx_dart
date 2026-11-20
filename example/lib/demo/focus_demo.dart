@@ -281,6 +281,8 @@ class MyFocusWindow extends WxScrolledWindow {
     topSizer.addSizer(buttonSizer);
     topSizer.add( WxStaticText(topPanel, -1, "<- Popup window tests"), flag: wxALL|wxALIGN_CENTER_VERTICAL, border: 10 );
 
+    findWindow( idPopupWindowButton )?.setToolTip( "Show popup window" );
+
     bindButtonEvent( (_) {
       final window = findWindow(idPopupWindowButton);
       if (window != null) {

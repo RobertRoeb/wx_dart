@@ -9,6 +9,7 @@
 * Support ellipsize in WxStaticText
 * Support non-wrapping mode in WxStaticText
 * Updated docs of unbindXXX() function signatures
+* Actually implemented tooltips
 
 ## 0.9.31
 
@@ -43,7 +44,7 @@
 * Implement getSelection() in WxComboBox
 * Change selected item if an item above it or all items were deleted
 * Added WxBitmapBundle().makeDisabled() stub and .getDefaultSize()
-* Added WxWindow.setToolTip(), .unsetToolTip() and getToolTipText()
+* Added WxWindow.setToolTip(), .unsetToolTip() and getToolTipText() stubs
 * Corrected WxColour.getLuminance() calculation (normalize to 0 to 1)
 * Progress on DPI aware WxBitmapBundle also when using async loading
 * Added WxBitmap.getScaleFactor(), .getLogicalHWidth() and getLogicalHeight()

@@ -953,6 +953,14 @@ class WxWindow extends WxEvtHandler {
     _sliverView = sliverView;
   }
 
+  Widget _doBuildTooltip( BuildContext context, Widget child ) {
+    if (_tooltip == null) return child;
+    return Tooltip(
+      message: _tooltip!,
+      child: child,
+    );
+  }
+
   Widget _build( BuildContext context )
   {
     Widget child = _doBuildChildrenWithOrWithoutSizer( context ); 
@@ -1851,6 +1859,8 @@ class WxWindow extends WxEvtHandler {
 
   Widget _doBuildBackgroundAndBorder( BuildContext context, Widget child )
   {
+    // _doBuildBackgroundAndBorder also gets called by WxControl
+    child = _doBuildTooltip( context, child );
     
     if (_backgroundColour != null) {
       child = ColoredBox(color: 
