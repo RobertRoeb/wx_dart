@@ -331,8 +331,8 @@ class WxWindowCreateEventTableEntry extends WxEventTableEntry {
 ///
 /// [WindowCreate](/wxdart/wxGetWindowCreateEventType.html) event gets sent when a window was created by or in the system |
 /// | ----------------- |
-/// | void bindWindowCreateEvent( OnWindowCreateEventFunc ) |
-/// | void unbindWindowCreateEvent() |
+/// | void bindWindowCreateEvent( void function( [WxWindowCreateEvent] event, int id ) |
+/// | void unbindWindowCreateEvent( int id ) |
 /// 
 class WxWindowCreateEvent extends WxCommandEvent {
   WxWindowCreateEvent( WxWindow? win ) : super( wxGetWindowCreateEventType(), win != null ? win.getId() : 0 ) {
@@ -535,7 +535,7 @@ class WxPaintEventTableEntry extends WxEventTableEntry {
 
 /// [Paint](/docs/wxdart/wxGetPaintEventType.html) event gets sent when a part of the window needs to be redrawn |
 /// | ----------------- |
-/// | void bindPaintEvent( OnPaintEventFunc ) |
+/// | void bindPaintEvent( void function( [WxPaintEvent] event ) |
 /// | void unbindPaintEvent() |
 /// 
 /// Here is an example of how paint event are usually processed.
@@ -620,7 +620,7 @@ class WxInitDialogEventTableEntry extends WxEventTableEntry {
 
 /// [InitDialog](/docs/wxdart/wxGetInitDialogEventType.html) event gets sent when the dialog is ready and data can be transferred to it. |
 /// | ----------------- |
-/// | void bindInitDialogEvent( OnInitDialogEventFunc ) |
+/// | void bindInitDialogEvent( void function( [WxInitDialogEvent] event  ) ) |
 /// | void unbindInitDialogEvent() |
 /// 
 /// See also [WxDialogValidateEvent].
@@ -661,8 +661,8 @@ class WxDialogValidateEventTableEntry extends WxEventTableEntry {
 ///
 /// [DialogValidate](/docs/wxdart/wxGetDialogValidateEventType.html) event gets sent when user presses OK and data should be validated and transferred. |
 /// | ----------------- |
-/// | void bindDialogValidateEvent( OnDialogValidateEventFunc ) |
-/// | void unbindDialogValidateEvent() |
+/// | void bindDialogValidateEvent( void function( [WxDialogValidateEvent] event ), int id ) |
+/// | void unbindDialogValidateEvent( int id ) |
 /// 
 /// See also [WxInitDialogEvent].
 /// 
@@ -718,7 +718,7 @@ class WxScrollWinEventTableEntry extends WxEventTableEntry {
 ///  
 /// [ScrollWin](/wxdart/wxGetScrollWinEventType.html) event gets sent when any scrolling has occured |
 /// | ----------------- |
-/// | void bindScrollWinEvent( OnScrollWinEventFunc ) |
+/// | void bindScrollWinEvent( void function( [WxScrollWinEvent] event ) |
 /// | void unbindScrollWinEvent() |
 
 class WxScrollWinEvent extends WxEvent {
@@ -793,7 +793,7 @@ class WxTimerEventTableEntry extends WxEventTableEntry {
 /// 
 /// [Timer](/wxdart/wxGetTimerEventType.html) event gets sent from [WxTimer] |
 /// | ----------------- |
-/// | void bindTimerEvent( OnTimerEventFunc ) |
+/// | void bindTimerEvent( void function( [WxTimerEvent] event ) ) |
 /// | void unbindTimerEvent() |
 
 class WxTimerEvent extends WxEvent {
@@ -842,7 +842,7 @@ class WxIdleEventTableEntry extends WxEventTableEntry {
 /// 
 /// [Idle](/wxdart/wxGetIdleEventType.html) event gets sent when the system is idle. Good moment to update your UI. |
 /// | ----------------- |
-/// | void bindIdleEvent( void function( WxIdleEvent event ) ) |
+/// | void bindIdleEvent( void function( [WxIdleEvent] event ) ) |
 /// | void unbindIdleEvent() |
 
 class WxIdleEvent extends WxEvent {
@@ -884,8 +884,8 @@ class WxUpdateUIEventTableEntry extends WxEventTableEntry {
 }
 /// [UpdateUI](/docs/wxdart/wxGetUpdateUIEventType.html) event is sent in idle time to update menus and toolbars.|
 /// | ----------------- |
-/// | void bindUpdateUIEvent( void function( WxUpdateUIEvent event )  ) |
-/// | void unbindUpdateUIEvent() |
+/// | void bindUpdateUIEvent( void function( WxUpdateUIEvent event ), int id  ) |
+/// | void unbindUpdateUIEvent( int id ) |
 ///
 /// Intercept this event and call [check] if a e.g. toolbar item needs to be checked.
 ///
@@ -1044,7 +1044,7 @@ class WxSizeEventTableEntry extends WxEventTableEntry {
 
 /// [Size](/docs/wxdart/wxGetSizeEventType.html) event gets sent when the size of a window changes. |
 /// | ----------------- |
-/// | void bindSizeEvent( void function( WxSizeEvent event ) ) |
+/// | void bindSizeEvent( void function( [WxSizeEvent] event ) ) |
 /// | void unbindSizeEvent() |
 /// 
 /// Make sure to call [WxSizeEvent.skip] so that ancestor windows can handle the
@@ -1756,14 +1756,16 @@ class WxFocusEventTableEntry extends WxEventTableEntry {
   }
 }
 
+/// [WxFocusEvent] gets sent when a control or window receives or loses the focus.
+/// 
 /// [SetFocus](/docs/wxdart/wxGetSetFocusEventType.html) event gets sent when window has received focus. |
 /// | ----------------- |
-/// | void bindSetFocusEvent( OnFocusEventFunc ) |
+/// | void bindSetFocusEvent( void function( [WxFocusEvent] event ) |
 /// | void unbindSetFocusEvent() |
 /// 
 /// [KillFocus](/docs/wxdart/wxGetKillFocusEventType.html) event gets sent when window has lost the focus. |
 /// | ----------------- |
-/// | void bindKillFocusEvent( OnFocusEventFunc ) |
+/// | void bindKillFocusEvent( void function( [WxFocusEvent] event ) |
 /// | void unbindKillFocusEvent() |
 
 class WxFocusEvent extends WxEvent {
@@ -1803,9 +1805,13 @@ class WxMoveEventTableEntry extends WxEventTableEntry {
   }
 }
 
-/// [Move](/docs/wxdart/wxGetMoveEventType.html) event gets sent when windows was moved. |
+/// [WxMoveEvent] gets sent when a window moves position.
+/// 
+/// This event it not reliably sent by all ports.
+///
+/// [Move](/docs/wxdart/wxGetMoveEventType.html) event gets sent when a window was moved. |
 /// | ----------------- |
-/// | void bindMoveEvent( OnMoveEventFunc ) |
+/// | void bindMoveEvent( void function( [WxMoveEvent] event ) |
 /// | void unbindMoveEvent() |
 
 class WxMoveEvent extends WxEvent {
@@ -1902,7 +1908,7 @@ class WxCloseEventTableEntry extends WxEventTableEntry {
 /// 
 /// [CloseWindow](/wxdart/wxGetCloseWindowEventType.html) event gets sent when a [WxFrame] got a request to close. |
 /// | ----------------- |
-/// | void bindCloseWindowEvent( OnCloseEventFunc ) |
+/// | void bindCloseWindowEvent( void function( [WxCloseEvent] event ) |
 /// | void unbindCloseWindowEvent() |
 /// 
 /// This event can be vetoed, e.g. when data needs to be saved. The veto
