@@ -1194,7 +1194,6 @@ class WxWindow extends WxEvtHandler {
   void scrollWindow( int dx, int dy )
   {
     if (_scrollOwnerWindow == null) {
-        print( "scrollWindow $dx" );
         // Just move the window content
         _deviceOffsetX += dx; 
         _deviceOffsetY += dy;
