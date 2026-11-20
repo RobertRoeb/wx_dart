@@ -13,12 +13,12 @@ part of '../wx_dart.dart';
 /// like a table of contents.
 /// ```dart
 ///    final book = WxDataViewBook( this, -1 );
-///    final page1 = WxPanel(this,-1);
+///    final page1 = WxPanel(book,-1);
 ///    final chapter1 = book.appendChapter( null, "Chapter 1", page1 );
 ///
-///    final page1_1 = WxPanel(this,-1);
+///    final page1_1 = WxPanel(book,-1);
 ///    book.appendPage( chapter1, null, "Page 1.1", page1_1 );
-///    final page1_2 = WxPanel(this,-1);
+///    final page1_2 = WxPanel(book,-1);
 ///    book.appendPage( chapter1, null, "Page 1.2", page1_2 );
 ///
 /// ```
