@@ -49,7 +49,13 @@ class TrianglePainter extends CustomPainter {
 }
 // ------------------------- wxControl ----------------------
 
-/// Base class for all native control and many generic ones.
+/// Base class for all native controls. Do not derive in generic
+/// user code from [WxControl] - use [WxWindow].
+/// 
+/// Main interface:
+/// * [setLabel]
+/// * [getLabel]
+/// * [getLabelText]
 
 abstract class WxControl extends WxWindow {
   WxControl( WxWindow parent, int id, { WxPoint pos = wxDefaultPosition, WxSize size = wxDefaultSize, int style = 0 } ) 
@@ -73,6 +79,26 @@ abstract class WxControl extends WxWindow {
     if (event.getSetShown()) {
       show( show: event.getShown() );
     }
+  }
+
+  String _labelText = "";
+
+  /// Sets the label of control. This can be the main text, e.g.
+  /// in a [WxButton] or name associated with the control in the
+  /// context of accessibilty.
+  /// 
+  /// May include mnemonics (&Hello for H as shortcut) for controls
+  /// and platforms that support it
+  @override
+  void setLabel( String label ) {
+    _label = label;
+    _labelText = label.replaceAll(RegExp(r'&'), "" );  // TODO exclude &&
+    _setState();
+  }
+
+  /// Returns the label text after removal of mnemonics (&Hello for H as shortcut)
+  String getLabelText() {
+    return _labelText;
   }
 
   Widget _buildControl( BuildContext context, Widget control )

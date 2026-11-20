@@ -50,7 +50,7 @@ class WxToggleButton extends WxControl {
 
   /// Creates toggle button with given [label]
   WxToggleButton( super.parent, super.id, String label, { super.pos, super.size, super.style } ) {
-    _label = label;
+    setLabel( label );
   }
 
   bool _value = false;
@@ -105,7 +105,7 @@ class WxToggleButton extends WxControl {
               children: [
               Padding( 
                 padding: EdgeInsets.symmetric(horizontal: 5),
-                child: Text( _label )
+                child: Text( _labelText )
               )
               ]
           ) );

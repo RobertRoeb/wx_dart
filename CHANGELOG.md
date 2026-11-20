@@ -1,3 +1,15 @@
+## 0.9.32
+
+* Fix several issues with alignment in WxBoxSizers in special situations
+* Added WxDataViewBook.insertPage(), .insertChapter()
+* Likewise for WxDataViewChapterCtrl
+* Made icon parameter an optional named parameter in WxDataViewBook like in WxTreeCtrl
+* Remove mnemonics in setLabel()
+* Added WxControl.getLabelText() to return label without mnemonics
+* Support ellipsize in WxStaticText
+* Support non-wrapping mode in WxStaticText
+* Updated docs of unbindXXX() function signatures
+
 ## 0.9.31
 
 * Added wxUsesHTML() for the new Web/HTML port

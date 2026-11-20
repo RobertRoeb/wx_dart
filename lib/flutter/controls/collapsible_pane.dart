@@ -119,7 +119,7 @@ class WxCollapsiblePane extends WxControl {
   WxCollapsiblePane( WxWindow parent, int id, String label, { super.pos, super.size, super.style = wxCP_DEFAULT_STYLE } ) 
     : super(parent,id) {
     _pane = WxPanel( parent, -1 );
-    _label = label;
+    setLabel( label );
     _controller = ExpansibleController();
     _controller.addListener( () {
       final event = WxCollapsiblePaneEvent(this, getId(), !_controller.isExpanded );
@@ -165,7 +165,7 @@ class WxCollapsiblePane extends WxControl {
     Widget finalWidget = Expansible( 
       controller: _controller,
       headerBuilder: (context, animation) => ListTile(
-          title: Text( _label ),
+          title: Text( _labelText ),
           onTap: () {
             if (_controller.isExpanded) {
               _controller.collapse();

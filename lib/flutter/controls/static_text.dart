@@ -40,11 +40,14 @@ const int wxST_ELLIPSIZE_END = 0x0010;
 class WxStaticText extends WxControl {
   WxStaticText( super.parent, super.id, String label, { super.pos = wxDefaultPosition, super.size = wxDefaultSize, super.style = wxST_WRAP } ) 
   {
-    _label = label;
+    setLabel( label );
   }
 
   @override
   Widget _build( BuildContext context ) {
-    return _buildControl( context, Text( _label, style: _convertTextStyle( _foregroundColour, _font) ) );
+    return _buildControl( context, Text( _labelText, 
+      maxLines: hasFlag(wxST_WRAP) ? null : 1,
+      overflow: ((wxST_ELLIPSIZE_START|wxST_ELLIPSIZE_START|wxST_ELLIPSIZE_START) & _style != 0) ? TextOverflow.ellipsis : null,
+      style: _convertTextStyle( _foregroundColour, _font) ) );
   }
 }

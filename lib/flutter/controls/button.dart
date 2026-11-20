@@ -66,7 +66,20 @@ extension ButtonEventBinder on WxEvtHandler {
 class WxButton extends WxAnyButton {
   WxButton( super.parent, super.id, String label, { super.pos = wxDefaultPosition, super.size = wxDefaultSize, super.style = 0 } ) 
   {
-    _label = label;
+    if ((_id == wxID_OK) && label.isEmpty) {
+      setLabel( "Ok" );
+    } else 
+    if ((_id == wxID_CANCEL) && label.isEmpty) {
+      setLabel( "Cancel" );
+    } else 
+    if ((_id == wxID_YES) && label.isEmpty) {
+      setLabel( "Yes" );
+    } else 
+    if ((_id == wxID_NO) && label.isEmpty) {
+      setLabel( "No" );
+    } else {
+      setLabel( label );
+    }
   }
 
   bool _isHover = false;
@@ -165,7 +178,7 @@ class WxButton extends WxAnyButton {
                 shape: WidgetStateProperty<OutlinedBorder?>.all,
               ),
               */
-              child: Text ( _label ) 
+              child: Text ( _labelText ) 
             ) )
           : MaterialButton( 
             onPressed:() {

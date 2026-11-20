@@ -85,7 +85,7 @@ class WxRadioBox extends WxItemContainerImmutable {
         _items.add( _WxItem( str ) );
     }
     _selection = 0;
-    _label = label;
+    setLabel( label );
     _majorDimension = majorDimension == 0 ? choices.length : majorDimension;
     if (_majorDimension == 0) {
       wxLogError( "empty radio box" );
@@ -105,8 +105,6 @@ class WxRadioBox extends WxItemContainerImmutable {
   int _cols = 1;
   int _rows = 1;
   List<int> _disabledItems = [];
-
-  String _label = "";
 
   /// Returns the number of columns
   int getColumnCount () {
@@ -145,7 +143,7 @@ class WxRadioBox extends WxItemContainerImmutable {
   {
     List<Widget> children = [];
     if ((_label.isNotEmpty) && wxTheApp.isTouch()) {
-      children.add( Text( _label ) );
+      children.add( Text( _labelText ) );
     }
     int count = 0;
     for (final item in _items) {

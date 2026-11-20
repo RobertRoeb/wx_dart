@@ -68,7 +68,7 @@ const int wxCHK_UNDETERMINED = 2;
 
 class WxCheckBox extends WxControl {
   WxCheckBox( super.parent, super.id, String label, { super.pos = wxDefaultPosition, super.size = wxDefaultSize, super.style = 0 } ) {
-    _label = label;
+    setLabel( label );
   }
 
   bool? _value = false;
@@ -156,7 +156,7 @@ class WxCheckBox extends WxControl {
               value: _value, 
               tristate: hasFlag(wxCHK_3STATE),
               onChanged: isEnabled() ? _onChanged: null ),
-              Text( _label )
+              Text( _labelText )
           ] ) );
   }
 

@@ -20,7 +20,7 @@ part of '../../wx_dart.dart';
 
 class WxStaticBox extends WxControl {
   WxStaticBox( super._parent, super._id, String label, { super.pos = wxDefaultPosition, super.size = wxDefaultSize, super.style = 0 } ) {
-    _label = label;
+    setLabel( label );
   }
 
   WxStaticBoxSizer? _staticBoxSizer;
@@ -39,7 +39,7 @@ class WxStaticBox extends WxControl {
           IntrinsicWidth( child:
           InputDecorator(
               decoration: InputDecoration(
-                labelText: _label,
+                labelText: _labelText,
                 border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.0),
                 ),
