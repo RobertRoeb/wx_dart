@@ -24,6 +24,10 @@ class MySizerWindow extends WxScrolledWindow {
     mainSizer.addSizer( sbs, flag: wxEXPAND|wxALL, border: 10 );
     createProportionsPage( sbs, sbs.getStaticBox() );
 
+    sbs = WxStaticBoxSizer(wxVERTICAL, this, "Mixed proportions and mixed min sizes" );
+    mainSizer.addSizer( sbs, flag: wxEXPAND|wxALL, border: 10 );
+    createProportionsPageMinSize( sbs, sbs.getStaticBox() );
+
     sbs = WxStaticBoxSizer(wxVERTICAL, this, "sizer.addStretchSpacer" );
     mainSizer.addSizer( sbs, flag: wxEXPAND|wxALL, border: 10 );
     createStretchSpacerPage( sbs, sbs.getStaticBox() );
@@ -187,6 +191,26 @@ class MySizerWindow extends WxScrolledWindow {
     horiz.add( WxStaticText(parent, -1, "Text field:"), flag: wxALL|wxALIGN_CENTRE_VERTICAL, border: 5 );
     horiz.add( WxTextCtrl(parent, -1, value: "Text field with proportion: 1" ), proportion: 1, flag: wxALL, border: 5 );
   }
+  void createProportionsPageMinSize( WxStaticBoxSizer sizer, WxWindow parent )
+  {
+    final horiz = WxBoxSizer( wxHORIZONTAL );
+    sizer.addSizer(horiz,flag: wxEXPAND);
+
+    WxColour col = wxGREY;
+    if (wxTheApp.isDark()) {
+      col = wxLIGHT_GREY;
+    }
+
+    WxPanel panel = WxPanel( parent, -1, size: WxSize( -1, 10 ) ); // this has only size.x = -1,-1
+    panel.setBackgroundColour(col);
+    horiz.add( panel, proportion: 1, flag: wxALL|wxEXPAND, border: 5 );  // but it has has wxEXPAND and prop = 1
+    final text = WxTextCtrl( parent, -1, size: WxSize( 80,10 ), style: wxTE_MULTILINE );
+    horiz.add( text, proportion: 2, flag: wxALL|wxEXPAND, border: 5 );
+    panel = WxPanel( parent, -1, size: WxSize( 80,50 ) );
+    panel.setBackgroundColour(col);
+    horiz.add( panel, proportion: 3, flag: wxALL, border: 5 );
+  }
+
   void createProportionsPage( WxStaticBoxSizer sizer, WxWindow parent )
   {
     final horiz = WxBoxSizer( wxHORIZONTAL );
@@ -197,13 +221,13 @@ class MySizerWindow extends WxScrolledWindow {
       col = wxLIGHT_GREY;
     }
 
-    WxPanel panel = WxPanel( parent, -1, size: WxSize( 50,50 ) );
+    WxPanel panel = WxPanel( parent, -1, size: WxSize( 80,50 ) );
     panel.setBackgroundColour(col);
     horiz.add( panel, proportion: 1, flag: wxALL, border: 5 );
-    panel = WxPanel( parent, -1, size: WxSize( 50,50 ) );
+    panel = WxPanel( parent, -1, size: WxSize( 80,50 ) );
     panel.setBackgroundColour(col);
     horiz.add( panel, proportion: 2, flag: wxALL, border: 5 );
-    panel = WxPanel( parent, -1, size: WxSize( 50,50 ) );
+    panel = WxPanel( parent, -1, size: WxSize( 80,50 ) );
     panel.setBackgroundColour(col);
     horiz.add( panel, proportion: 3, flag: wxALL, border: 5 );
   }
