@@ -10,6 +10,8 @@
 * Support non-wrapping mode in WxStaticText
 * Updated docs of unbindXXX() function signatures
 * Actually implemented tooltips
+* Allow setting WxDC.setDeviceOffset() to move/scroll drawing for non WxScrolledWindow
+* That enable moving the header in WxDataViewCtrl when the main window is scrolled
 
 ## 0.9.31
 
