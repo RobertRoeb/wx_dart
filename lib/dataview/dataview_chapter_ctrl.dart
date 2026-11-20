@@ -87,6 +87,7 @@ class WxDataViewChapterRenderer extends WxDataViewIconTextRenderer {
 /// 
 /// Adding/removing items:
 /// * [appendItem]
+/// * [insertItem]
 /// * [deleteItem]
 /// * [deleteAllItems]
 /// 
@@ -139,6 +140,10 @@ class WxDataViewChapterCtrl extends WxDataViewCtrl {
 
   WxDataViewItem appendItem( WxDataViewItem parent, String text, { WxBitmap? icon, dynamic clientData } ) {
     return _store.appendItem( parent, text, icon: icon, clientData: clientData );
+  }
+
+  WxDataViewItem insertItem( int pos, WxDataViewItem parent, String text, { WxBitmap? icon, dynamic clientData } ) {
+    return _store.insertItem( pos, parent, text, icon: icon, clientData: clientData );
   }
 
   void deleteItem( WxDataViewItem item ) {

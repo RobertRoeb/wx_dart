@@ -172,57 +172,57 @@ class MyMainFrame extends WxAdaptiveFrame {
     mainSizer.add( databook, proportion: 1, flag: wxEXPAND );
 
     final panel1 = MyInfoPage(databook);
-    final chapter1 = databook.appendChapter( null, "Start", panel1 );
+    final chapter1 = databook.appendChapter( "Start", panel1 );
 
     final design = WxHtmlWindow(databook, -1);
-    databook.appendPage( chapter1, null, "Overview", design );
+    databook.appendPage( chapter1, "Overview", design );
     wxLoadStringFromResource( "DesignOverview.md", (text) {
       design.setPage( md.markdownToHtml(text) );
     });
     final classes = WxHtmlWindow(databook, -1);
-    databook.appendPage( chapter1, null, "Classes", classes );
+    databook.appendPage( chapter1, "Classes", classes );
     wxLoadStringFromResource( "ClassesByCategory.md", (text) {
       classes.setPage( md.markdownToHtml(text, blockSyntaxes: [md.TableSyntax()]) );
     });
 
 
-    databook.appendPage( chapter1, null, "OpenGL", MyGLPage(databook) );
+    databook.appendPage( chapter1, "OpenGL", MyGLPage(databook) );
 
-    databook.appendPage( chapter1, null, "Async code", MyAsyncWindow(databook) );
+    databook.appendPage( chapter1, "Async code", MyAsyncWindow(databook) );
 
-    databook.appendPage( chapter1, null, "Sizers", MySizerWindow(databook) );
+    databook.appendPage( chapter1, "Sizers", MySizerWindow(databook) );
 
-    databook.appendPage( chapter1, null, "Text controls", MyLoggingWindow(databook) );
+    databook.appendPage( chapter1, "Text controls", MyLoggingWindow(databook) );
 
-    databook.appendPage( chapter1, null, "Other controls", MyControlsWindow(databook) );
+    databook.appendPage( chapter1, "Other controls", MyControlsWindow(databook) );
 
-    databook.appendPage( chapter1, null, "Drag and Drop tests", MyFocusWindow(databook) );
+    databook.appendPage( chapter1, "Drag and Drop tests", MyFocusWindow(databook) );
 
-    databook.appendPage( chapter1, null, "Tiles", MyTileDataView(databook) );
+    databook.appendPage( chapter1, "Tiles", MyTileDataView(databook) );
 
-    databook.appendPage( chapter1, null, "Drawing", MyDrawingWindow(databook) );
+    databook.appendPage( chapter1, "Drawing", MyDrawingWindow(databook) );
 
-    databook.appendPage( chapter1, null, "Gestures", MyGestureWindow(databook) );
+    databook.appendPage( chapter1, "Gestures", MyGestureWindow(databook) );
 
-    databook.appendPage( chapter1, null, "Tree and list", MySplitterWindow(databook, idSplitter) );
+    databook.appendPage( chapter1, "Tree and list", MySplitterWindow(databook, idSplitter) );
 
-    databook.appendPage( chapter1, null, "Sorted list", MyDataView(databook) );
+    databook.appendPage( chapter1, "Sorted list", MyDataView(databook) );
 
     final panel2 = WxPanel( databook, -1, style: wxTRANSLUCENT_WINDOW );
-    final chapter2 = databook.appendChapter( null, "Tutorial", panel2 );
+    final chapter2 = databook.appendChapter( "Tutorial", panel2 );
 
-    final tut12 = databook.appendPage( chapter2, null, "Fireworks!", MyTutorialPage(databook, -1, "tut12.dart") );
-    final tut01 = databook.appendPage( chapter2, null, "Hello world", MyTutorialPage(databook, -1, "tut01.dart") );
-    final tut02 = databook.appendPage( chapter2, null, "Color themes", MyTutorialPage(databook, -1, "tut02.dart") );
-    final tut03 = databook.appendPage( chapter2, null, "Panel with controls", MyTutorialPage(databook, -1, "tut03.dart") );
-    final tut04 = databook.appendPage( chapter2, null, "Bind to an event", MyTutorialPage(databook, -1, "tut04.dart") );
-    final tut05 = databook.appendPage( chapter2, null, "Event propagation", MyTutorialPage(databook, -1, "tut05.dart") );
-    final tut06 = databook.appendPage( chapter2, null, "Touch vs Desktop", MyTutorialPage(databook, -1, "tut06.dart") );
-    final tut07 = databook.appendPage( chapter2, null, "Layout with sizers", MyTutorialPage(databook, -1, "tut07.dart") );
-    final tut08 = databook.appendPage( chapter2, null, "Dialog with data", MyTutorialPage(databook, -1, "tut08.dart") );
-    final tut09 = databook.appendPage( chapter2, null, "Paint events", MyTutorialPage(databook, -1, "tut09.dart") );
-    final tut10 = databook.appendPage( chapter2, null, "Scrolling", MyTutorialPage(databook, -1, "tut10.dart") );
-    final tut13 = databook.appendPage( chapter2, null, "Sorted table", MyTutorialPage(databook, -1, "tut13.dart") );
+    final tut12 = databook.appendPage( chapter2, "Fireworks!", MyTutorialPage(databook, -1, "tut12.dart") );
+    final tut01 = databook.appendPage( chapter2, "Hello world", MyTutorialPage(databook, -1, "tut01.dart") );
+    final tut02 = databook.appendPage( chapter2, "Color themes", MyTutorialPage(databook, -1, "tut02.dart") );
+    final tut03 = databook.appendPage( chapter2, "Panel with controls", MyTutorialPage(databook, -1, "tut03.dart") );
+    final tut04 = databook.appendPage( chapter2, "Bind to an event", MyTutorialPage(databook, -1, "tut04.dart") );
+    final tut05 = databook.appendPage( chapter2, "Event propagation", MyTutorialPage(databook, -1, "tut05.dart") );
+    final tut06 = databook.appendPage( chapter2, "Touch vs Desktop", MyTutorialPage(databook, -1, "tut06.dart") );
+    final tut07 = databook.appendPage( chapter2, "Layout with sizers", MyTutorialPage(databook, -1, "tut07.dart") );
+    final tut08 = databook.appendPage( chapter2, "Dialog with data", MyTutorialPage(databook, -1, "tut08.dart") );
+    final tut09 = databook.appendPage( chapter2, "Paint events", MyTutorialPage(databook, -1, "tut09.dart") );
+    final tut10 = databook.appendPage( chapter2, "Scrolling", MyTutorialPage(databook, -1, "tut10.dart") );
+    final tut13 = databook.appendPage( chapter2, "Sorted table", MyTutorialPage(databook, -1, "tut13.dart") );
 
     // expand both chapters
     final datactrl = databook.getDataViewChapterCtrl();

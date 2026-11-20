@@ -14,12 +14,12 @@ part of '../wx_dart.dart';
 /// ```dart
 ///    final book = WxDataViewBook( this, -1 );
 ///    final page1 = WxPanel(book,-1);
-///    final chapter1 = book.appendChapter( null, "Chapter 1", page1 );
+///    final chapter1 = book.appendChapter( "Chapter 1", page1 );
 ///
 ///    final page1_1 = WxPanel(book,-1);
-///    book.appendPage( chapter1, null, "Page 1.1", page1_1 );
+///    book.appendPage( chapter1, "Page 1.1", page1_1 );
 ///    final page1_2 = WxPanel(book,-1);
-///    book.appendPage( chapter1, null, "Page 1.2", page1_2 );
+///    book.appendPage( chapter1, "Page 1.2", page1_2 );
 ///
 /// ```
 /// 
@@ -107,8 +107,23 @@ class WxDataViewBook extends WxWindow {
     return _chapterCtrl;
   }
 
+  /// Inserts new chapter to root
+  WxDataViewItem insertChapter( int pos, String title, WxWindow page, { WxBitmap? icon } )
+  {
+    if (_currentPage == null)
+    {
+      _currentPage = page;
+      _mainSizer.add( page, flag: wxEXPAND, proportion: 1 );
+    }
+    else
+    {
+      page.hide();
+    }
+    return _chapterCtrl.insertItem( pos, WxDataViewItem(), title, icon: icon, clientData: page );
+  }
+
   /// Appends new chapter to root
-  WxDataViewItem appendChapter( WxBitmap? icon, String title, WxWindow page )
+  WxDataViewItem appendChapter( String title, WxWindow page, { WxBitmap? icon } )
   {
     if (_currentPage == null)
     {
@@ -122,11 +137,18 @@ class WxDataViewBook extends WxWindow {
     return _chapterCtrl.appendItem( WxDataViewItem(), title, icon: icon, clientData: page );
   }
 
-  /// Appends new chapter to given [parent] chapter
-  WxDataViewItem appendPage( WxDataViewItem parent, WxBitmap? icon, String title, WxWindow page )
+  /// Appends new page to given [parent] chapter
+  WxDataViewItem appendPage( WxDataViewItem parent, String title, WxWindow page, { WxBitmap? icon } )
   {
     page.hide();
     return _chapterCtrl.appendItem( parent, title, icon: icon, clientData: page );
+  }
+
+  /// Inserts new page to given [parent] chapter
+  WxDataViewItem insertPage( int pos, WxDataViewItem parent, String title, WxWindow page, { WxBitmap? icon } )
+  {
+    page.hide();
+    return _chapterCtrl.insertItem( pos, parent, title, icon: icon, clientData: page );
   }
 
   /// Set the width of the left panel containing the tree view of the
