@@ -467,6 +467,8 @@ class WxWindow extends WxEvtHandler {
   WxPoint _position;
   WxSize _size;
   late WxSize _initialSize;
+  int _deviceOffsetX = 0;
+  int _deviceOffsetY = 0;
   int _id;
   int _style;
   int _touchEventMask = 0;
@@ -1191,21 +1193,30 @@ class WxWindow extends WxEvtHandler {
 
   void scrollWindow( int dx, int dy )
   {
+    if (_scrollOwnerWindow == null) {
+        print( "scrollWindow $dx" );
+        // Just move the window content
+        _deviceOffsetX += dx; 
+        _deviceOffsetY += dy;
+        _setState();
+        return;
+    }
+
     if (_onlyVerticalScrolling()) 
     {
-      if (_scrollOwnerWindow != null) {
-        double voffset = _scrollOwnerWindow!._verticalController.offset + dy.toDouble();        
-        _scrollOwnerWindow!._verticalController.jumpTo(voffset);
-      }
+      _deviceOffsetX = 0; 
+      _deviceOffsetY = 0;
+      double voffset = _scrollOwnerWindow!._verticalController.offset + dy.toDouble();        
+      _scrollOwnerWindow!._verticalController.jumpTo(voffset);
     }
     else
     {
-      if (_scrollOwnerWindow != null) {
-        double voffset = _scrollOwnerWindow!._verticalController.offset + dy.toDouble();
-        double hoffset = _scrollOwnerWindow!._horizontalController.offset + dx.toDouble();        
-        _scrollOwnerWindow!._verticalController.jumpTo(voffset);
-        _scrollOwnerWindow!._horizontalController.jumpTo(hoffset);
-      }
+      _deviceOffsetX = 0; 
+      _deviceOffsetY = 0;
+      double voffset = _scrollOwnerWindow!._verticalController.offset + dy.toDouble();
+      double hoffset = _scrollOwnerWindow!._horizontalController.offset + dx.toDouble();        
+      _scrollOwnerWindow!._verticalController.jumpTo(voffset);
+      _scrollOwnerWindow!._horizontalController.jumpTo(hoffset);
     }
   }
 
@@ -2421,11 +2432,11 @@ class WxWindow extends WxEvtHandler {
 
   /// Returns the x device offset relevant for scrolling
   int getDeviceOffsetX() {
-    return 0; 
+    return _deviceOffsetX;
   }
   /// Returns the y device offset relevant for scrolling
   int getDeviceOffsetY() {
-    return 0;
+    return _deviceOffsetY;
   }
 
   bool _handleScrollMetricsNotification(ScrollMetricsNotification notification) {
