@@ -235,6 +235,7 @@ void _recreateMaterialController()
       }
       final event = WxNotebookEvent( eventType:  wxGetNotebookPageChangedEventType(), id: getId(), 
            sel: _materialController!.index, oldSel: _materialController!.previousIndex ); 
+      event.setEventObject( this );
       processEvent( event );
     }
   });  

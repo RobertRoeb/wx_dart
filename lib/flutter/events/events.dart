@@ -98,6 +98,9 @@ int wxGetSpinCtrlDoubleEventType()  { return 219; }
 int wxGetNotebookPageChangingEventType()        { return 220; }
 int wxGetNotebookPageChangedEventType()         { return 221; }
 
+int wxGetNavCtrlPageChangedEventType()          { return 222; }
+int wxGetNavCtrlPageChangingEventType()         { return 223; }
+
 int wxGetSplitterSashPosChangedEventType()      { return 225; }
 int wxGetSplitterSashPosChangingEventType()     { return 226; }
 int wxGetSplitterUnsplitEventType()             { return 227; }

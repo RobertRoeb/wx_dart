@@ -1,3 +1,7 @@
+## 0.9.33
+
+* Added PAGE_CHANGE events for WxNavigationCtrl
+
 ## 0.9.32
 
 * Fix several issues with alignment in WxBoxSizers in special situations

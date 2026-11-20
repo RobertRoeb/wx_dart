@@ -7,6 +7,29 @@
 
 part of '../../wx_dart.dart';
 
+/// @nodoc
+
+extension NavCtrlPageChangedEventBinder on WxEvtHandler {
+  void bindNavCtrlPageChangedEvent( OnNotebookEventFunc func, int id ) { 
+    _eventTable.add( WxNotebookEventTableEntry(wxGetNavCtrlPageChangedEventType(), id, func));
+  }
+  void unbindNavCtrlPageChangedEvent( OnNotebookEventFunc func, int id ) { 
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetNavCtrlPageChangedEventType(), id) ));
+  }
+}
+
+/// @nodoc
+
+extension NavCtrlPageChangingEventBinder on WxEvtHandler {
+  void bindNavCtrlPageChangingEvent( OnNotebookEventFunc func, int id ) { 
+    _eventTable.add( WxNotebookEventTableEntry(wxGetNavCtrlPageChangingEventType(), id, func));
+  }
+  void unbindNavCtrlPageChangingEvent( OnNotebookEventFunc func, int id ) { 
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetNavCtrlPageChangingEventType(), id) ));
+  }
+}
+
+
 /// The standard main window of most smart phone apps with 
 /// three to five icons at the bottom of the smart phone screen.
 /// 
@@ -61,6 +84,19 @@ part of '../../wx_dart.dart';
 /// * [setSelection]
 /// * [getSelection]
 /// * [getCurrentPage]
+///
+/// Events emitted
+///
+/// [NavCtrlPageChanged](/wxdart/wxGetNavCtrlPageChangedEventType.html) event gets sent when the user changed page |
+/// | ----------------- |
+/// | void bindNavCtrlPageChangedEvent( void function( [WxNotebookEvent] event ), int id ) |
+/// | void unbindNavCtrlPageChangedEvent( int id ) |
+/// 
+/// (Not actually implemented yet)
+/// [NavCtrlPageChanging](/wxdart/wxGetNavCtrlPageChangingEventType.html) event gets sent when the user has requested a page change |
+/// | ----------------- |
+/// | void bindNavCtrlPageChangingEvent( void function( [WxNotebookEvent] event ), int id ) |
+/// | void unbindNavCtrlPageChangingEvent( int id ) |
 
 class WxNavigationCtrl extends WxBookCtrlBase {
   WxNavigationCtrl( super.parent, super.id, { super.pos = wxDefaultPosition, super.size = wxDefaultSize, super.style = 0 } );
@@ -110,7 +146,11 @@ class WxNavigationCtrl extends WxBookCtrlBase {
       selectedIndex: _currentSelection,
       destinations: destinations,
       onDestinationSelected: (value) {
+        final event = WxNotebookEvent( eventType:  wxGetNavCtrlPageChangedEventType(), id: getId(), 
+            sel: value, oldSel: _currentSelection ); 
+        event.setEventObject( this );
         _currentSelection = value;
+        processEvent( event );
         _setState();
       },
     );
