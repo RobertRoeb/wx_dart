@@ -125,8 +125,9 @@ class WxDC extends WxReadOnlyDC {
     }
 
     // Since we use native scrolling in wxDart Flutter, deviceOrigin
-    // and deviceLocalOrigin always become 0
-    // _canvas.translate( (_deviceOriginX + _deviceLocalOriginX).toDouble(), (_deviceOriginY + _deviceLocalOriginY).toDouble());
+    // and deviceLocalOrigin always become 0 - unless someone calls
+    // WxWindow.scrollWindow() in a window that is not a WxScrolledWindow()
+    _canvas.translate( (_deviceOriginX + _deviceLocalOriginX).toDouble(), (_deviceOriginY + _deviceLocalOriginY).toDouble());
     _canvas.scale(_scaleX*_signX, _scaleY*_signY );
   }
 
