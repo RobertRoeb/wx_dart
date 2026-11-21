@@ -89,6 +89,11 @@ class WxSplitterEvent extends WxNotifyEvent {
   int _y = 0;
   int _pos = 0;
 
+  /// Sets new sash position
+  void setSashPosition( int pos ) {
+    _pos = pos;
+  }
+
   /// Returns the new sash position
   int getSashPosition( ) {
     return _pos;
