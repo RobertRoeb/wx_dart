@@ -7,66 +7,6 @@
 
 part of '../../wx_dart.dart';
 
-// ------------------------- wxHyperlinkEvent ----------------------
-
-typedef OnHyperlinkEventFunc = void Function( WxHyperlinkEvent event );
-
-/// @nodoc
-
-class WxHyperlinkEventTableEntry extends WxEventTableEntry {
-  WxHyperlinkEventTableEntry( super.eventType, super.id, this.func );
-  final OnHyperlinkEventFunc func;
-
-  @override
-  bool matches( int eventTypeTested, int idTested ) {
-    return (eventType == eventTypeTested) && ((id == wxID_ANY) || (id == idTested));
-  }
-
-  @override
-  void doCallFunction( WxEvent event ) {
-    if (event is WxHyperlinkEvent) {
-      func( event );
-    }
-  }
-}
-
-/// @nodoc
-
-extension HyperlinkEventBinder on WxEvtHandler {
-  void bindHyperlinkEvent( OnHyperlinkEventFunc func, int id ) {
-    _eventTable.add( WxHyperlinkEventTableEntry(wxGetHyperlinkEventType(), id, func));
-  }
-
-  void unbindHyperlinkEvent( int id ) {
-    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetHyperlinkEventType(), id) ));
-  }
-}
-
-/// Sent by [WxHyperlinkCtrl]
-/// 
-/// [Hyperlink](/wxdart/wxGetHyperlinkEventType.html) event gets sent when user clicked on hyper link |
-/// | ----------------- |
-/// | void bindHyperlinkEvent( OnHyperlinkEventFunc ) |
-/// | void unbindHyperlinkEvent() |
-
-class WxHyperlinkEvent extends WxCommandEvent {
-  WxHyperlinkEvent( WxObject originator, int id, String url ) : super( wxGetHyperlinkEventType(), id ) {
-    setEventObject(originator);
-    _url = url;
-  }
-
-  String _url = "";
-
-  void setURL( String url ) {
-    _url = url;
-  }
-
-  /// Returns the URL of the link
-  String getURL( ) {
-    return _url;
-  }
-}
-
 // ------------------------- wxHyperlinkCtrl ----------------------
 
 const int wxHL_CONTEXTMENU = 0x0001;
