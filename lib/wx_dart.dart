@@ -64,6 +64,7 @@ part 'flutter/events/spin_ctrl_event.dart';
 part 'flutter/events/tree_event.dart';
 part 'flutter/events/splitter_event.dart';
 part 'flutter/events/menu_event.dart';
+part 'flutter/events/notify_event.dart';
 
 part 'flutter/misc/standard_paths.dart';
 part 'flutter/misc/timer.dart';

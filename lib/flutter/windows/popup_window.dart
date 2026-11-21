@@ -84,19 +84,6 @@ class WxPopupWindow extends WxNonOwnedWindow {
 
 // ------------------------- wxPopupTransientWindow ----------------------
 
-/// @nodoc
-
-extension PopupWindowDismissEventBinder on WxEvtHandler {
-  void bindPopupWindowDismissEvent( OnNotifyEventFunc func, int id ) {
-    _eventTable.add( WxNotifyEventTableEntry(wxGetPopupWindowDismissEventType(), id, func));
-  }
-
-  void unbindPopupWindowDismissEvent( int id )
-  {
-    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetPopupWindowDismissEventType(), id) ));
-  }
-}
-
 /// [WxPopupTransientWindow] is a specialized [WxPopupWindow] that gets
 /// dismissed if the user clicks or taps outside of it. This can be vetoed.
 /// 
