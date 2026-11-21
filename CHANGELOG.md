@@ -1,6 +1,9 @@
 ## 0.9.33
 
 * Added PAGE_CHANGE events for WxNavigationCtrl
+* Aligned close() and WxCloseEvent logic with wxDart Native
+* Reimplementation of WxGridSizer and WxFlexGridSizer
+* Made wxST_WRAP no longer the default in WxStaticText anywhere
 
 ## 0.9.32
 
