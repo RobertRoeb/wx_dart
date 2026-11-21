@@ -7,29 +7,6 @@
 
 part of '../../wx_dart.dart';
 
-/// @nodoc
-
-extension NavCtrlPageChangedEventBinder on WxEvtHandler {
-  void bindNavCtrlPageChangedEvent( OnNotebookEventFunc func, int id ) { 
-    _eventTable.add( WxNotebookEventTableEntry(wxGetNavCtrlPageChangedEventType(), id, func));
-  }
-  void unbindNavCtrlPageChangedEvent( OnNotebookEventFunc func, int id ) { 
-    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetNavCtrlPageChangedEventType(), id) ));
-  }
-}
-
-/// @nodoc
-
-extension NavCtrlPageChangingEventBinder on WxEvtHandler {
-  void bindNavCtrlPageChangingEvent( OnNotebookEventFunc func, int id ) { 
-    _eventTable.add( WxNotebookEventTableEntry(wxGetNavCtrlPageChangingEventType(), id, func));
-  }
-  void unbindNavCtrlPageChangingEvent( OnNotebookEventFunc func, int id ) { 
-    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetNavCtrlPageChangingEventType(), id) ));
-  }
-}
-
-
 /// The standard main window of most smart phone apps with 
 /// three to five icons at the bottom of the smart phone screen.
 /// 

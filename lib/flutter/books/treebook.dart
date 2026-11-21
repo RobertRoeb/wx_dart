@@ -7,52 +7,6 @@
 
 part of '../../wx_dart.dart';
 
-// ------------------------- wxTreebook ----------------------
-
-/// @nodoc
-
-extension TreebookPageChangedEventBinder on WxEvtHandler {
-  void bindTreebookPageChangedEvent( OnNotebookEventFunc func, int id ) { 
-    _eventTable.add( WxNotebookEventTableEntry(wxGetTreebookPageChangedEventType(), id, func));
-  }
-  void unbindTreebookPageChangedEvent( OnNotebookEventFunc func, int id ) { 
-    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetTreebookPageChangedEventType(), id) ));
-  }
-}
-
-/// @nodoc
-
-extension TreebookPageChangingEventBinder on WxEvtHandler {
-  void bindTreebookPageChangingEvent( OnNotebookEventFunc func, int id ) { 
-    _eventTable.add( WxNotebookEventTableEntry(wxGetTreebookPageChangingEventType(), id, func));
-  }
-  void unbindTreebookPageChangingEvent( OnNotebookEventFunc func, int id ) { 
-    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetTreebookPageChangingEventType(), id) ));
-  }
-}
-
-/// @nodoc
-
-extension TreebookNodeCollapsedEventBinder on WxEvtHandler {
-  void bindTreebookNodeCollapsedEvent( OnNotebookEventFunc func, int id ) { 
-    _eventTable.add( WxNotebookEventTableEntry(wxGetTreebookNodeCollapsedEventType(), id, func));
-  }
-  void unbindTreebookNodeCollapsedEvent( OnNotebookEventFunc func, int id ) { 
-    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetTreebookNodeCollapsedEventType(), id) ));
-  }
-}
-
-/// @nodoc
-
-extension TreebookNodeExpandedEventBinder on WxEvtHandler {
-  void bindTreebookNodeExpandedEvent( OnNotebookEventFunc func, int id ) { 
-    _eventTable.add( WxNotebookEventTableEntry(wxGetTreebookNodeExpandedEventType(), id, func));
-  }
-  void unbindTreebookNodeExpandedEvent( OnNotebookEventFunc func, int id ) { 
-    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetTreebookNodeExpandedEventType(), id) ));
-  }
-}
-
 /// The class uses a tree like structure on the left to handle multiple windows
 /// on the right. It maps the page index to an item of the tree so that the 
 /// logic from [WxBookCtrlBase] can be used.
