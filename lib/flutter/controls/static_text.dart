@@ -31,14 +31,14 @@ const int wxST_ELLIPSIZE_END = 0x0010;
 /// 
 /// | constant | meaning |
 /// | -------- | -------- |
-/// | wxST_NO_AUTORESIZE | 0x0001 |
+/// | wxST_NO_AUTORESIZE | 0x0001 (not implemented in wxDart Flutter|
 /// | wxST_WRAP | 0x0002 |
 /// | wxST_ELLIPSIZE_START | 0x0004 |
 /// | wxST_ELLIPSIZE_MIDDLE | 0x0008 |
 /// | wxST_ELLIPSIZE_END | 0x0010 |
 
 class WxStaticText extends WxControl {
-  WxStaticText( super.parent, super.id, String label, { super.pos = wxDefaultPosition, super.size = wxDefaultSize, super.style = wxST_WRAP } ) 
+  WxStaticText( super.parent, super.id, String label, { super.pos = wxDefaultPosition, super.size = wxDefaultSize, super.style = 0 } ) 
   {
     setLabel( label );
   }
