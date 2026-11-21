@@ -7,20 +7,6 @@
 
 part of '../../wx_dart.dart';
 
-// ------------------------- wxButton ----------------------
-
-/// @nodoc
-
-extension ButtonEventBinder on WxEvtHandler {
-  void bindButtonEvent( OnCommandEventFunc func, int id ) {
-    _eventTable.add( WxCommandEventTableEntry(wxGetButtonEventType(), id, func));
-  }
-
-  void unbindButtonEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetButtonEventType(), id));
-  }
-}
-
 /// Represents a button.
 /// 
 /// It may contain a text label and/or an image ([WxBitmapBundle]) using

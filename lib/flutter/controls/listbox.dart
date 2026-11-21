@@ -7,31 +7,7 @@
 
 part of '../../wx_dart.dart';
 
-// ------------------------- wxListbox ----------------------
-
-/// @nodoc
-
-extension ListboxEventBinder on WxEvtHandler {
-  void bindListboxEvent( OnCommandEventFunc func, int id ) {
-    _eventTable.add( WxCommandEventTableEntry(wxGetListboxEventType(), id, func));
-  }
-
-  void unbindListboxEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetListboxEventType(), id));
-  }
-}
-
-/// @nodoc
-
-extension ListboxDClickEventBinder on WxEvtHandler {
-  void bindListboxDClickEvent( OnCommandEventFunc func, int id ) {
-    _eventTable.add( WxCommandEventTableEntry(wxGetListboxDClickEventType(), id, func));
-  }
-
-  void unbindListboxDClickEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetListboxDClickEventType(), id));
-  }
-}
+// ------------------------- WxListbox ----------------------
 
 const int wxLB_SORT = 0x0010;
 const int wxLB_SINGLE = 0x0020;
@@ -40,7 +16,6 @@ const int wxLB_EXTENDED = 0x0080;
 const int wxLB_ALWAYS_SB = 0x0200;
 const int wxLB_NO_SB = 0x0400;
 const int wxLB_HSCROLL = wxHSCROLL;
-
 
 /// Allows the user to select an item from a list.
 /// 

@@ -7,19 +7,7 @@
 
 part of '../../wx_dart.dart';
 
-// ------------------------- wxCheckBox ----------------------
-
-/// @nodoc
-
-extension CheckboxEventBinder on WxEvtHandler {
-  void bindCheckboxEvent( OnCommandEventFunc func, int id ) {
-    _eventTable.add( WxCommandEventTableEntry(wxGetCheckboxEventType(), id, func));
-  }
-
-  void unbindCheckboxEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetCheckboxEventType(), id));
-  }
-}
+// ------------------------- WxCheckBox ----------------------
 
 const int wxCHK_2STATE = 0x4000;
 const int wxCHK_3STATE = 0x1000;

@@ -7,19 +7,8 @@
 
 part of '../../wx_dart.dart';
 
-// ------------------------- wxToggleButton ----------------------
+// ------------------------- WxToggleButton ----------------------
 
-/// @nodoc
-
-extension ToggleButtonEventBinder on WxEvtHandler {
-  void bindToggleButtonEvent( OnCommandEventFunc func, int id ) {
-    _eventTable.add( WxCommandEventTableEntry(wxGetToggleButtonEventType(), id, func));
-  }
-
-  void unbindToggleButtonEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetToggleButtonEventType(), id));
-  }
-}
 /// Allows user to toggle a feature using a button.
 /// 
 /// Example usage

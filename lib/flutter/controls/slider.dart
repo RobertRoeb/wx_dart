@@ -7,19 +7,7 @@
 
 part of '../../wx_dart.dart';
 
-// ------------------------- wxSlider ----------------------
-
-/// @nodoc
-
-extension SliderEventBinder on WxEvtHandler {
-  void bindSliderEvent( OnCommandEventFunc func, int id ) {
-    _eventTable.add( WxCommandEventTableEntry(wxGetSliderEventType(), id, func));
-  }
-
-  void unbindSliderEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetSliderEventType(), id));
-  }
-}
+// ------------------------- WxSlider ----------------------
 
 const int wxSL_HORIZONTAL = wxHORIZONTAL;
 const int wxSL_VERTICAL = wxVERTICAL;

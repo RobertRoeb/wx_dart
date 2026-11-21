@@ -9,18 +9,6 @@ part of '../../wx_dart.dart';
 
 // ------------------------- wxChoice ----------------------
 
-/// @nodoc
-
-extension ChoiceEventBinder on WxEvtHandler {
-  void bindChoiceEvent( OnCommandEventFunc func, int id ) {
-    _eventTable.add( WxCommandEventTableEntry(wxGetChoiceEventType(), id, func));
-  }
-
-  void unbindChoiceEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetChoiceEventType(), id));
-  }
-}
-
 /// Offers the user a choice of items.
 ///
 /// Example usage:

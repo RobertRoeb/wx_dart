@@ -7,19 +7,7 @@
 
 part of '../../wx_dart.dart';
 
-// ------------------------- wxComboBox ----------------------
-
-/// @nodoc
-
-extension ComboboxEventBinder on WxEvtHandler {
-  void bindComboboxEvent( OnCommandEventFunc func, int id ) {
-    _eventTable.add( WxCommandEventTableEntry(wxGetComboboxEventType(), id, func));
-  }
-
-  void unbindComboboxEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetComboboxEventType(), id));
-  }
-}
+// ------------------------- WxComboBox ----------------------
 
 const int wxCB_SIMPLE = 0x0004;
 const int wxCB_SORT = 0x0008;

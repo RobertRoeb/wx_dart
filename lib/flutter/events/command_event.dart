@@ -7,6 +7,196 @@
 
 part of '../../wx_dart.dart';
 
+// ------------------------- WxCommandEvent binders for WxRadioButton ----------------------
+
+/// @nodoc
+
+extension RadioButtonEventBinder on WxEvtHandler {
+  void bindRadioButtonEvent( OnCommandEventFunc func, int id ) {
+    _eventTable.add( WxCommandEventTableEntry(wxGetRadioButtonEventType(), id, func));
+  }
+
+  void unbindRadioButtonEvent( int id ) {
+    _eventTable.removeWhere( (entry) => entry.matches(wxGetRadioButtonEventType(), id));
+  }
+}
+
+// ------------------------- WxCommandEvent binders for wxRadioBox ----------------------
+
+/// @nodoc
+
+extension RadioboxEventBinder on WxEvtHandler {
+  void bindRadioboxEvent( OnCommandEventFunc func, int id ) {
+    _eventTable.add( WxCommandEventTableEntry(wxGetRadioboxEventType(), id, func));
+  }
+
+  void unbindRadioboxEvent( int id ) {
+    _eventTable.removeWhere( (entry) => entry.matches(wxGetRadioboxEventType(), id));
+  }
+}
+
+// ------------------------- WxCommandEvent binders for WxButton ----------------------
+
+/// @nodoc
+
+extension ButtonEventBinder on WxEvtHandler {
+  void bindButtonEvent( OnCommandEventFunc func, int id ) {
+    _eventTable.add( WxCommandEventTableEntry(wxGetButtonEventType(), id, func));
+  }
+
+  void unbindButtonEvent( int id ) {
+    _eventTable.removeWhere( (entry) => entry.matches(wxGetButtonEventType(), id));
+  }
+}
+
+// ------------------------- WxCommandEvent binders for WxCheckBox ----------------------
+
+/// @nodoc
+
+extension CheckboxEventBinder on WxEvtHandler {
+  void bindCheckboxEvent( OnCommandEventFunc func, int id ) {
+    _eventTable.add( WxCommandEventTableEntry(wxGetCheckboxEventType(), id, func));
+  }
+
+  void unbindCheckboxEvent( int id ) {
+    _eventTable.removeWhere( (entry) => entry.matches(wxGetCheckboxEventType(), id));
+  }
+}
+
+// ------------------------- WxCommandEvent binders for WxToggleButton ----------------------
+
+/// @nodoc
+
+extension ToggleButtonEventBinder on WxEvtHandler {
+  void bindToggleButtonEvent( OnCommandEventFunc func, int id ) {
+    _eventTable.add( WxCommandEventTableEntry(wxGetToggleButtonEventType(), id, func));
+  }
+
+  void unbindToggleButtonEvent( int id ) {
+    _eventTable.removeWhere( (entry) => entry.matches(wxGetToggleButtonEventType(), id));
+  }
+}
+
+// ------------------------- WxCommandEvent binders for WxComboBox ----------------------
+
+/// @nodoc
+
+extension ComboboxEventBinder on WxEvtHandler {
+  void bindComboboxEvent( OnCommandEventFunc func, int id ) {
+    _eventTable.add( WxCommandEventTableEntry(wxGetComboboxEventType(), id, func));
+  }
+
+  void unbindComboboxEvent( int id ) {
+    _eventTable.removeWhere( (entry) => entry.matches(wxGetComboboxEventType(), id));
+  }
+}
+
+// ------------------------- WxCommandEvent binders for WxChoice ----------------------
+
+/// @nodoc
+
+extension ChoiceEventBinder on WxEvtHandler {
+  void bindChoiceEvent( OnCommandEventFunc func, int id ) {
+    _eventTable.add( WxCommandEventTableEntry(wxGetChoiceEventType(), id, func));
+  }
+
+  void unbindChoiceEvent( int id ) {
+    _eventTable.removeWhere( (entry) => entry.matches(wxGetChoiceEventType(), id));
+  }
+}
+
+// ------------------------- WxCommandEvent binders for WxListbox ----------------------
+
+/// @nodoc
+
+extension ListboxEventBinder on WxEvtHandler {
+  void bindListboxEvent( OnCommandEventFunc func, int id ) {
+    _eventTable.add( WxCommandEventTableEntry(wxGetListboxEventType(), id, func));
+  }
+
+  void unbindListboxEvent( int id ) {
+    _eventTable.removeWhere( (entry) => entry.matches(wxGetListboxEventType(), id));
+  }
+}
+
+/// @nodoc
+
+extension ListboxDClickEventBinder on WxEvtHandler {
+  void bindListboxDClickEvent( OnCommandEventFunc func, int id ) {
+    _eventTable.add( WxCommandEventTableEntry(wxGetListboxDClickEventType(), id, func));
+  }
+
+  void unbindListboxDClickEvent( int id ) {
+    _eventTable.removeWhere( (entry) => entry.matches(wxGetListboxDClickEventType(), id));
+  }
+}
+
+// ------------------------- WxCommandEvent binders for WxSearchCtrl ----------------------
+
+/// @nodoc
+
+extension SearchEventBinder on WxEvtHandler {
+  void bindSearchEvent( OnCommandEventFunc func, int id ) {
+    _eventTable.add( WxCommandEventTableEntry(wxGetSearchEventType(), id, func));
+  }
+
+  void unbindSearchEvent( int id ) {
+    _eventTable.removeWhere( (entry) => entry.matches(wxGetSearchEventType(), id));
+  }
+}
+
+/// @nodoc
+
+extension SearchCancelEventBinder on WxEvtHandler {
+  void bindSearchCancelEvent( OnCommandEventFunc func, int id ) {
+    _eventTable.add( WxCommandEventTableEntry(wxGetSearchCancelEventType(), id, func));
+  }
+
+  void unbindSearchCancelEvent( int id ) {
+    _eventTable.removeWhere( (entry) => entry.matches(wxGetSearchCancelEventType(), id));
+  }
+}
+
+// ------------------------- WxCommandEvent binders for WxSlider ----------------------
+
+/// @nodoc
+
+extension SliderEventBinder on WxEvtHandler {
+  void bindSliderEvent( OnCommandEventFunc func, int id ) {
+    _eventTable.add( WxCommandEventTableEntry(wxGetSliderEventType(), id, func));
+  }
+
+  void unbindSliderEvent( int id ) {
+    _eventTable.removeWhere( (entry) => entry.matches(wxGetSliderEventType(), id));
+  }
+}
+
+// ------------------------- WxCommandEvent binders for WxTextCtrl ----------------------
+
+/// @nodoc
+
+extension TextEventBinder on WxEvtHandler {
+  void bindTextEvent( OnCommandEventFunc func, int id ) {
+    _eventTable.add( WxCommandEventTableEntry(wxGetTextEventType(), id, func));
+  }
+
+  void unbindTextEvent( int id ) {
+    _eventTable.removeWhere( (entry) => entry.matches(wxGetTextEventType(), id));
+  }
+}
+
+/// @nodoc
+
+extension TextEventEnterBinder on WxEvtHandler {
+  void bindTextEnterEvent( OnCommandEventFunc func, int id ) {
+    _eventTable.add( WxCommandEventTableEntry(wxGetTextEnterEventType(), id, func));
+  }
+
+  void unbindTextEnterEvent( int id ) {
+    _eventTable.removeWhere( (entry) => entry.matches(wxGetTextEnterEventType(), id));
+  }
+}
+
 // ------------------------- wxCommandEvent ----------------------
 
 typedef OnCommandEventFunc = void Function( WxCommandEvent event );

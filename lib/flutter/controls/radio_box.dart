@@ -7,19 +7,7 @@
 
 part of '../../wx_dart.dart';
 
-// ------------------------- wxRadioBox ----------------------
-
-/// @nodoc
-
-extension RadioboxEventBinder on WxEvtHandler {
-  void bindRadioboxEvent( OnCommandEventFunc func, int id ) {
-    _eventTable.add( WxCommandEventTableEntry(wxGetRadioboxEventType(), id, func));
-  }
-
-  void unbindRadioboxEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetRadioboxEventType(), id));
-  }
-}
+// ------------------------- WxRadioBox ----------------------
 
 const int wxRA_LEFTTORIGHT = 0x0001;
 const int wxRA_TOPTOBOTTOM = 0x0002;

@@ -10,30 +10,6 @@ part of '../../wx_dart.dart';
 
 // ------------------------- WxSearchCtrl ----------------------
 
-/// @nodoc
-
-extension SearchEventBinder on WxEvtHandler {
-  void bindSearchEvent( OnCommandEventFunc func, int id ) {
-    _eventTable.add( WxCommandEventTableEntry(wxGetSearchEventType(), id, func));
-  }
-
-  void unbindSearchEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetSearchEventType(), id));
-  }
-}
-
-/// @nodoc
-
-extension SearchCancelEventBinder on WxEvtHandler {
-  void bindSearchCancelEvent( OnCommandEventFunc func, int id ) {
-    _eventTable.add( WxCommandEventTableEntry(wxGetSearchCancelEventType(), id, func));
-  }
-
-  void unbindSearchCancelEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetSearchCancelEventType(), id));
-  }
-}
-
 /// A text control with additional buttons to start and stop a search action.
 /// [WxSearchCtrl] does not actually perform the search itself.
 /// 

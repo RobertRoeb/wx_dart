@@ -7,19 +7,7 @@
 
 part of '../../wx_dart.dart';
 
-// ------------------------- wxRadioButton ----------------------
-
-/// @nodoc
-
-extension RadioButtonEventBinder on WxEvtHandler {
-  void bindRadioButtonEvent( OnCommandEventFunc func, int id ) {
-    _eventTable.add( WxCommandEventTableEntry(wxGetRadioButtonEventType(), id, func));
-  }
-
-  void unbindRadioButtonEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetRadioButtonEventType(), id));
-  }
-}
+// ------------------------- WxRadioButton ----------------------
 
 const int wxRB_GROUP = 0x0004;
 const int wxRB_SINGLE = 0x0008;

@@ -15,30 +15,6 @@ const int wxTE_PROCESS_TAB = 0x0040;
 const int wxTE_PROCESS_ENTER = 0x0400;
 const int wxTE_PASSWORD = 0x0800;
 
-/// @nodoc
-
-extension TextEventBinder on WxEvtHandler {
-  void bindTextEvent( OnCommandEventFunc func, int id ) {
-    _eventTable.add( WxCommandEventTableEntry(wxGetTextEventType(), id, func));
-  }
-
-  void unbindTextEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetTextEventType(), id));
-  }
-}
-
-/// @nodoc
-
-extension TextEventEnterBinder on WxEvtHandler {
-  void bindTextEnterEvent( OnCommandEventFunc func, int id ) {
-    _eventTable.add( WxCommandEventTableEntry(wxGetTextEnterEventType(), id, func));
-  }
-
-  void unbindTextEnterEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetTextEnterEventType(), id));
-  }
-}
-
 /// Creates a single-line or multi-line text field.
 /// 
 /// Example usage for multiline text field
