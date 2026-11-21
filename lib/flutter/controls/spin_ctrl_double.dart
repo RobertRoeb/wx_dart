@@ -7,70 +7,8 @@
 
 part of '../../wx_dart.dart';
 
-// ------------------------- wxSpinDoubleEvent ----------------------
 
-typedef OnSpinDoubleEventFunc = void Function( WxSpinDoubleEvent event );
-
-/// @nodoc
-
-class WxSpinDoubleEventTableEntry extends WxEventTableEntry {
-  WxSpinDoubleEventTableEntry( super.eventType, super.id, this.func );
-  final OnSpinDoubleEventFunc func;
-
-  @override
-  bool matches( int eventTypeTested, int idTested ) {
-    return (eventType == eventTypeTested) && ((id == wxID_ANY) || (id == idTested));
-  }
-
-  @override
-  void doCallFunction( WxEvent event ) {
-    if (event is WxSpinDoubleEvent) {
-      func( event );
-    }
-  }
-}
-
-/// @nodoc
-
-extension SpinCtrlDoubleEventBinder on WxEvtHandler {
-  void bindSpinCtrlDoubleEvent( OnSpinDoubleEventFunc func, int id ) {
-    _eventTable.add( WxSpinDoubleEventTableEntry(wxGetSpinCtrlDoubleEventType(), id, func));
-  }
-
-  void unbindSpinCtrlDoubleEvent( int id ) {
-    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetSpinCtrlDoubleEventType(), id) ));
-  }
-}
-
-/// Event emitted by [WxSpinCtrlDouble].
-/// 
-/// Main interface:
-/// * [getValue]
-/// 
-/// [SpinCtrlDouble](/wxdart/wxGetSpinCtrlDoubleEventType.html) event gets sent when the user has entered a new number. |
-/// | ----------------- |
-/// | void bindSpinCtrlDoubleEvent( void function( [WxSpinDoubleEvent] event ), int id ) |
-/// | void unbindSpinCtrlDoubleEvent( int id ) |
-
-class WxSpinDoubleEvent extends WxNotifyEvent  {
-  WxSpinDoubleEvent( int eventType, int id, { double value = 0 } ) : super( eventType, id ) {
-    _value = value;
-  }
-
-  late double _value;
-
-  /// Sets the value of the [WxSpinCtrlDouble], done by it.
-  void setValue( double value ) {
-    _value = value;
-  }
-
-  /// Returns the value of the [WxSpinCtrlDouble]
-  double getValue( ) {
-    return _value;
-  }
-}
-
-// ------------------------- wxSpinCtrlDouble ----------------------
+// ------------------------- WxSpinCtrlDouble ----------------------
 
 /// Allows the user to enter an double number with keyboard or mouse/touch.
 /// 
@@ -88,8 +26,8 @@ class WxSpinDoubleEvent extends WxNotifyEvent  {
 /// # Event emitted
 /// [SpinCtrlDouble](/wxdart/wxGetSpinCtrlDoubleEventType.html) event gets sent when the user has entered a new number. |
 /// | ----------------- |
-/// | void bindSpinCtrlDoubleEvent( void function( [WxSpinDoubleEvent] event ) ) |
-/// | void unbindSpinCtrlDoubleEvent() |
+/// | void bindSpinCtrlDoubleEvent( void function( [WxSpinDoubleEvent] event ), int id ) |
+/// | void unbindSpinCtrlDoubleEvent( int id ) |
 /// 
 /// # Window styles
 /// | constant | meaning |

@@ -60,6 +60,7 @@ part 'flutter/events/notebook_event.dart';
 part 'flutter/events/collapsible_pane_event.dart';
 part 'flutter/events/html_link_event.dart';
 part 'flutter/events/hyperlink_event.dart';
+part 'flutter/events/spin_ctrl_event.dart';
 
 part 'flutter/misc/standard_paths.dart';
 part 'flutter/misc/timer.dart';

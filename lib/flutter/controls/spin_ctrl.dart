@@ -7,76 +7,6 @@
 
 part of '../../wx_dart.dart';
 
-// ------------------------- wxSpinEvent ----------------------
-
-typedef OnSpinEventFunc = void Function( WxSpinEvent event );
-
-/// @nodoc
-
-class WxSpinEventTableEntry extends WxEventTableEntry {
-  WxSpinEventTableEntry( super.eventType, super.id, this.func );
-  final OnSpinEventFunc func;
-
-  @override
-  bool matches( int eventTypeTested, int idTested ) {
-    return (eventType == eventTypeTested) && ((id == wxID_ANY) || (id == idTested));
-  }
-
-  @override
-  void doCallFunction( WxEvent event ) {
-    if (event is WxSpinEvent) {
-      func( event );
-    }
-  }
-}
-
-/// @nodoc
-
-extension SpinCtrlEventBinder on WxEvtHandler {
-  void bindSpinCtrlEvent( OnSpinEventFunc func, int id ) {
-    _eventTable.add( WxSpinEventTableEntry(wxGetSpinCtrlEventType(), id, func));
-  }
-
-  void unbindSpinCtrlEvent( int id ) {
-    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetSpinCtrlEventType(), id) ));
-  }
-}
-
-/// @nodoc
-
-extension SpinEventBinder on WxEvtHandler {
-  void bindSpinEvent( OnSpinEventFunc func, int id ) {
-    _eventTable.add( WxSpinEventTableEntry(wxGetSpinEventType(), id, func));
-  }
-
-  void unbindSpinEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetSpinEventType(), id));
-  }
-}
-
-/// @nodoc
-
-extension SpinUpEventBinder on WxEvtHandler {
-  void bindSpinUpEvent( OnSpinEventFunc func, int id ) {
-    _eventTable.add( WxSpinEventTableEntry(wxGetSpinUpEventType(), id, func));
-  }
-
-  void unbindSpinUpEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetSpinUpEventType(), id));
-  }
-}
-
-/// @nodoc
-
-extension SpinDownEventBinder on WxEvtHandler {
-  void bindSpinDownEvent( OnSpinEventFunc func, int id ) {
-    _eventTable.add( WxSpinEventTableEntry(wxGetSpinDownEventType(), id, func));
-  }
-
-  void unbindSpinDownEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetSpinDownEventType(), id));
-  }
-}
 
 /// Event emitted by [WxSpinCtrl].
 /// 
@@ -104,7 +34,7 @@ class WxSpinEvent extends WxNotifyEvent  {
   }
 }
 
-// ------------------------- wxSpinCtrl ----------------------
+// ------------------------- WxSpinCtrl ----------------------
 
 const int wxSP_HORIZONTAL = wxHORIZONTAL;
 const int wxSP_VERTICAL = wxVERTICAL;
@@ -138,8 +68,8 @@ const int wxSP_WRAP = 0x8000;
 /// # Event emitted
 /// [SpinCtrl](/wxdart/wxGetSpinCtrlEventType.html) event gets sent when the user has entered a new number. |
 /// | ----------------- |
-/// | void bindSpinCtrlEvent( void function( [WxSpinEvent] event ) ) |
-/// | void unbindSpinCtrlEvent() |
+/// | void bindSpinCtrlEvent( void function( [WxSpinEvent] event ), int id ) |
+/// | void unbindSpinCtrlEvent( int id ) |
 /// 
 /// # Window styles
 /// | constant | meaning |
