@@ -175,7 +175,20 @@ class WxTopLevelWindow extends WxNonOwnedWindow {
       BuildContext? parentContext = _navigatorKey.currentContext;
       if (parentContext != null) {
         Navigator.push(parentContext, MaterialPageRoute(
-           builder: (BuildContext context) => _build(context) ) );
+           builder: (BuildContext context) => PopScope(
+            canPop: false,
+            onPopInvokedWithResult: (didPop, result) {
+
+              if (didPop) return;
+              WxCloseEvent event = WxCloseEvent( wxGetCloseWindowEventType(), id: getId() );
+              event.setEventObject(this);
+              event.setCanVeto(true);
+              if (!processEvent(event)) {
+                destroy();
+              }
+            },
+            child: _build(context) ) )
+           );
       }
     } else {
       BuildContext? parentContext = _navigatorKey.currentContext;
@@ -236,7 +249,7 @@ class WxTopLevelWindow extends WxNonOwnedWindow {
     WxCloseEvent event = WxCloseEvent( wxGetCloseWindowEventType(), id: getId() );
     event.setEventObject(this);
     event.setCanVeto(!force);
-    if (processEvent(event)) {
+    if (!processEvent(event)) {
       destroy();
     }
   }
