@@ -236,7 +236,9 @@ class WxTopLevelWindow extends WxNonOwnedWindow {
     WxCloseEvent event = WxCloseEvent( wxGetCloseWindowEventType(), id: getId() );
     event.setEventObject(this);
     event.setCanVeto(!force);
-    processEvent(event);
+    if (processEvent(event)) {
+      destroy();
+    }
   }
 
   /// Returns the position of the window on screen. The returned position
