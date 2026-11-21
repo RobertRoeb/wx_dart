@@ -99,7 +99,7 @@ const int wxDRAG_RESULT_CANCEL = 5;
 /// [DragFeedback](/wxdart/wxGetDragFeedbackEventType.html) event gets sent to allow the user to create visual feedback. |
 /// | ----------------- |
 /// | void bindDragFeedbackEvent( void function( [WxDragEvent] event), int id ) |
-/// | void unbindDragFeedbackEvent() |
+/// | void unbindDragFeedbackEvent( int id ) |
 
 class WxDropSource extends WxClass {
 
