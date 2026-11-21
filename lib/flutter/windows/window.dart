@@ -738,7 +738,7 @@ class WxWindow extends WxEvtHandler {
 
   void _setSizeInternal( WxSize size ) 
   {
-    if ((size.x == _size.x) && (size.x == _size.y)) return;
+    if ((size.x == _size.x) && (size.y == _size.y)) return;
     if (size.x > 0) {
       _size = WxSize( size.x, _size.y );
     } else {
