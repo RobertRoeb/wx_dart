@@ -7,6 +7,65 @@
 
 part of '../../wx_dart.dart';
 
+// ------------------------- WxCommandEvent binders for WxToolbar ----------------------
+
+// EVT_TOOL_ENTER
+
+/// @nodoc
+
+extension ToolEventBinder on WxEvtHandler {
+  void bindToolEvent( OnCommandEventFunc func, int id ) {
+    _eventTable.add( WxCommandEventTableEntry(wxGetToolEventType(), id, func));
+  }
+
+  void unbindToolEvent( int id ) {
+    _eventTable.removeWhere( (entry) => entry.matches(wxGetToolEventType(), id));
+  }
+}
+
+// EVT_TOOL_ENTER
+
+/// @nodoc
+
+extension ToolEnterEventBinder on WxEvtHandler {
+  void bindToolEnterEvent( OnCommandEventFunc func, int id ) {
+    _eventTable.add( WxCommandEventTableEntry(wxGetToolEnterEventType(), id, func));
+  }
+
+  void unbindToolEnterEvent( int id ) {
+    _eventTable.removeWhere( (entry) => entry.matches(wxGetToolEnterEventType(), id));
+  }
+}
+
+// EVT_TOOL_DROPDOWN 
+
+/// @nodoc
+
+extension ToolDropDownEventBinder on WxEvtHandler {
+  void bindToolDropDownEvent( OnCommandEventFunc func, int id ) {
+    _eventTable.add( WxCommandEventTableEntry(wxGetToolDropDownEventType(), id, func));
+  }
+
+  void unbindToolDropDownEvent( int id ) {
+    _eventTable.removeWhere( (entry) => entry.matches(wxGetToolDropDownEventType(), id));
+  }
+}
+// ------------------------- WxCommandEvent binders for WxMenu ----------------------
+
+// EVT_MENU
+
+/// @nodoc
+
+extension MenuEventBinder on WxEvtHandler {
+  void bindMenuEvent( OnCommandEventFunc func, int id ) {
+    _eventTable.add( WxCommandEventTableEntry(wxGetMenuEventType(), id, func));
+  }
+
+  void unbindMenuEvent( int id ) {
+    _eventTable.remove( _eventTable.lastWhere( (entry) => entry.matches(wxGetMenuEventType(), id) ));
+  }
+}
+
 // ------------------------- WxCommandEvent binders for WxRadioButton ----------------------
 
 /// @nodoc

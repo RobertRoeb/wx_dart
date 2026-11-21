@@ -7,47 +7,6 @@
 
 part of '../../wx_dart.dart';
 
-// ------------------------- EVT_TOOL ----------------------
-
-/// @nodoc
-
-extension ToolEventBinder on WxEvtHandler {
-  void bindToolEvent( OnCommandEventFunc func, int id ) {
-    _eventTable.add( WxCommandEventTableEntry(wxGetToolEventType(), id, func));
-  }
-
-  void unbindToolEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetToolEventType(), id));
-  }
-}
-
-// ------------------------- EVT_TOOL_ENTER ----------------------
-
-/// @nodoc
-
-extension ToolEnterEventBinder on WxEvtHandler {
-  void bindToolEnterEvent( OnCommandEventFunc func, int id ) {
-    _eventTable.add( WxCommandEventTableEntry(wxGetToolEnterEventType(), id, func));
-  }
-
-  void unbindToolEnterEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetToolEnterEventType(), id));
-  }
-}
-
-// ------------------------- EVT_TOOL_DROPDOWN ----------------------
-
-/// @nodoc
-
-extension ToolDropDownEventBinder on WxEvtHandler {
-  void bindToolDropDownEvent( OnCommandEventFunc func, int id ) {
-    _eventTable.add( WxCommandEventTableEntry(wxGetToolDropDownEventType(), id, func));
-  }
-
-  void unbindToolDropDownEvent( int id ) {
-    _eventTable.removeWhere( (entry) => entry.matches(wxGetToolDropDownEventType(), id));
-  }
-}
 // ------------------------- wxToolBar ----------------------
 
 const int wxITEM_SEPARATOR = -1;
