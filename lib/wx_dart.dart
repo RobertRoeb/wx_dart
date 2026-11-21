@@ -65,6 +65,8 @@ part 'common_non_native/events/tree_event.dart';
 part 'common_non_native/events/splitter_event.dart';
 part 'common_non_native/events/menu_event.dart';
 part 'common_non_native/events/notify_event.dart';
+part 'common_non_native/events/drag_event.dart';
+part 'common_non_native/events/drop_event.dart';
 
 part 'flutter/misc/standard_paths.dart';
 part 'flutter/misc/timer.dart';
