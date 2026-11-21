@@ -28,7 +28,7 @@ class WxTreeItemId {
 
   WxTreeItemId._asInvisibleRoot() {
     _node = null;
-    _invisibleRoot = true;
+    _isInvisibleRoot = true;
   }
 
   TreeSliverNode<WxTreeItemNode>? _getNode() {
@@ -36,15 +36,12 @@ class WxTreeItemId {
   }
 
   bool isOk() {
-    return (_node != null) || _invisibleRoot;
+    return (_node != null) || _isInvisibleRoot;
   }
 
-  bool _isInvisibleRoot() {
-    return _invisibleRoot;
-  }
 
   TreeSliverNode<WxTreeItemNode>? _node;
-  bool _invisibleRoot = false;
+  bool _isInvisibleRoot = false;
 }
 
 const int wxTreeItemIcon_Normal = 0;
@@ -394,7 +391,7 @@ class WxTreeCtrl extends WxControl {
     }
     final node = TreeSliverNode<WxTreeItemNode>( 
       WxTreeItemNode(text, image, selImage, data) );
-    if (parent._isInvisibleRoot()) {
+    if (parent._isInvisibleRoot) {
       _root.add( node );
     } else {
       parent._getNode()!.children.add( node );
@@ -419,7 +416,7 @@ class WxTreeCtrl extends WxControl {
     final node = TreeSliverNode<WxTreeItemNode>( 
       WxTreeItemNode(text, image, selImage, data) );
 
-    if (parent._isInvisibleRoot()) {
+    if (parent._isInvisibleRoot) {
       _root.insert( pos, node );
     } else {
       parent._getNode()!.children.insert( pos, node );
@@ -435,13 +432,13 @@ class WxTreeCtrl extends WxControl {
       wxLogError( "invalid parent tree item in insertItemAfter" );
       return WxTreeItemId();
     }
-    if (!previous.isOk() || previous._isInvisibleRoot()) {
+    if (!previous.isOk() || previous._isInvisibleRoot) {
       wxLogError( "invalid previous tree item" );
       return WxTreeItemId();
     }
     int pos = wxNOT_FOUND;
     bool isLast = false;
-    if (parent._isInvisibleRoot()) {
+    if (parent._isInvisibleRoot) {
       pos = _root.indexOf( previous._node! );
       isLast = _root.last == previous._node!;
     } else {
@@ -467,7 +464,7 @@ class WxTreeCtrl extends WxControl {
       wxLogError( "invalid tree item" );
       return;
     }
-    if (item._isInvisibleRoot()) {
+    if (item._isInvisibleRoot) {
       wxLogError( "cannot delete invisible root item" );
       return;
     }
@@ -573,7 +570,7 @@ class WxTreeCtrl extends WxControl {
   /// Ensures the [item] is visible (scrolls if necessary)
   void ensureVisible( WxTreeItemId item )
   {
-    if (item._isInvisibleRoot()) {
+    if (item._isInvisibleRoot) {
       wxLogError( "make invisible root item visible" );
       return;
     }
@@ -604,7 +601,7 @@ class WxTreeCtrl extends WxControl {
       wxLogError( "invalid tree item" );
       return WxTreeItemId();
     }
-    if (item._isInvisibleRoot()) {
+    if (item._isInvisibleRoot) {
       return WxTreeItemId();
     }
     final parentNode = _getParentNode( item._node! );
@@ -629,7 +626,7 @@ class WxTreeCtrl extends WxControl {
       wxLogError( "invalid tree item" );
       return WxTreeItemId();
     }
-    if (parent._isInvisibleRoot()) {
+    if (parent._isInvisibleRoot) {
       if (_root.isEmpty) return WxTreeItemId();  
       final firstChildNode = _root.first;
       return WxTreeItemId( node: firstChildNode );
@@ -647,7 +644,7 @@ class WxTreeCtrl extends WxControl {
       wxLogError( "invalid tree item" );
       return WxTreeItemId();
     }
-    if (parent._isInvisibleRoot()) {
+    if (parent._isInvisibleRoot) {
       if (_root.isEmpty) return WxTreeItemId();  
       final firstChildNode = _root.last;
       return WxTreeItemId( node: firstChildNode );
@@ -665,7 +662,7 @@ class WxTreeCtrl extends WxControl {
       wxLogError( "invalid tree item" );
       return WxTreeItemId();
     }
-    if (item._isInvisibleRoot()) {
+    if (item._isInvisibleRoot) {
       wxLogError( "invisble root has no siblings" );
       return WxTreeItemId();
     }
@@ -704,7 +701,7 @@ class WxTreeCtrl extends WxControl {
       wxLogError( "invalid tree item" );
       return WxTreeItemId();
     }
-    if (item._isInvisibleRoot()) {
+    if (item._isInvisibleRoot) {
       wxLogError( "invisble root has no siblings" );
       return WxTreeItemId();
     }
@@ -764,7 +761,7 @@ class WxTreeCtrl extends WxControl {
       wxLogError( "invalid tree item" );
       return false;
     }
-    if (item._isInvisibleRoot()) {
+    if (item._isInvisibleRoot) {
       wxLogError( "invisible root cannot be selected" );
       return false;
     }
@@ -783,7 +780,7 @@ class WxTreeCtrl extends WxControl {
       wxLogError( "invalid tree item" );
       return;
     }
-    if (item._isInvisibleRoot()) {
+    if (item._isInvisibleRoot) {
       wxLogError( "invisible root cannot be selected" );
       return;
     }
@@ -816,7 +813,7 @@ class WxTreeCtrl extends WxControl {
   /// Returns true if [item] has children and is expanded
   bool isExpanded( WxTreeItemId item )
   {
-    if (item._isInvisibleRoot()) {
+    if (item._isInvisibleRoot) {
       return true;
     }
     final node = item._getNode();
@@ -829,7 +826,7 @@ class WxTreeCtrl extends WxControl {
   /// Returns true if the [item] has any children
   bool itemHasChildren( WxTreeItemId item )
   {
-    if (item._isInvisibleRoot()) {
+    if (item._isInvisibleRoot) {
       return _root.isNotEmpty;
     }
     final node = item._getNode();
@@ -885,7 +882,7 @@ class WxTreeCtrl extends WxControl {
       return;
     }
 
-    if (item._isInvisibleRoot()) {
+    if (item._isInvisibleRoot) {
       _controller.expandAll();
       return;
     }
@@ -976,7 +973,7 @@ class WxTreeCtrl extends WxControl {
       return;
     }
     
-    if (item._isInvisibleRoot()) {
+    if (item._isInvisibleRoot) {
       _controller.collapseAll();
       return;
     }

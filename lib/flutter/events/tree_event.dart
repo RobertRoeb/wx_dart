@@ -100,13 +100,16 @@ extension TreeDeleteItemEventBinder on WxEvtHandler {
 
 class WxTreeEvent extends WxNotifyEvent {
   WxTreeEvent( int eventType, WxTreeCtrl tree, WxTreeItemId item ) : super( eventType, tree.getId() ) {
+    setEventObject( tree );
     setClientData( tree.getItemData( item ) );
     _item = item;
+    // _label = item.isOk() && !item._isInvisibleRoot ? item._node!.label : '';
   }
   
   // late final WxTreeCtrl _treectrl;
   late final WxTreeItemId _item;
   String _label = '';
+  WxPoint _point = wxDefaultPosition;
 
   /// Returns the item the event refers to
   WxTreeItemId getItem( ) {
@@ -125,7 +128,7 @@ class WxTreeEvent extends WxNotifyEvent {
   /// Returns position of mouse event.
   /// Not implemented in wxDart Flutter.
   WxPoint getPoint( ) {
-    return wxDefaultPosition;
+    return _point;
   }
 
   bool isEditCancelled( ) {
