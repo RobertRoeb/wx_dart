@@ -49,10 +49,16 @@ part of '../../wx_dart.dart';
 /// * [removeGrowableCol]
 /// * [isColGrowable]
 /// 
-/// Growable row interface (wxDart Native only)
+/// Growable row interface
 /// * [addGrowableRow]
 /// * [removeGrowableRow]
 /// * [isRowGrowable]
+///
+/// Flexible direction
+/// * [setFlexibleDirection]
+/// * [getFlexibleDirection]
+/// * [setNonFlexibleGrowMode]
+/// * [getNonFlexibleGrowMode]
 /// 
 /// Gaps and layout
 /// * [getEffectiveColsCount]
@@ -109,83 +115,79 @@ class WxFlexGridSizer extends WxGridSizer {
   /// Creates a [WxFlexGridSizer] with the given number of column and optional gap between items.
   WxFlexGridSizer( super.cols, { super.vgap = 0, super.hgap = 0 } );
 
-  final List<int> _growableColumns = [];
-/*
-  final List<int> _growableRows = [];
-  int _growableHeight = -1;
-  int _totalVerticalProportion = 0;  // TODO assume all have proportion 1 for now
-*/
+  /// index -> proportion
+  final Map<int, int> _growableCols = {};
+  /// index -> proportion
+  final Map<int, int> _growableRows = {};
+  int _flexibleDirection = wxBOTH;
+  int _nonFlexibleGrowMode = wxFLEX_GROWMODE_SPECIFIED;
 
-/*
-  void distributeHeightAmongGrowableRows( int totalHeight ) {
-    for (int i = 0; i < getEffectiveRowsCount(); i++) {
-      if (isRowGrowable(i)) continue;
-      final item = _items[i*getEffectiveColsCount()];
-      final size = item.getSize();
-      totalHeight -= size.y;
-    }
-    if (_growableHeight != totalHeight) {
-      _growableHeight = totalHeight;      
-      wxTheApp._setState();  // this doesn't currently work if the frame is growing
-    }
-  }
-*/
-
-  /// Adds the col at [index] to the growable columns.
+  /// Makes the column at [index] growable: if the sizer gets more space
+  /// than it needs, growable columns share the extra width according to
+  /// their [proportion] (all equally if all proportions are 0).
   void addGrowableCol( int index, { int proportion = 0 } ) {
-    _growableColumns.add( index );
+    _growableCols[index] = proportion;
   }
 
-  /// Adds the row at [index] to the growable rows.
-  /// 
-  /// Currently wxDart Native only.
+  /// Makes the row at [index] growable: if the sizer gets more space
+  /// than it needs, growable rows share the extra height according to
+  /// their [proportion] (all equally if all proportions are 0).
+  ///
+  /// In wxDart Flutter, the sizer only gets more height than it needs if
+  /// it is in a sizer with a proportion > 0 (or wxEXPAND in a [WxRow]),
+  /// otherwise Flutter gives it an unbounded height.
   void addGrowableRow( int index, { int proportion = 0 } ) {
-  /*
-    _growableRows.add( index );
-    _totalVerticalProportion = _growableRows.length; // assume all have proportion 1 for now
-  */
+    _growableRows[index] = proportion;
   }
 
   /// Remove the column from the flexible columns.
   void removeGrowableCol( int index ) {
-    _growableColumns.removeWhere( (item) => item == index );
+    _growableCols.remove( index );
   }
 
   /// Remove the row from the flexible rows.
-  /// 
-  /// Currently wxDart Native only.
   void removeGrowableRow( int index ) {
-  /*
-    _growableRows.removeWhere( (item) => item == index );
-    _totalVerticalProportion = _growableRows.length; // assume all have proportion 1 for now
-  */
-  }
-
-  /// Returns the flexible direction. 
-  /// 
-  /// Currently wxDart Native only.
-  int getFlexibleDirection( ) {
-    return wxVERTICAL;
-  }
-
-  /// Sets the non-flexibel grow mode.
-  /// 
-  /// Currently wxDart Native only.
-  void setNonFlexibleGrowMode( int mode ) {
+    _growableRows.remove( index );
   }
 
   /// Returns true of column at [index] is growable
   bool isColGrowable( int index ) {
-    return _growableColumns.contains(index);
+    return _growableCols.containsKey( index );
   }
 
-  /// Returns true of row is growable. Currently always returns false
-  /// in wxDart Flutter.
+  /// Returns true of row at [index] is growable
   bool isRowGrowable( int index ) {
-    return false;
-  /*
-    return _growableRows.contains(index);
-  */
+    return _growableRows.containsKey( index );
+  }
+
+  /// Sets in which direction the growable rows and columns grow according
+  /// to their proportion: wxVERTICAL (rows), wxHORIZONTAL (columns) or
+  /// wxBOTH (default). In the other direction, [setNonFlexibleGrowMode]
+  /// decides.
+  void setFlexibleDirection( int direction ) {
+    _flexibleDirection = direction;
+  }
+
+  /// Returns the flexible direction, see [setFlexibleDirection]
+  int getFlexibleDirection( ) {
+    return _flexibleDirection;
+  }
+
+  /// Sets how rows or columns grow in the non-flexible direction (see
+  /// [setFlexibleDirection]):
+  ///
+  /// | constant | meaning |
+  /// | -------- | -------- |
+  /// | wxFLEX_GROWMODE_NONE | they don't grow |
+  /// | wxFLEX_GROWMODE_SPECIFIED | growable ones grow equally (default) |
+  /// | wxFLEX_GROWMODE_ALL | all grow equally |
+  void setNonFlexibleGrowMode( int mode ) {
+    _nonFlexibleGrowMode = mode;
+  }
+
+  /// Returns the grow mode in the non-flexible direction, see [setNonFlexibleGrowMode]
+  int getNonFlexibleGrowMode( ) {
+    return _nonFlexibleGrowMode;
   }
 
   @override
@@ -193,141 +195,36 @@ class WxFlexGridSizer extends WxGridSizer {
   {
     _newItems.clear(); // only used in WxGridSizer
 
-    Map<int, TableColumnWidth> columnWidths = {};
-    for (int col = 0; col < getEffectiveColsCount(); col++) {
-      if (isColGrowable(col)) {
-        columnWidths[col] = FlexColumnWidth();
+    final cols = getEffectiveColsCount();
+    final cellCount = getEffectiveRowsCount() * cols;
+    final children = <Widget>[];
+    final flags = <int>[];
+    for (int index = 0; index < cellCount; index++) {
+      if (index < _items.length) {
+        children.add( _wxBuildGridCell( context, owner, _items[index] ) );
+        flags.add( _items[index]._flag );
       } else {
-        columnWidths[col] = IntrinsicColumnWidth();
+        children.add( const SizedBox.shrink() );
+        flags.add( 0 );
       }
     }
 
-    List<TableRow> rows = [];
-    for (int i = 0; i < getEffectiveRowsCount(); i++) {
-      TableRow row = TableRow( children: [] );
-      for (int j = 0; j < getEffectiveColsCount(); j++) {
-        int index = i * getEffectiveColsCount() + j;
-
-        late Widget finalWidget;
-
-        if (index >= _items.length) {
-          finalWidget = SizedBox.shrink();
-        } else {
-          WxSizerItem item = _items[index];
-          if (item._kind == WxSizerKind.window) {
-            if (!item._window!.isShown()) {
-              finalWidget = SizedBox.shrink();
-            } else {
-              finalWidget = item._window!._build( context );
-              WxSize size = item._window!.getMinSize();
-              if ((size.x != -1) || (size.y != -1) || (item._flag & wxEXPAND != 0) ) {
-                finalWidget = SizedBox(
-                  width: (item._flag & wxEXPAND != 0) ? double.infinity : (size.x != -1) ? size.x.toDouble() : null,
-                  height: (size.y != -1) ? size.y.toDouble() : null,
-                  child: finalWidget
-                );
-              }
-            }
-          } else 
-          if (item._kind == WxSizerKind.sizer) {
-            finalWidget = item._sizer!._build(context, owner);
-          } else {
-            item._spacerParentWindow = owner;
-            finalWidget = ReportSize( 
-                key: item._spacerWidgetKey,
-              child: SizedBox(height: item._height.toDouble()), 
-              onSizeChange: (size) {
-                item._spacerSize = WxSize(size.width.floor(),size.height.floor());
-              }
-            );
-          }
-
-          if (((item._flag & wxALL) != 0) && (item._border != 0)) {
-            final double b = item._border.toDouble();
-            Padding padding = Padding(padding: 
-              EdgeInsetsGeometry.fromLTRB(
-                (item._flag & wxLEFT) == 0 ? 0 : b, 
-                (item._flag & wxTOP) == 0 ? 0 : b, 
-                (item._flag & wxRIGHT) == 0 ? 0 : b, 
-                (item._flag & wxBOTTOM) == 0 ? 0 : b), 
-              child: finalWidget);
-            finalWidget = padding;
-          }
-
-          double halignment = -1.0;
-          if ((item._flag & wxEXPAND) != 0) {
-            halignment = 0.0; // probably doesn't matter as it fills out anyways
-          } else {
-            if ((item._flag & wxALIGN_CENTER_HORIZONTAL) != 0) {
-              halignment = 0.0;
-            } else 
-            if ((item._flag & wxALIGN_RIGHT) != 0) {
-              halignment = 1.0;
-            }
-          }
-
-          double valignment = -1.0;
-          if ((item._flag & wxALIGN_CENTER_VERTICAL) != 0) {
-            valignment = 0.0;
-          } else 
-          if ((item._flag & wxALIGN_BOTTOM) != 0) {
-            valignment = 1.0;
-          }
-
-          finalWidget = Align( 
-              alignment: Alignment(halignment, valignment),
-              child: finalWidget
-            );
-
-          if ((getHGap() != 0) || (getVGap() != 0)) {
-              finalWidget = Padding(
-                padding: EdgeInsetsGeometry.symmetric( vertical: getVGap() / 2, horizontal: getHGap() / 2 ),
-                child: finalWidget);
-          }
-        }
-
-        /*if (isRowGrowable(i)) {
-          if ((_totalVerticalProportion == 0) || (_growableHeight <= 0)) {
-            finalWidget = SizedBox( 
-              height: 80,
-              child: finalWidget,
-            );
-          } else {
-            double proportion = _totalVerticalProportion / _growableRows.length;
-            print( "new height ${(_growableHeight * proportion).floor()}" );
-            finalWidget = SizedBox( 
-              height: _growableHeight * proportion,
-              child: finalWidget,
-            );
-          }
-        } */
-
-        finalWidget = TableCell( verticalAlignment: TableCellVerticalAlignment.intrinsicHeight, child: finalWidget);
-
-        row.children.add( finalWidget );
-        
-      }
-      rows.add(row);
-    }
-
-    Widget table = Table(
-      columnWidths: _growableColumns.isEmpty ? null : columnWidths,
-      defaultColumnWidth: IntrinsicColumnWidth(),
-      children: rows,
+    final grid = _WxGridLayout(
+      cols: cols,
+      flags: flags,
+      hgap: getHGap().toDouble(),
+      vgap: getVGap().toDouble(),
+      growableCols: Map.of( _growableCols ),
+      growableRows: Map.of( _growableRows ),
+      flexibleDirection: _flexibleDirection,
+      nonFlexibleGrowMode: _nonFlexibleGrowMode,
+      children: children,
     );
 
-    if (_growableColumns.isEmpty) {
-      table = Row(
-        mainAxisSize: MainAxisSize.min,
-        children:  [ table ] 
-      );
-    }
-
-    return ReportSize( child: table, 
+    return ReportSize( child: grid,
           onSizeChange: (size) {
             _setSizeInternal( WxSize(size.width.floor(),size.height.floor()) );
-          } 
+          }
         );
   }
 }
-

@@ -97,8 +97,6 @@ class WxGridSizer extends WxSizer {
   late int _vgap;
   late int _hgap;
   bool _sizeKnown = false;
-  int _maxWidth = 5;
-  int _maxHeight = 5;
   final List<WxSizerItem> _newItems = [];
 
   /// Returns the actual number of columns
@@ -211,163 +209,37 @@ class WxGridSizer extends WxSizer {
   @override
   Widget _build(BuildContext context, WxWindow owner)
   {
-    Map<int, TableColumnWidth> columnWidths = {};
-    for (int col = 0; col < getEffectiveColsCount(); col++) {
-      columnWidths[col] = IntrinsicColumnWidth();
-    }
+    // all cells are as large as the largest item, in a single layout pass
+    _newItems.clear();
+    _sizeKnown = true;
 
-    List<TableRow> rows = [];
-    for (int i = 0; i < getEffectiveRowsCount(); i++) {
-      TableRow row = TableRow( children: [] );
-      for (int j = 0; j < getEffectiveColsCount(); j++) {
-        int index = i * getEffectiveColsCount() + j;
-
-        late Widget finalWidget;
-
-        if (index >= _items.length) {
-          finalWidget = SizedBox();
-        } else {
-          WxSizerItem item = _items[index];
-          if (item._kind == WxSizerKind.window)
-          {
-            if (!item._window!.isShown()) {
-              finalWidget = SizedBox();
-            } else {
-              finalWidget = item._window!._build( context );
-              if (_sizeKnown && !_newItems.contains(item))
-              {
-                double halignment = -1.0;
-                if ((item._flag & wxALIGN_CENTER_HORIZONTAL) != 0) {
-                  halignment = 0.0;
-                } else 
-                if ((item._flag & wxALIGN_RIGHT) != 0) {
-                  halignment = 1.0;
-                }
-
-                double valignment = -1.0;
-                if ((item._flag & wxALIGN_CENTER_VERTICAL) != 0) {
-                  valignment = 0.0;
-                } else 
-                if ((item._flag & wxALIGN_BOTTOM) != 0) {
-                  valignment = 1.0;
-                }
-                finalWidget = Align( 
-                    alignment: Alignment(halignment, valignment),
-                    child: finalWidget
-                  );
-                finalWidget = SizedBox(
-                  width: _maxWidth.toDouble(),
-                  height: _maxHeight.toDouble(),
-                  child: finalWidget
-                );
-              }
-              else
-              {
-                WxSize size = item._window!.getMinSize();
-                if ((size.x != -1) || (size.y != -1)) {
-                  finalWidget = SizedBox(
-                    width: (size.x != -1) ? size.x.toDouble() : null,
-                    height: (size.y != -1) ? size.y.toDouble() : null,
-                    child: finalWidget
-                  );
-                }
-              }
-            }
-          } else 
-          if (item._kind == WxSizerKind.sizer) {
-            finalWidget = item._sizer!._build(context, owner);
-          } else {
-            item._spacerParentWindow = owner;
-            finalWidget = ReportSize( 
-                key: item._spacerWidgetKey,
-              child: SizedBox(height: item._height.toDouble()), 
-              onSizeChange: (size) {
-                item._spacerSize = WxSize(size.width.floor(),size.height.floor());
-              }
-            );
-          }
-
-          if (!_sizeKnown) {
-            if (((item._flag & wxALL) != 0) && (item._border != 0)) {
-              final double b = item._border.toDouble();
-              Padding padding = Padding(padding: 
-                EdgeInsetsGeometry.fromLTRB(
-                  (item._flag & wxLEFT) == 0 ? 0 : b, 
-                  (item._flag & wxTOP) == 0 ? 0 : b, 
-                  (item._flag & wxRIGHT) == 0 ? 0 : b, 
-                  (item._flag & wxBOTTOM) == 0 ? 0 : b), 
-                child: finalWidget);
-              finalWidget = padding;
-            }
-          }
-
-          if ((getHGap() != 0) || (getVGap() != 0)) {
-              finalWidget = Padding(
-                padding: EdgeInsetsGeometry.symmetric( vertical: getVGap() / 2, horizontal: getHGap() / 2 ),
-                child: finalWidget);
-          }
-        }
-
-        finalWidget = TableCell( verticalAlignment: TableCellVerticalAlignment.intrinsicHeight, child: finalWidget);
-
-        row.children.add( finalWidget );
-        
+    final cols = getEffectiveColsCount();
+    final cellCount = getEffectiveRowsCount() * cols;
+    final children = <Widget>[];
+    final flags = <int>[];
+    for (int index = 0; index < cellCount; index++) {
+      if (index < _items.length) {
+        children.add( _wxBuildGridCell( context, owner, _items[index] ) );
+        flags.add( _items[index]._flag );
+      } else {
+        children.add( const SizedBox.shrink() );
+        flags.add( 0 );
       }
-      rows.add(row);
     }
 
-    Table table = Table(
-      columnWidths: columnWidths,
-      defaultColumnWidth: IntrinsicColumnWidth(),
-      children: rows,
+    final grid = _WxGridLayout(
+      cols: cols,
+      flags: flags,
+      hgap: getHGap().toDouble(),
+      vgap: getVGap().toDouble(),
+      uniform: true,
+      children: children,
     );
 
-    if (!_sizeKnown)
-    {
-      // Redo everything
-      _maxWidth = -1;
-      _maxHeight = -1;
-      _sizeKnown = true;
-      for (final item in _items) {
-        final size = item.getSize();
-        if ((size.x == -1) || (size.y == -1)) {
-          _sizeKnown = false;
-          break;
-        }
-        _maxWidth = max( _maxWidth, size.x+1 );   // TODO: why +1
-        _maxHeight = max( _maxHeight, size.y+1 ); // TODO: why +1
-      }
-      if (_sizeKnown) {
-        if (_owningWindow != null) {
-          _owningWindow!._setState();
-        }
-      }
-    } else 
-    if (_newItems.isNotEmpty)
-    {
-      // Only check newly added items
-      bool sizeKnown = true;
-      for (final item in _newItems) {
-        final size = item.getSize();
-        if ((size.x == -1) || (size.y == -1)) {
-          sizeKnown = false;
-          break;
-        }
-        _maxWidth = max( _maxWidth, size.x+1 );   // TODO: why +1
-        _maxHeight = max( _maxHeight, size.y+1 ); // TODO: why +1
-      }
-      if (sizeKnown) {
-        _newItems.clear();
-        if (_owningWindow != null) {
-          _owningWindow!._setState();
-        }
-      }
-    }
-
-    return ReportSize( child: table, 
+    return ReportSize( child: grid,
           onSizeChange: (size) {
-            _setSizeInternal( WxSize(size.width.round(),size.height.round()) );
-          } 
+            _setSizeInternal( WxSize(size.width.floor(),size.height.floor()) );
+          }
         );
   }
 }
