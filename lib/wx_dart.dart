@@ -44,6 +44,9 @@ part 'flutter/events/events.dart';
 part 'flutter/events/command_event.dart';
 part 'flutter/events/mouse_event.dart';
 part 'flutter/events/key_event.dart';
+part 'flutter/events/paint_event.dart';
+part 'flutter/events/size_event.dart';
+part 'flutter/events/update_ui_event.dart';
 
 part 'flutter/core/funcs.dart';
 part 'flutter/core/log.dart';
