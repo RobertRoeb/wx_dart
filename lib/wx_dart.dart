@@ -42,6 +42,9 @@ part 'flutter/events/event.dart';
 part 'flutter/events/evt_handler.dart';
 part 'flutter/events/events.dart';
 part 'flutter/events/command_event.dart';
+part 'flutter/events/mouse_event.dart';
+
+
 part 'flutter/core/funcs.dart';
 part 'flutter/core/log.dart';
 part 'flutter/core/object.dart';
