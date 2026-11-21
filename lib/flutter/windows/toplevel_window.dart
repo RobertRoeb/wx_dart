@@ -185,7 +185,7 @@ class WxTopLevelWindow extends WxNonOwnedWindow {
         _parent!._children.remove(this);
       }
     }
-    _hidden != show;
+    _hidden = !show;
     _setState();
   }
 
