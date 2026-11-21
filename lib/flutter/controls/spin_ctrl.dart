@@ -7,33 +7,6 @@
 
 part of '../../wx_dart.dart';
 
-
-/// Event emitted by [WxSpinCtrl].
-/// 
-/// Main interface:
-/// * [getPosition]
-/// 
-/// [SpinCtrl](/wxdart/wxGetSpinCtrlEventType.html) event gets sent when the user has entered a new number. |
-/// | ----------------- |
-/// | void bindSpinCtrlEvent( void function( [WxSpinEvent] event ), int id ) |
-/// | void unbindSpinCtrlEvent( int id ) |
-
-class WxSpinEvent extends WxNotifyEvent  {
-
-  /// Creates spin events. Done by [WxSpinCtrl]
-  WxSpinEvent( super.eventType, super.id );
-
-  /// Sets value of [WxSpinCtrl] and also done by [WxSpinCtrl].
-  void setPosition( int pos ) {
-    setInt( pos );
-  }
-
-  /// Returns value of [WxSpinCtrl]
-  int getPosition( ) {
-    return getInt();
-  }
-}
-
 // ------------------------- WxSpinCtrl ----------------------
 
 const int wxSP_HORIZONTAL = wxHORIZONTAL;
