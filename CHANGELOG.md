@@ -4,6 +4,7 @@
 * Aligned close() and WxCloseEvent logic with wxDart Native
 * Reimplementation of WxGridSizer and WxFlexGridSizer
 * Made wxST_WRAP no longer the default in WxStaticText anywhere
+* Moved (generic) event code into own files in /events
 
 ## 0.9.32
 
