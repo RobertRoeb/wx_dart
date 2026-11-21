@@ -1175,14 +1175,9 @@ const int  wxMOUSE_WHEEL_HORIZONTAL = 1;
 
 class WxMouseEvent extends WxEvent {
   /// Creates a mouse event. Done by the system.
-    WxMouseEvent( int eventType ) : super( eventType, -1 )
-    {
-      final keyboard = HardwareKeyboard.instance;
-      _altDown = keyboard.isAltPressed;
-      _controlDown = keyboard.isControlPressed;
-      _metaDown = keyboard.isMetaPressed;
-      _shiftDown = keyboard.isShiftPressed;
-    }
+  WxMouseEvent( int eventType ) : super( eventType, -1 ) {
+    _wxInitMouseEventModifiers( this );
+  }
 
 /// Returns button constants depending which button
 /// caused the event
@@ -1616,11 +1611,7 @@ class WxKeyEventTableEntry extends WxEventTableEntry {
 
 class WxKeyEvent extends WxEvent {
   WxKeyEvent( int eventType ) : super (eventType,-1) {
-      final keyboard = HardwareKeyboard.instance;
-      _altDown = keyboard.isAltPressed;
-      _controlDown = keyboard.isControlPressed;
-      _metaDown = keyboard.isMetaPressed;
-      _shiftDown = keyboard.isShiftPressed;
+    _wxInitKeyEventModifiers( this );
   }
 
   /// Returns the key code (that often is not the actual character). E.g. when pressing the a key,

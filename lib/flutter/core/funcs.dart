@@ -7,6 +7,26 @@
 
 part of '../../wx_dart.dart';
 
+// ------------------ Helper functions -----------------
+
+_wxInitMouseEventModifiers( WxMouseEvent event )
+{
+  final keyboard = HardwareKeyboard.instance;
+  event._altDown = keyboard.isAltPressed;
+  event._controlDown = keyboard.isControlPressed;
+  event._metaDown = keyboard.isMetaPressed;
+  event._shiftDown = keyboard.isShiftPressed;
+}
+
+_wxInitKeyEventModifiers( WxKeyEvent event )
+{
+  final keyboard = HardwareKeyboard.instance;
+  event._altDown = keyboard.isAltPressed;
+  event._controlDown = keyboard.isControlPressed;
+  event._metaDown = keyboard.isMetaPressed;
+  event._shiftDown = keyboard.isShiftPressed;
+}
+
 // ------------------ Operating system -----------------
 
 /// Returns true if the Flutter backend is used (false for wxDart Native)
