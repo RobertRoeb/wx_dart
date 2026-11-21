@@ -44,6 +44,7 @@ part 'flutter/core/funcs.dart';
 part 'flutter/core/log.dart';
 part 'flutter/core/object.dart';
 
+part 'common_non_native/gdi/image.dart';
 part 'common_non_native/events/event.dart';
 part 'common_non_native/events/evt_handler.dart';
 part 'common_non_native/events/events.dart';
@@ -135,7 +136,6 @@ part 'flutter/controls/collapsible_pane.dart';
 part 'flutter/controls/search_ctrl.dart';
 part 'flutter/gdi/font.dart';
 part 'flutter/gdi/bitmap.dart';
-part 'flutter/gdi/image.dart';
 part 'flutter/gdi/bitmap_bundle.dart';
 part 'flutter/gdi/cursor.dart';
 part 'flutter/gdi/animation.dart';
