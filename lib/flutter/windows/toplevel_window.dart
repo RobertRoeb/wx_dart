@@ -234,7 +234,8 @@ class WxTopLevelWindow extends WxNonOwnedWindow {
   void close( bool force )
   {
     WxCloseEvent event = WxCloseEvent( wxGetCloseWindowEventType(), id: getId() );
-    event.setCanVeto(force);
+    event.setEventObject(this);
+    event.setCanVeto(!force);
     processEvent(event);
   }
 
