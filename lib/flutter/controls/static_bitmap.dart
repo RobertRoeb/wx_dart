@@ -39,6 +39,10 @@ const int wxBI_EXPAND = wxEXPAND;
 class WxStaticBitmap extends WxControl {
   WxStaticBitmap( super._parent, super._id, WxBitmapBundle bitmap, { super.pos = wxDefaultPosition, super.size = wxDefaultSize, super.style = 0 } ) {
     _bitmap = bitmap.getBitmapFor( this );
+    final size = WxSize( _bitmap.getWidth(), _bitmap.getHeight() );
+    if ((_initialSize == wxDefaultSize) && (size != wxDefaultSize)) {
+      _initialSize = size;
+    }
   }
 
   late WxBitmap _bitmap;
