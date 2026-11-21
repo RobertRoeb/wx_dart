@@ -29,6 +29,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:desktop_window/desktop_window.dart';
 import 'package:flutter_dropzone/flutter_dropzone.dart';
 import 'package:flutter_angle/flutter_angle.dart';
+
 part 'common/enums.dart';
 part 'common/webgl_constants.dart';
 part 'common/stop_watch.dart';
@@ -36,8 +37,13 @@ part 'common/geometry.dart';
 part 'common/pen.dart';
 part 'common/brush.dart';
 part 'common/colour.dart';
+
 part 'flutter/core/viewbuilder.dart';
 part 'flutter/core/app.dart';
+part 'flutter/core/funcs.dart';
+part 'flutter/core/log.dart';
+part 'flutter/core/object.dart';
+
 part 'flutter/events/event.dart';
 part 'flutter/events/evt_handler.dart';
 part 'flutter/events/events.dart';
@@ -46,16 +52,16 @@ part 'flutter/events/mouse_event.dart';
 part 'flutter/events/key_event.dart';
 part 'flutter/events/paint_event.dart';
 part 'flutter/events/size_event.dart';
+part 'flutter/events/timer_event.dart';
+part 'flutter/events/idle_event.dart';
 part 'flutter/events/update_ui_event.dart';
 
-part 'flutter/core/funcs.dart';
-part 'flutter/core/log.dart';
-part 'flutter/core/object.dart';
 part 'flutter/misc/standard_paths.dart';
 part 'flutter/misc/timer.dart';
 part 'flutter/misc/data_object.dart';
 part 'flutter/misc/drop_source.dart';
 part 'flutter/misc/drop_target.dart';
+
 part 'flutter/windows/window.dart';
 part 'flutter/windows/panel.dart';
 part 'flutter/windows/toplevel_window.dart';
