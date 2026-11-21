@@ -55,6 +55,7 @@ part 'flutter/events/size_event.dart';
 part 'flutter/events/timer_event.dart';
 part 'flutter/events/idle_event.dart';
 part 'flutter/events/update_ui_event.dart';
+part 'flutter/events/dialog_events.dart';
 
 part 'flutter/misc/standard_paths.dart';
 part 'flutter/misc/timer.dart';
