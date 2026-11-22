@@ -2,7 +2,7 @@
 import 'dart:async';
 
 import 'package:wx_dart/wx_dart.dart';
-import 'dart:ui' as ui;
+// import 'dart:ui' as ui;
 
 // ------------------------- MyScalingWindow ----------------------
 
@@ -275,6 +275,7 @@ class MyGraphicsWindow extends WxScrolledWindow {
     // start timer and let it fire every 100ms
     _timer.start( milliseconds: 100 );
 
+/*
     // Paint something using dart::ui
     final recorder = ui.PictureRecorder();
     final canvas = ui.Canvas( recorder );
@@ -289,7 +290,7 @@ class MyGraphicsWindow extends WxScrolledWindow {
       _dartBitmap = bitmap;
       refresh();
     });
-
+*/
     bindPaintEvent( onPaint );
   }
 
@@ -373,6 +374,7 @@ class MyGraphicsWindow extends WxScrolledWindow {
     _animation.draw(gc, windowWidth-70, 20, size.x.toDouble(), size.y.toDouble(), millis );
   }
 
+/*
   Future<WxBitmap?> createBitmapFromUIPicture( ui.Picture picture, int width, int height ) async
   {
     final image = await picture.toImage(width, height);
@@ -394,6 +396,7 @@ class MyGraphicsWindow extends WxScrolledWindow {
       return WxBitmap.fromImage( wximage );
     }
   }
+*/
 }
 
 // ------------------------- MyLinesWindow ----------------------
