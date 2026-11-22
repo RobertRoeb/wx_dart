@@ -1,32 +1,39 @@
 ## Overall design
 
-wxDart consists of two separate libraries which offer the same API and can be used independently. 
+wxDart consists of three separate libraries which offer the same API and can be used independently. 
 * 'wxDart Flutter' uses the [Flutter](https://flutter.dev) libary as its backend and is written in pure Dart.
 * 'wxDart Native' uses the [wxWidgets](https://wxwidgets.org) C++ GUI library as its backend using FFI calls.
+* 'wxDart Web' uses pure HTML/Javascript/CSS as its backend to allow fast start-up, SEO, screen accessibility etc.
 
-Both wxDart Flutter and wxDart Native support
-* Asynchronous code using the async await paradigm
-* The Flutter assets system (used in many Dart libraries)
-* An extensive list of controls from menus to animations
-* WxDataViewCtrl to display and edit complex and large table and tree data
-* Dark and light mode on all platforms
-* Image formats including SVG, PNG and JPG
-* Over 2000 Material icons built-in
-* A path based modern 2D drawing API
-* An OpenGL/WebGL based 3D canvas
-* ThreeJS Dart through its own renderer using WxGLContext and WxGLCanvas
+Since wxDart Flutter is written in pure Dart, it supports [hot reload](https://docs.flutter.dev/tools/hot-reload)
+so that you can play with parameters or sizers while the app in running (also e.g. an iPhone simulator) without
+a full recompile.
 
-Only wxDart Flutter supports mobile devices (iOS and Android) and the web.
+wxDart Web only runs in a browser and does not depend on Flutter, Skia or external fonts: a small app
+compiles into 140K of Javascript including the Dart runtime. It supports both a desktop and a mobile
+interface and its fast start-up solves the biggest issue with Flutter (and other toolkits) on the web.
+
+All three ports of of wxDart support
+* Asynchronous code using the [async await](https://dart.dev/libraries/async/async-await) paradigm
+* An extensive list of controls from [menus](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxMenuBar-class.html) to [animations](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxAnimationCtrl-class.html)
+* [WxDataViewCtrl](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDataViewCtrl-class.html) to display and edit complex and large table and tree data
+* [Dark and light](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxApp/setAppearance.html) mode on all platforms
+* Image formats including [SVG](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxBitmapBundle/WxBitmapBundle.fromSVG.html), PNG and JPG
+* Over 2000 [Material icons](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxBitmapBundle/WxBitmapBundle.fromMaterialIcon.html) built-in
+* A path based modern [2D drawing](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxGraphicsContext-class.html) API
+* An OpenGL ES/WebGL based [OpenGL canvas](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxGLCanvas-class.html).
+* 3D scenes through its own [ThreeJS renderer](https://pub.dev/packages/three_js_wx_renderer) linking WxGLContext and WxGLCanvas to [ThreeJS Dart](https://pub.dev/packages/three_js)
+
+Only wxDart Flutter supports mobile devices (iOS and Android). Both wxDart Flutter and wxDart Web support
+mobile and desktop web.
 
 Note that both wxDart Native and wxDart Flutter support the main desktop architectures (Windows, macOS and Linux).
-When using wxDart Flutter (this package), your applications will have an identical look and feel across all desktop
-platforms (and on the web). With wxDart Native, your applications will have the native look and feel.
+When using wxDart Flutter, the application will have an identical look and feel across all desktop
+platforms (and on the web). With wxDart Native, the applications will have the native look and feel.
 
 ## Licence
 
-'wxDart Flutter' is free software under the wxWindows licence. The wxWindows licence allows you to use 'wxDart Flutter' to create free and commercial software with no restrictions, but not to create a closed source competitor of the library itself.
-
-'wxDart Native' is a not open source.
+All versions of wxDart Flutter are free software under the wxWindows licence. The wxWindows licence allows you to use 'wxDart Flutter' to create free and commercial software with no restrictions, but not to create a closed source competitor of the library itself.
 
 ## Nomenclature
 
@@ -200,7 +207,7 @@ wxDart Flutter as well.
 
 ## Dark/Light mode and accent colour
 
-Both wxDart Native and wxDart Flutter support dark and light modes. Only wxDart Flutter additionally
+Both wxDart Native and wxDart Flutter support dark and light modes. wxDart Flutter and wxDart Web additionally
 supports setting an accent colour programmatically to use a specfic main branding colour in your application.
 The default is light blue.
 
