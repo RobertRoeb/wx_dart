@@ -1,5 +1,5 @@
 name: wx_dart_native
-description: "wxWidgets backend of wxDart"
+description: "Native backend of wxDart"
 version: 0.9.33
 homepage: https://github.com/RobertRoeb/wx_dart
 
