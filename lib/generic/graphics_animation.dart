@@ -5,7 +5,7 @@
 // Licence:     wxWindows licence
 // ---------------------------------------------------------------------------
 
-part of '../../wx_dart.dart';
+part of '../wx_dart.dart';
 
 /// Represents a simple image animation drawn directly into a window
 /// using a [WxGraphicsContext]. You can use the simpler base class [WxAnimation]
