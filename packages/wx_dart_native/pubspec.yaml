@@ -1,0 +1,28 @@
+name: wx_dart_native
+description: "wxWidgets backend of wxDart"
+version: 0.9.33
+homepage: https://github.com/RobertRoeb/wx_dart
+
+platforms:
+  linux:
+  macos:
+  windows:
+
+environment:
+  sdk: ^3.11.0
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  ffi: ^2.2.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+# The following section is specific to Flutter packages.
+flutter:
+  # For details regarding assets in packages, see
+  # https://flutter.dev/to/asset-from-package

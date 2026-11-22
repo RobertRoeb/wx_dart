@@ -1,0 +1,10 @@
+name: wx_dart_web
+description: "Web backend of wxDart"
+version: 0.9.33
+homepage: https://github.com/RobertRoeb/wx_dart
+
+platforms:
+  web:
+
+environment:
+  sdk: ^3.11.0

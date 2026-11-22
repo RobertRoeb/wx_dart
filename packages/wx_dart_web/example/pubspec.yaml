@@ -1,0 +1,13 @@
+name: hello
+description: "wxDart Web example"
+publish_to: none
+
+version: 1.0.0
+
+environment:
+  sdk: ^3.12.2
+
+dependencies:
+  wx_dart_web:
+    path: ..
+
