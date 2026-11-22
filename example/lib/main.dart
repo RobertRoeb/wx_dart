@@ -114,7 +114,7 @@ class MyMainFrame extends WxAdaptiveFrame {
 
     final colormenu = WxMenu();
 
-    if (wxUsesFlutter())
+    if (wxUsesFlutter() || wxUsesHTML())
     {
       colormenu.appendItem( idRedTheme, "Red", help: "Choose red theme" );
       colormenu.appendItem( idGreenTheme, "Green\tCtrl-G", help: "Choose green theme" );
@@ -128,10 +128,7 @@ class MyMainFrame extends WxAdaptiveFrame {
     setMenuBar(menubar);
 
     final submenuitemone = menubar.findItem(idSubMenuOne);
-    if (submenuitemone != null)
-    {
-      submenuitemone.enable(false); 
-    }
+    submenuitemone?.enable(false); 
 
 
     final toolbar = createToolBar( style: wxTB_FLAT|wxTB_TEXT );
@@ -315,6 +312,9 @@ class MyMainFrame extends WxAdaptiveFrame {
 
     bindMenuEvent((_)  {
       final dialog = WxMessageDialog( this, "Welcome to wxDart", caption: "Welcome" );
+      if (wxUsesHTML()) {
+        dialog.setExtendedMessage("This is wxDart using the Web backend." );
+      } else
       if (wxUsesFlutter()) {
         dialog.setExtendedMessage("This is wxDart using the Flutter backend." );
       } else {
@@ -404,127 +404,10 @@ class MyMainFrame extends WxAdaptiveFrame {
       adaptiveFrame.show();
     }, idDrawerFrame );
 
-/*
-    final floating = createFloatingActionButton("Start!", idRunApp, null );
+ }
 
-    bindButtonEvent((event)
-    {
-      if (_tutorial == "tut01.dart") {
-        final frame = tut01.MyFrame( this );
-        frame.show();
-      } else 
-      if (_tutorial == "tut02.dart") {
-        final frame = tut02.MyFrame( this );
-        frame.show();
-      } else 
-      if (_tutorial == "tut03.dart") {
-        final frame = tut03.MyFrame( this );
-        frame.show();
-      } else 
-      if (_tutorial == "tut04.dart") {
-        final frame = tut04.MyFrame( this );
-        frame.show();
-      } else 
-      if (_tutorial == "tut05.dart") {
-        final frame = tut05.MyFrame( this );
-        frame.show();
-      } else 
-      if (_tutorial == "tut06.dart") {
-        final frame = tut06.MyFrame( this );
-        frame.show();
-      } else 
-      if (_tutorial == "tut07.dart") {
-        final frame = tut07.MyFrame( this );
-        frame.show();
-      } else 
-      if (_tutorial == "tut08.dart") {
-        final frame = tut08.MyFrame( this );
-        frame.show();
-      } 
-    },idRunApp);
-*/
-
-  }
-
-
-
-  String _tutorial = "tut01.dart";
   final MyDialogData _data = MyDialogData();
 }
-
-
-/*
-class MyDataTreeWindow extends WxPanel
-{
-  MyDataTreeWindow( super.parent, super.id )
-  {
-    // final model = MyTreeModel();
-
-    final mainSizer = WxBoxSizer( wxVERTICAL );
-    setSizer( mainSizer );
-
-    final dataviewSizer = WxBoxSizer( wxHORIZONTAL );
-    mainSizer.addSizer( dataviewSizer, proportion: 1, flag: wxEXPAND );
-
-    final dataview = WxDataViewTreeCtrl(this, -1, style: wxDV_HORIZ_RULES|wxDV_NO_HEADER );
-    dataviewSizer.add(dataview, proportion: 1, flag: wxEXPAND );
-
-    final branch1 = dataview.appendItem( WxDataViewItem(), null, "First branch" );
-    dataview.appendItem( branch1, null, "Leaf 1,1" );
-    dataview.expandChildren( branch1 );
-    dataview.appendItem( branch1, null, "Leaf 1,2" );
-    dataview.appendItem( branch1, null, "Leaf 1,3" );
-    dataview.appendItem( branch1, null, "Leaf 1,4" );
-    final branch2 = dataview.appendItem( WxDataViewItem(), null, "Second branch" );
-    dataview.appendItem( branch2, null, "Leaf 2,1" );
-    dataview.appendItem( branch2, null, "Leaf 2,2" );
-    dataview.appendItem( branch2, null, "Leaf 2,3" );
-    dataview.appendItem( branch2, null, "Leaf 2,4" );
-
-    final book = WxDataViewChapterCtrl(this, -1, style: wxDV_VARIABLE_LINE_HEIGHT|wxDV_NO_TWISTER_BUTTONS|wxDV_NO_HEADER);
-    dataviewSizer.add(book, proportion: 1, flag: wxEXPAND );
-    
-    final chapter1 = book.appendItem( WxDataViewItem(), null, "First chapter" );
-    final sub1 = book.appendItem( chapter1, null, "Subchapter 1,1" );
-    book.appendItem( sub1, null, "Page 1,1.1" );
-    book.appendItem( sub1, null, "Page 1,1.2" );
-    book.appendItem( sub1, null, "Page 1,1.3" );
-    book.appendItem( sub1, null, "Page 1,1.4" );
-    final sub2 = book.appendItem( chapter1, null, "Subchapter 1,2" );
-    final subsub1 = book.appendItem( sub2, null, "Subsubchapter 1,1.1" );
-    book.appendItem( subsub1, null, "Page 1,2.1-1" );
-    book.appendItem( subsub1, null, "Page 1,2.1-2" );
-    book.appendItem( subsub1, null, "Page 1,2.1-3" );
-    final subsub2 = book.appendItem( sub2, null, "Subsubchapter 1,1.2" );
-    book.appendItem( subsub2, null, "Page 1,2.2-1" );
-    book.appendItem( subsub2, null, "Page 1,2.2-2" );
-    book.appendItem( subsub2, null, "Page 1,2.2-3" );
-    final chapter2 = book.appendItem( WxDataViewItem(), null, "Second chapter" );
-    book.appendItem( chapter2, null, "Page 2,1" );
-    book.appendItem( chapter2, null, "Page 2,2" );
-    book.appendItem( chapter2, null, "Page 2,3" );
-    book.appendItem( chapter2, null, "Page 2,4" );
-    book.expandChildren( chapter1 );
-    book.expandChildren( chapter2 );
-
-    final buttonSizer = WxBoxSizer( wxHORIZONTAL );
-    mainSizer.addSizer( buttonSizer, flag: wxALIGN_CENTER );
-
-    final addItemButton = WxButton(this, -1, "5/6 leaves");
-    addItemButton.bindButtonEvent((_)
-    {
-    }, -1);
-    buttonSizer.add( addItemButton, flag: wxALL, border: 5 ); 
-
-    final addBranchButton = WxButton(this, -1, "2/3 branches");
-    addBranchButton.bindButtonEvent((_)
-    {
-    }, -1);
-    buttonSizer.add( addBranchButton, flag: wxALL, border: 5 ); 
-  }
-}
-
-*/
 
 
 // ------------------------- MyApp ----------------------
@@ -550,7 +433,11 @@ class MyMicroFrame extends WxFrame {
       createStatusBar( number: 1 );
 
     bindMenuEvent((_)  {
-      final dialog = WxMessageDialog( this, "Welcome to wxDart", caption: "Welcome" );
+      final dialog = WxMessageDialog( null, "Welcome to wxDart", caption: "Welcome" );
+      dialog.showModal(null);
+      if (wxUsesHTML()) {
+        dialog.setExtendedMessage("This is wxDart using the Web backend." );
+      } else
       if (wxUsesFlutter()) {
         dialog.setExtendedMessage("This is wxDart using the Flutter backend." );
       } else {
@@ -637,16 +524,8 @@ class MyApp extends WxApp {
       WxFrame myFrame = MyMobileFrame(null);
       myFrame.show();
     } else {
-
       WxFrame myFrame = MyMainFrame(null);
       myFrame.show();
-/*
-      if (!wxUsesFlutter())
-      {
-        WxFrame myFrame2 = MyMobileFrame(null);
-        myFrame2.show();
-      }
-*/
     }
       return true;
   }
