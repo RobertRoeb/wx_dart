@@ -17,6 +17,11 @@ const int wxBI_EXPAND = wxEXPAND;
 
 /// Shows a bitmap and optionally scales it.
 /// 
+/// Without a size, the control takes the size of the bitmap. Bitmaps from
+/// assets or URLs are loaded asynchronously in wxDart Flutter and wxDart Web:
+/// until then the control is empty, afterwards it gets the size of the bitmap
+/// and the sizers lay out the window again.
+///
 /// # Scale mode constants
 /// | constant | meaning |
 /// | -------- | -------- |
