@@ -2,7 +2,7 @@
 # Builds the wx_dart_web package from the source in
 # ../../lib
 #
-echo "Creating wx_dart_native folders..."
+echo "Creating wx_dart_web folders..."
 set -e
 mkdir -p lib
 mkdir -p lib/common
@@ -24,7 +24,7 @@ mkdir -p lib/web/mobile
 mkdir -p lib/web/sizers
 mkdir -p lib/web/windows
 mkdir -p lib/web/wx_bridge
-echo "Copying wx_dart_native files..."
+echo "Copying wx_dart_web files..."
 cp ../../README.md .
 cp ../../lib/wx_dart_web.dart ./lib/wx_dart.dart
 cp ../../lib/common/*.dart ./lib/common
