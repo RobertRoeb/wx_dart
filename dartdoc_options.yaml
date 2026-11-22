@@ -1,0 +1,5 @@
+dartdoc:
+  exclude:
+    - wx_dart_native
+    - wx_dart_web
+    - wx_dart_flutter
