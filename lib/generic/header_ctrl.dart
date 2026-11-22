@@ -55,7 +55,7 @@ const int wxCOL_REORDERABLE = 4;
 const int wxCOL_HIDDEN = 8;
 const int wxCOL_DEFAULT_FLAGS = wxCOL_RESIZABLE | wxCOL_REORDERABLE;
 
-/// Represents a column header in controls displaying tabular data such as [wxDataViewCtrl].
+/// Represents a column header in controls displaying tabular data such as [WxDataViewCtrl].
 /// 
 /// Notice that this is an abstract base class which is implemented (usually using
 /// the information stored in the associated control) by the different controls using
@@ -65,7 +65,7 @@ const int wxCOL_DEFAULT_FLAGS = wxCOL_RESIZABLE | wxCOL_REORDERABLE;
 /// e.g. if the column attributes can only be changed via the methods of the main
 /// associated control (this is the case for wxGrid for example). If you do want to
 /// allow changing them directly using the column itself, you should inherit from
-/// [wxSettableHeaderColumn] instead of this class.
+/// [WxSettableHeaderColumn] instead of this class.
 /// 
 /// Finally, if you don't already store the column information at all anywhere, you
 /// should use the concrete [WxHeaderColumnSimple] class and [WxHeaderCtrlSimple].
