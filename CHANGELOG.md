@@ -1,5 +1,6 @@
 ## 0.9.33
 
+* Published all three ports
 * Added PAGE_CHANGE events for WxNavigationCtrl
 * Aligned close() and WxCloseEvent logic with wxDart Native
 * Reimplementation of WxGridSizer and WxFlexGridSizer
