@@ -87,7 +87,7 @@ and running natively on macOS Tahoe (wxDart Native). There are more screenshots
 
 ## Installation of wxDart
 
-The variants of wxDart have been published as wx_dart, wx_dart_web and wx_dart_native
+The three variants of wxDart have been published as wx_dart, wx_dart_web and wx_dart_native
 on [pub.dev](https://pub.dev), the central repository for most Dart and Flutter packages.
 All three pub.dev packages are derived from a single GitHub repository.
 pub.dev also hosts the documentation. Click
