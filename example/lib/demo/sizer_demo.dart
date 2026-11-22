@@ -11,7 +11,6 @@ class MySizerWindow extends WxScrolledWindow {
 
     mainSizer.add( WxStaticText(this, -1, "The boxes below are WxStaticBoxSizer instances", style: wxST_WRAP), 
         flag: wxALL|wxALIGN_CENTER_HORIZONTAL, border: 10 );
-
     sbs = WxStaticBoxSizer(wxVERTICAL, this, "WxBoxSizer( wxVERTICAL )" );
     mainSizer.addSizer( sbs, flag: wxEXPAND|wxALL, border: 10 );
     createBoxSizerPage( sbs, sbs.getStaticBox() );
@@ -36,15 +35,6 @@ class MySizerWindow extends WxScrolledWindow {
     mainSizer.addSizer( sbs, flag: wxEXPAND|wxALL, border: 10 );
     createFlexGridSizerPage( sbs, sbs.getStaticBox() );
 
-    /*
-    final flex = WxFlexGridSizer( 3 );
-    for (int i = 0; i < 7; i++) {
-      flex.add( WxStaticText( this, -1, "Text 3" ), flag: wxALL, border: 5  );
-    }
-    // flex.addGrowableCol(0);
-    mainSizer.addSizer(flex, flag: 0);
-    */
-
     sbs = WxStaticBoxSizer(wxVERTICAL, this, "WxGridSizer" );
     mainSizer.addSizer( sbs, flag: wxALL, border: 10 );
     createGridSizerPage( sbs, sbs.getStaticBox() );
@@ -53,9 +43,13 @@ class MySizerWindow extends WxScrolledWindow {
     mainSizer.addSizer( sbs, flag: wxEXPAND|wxALL, border: 10 );
     createWrapSizerPage( sbs, sbs.getStaticBox() );
 
+    final bs = WxBoxSizer(wxVERTICAL );
+    mainSizer.addSizer( bs, flag: wxEXPAND|wxALL, border: 10 );
+    createWrapSizerPage( bs, this );
+
     final text = "This is a long text in a WxStaticText with wxST_WRAP flag. "
-                 "This is a long text in a WxStaticText with wxST_WRAP flag.";
-    mainSizer.add( WxStaticText(this, -1, text, style: wxST_WRAP), flag: wxEXPAND|wxALL, border: 10 );
+                 "This is a long text in a WxStaticText with wxST_WRAP flag." ;
+    mainSizer.add( WxStaticText(this, -1, text, style: wxST_WRAP), flag: wxALL, border: 10 );
 
     sbs = WxStaticBoxSizer(wxVERTICAL, this, "WxTileSizer" );
     mainSizer.addSizer( sbs, flag: wxALL, border: 10 );
@@ -176,7 +170,7 @@ class MySizerWindow extends WxScrolledWindow {
     }, -1);
     sizer.addSizer( buttons );
   }
-  void createWrapSizerPage( WxStaticBoxSizer sizer, WxWindow parent )
+  void createWrapSizerPage( WxBoxSizer sizer, WxWindow parent )
   {
     final wrap = WxWrapSizer();
     sizer.addSizer(wrap);
