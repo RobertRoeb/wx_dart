@@ -22,7 +22,7 @@ wxDart Web is a slightly limited variant of wxDart next to **wxDart Flutter** an
 ```sh
 cd example
 dart pub get
-cp ../wx_bridge/wxc.js ../wx_bridge/wxc.css web/
+cp ../lib/wx_bridge/wxc.js ../lib/wx_bridge/wxc.css web/
 dart compile js -O2 -o web/main.dart.js lib/main.dart
 # or: dart compile wasm -o web/main.wasm web/main.dart  (needs a Wasm loader page)
 cd web && python3 -m http.server 8080

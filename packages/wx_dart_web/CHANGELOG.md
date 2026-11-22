@@ -1,0 +1,318 @@
+## 0.9.33
+
+* First public release of wxDart Web
+* Added PAGE_CHANGE events for WxNavigationCtrl
+* Aligned close() and WxCloseEvent logic with wxDart Native
+* Reimplementation of WxGridSizer and WxFlexGridSizer
+* Made wxST_WRAP no longer the default in WxStaticText anywhere
+* Moved (generic) event code into own files in /events
+
+## 0.9.32
+
+* Fix several issues with alignment in WxBoxSizers in special situations
+* Added WxDataViewBook.insertPage(), .insertChapter()
+* Likewise for WxDataViewChapterCtrl
+* Made icon parameter an optional named parameter in WxDataViewBook like in WxTreeCtrl
+* Remove mnemonics in setLabel()
+* Added WxControl.getLabelText() to return label without mnemonics
+* Support ellipsize in WxStaticText
+* Support non-wrapping mode in WxStaticText
+* Updated docs of unbindXXX() function signatures
+* Actually implemented tooltips
+* Allow setting WxDC.setDeviceOffset() to move/scroll drawing for non WxScrolledWindow
+* That enable moving the header in WxDataViewCtrl when the main window is scrolled
+
+## 0.9.31
+
+* Added wxUsesHTML() for the new Web/HTML port
+* Other preparation for the new Web/HTML port
+* Implemented WxDC.drawRotatedText()
+* Implemented WxBitmap.convertToImage() async
+* Corrected some image conversion to not use pre-multiplied RGBA
+* Added WxNotebook.removePage() and .advanceSelection()
+* Corrected or added some more event handling in WxSplitterWindow
+* Added WxStaticBitmap.setBitmap()
+* Implemented WxUpdateUIEvents for WxControl descendants to .show(), .enable() and .setLabel()
+* Moved .setLabel() into WxWindow for that purpose, and possibly future accessability
+* Corrected return value of WxTreeCtrl.insertItemAfter()
+* Interpret a frame duration of -1 as 100ms in WxGraphicsAnimation
+* Allow WxGraphicsContext creation from a WxMemoryDC
+* Fix a WxGraphicsContext composition mode that was wrongly translated
+* Use medium as bitmap filter quality in WxGraphicsContext
+* Corrected inverted parameters in WxGraphicsPath
+* Added WxGraphicsContext.drawEllipse() and .strokeLines()
+* Added WxDC.drawEllipse()
+* Added WxColour.fromString() and .getAsString()
+* Added contrast colour calculations
+* Added WxHtmlColours
+* Corrected layout issues with WxTextCtrl and WxSearchCtrl in desktop mode
+* Implemented WxSplitterWindow.setSashInvisible() and .setSashGravity()
+* Added return callback for result notification of WxDropSource.doDragDrop()
+* Made some methods of WxStatusBar public
+
+## 0.9.30
+
+* Implement getSelection() in WxComboBox
+* Change selected item if an item above it or all items were deleted
+* Added WxBitmapBundle().makeDisabled() stub and .getDefaultSize()
+* Added WxWindow.setToolTip(), .unsetToolTip() and getToolTipText() stubs
+* Corrected WxColour.getLuminance() calculation (normalize to 0 to 1)
+* Progress on DPI aware WxBitmapBundle also when using async loading
+* Added WxBitmap.getScaleFactor(), .getLogicalHWidth() and getLogicalHeight()
+* Added wxBitmapBundle.getBitmapForSize() that scales the bitmap, no change to scale
+* Correction documentation of bindXXX functions where the id parameter was missing
+* Implement WxWindow.reparent()
+* Added WxDC.setClippingRegionRect() and WxWindow.setSizeAndPosition()
+* Allow free positioning of popup menu, not just next to the mouse
+* Dispose Flutter's textcontrollers, but don't do it with OverlayPortalController
+* Added WxDC and WxWindow.getContentScaleFactor() alongside getDPIScaleFactor()
+* Added WxFont.bold() .italic() and .scaled()
+
+## 0.9.29
+
+* Added WxImage.replace() and WxImage.copy()
+* Implemented WxPopupWindow
+* Implemented WxPopupTransientWindow and PopupWindowDismiss event
+* Corrected size setting and deferred sending of WxSizeEvent
+* Implemented expanded items (and other alignment) in a growable column in WxFlexGridSizer
+* Don't expand WxFlexGridSizer if no column can grow
+* Allow overriding WxWindow.getMinSize() in both wxDart ports to ease porting complex third-party libraries to wxDart
+* Added WxColour.getLuminance()
+* Added WxEvtHandler.getEventTable() to allow creating custom events externally
+* Added example code how to create custom event
+* Added WxEvent.stopPropagation(), .resumePropagation() and .getPropagationLevel()
+* Decide propagation on that, not if event is of type WxCommandEvent (no real change)
+* Moved common code into new folder "common"
+* Moved WxStopWatch into its own file
+* Regenerated controls2.dart for wxDart Native (that had stopped events for some controls)
+
+## 0.9.28
+
+* Remove dot-shorthand code since Dart does not accept that on Windows
+* Regenerate docs
+
+## 0.9.27
+
+* Implemented image and text dropping from external app in wxDart Flutter Web
+* Implemented within-app image, file and text drag and drop in wxDart Flutter (all)
+* Implemented WxDC.getTextExtentEx() including the descent and externalLeading
+* Implemented WxDC.getPartialTextExtents
+* Implemented WxDC.setClippingRegion() .destroyClippingRegion() and .getClippingBox()
+* Correct radius of WxDC.drawCircle() if user scaling is applied
+* Correct deviceToLogical etc. calculations if axes are inverted
+
+## 0.9.26
+
+* Added wxSetLogTargetNull() and wxUnsetLogTargetNull()
+* Added WxBitmapDataObject and WxFileDataObject
+* Implemented WxDropTarget for external drag and drop for wxDart Flutter Web
+* Added WxDropTarget DropEnter and DropLeave events
+* Improved wxGetMousePosition()
+
+## 0.9.25
+
+* First implementation of in-app Drag and Drop in wxDart Flutter
+* Added WxDataObject, WxTextDataObject, WxDropTarget and WxDropSource to wxDart Flutter
+* Added WxDataObject.getFormats(), getData() and setData() to both ports
+* Aligned the ports that the bind functions append new handlers to the end
+* Aligned the ports that the most recently added handler is executed first
+* Aligned semantics of WxEvent.skip() logic in both ports
+* Changed unbind function to only remove the most recently added matching handler
+* Documented this behaviour in WxEvtHandler
+* Added WxWindow.screenToClient() and .clientToScreen()
+* Added wxFindWindowAtPoint()
+
+## 0.9.24
+
+* Lots of updates to docs (also, to make them more AI friendly)
+* Added support for WxDataObject, WxDropTarget and WxDropSource to wxDart Native
+* Drag and Drop is not yet implemented in wxDart Flutter
+
+## 0.9.22
+
+* Small mobile interface fixes, including OpenGL ES.
+* Support for hot reload, also on iPhone simulator.
+* Removed use of dot-short hand as Dart doesn't support this on Windows yet
+* Renamed setLogTarget() to wxSetLogTarget() and documented wxLog functions
+* Corrected WxDataViewCtrl.isExpanded() and .collapse() when used on hidden tree items
+* Made icon an optional named parameter in WxDataViewTreeCtrl.appendItem() (like in C++)
+* Added WxDataViewTreeCtrl.insertItem()
+* Documentation updates on many events
+
+## 0.9.21
+
+* Don't call setState from hidden WxWindow
+* Correct WxDataViewCtrl.getSelection() for multiple selections
+* Began docs for WxHeaderCtrl
+* Moved WxDataViewCtrl files to their own folder
+* Added text alignment to WxDataViewTileCtrl and wxDataViewRenderer.renderText()
+* Removed caption from "dialogs" on mobile interface by default
+* Move wxDart Native specific code from a wxWidgets branch into the bridge library
+* More wxDart Native memory cleanup after the WxObject.dispose changes started 0.9.14
+
+## 0.9.20
+
+* Added ability to add client data to WxDataViewListCtrl and WxDataViewTileListCtrl
+* Added WxCollapsiblePanel
+* Added WxSearchCtrl with search and cancel icon and drop down menu
+* Added bindSplitterDoubleClickEvent to WxSplitterWindow
+* Added and clarified role of WxWindow.setMinSize vs. setSize
+* Implemented WxStaticLine using Flutter's Divider widget
+
+## 0.9.19
+
+* Allow use of Dart's ui.Image and ui.Picture to draw into a WxBitmap
+* Added WxBitmap.fromUIImage() to wxDart Flutter for that purpose
+* Fully implemented WxGridSizer
+* Corrected constructor naming of WxBitmap.fromAsset()
+* Change WxBitmap.fromSize() into standard constructor
+
+## 0.9.17
+
+* Implemented support for disabling menu items via WxUpdateUIEvent
+* Make menu item help text disappear again when menu is closed
+* Implemented and clarified WxDialog.centreOnParent()
+* Change to prevent reentrance issue in wxDart Flutter's WxGLCanvas
+* Also added test for WxGLCanvas not having a size yet in sample code
+* Expanded and documented WxSizerFlags
+* Let WxDataViewTileListCtrl figure out its ideal row height itself
+* If tile has only one line of text, centre it on the tile
+* Allow providing a highlighted variant of the tile icons
+* Added missing implementation of WxDataViewListIndexModel.cleared()
+* Corrected WxDataViewListCtrl code for unordered data (once IDs or no longer line numbers)
+* Updated wxWidgets to upcoming version 3.3.4 including vastly improved support for Win32 dark mode
+
+## 0.9.16
+
+* Implemented WxDialog.setSizerAndFit() to find resize dialog according to the main WxSizer
+* Changed asset path logic - now paths on MSW are converted from forward slash to back slash
+
+## 0.9.15
+
+* Added WxFrame.showInfoBar() implemented using wxInfoBar in wxDart Native
+* Documented various WxFrame methods
+* Added WxActivityIndicator (circular progress indicator)
+* Corrected wxGLContext.createFramebuffer() and createRenderbuffer()
+* Minor doc updates
+
+## 0.9.14
+
+* Added WxGraphicsAnimation
+* Improved documentation around the animation classes
+* Corrected and documented clean-up logic between WxWindow.destroy() and WxClass.dispose()
+
+## 0.9.13
+
+* Support for built-in curves for WxUIAnimations, wxCURVE_EASE_IN_EASE_OUT etc.
+* Added WxBookCtrl (and WxNotebook) setPageImage and getPageImage
+* Corrected app clean up in wxDart Native
+* Corrected sequence of calls when completing WxUIAnimation to allow infinite loops
+* Fully implemented WxAnimation including accessors to the individal frames
+*   This allows drawing animations in OnPaint, not just in a control
+* Implemented WxSplitterWindow.setMinimumPaneSize()
+* Corrected and added some more keyboard key constants
+
+## 0.9.12
+
+* Allow wxDart Flutter apps on the web to appear in an HTML window - not just full-screen apps
+* Added WxRealOffset for convenience
+* Change from flutter_html to flutter_widget_from_html because the former is no longer maintained
+* Several documentation updates 
+
+## 0.9.11
+
+* Changed wxDart Native way to build to use Flutter system on all systems
+* Added support for asynchronous code execution (async await) to wxDart Native
+* Added support for using the Asset framework (and other Bindings) to wxDart Native
+* Added async await sample to demo
+* Properly documented WxSizerItem and WxSizer
+* Added WxSizerItem.isSizer(), isWindow() and isSpacer()
+* Added WxSizer.getItemCount(), getItem(), getWindowItem() and getSizerItem()
+* Added WxSizer.remove(), removeSizer() and removeWindow()
+* Removed or hid platform specific code from WxSizer and WxSizerItem 
+* Corrected WxSizer.layout() and WxWindow.layout() in wxDart Flutter to update the display
+* Added WxImage.hasAlpha() and clearAlpha()
+* Added WxImage.fromRGB() and WxImage.fromRGBA() constructors
+* Updated TabbedView, used for WxNotebook, code to latest version
+* Initial work to support multi-windows on Flutter Desktop
+* Work on flutter_angle to support Flutter on Linux as well
+* Work on wxWidget's GTK+ port to allow synchronous wxDart code execution
+* Wrote ThreeJS Dart renderer using wxGlContext as the backend 
+
+## 0.9.10
+
+* Corrected filled WxGraphicsContext.drawRectangle() etc. if a brush is used
+* Adapted OpenGL/WxGLCanvas/WxGLContext code for Flutter Web / WebGL
+* Adapted OpenGL to run on the Web and on Linux native as well
+* Synthesize idle event after main window resize
+* Defer sending WxSizeEvent to next Flutter frame
+* Added WxWindowCreateEvent
+* Changed OpenGL constants to WebGL.DRAW_TRIANGLES notation
+* Added all missing WxGLContext to run ThreeJS (three_js_dart) on it
+* Added wxLoadRGBAFromResource to load the RGBA raw data from an asset or file
+* Added WxImage.getRGBA()
+* Added WxImage.isOK()
+* Removed hacks due to issues in flutter_angle 0.4.1 on web
+
+## 0.9.9
+
+* Added wxLoadImageFromResource
+* Change return type from WxImage.getData() to Uint8List
+* Change return type from WxImage.getAlphaData() to Uint8List
+* Enabled Textures in OpenGL code
+* Numerous OpenGL bug fixes
+* Documented the wxDart-Native-only WxImage.fromFile() constructor
+* Corrected wxBITMAP_TYPE_XXX constants
+* Corrected event type for repeated key down events
+
+## 0.9.8
+
+* Added WxGLCanvas and WxGLContext for OpenGL (ES) support on all platforms
+* Added WxWindow.getChildCount() and WxWindow.getChild(index) as we don't have a GetChildren() accessor like in C++
+* Added WxRealPoint for convenience
+* Corrected WxGraphicsPath.addCircle()
+
+## 0.9.7
+
+* Implemented control of focus behaviour (disable focus, child window focus)
+* Updated function category documentation for the WxWindow class
+* Added wxBitmapComboBox
+
+## 0.9.6
+
+* Allow a WxNativeWindow to generate key, mouse and focus events
+
+## 0.9.5
+
+* Corrected/added key up events
+* Documented WxKeyEvent and key code constants
+
+## 0.9.4
+
+* Added WxNativeWindow to allow using native Flutter widgets in wxDart Flutter
+* Doc updates
+
+## 0.9.3
+
+* Further work WxGraphicsContext
+* Added linear and radial colour gradients and complex filled paths
+
+## 0.9.2
+
+* Further work on WxGraphicsBitmap and WxGraphicsContext
+* Added WxGraphicsPath
+* Added WxGraphicsContext clip, drawText, setFont, stokeLine and more
+* Documentation updates for item containers
+* Added lots of sample code to documentation
+
+## 0.9.1
+
+* Make wxDart Flutter menu items and windows given an ID of -1 create their own unique negative ID (align with wxDart Native/wxWidgets)
+* Added sorting in WxListBox, WxComboBox and WxChoice in wxDart Flutter (align with wxDart Native/wxWidgets)
+* Began implementation of wxGraphicsContext group of classes (modern 2D drawing API) which uses
+* Documentation updates
+
+## 0.9.0
+
+* This is the first public release
+

@@ -5,6 +5,7 @@ A cross-platform GUI library to build native desktop apps, web apps and mobile a
 ## Table of contents
 
 * [Introduction](#wxdart-flutter-and-wxdart-native)
+* [Live web demo](#live-demo)
 * [Screenshot](#screenshot)
 * [Installation](#installation-of-wxdart-flutter)
 * [Event binding syntax](#event-syntax-wxdart-vs-wxwidgets-and-wxpython)
@@ -25,7 +26,6 @@ A cross-platform GUI library to build native desktop apps, web apps and mobile a
     - [Layout classes](#layout-classes)
     - [Event classes](#event-classes)
     - [Drag and Drop classes](#dnd-classes)
-* [Live web demo](#demo)
 * [More screenshots](#screenshots)
 * [Live tutorial apps](#web-app-tutorials)
 * [Screencasts from desktops](#screencasts-from-the-demo)
@@ -34,19 +34,24 @@ A cross-platform GUI library to build native desktop apps, web apps and mobile a
 
 ## wxDart Flutter and wxDart Native
 
-wxDart consists of two separate libraries which offer the same API and can be used independently. 
+wxDart consists of three separate libraries which offer the same API and can be used independently. 
 * 'wxDart Flutter' uses the [Flutter](https://flutter.dev) libary as its backend and is written in pure Dart.
 * 'wxDart Native' uses the [wxWidgets](https://wxwidgets.org) C++ GUI library as its backend using FFI calls.
+* 'wxDart Web' uses pure HTML/Javascript/CSS as its backend to allow fast start-up, SEO, screen accessibility etc.
 
 Since wxDart Flutter is written in pure Dart, it supports [hot reload](https://docs.flutter.dev/tools/hot-reload)
-so play with parameters or sizers while the app in running (also e.g. an iPhone simulator) without a full recompile.
+so that you can play with parameters or sizers while the app in running (also e.g. an iPhone simulator) without
+a full recompile.
 
-Both wxDart Flutter and wxDart Native support
+wxDart Web only runs in a browser and does not depend on Flutter, Skia or external fonts: a small app
+compiles into 140K of Javascript including the Dart runtime. It supports both a desktop and a mobile
+interface and its fast start-up solves the biggest issue with Flutter (and other toolkits) on the web.
+Arguably, it also shows the native look and feel for Web apps.
+
+All three ports of of wxDart support
 * Asynchronous code using the [async await](https://dart.dev/libraries/async/async-await) paradigm
-* The Flutter [assets](https://api.flutter.dev/flutter/services/AssetBundle-class.html) system (used in many Dart libraries)
 * An extensive list of controls from [menus](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxMenuBar-class.html) to [animations](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxAnimationCtrl-class.html)
 * [WxDataViewCtrl](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDataViewCtrl-class.html) to display and edit complex and large table and tree data
-* Conversion from dart:ui Image and dart:ui Picture to WxBitmap to enable off-screen drawing using Dart
 * [Dark and light](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxApp/setAppearance.html) mode on all platforms
 * Image formats including [SVG](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxBitmapBundle/WxBitmapBundle.fromSVG.html), PNG and JPG
 * Over 2000 [Material icons](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxBitmapBundle/WxBitmapBundle.fromMaterialIcon.html) built-in
@@ -54,24 +59,30 @@ Both wxDart Flutter and wxDart Native support
 * An OpenGL ES/WebGL based [OpenGL canvas](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxGLCanvas-class.html).
 * 3D scenes through its own [ThreeJS renderer](https://pub.dev/packages/three_js_wx_renderer) linking WxGLContext and WxGLCanvas to [ThreeJS Dart](https://pub.dev/packages/three_js)
 
-Only wxDart Flutter supports mobile devices (iOS and Android) and the web.
+Only wxDart Flutter supports mobile devices (iOS and Android). Both wxDart Flutter and wxDart Web support
+mobile and desktop web.
 
 Note that both wxDart Native and wxDart Flutter support the main desktop architectures (Windows, macOS and Linux).
-When using wxDart Flutter (this package), your applications will have an identical look and feel across all desktop
-platforms (and on the web). With wxDart Native, your applications will have the native look and feel.
+When using wxDart Flutter, the application will have an identical look and feel across all desktop
+platforms (and on the web). With wxDart Native, the applications will have the native look and feel.
 
 wxDart aims to provide Dart bindings to the wxWidgets library very similar to the hugely popular
 [wxPython](https://wxpython.org/) for Python, with additional support for mobile devices and web apps.
 
 If you are coming from the Flutter world, consider wxDart a new toolkit based on the Flutter core (next to [Material UI](https://flutter.dev/docs/development/ui/widgets/material), [Cupertino UI](https://flutter.dev/docs/development/ui/widgets/cupertino), [MacOS UI](https://pub.dev/packages/macos_ui) or [Fluent UI](https://pub.dev/packages/fluent_ui)), but with a fully native twin brother library and a single code base for all of them.
 
+## Live demo
+
+For a very nice comparison between Flutter Web and pure Web, you can run the demo
+in the browser by clicking 
+[here](https://wxdesigner-software.com/demo03/) for the Flutter backend and
+[here](https://wxdesigner-software.com/demo05/) for the pure Web backend.
+
 ## Screenshot
 
 A screenshot showing the demo running side-by-side in a web browser (wxDart Flutter)
 and running natively on macOS Tahoe (wxDart Native). There are more screenshots
-[below](#screenshots) and you can run the entire demo in the browser by clicking 
-[here](https://wxdesigner-software.com/demo03).
-
+[below](#screenshots) and 
 ![Web vs macOS](https://wxdesigner-software.com/resources/macOS_Web.png)
 
 ## Installation of wxDart Flutter
@@ -85,9 +96,25 @@ To use wxDart Flutter, add wx_dart as a dependency in your pubspec.yaml file.
 flutter pub add wx_dart
 ```
 
+To use wxDart Native, add wx_dart_native as a dependency in your pubspec.yaml file.
+```console
+flutter pub add wx_dart_native
+```
+
+To use wxDart Web, add wx_dart_web as a dependency in your pubspec.yaml file.
+```console
+dart pub add wx_dart_web
+```
+
 Import the package into your Dart file:
 ```dart
 import 'package:wx_dart/wx_dart.dart';
+```
+```dart
+import 'package:wx_dart_web/wx_dart.dart';
+```
+```dart
+import 'package:wx_dart_native/wx_dart.dart';
 ```
 ## Tutorial with samples
 
@@ -152,11 +179,9 @@ class MyFrame extends WxFrame {
 
 ## Licence
 
-'wxDart Flutter' is free software under the wxWindows licence. The wxWindows licence allows you to
-use 'wxDart Flutter' to create free and commercial software with no restrictions, but not to create
+All versions of wxDart are (now) free software under the wxWindows licence. The wxWindows licence allows you to
+use wxDart to create free and commercial software with no restrictions, but not to create
 a closed source competitor of the library itself. See the [Licence](#license-of-wxdart-flutter) in full.
-
-'wxDart Native' is not open source.
 
 ## Classes by Category
 
@@ -429,9 +454,6 @@ Command events (deriving from WxCommandEvent)
 | [WxDropEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDropEvent-class.html) | Implemented using function overloading. |
 | [WxDragEvent](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxDragEvent-class.html) | Implemented using function overloading. |
 
-## Demo
-
-Here is a link to the [demo app](https://wxdesigner-software.com/demo03) (written in wxDart) running in your browser.<BR>
 
 ## Screenshots
 
