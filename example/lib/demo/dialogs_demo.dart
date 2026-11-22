@@ -27,17 +27,14 @@ class MyMessageDialog extends WxMessageDialog {
 
     setExtendedMessage("This is a very long message that will\n"
                     "span across several lines\n"
-                    "Many lines.\n"
-                    "wxGetStandardPaths().getExecutablePath()\n"
-                    "${wxGetStandardPaths().getExecutablePath()}\n"
+                    "Many lines:\n"
+                    "\n"
                     "wxGetStandardPaths().getResourcesDir()\n"
                     "${wxGetStandardPaths().getResourcesDir()}\n"
-                    "wxGetStandardPaths().getDocumentsDir()\n"
-                    "${wxGetStandardPaths().getDocumentsDir()}\n"
-                    "wxGetStandardPaths().getConfigDir()\n"
-                    "${wxGetStandardPaths().getConfigDir()}\n"
-                    "wxGetStandardPaths().getTempDir()\n"
-                    "${wxGetStandardPaths().getTempDir()}");
+                    "\n"
+                    "wxGetStandardPaths().getExecutablePath)\n"
+                    "${wxGetStandardPaths().getExecutablePath()}\n"
+                    );
 } }
 
 // ------------------------- MyFirstDialog -----------------------------

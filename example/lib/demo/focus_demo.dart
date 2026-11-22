@@ -189,8 +189,14 @@ class MyNonFocussableWindow extends WxWindow {
       if (_isFile) {
         final data = WxFileDataObject( );
         final path = wxGetStandardPaths().getExecutablePath();
-        final uri = Uri.file(path, windows: wxIsMSW() );
-        data.addFile( uri.toString() );
+        if (wxIsWeb()) {
+          // contains the base URI
+          data.addFile( path );
+        } else {
+          // contains the full exe filename including path
+          final uri = Uri.file(path, windows: wxIsMSW() );
+          data.addFile( uri.toString() );
+        }
         final source = WxDropSource(data, this);
         source.doDragDrop();
       } else {
