@@ -86,7 +86,7 @@ class WxStatusBar extends WxEvtHandler {
     _parent._setState();
   }
 
-  /// Returns the text of the status bar. [number] indicates the field if
+  /// Returns the text of the status bar. [index] indicates the field if
   /// more than one field has been created.
   String getStatusText( { int index = 0 } ) {
     if ((index >= _fields.length) || (index < 0)) return "";
