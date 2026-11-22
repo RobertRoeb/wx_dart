@@ -93,7 +93,7 @@ class MyFocussableWindow extends WxWindow {
       dc.setBrush( wxTRANSPARENT_BRUSH );
       if (hasFocus()) {
         dc.setPen(WxPen(wxTheApp.getAccentColour(), width: _highlight ? 3 : 1 ));
-        dc.drawRectangle(0, 0, getSize().x, getSize().y );
+        dc.drawRectangle(0, 0, getClientSize().x, getClientSize().y );
         if (_dropText.isNotEmpty) {
           dc.drawText("Has focus.\nReceived: $_dropText", 5, 5 );
         } else {
@@ -213,7 +213,7 @@ class MyNonFocussableWindow extends WxWindow {
       dc.setBrush( wxTRANSPARENT_BRUSH );
       if (hasFocus()) {
         dc.setPen(wxRED_PEN);
-        dc.drawRectangle(0, 0, getSize().x, getSize().y );
+        dc.drawRectangle(0, 0, getClientSize().x, getClientSize().y );
         dc.drawText("Has focus, wrong!", 5, 5 );
       } else {
         dc.setPen( WxPen( wxTheApp.getAccentColour() ) );
