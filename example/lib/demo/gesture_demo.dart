@@ -46,16 +46,16 @@ class MyGestureWindow extends WxWindow {
     {
       _usingGestures = event.isChecked();
       if (event.isChecked()) {
-        enableTouchEvents( wxTOUCH_ALL_GESTURES );
+        // enableTouchEvents( wxTOUCH_ALL_GESTURES );
       } else {
-        enableTouchEvents( 0 );
+        //enableTouchEvents( 0 );
       }
       refresh();
     }, -1);
 
 
     if (wxTheApp.isTouch()) {
-      enableTouchEvents( wxTOUCH_ALL_GESTURES );
+      // enableTouchEvents( wxTOUCH_ALL_GESTURES );
       _usingGestures = true;
       _touchToggle.setValue(true);
     }
