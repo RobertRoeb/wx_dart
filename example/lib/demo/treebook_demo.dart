@@ -15,7 +15,7 @@ class MyTreebookFrame extends WxAdaptiveFrame {
 
     final tree = WxTreebook(this, -1);
 
-    setDrawerFromWindow(tree.getTreeCtrl() );
+    // setDrawerFromWindow(tree.getTreeCtrl() );
 
     tree.bindTreebookPageChangedEvent((event) {
       if (wxTheApp.isTouch()) {
