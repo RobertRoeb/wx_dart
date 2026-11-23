@@ -28,7 +28,11 @@ class MySplitterWindow extends WxSplitterWindow
 {
   MySplitterWindow( super.parent, super.id, { super.style = wxSP_PERMIT_UNSPLIT|wxSP_3DSASH|wxSP_LIVE_UPDATE } ) {
     final treePanel = WxPanel( this, -1 );
-    final treectrl = WxTreeCtrl(treePanel, idTreeCtrl, style: wxTR_DEFAULT_STYLE|wxBORDER_THEME );
+    final frame = getParent()!.getParent() as WxFrame;
+
+    final treeSizer = WxColumn();
+
+    final treectrl = WxTreeCtrl(treePanel, idTreeCtrl, size: WxSize(10,10), style: wxTR_DEFAULT_STYLE|wxBORDER_THEME );
     List<WxBitmapBundle> images = [];
     images.add( WxBitmapBundle.fromMaterialIcon(WxMaterialIcon.airplanemode_active, WxSize(20,20), colour: wxGREY ) );
     images.add( WxBitmapBundle.fromMaterialIcon(WxMaterialIcon.airplanemode_inactive, WxSize(20,20), colour: wxGREY) );
@@ -50,8 +54,8 @@ class MySplitterWindow extends WxSplitterWindow
     treectrl.appendItem(branch2, "Item with data", data: "Last data" );
     treectrl.prependItem(branch2, "Item with data", data: "First data" );
     treectrl.expandAll();
-    final treeSizer = WxBoxSizer( wxVERTICAL );
     treeSizer.add(treectrl, flag: wxEXPAND, proportion: 1 );
+
     final treeButtonSizer = WxWrapSizer();
     treeSizer.addSizer(treeButtonSizer);
 
@@ -60,8 +64,6 @@ class MySplitterWindow extends WxSplitterWindow
       WxTreeItemId item = treectrl.getSelection();
       treectrl.appendItem(item, "New child" );
     }, idTreeItemAddChild);
-
-    final frame = getParent()!.getParent() as WxFrame;
 
     treeButtonSizer.add( WxButton(treePanel, idTreeItemGetSelection, "Current item"), flag: wxALL, border: 10 );
     bindButtonEvent( (event) {
@@ -164,6 +166,7 @@ class MySplitterWindow extends WxSplitterWindow
     treePanel.setSizer(treeSizer);
 
     final listPanel = WxPanel( this, -1 );
+
     final listctrl = WxDataViewListCtrl(listPanel, idDataViewListCtrl, style: wxDV_MULTIPLE /*|wxDV_HORIZ_RULES|wxDV_VERT_RULES*/ );
     listctrl.appendToggleColumn("", width: 25, mode: wxDATAVIEW_CELL_ACTIVATABLE );
     listctrl.appendTextColumn("Text", width: 120, mode: wxDATAVIEW_CELL_EDITABLE );
@@ -184,12 +187,13 @@ class MySplitterWindow extends WxSplitterWindow
   
     final listButtonSizer = WxWrapSizer();
     listSizer.addSizer(listButtonSizer);
+  
     listButtonSizer.add( WxButton(listPanel, idListSelectRow2, "Move to #2"), flag: wxALL, border: 10 );
     bindButtonEvent( (event) {
         listctrl.setCurrentItem( listctrl.rowToItem(2));
     }, idListSelectRow2);
 
-    
+  
     listButtonSizer.add( WxButton(listPanel, idListSelect2, "Select #2"), flag: wxALL, border: 10 );
     bindButtonEvent( (event) {
         listctrl.select( listctrl.rowToItem(2) );
