@@ -177,6 +177,20 @@ html, body {
 .wxc-close:hover { background: rgba(0, 0, 0, 0.12); }
 .wxc-dialog > .wxc-client { flex: 0 0 auto; }
 
+/* bottom sheet: a modal dialog on touch devices, sliding up from below */
+.wxc-backdrop.wxc-sheet { align-items: flex-end; }
+.wxc-sheet > .wxc-dialog {
+  border-radius: 15px 15px 0 0;
+  padding: 5px 5px 30px;
+  animation: wxc-sheet-in 0.22s ease-out;
+  transition: transform 0.18s ease-out;
+}
+.wxc-sheet > .wxc-dialog.wxc-sheet-dragging { transition: none; }
+.wxc-sheet .wxc-titlebar { border-radius: 8px 8px 0 0; }
+.wxc-sheet .wxc-close { display: none; }
+.wxc-sheet-plain .wxc-titlebar { background: none; color: var(--wxc-fg); }
+@keyframes wxc-sheet-in { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
 /* --------------------------------------------------------- controls */
 
 .wxc-button {
@@ -659,6 +673,13 @@ html.wxc-drag-none, html.wxc-drag-none * { cursor: no-drop !important; }
 }
 .wxc-nav-item.wxc-book-selected .wxc-book-icon { background: color-mix(in srgb, var(--wxc-accent) 45%, transparent); }
 .wxc-nav-item.wxc-book-selected { font-weight: 600; }
+
+/* finger input (primary pointer is coarse): larger font and targets */
+html.wxc-touch-font { --wxc-font: 15px system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, sans-serif; }
+html.wxc-touch .wxc-nav-bar { height: 80px; padding: 6px 0 8px; }
+html.wxc-touch .wxc-nav-item { font-size: 13px; gap: 4px; min-width: 48px; }
+html.wxc-touch #wxc-root .wxc-nav-item .wxc-book-icon { padding: 4px 20px; }
+html.wxc-touch .wxc-tool-arrow { min-width: 24px; }
 
 /* floating action button */
 .wxc-window.wxc-fab, .wxc-button.wxc-fab {

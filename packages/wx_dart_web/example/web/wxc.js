@@ -47,7 +47,8 @@
     const e = {
       type: type, id: id, x: 0, y: 0, button: 0, wheel: 0, w: 0, h: 0,
       key: '', code: '', text: '', url: '', ctrl: false, shift: false, alt: false, meta: false,
-      leftDown: false, middleDown: false, rightDown: false, canVeto: false, files: null
+      leftDown: false, middleDown: false, rightDown: false, canVeto: false, files: null,
+      dx: 0, dy: 0, zoom: 1, start: false, end: false
     };
     if (extra) Object.assign(e, extra);
     return e;
@@ -96,9 +97,12 @@
     };
     const captured = () => captureId === w.id;
     const custom = w.kind === 'window' || w.kind === 'frame' || w.kind === 'dialog';
+    // with enableTouchEvents(), fingers produce gestures (see touchEvents)
+    const gesture = (e) => e.pointerType === 'touch' && w.touchMask > 0;
 
     target.addEventListener('pointerdown', (e) => {
       if (!own(e)) return;
+      if (gesture(e)) return;
       // clicks on the scroll bars of a scroll container are not for the app
       if (e.target === target && (e.offsetX >= target.clientWidth || e.offsetY >= target.clientHeight)) return;
       lastPointerId = e.pointerId;
@@ -108,11 +112,13 @@
     });
     target.addEventListener('pointerup', (e) => {
       if (!own(e) && !captured()) return;
+      if (gesture(e)) return;
       const p = pos(e); p.button = e.button;
       send(ev('mouseup', w.id, p));
     });
     target.addEventListener('pointermove', (e) => {
       if (!own(e) && !captured()) return;
+      if (gesture(e)) return;
       send(ev('motion', w.id, pos(e)));
     });
     target.addEventListener('dblclick', (e) => {
@@ -188,7 +194,12 @@
         dlg.appendChild(title);
         dlg.appendChild(client);
         el.appendChild(dlg);
-        makeDraggable(title, dlg);
+        const requestClose = () => send(ev('close', id, { canVeto: true }));
+        makeDraggable(title, dlg, requestClose);
+        // a bottom sheet closes when tapping beside it
+        el.addEventListener('pointerdown', (e) => {
+          if (e.target === el && el.classList.contains('wxc-sheet')) requestClose();
+        });
         w.dialog = dlg;
         w.title = text;
         w.client = client;
@@ -717,30 +728,61 @@
 
   // -------------------------------------------------------------- dialogs
 
-  function makeDraggable(handle, box) {
+  // A dialog is moved by its title bar. A bottom sheet can only be pulled
+  // down: far enough, and it closes (onClose), otherwise it snaps back.
+  const SHEET_CLOSE_DISTANCE = 80;
+
+  function makeDraggable(handle, box, onClose) {
     let sx = 0, sy = 0, ox = 0, oy = 0, dragging = false;
+    const isSheet = () => box.parentElement && box.parentElement.classList.contains('wxc-sheet');
     handle.addEventListener('pointerdown', (e) => {
       if (e.target.closest('.wxc-close')) return;
       dragging = true;
       sx = e.clientX; sy = e.clientY;
       ox = box._dx || 0; oy = box._dy || 0;
       handle.setPointerCapture(e.pointerId);
+      if (isSheet()) box.classList.add('wxc-sheet-dragging');
     });
     handle.addEventListener('pointermove', (e) => {
       if (!dragging) return;
+      if (isSheet()) {
+        box._dx = 0;
+        box._dy = Math.max(0, e.clientY - sy);
+        box.style.transform = `translateY(${box._dy}px)`;
+        return;
+      }
       box._dx = ox + e.clientX - sx;
       box._dy = oy + e.clientY - sy;
       box.style.transform = `translate(${box._dx}px, ${box._dy}px)`;
     });
-    handle.addEventListener('pointerup', () => { dragging = false; });
+    const end = () => {
+      if (!dragging) return;
+      dragging = false;
+      if (!isSheet()) return;
+      box.classList.remove('wxc-sheet-dragging');
+      const pulled = box._dy || 0;
+      box._dy = 0;
+      box.style.transform = '';
+      if (pulled > SHEET_CLOSE_DISTANCE && onClose) onClose();
+    };
+    handle.addEventListener('pointerup', end);
+    handle.addEventListener('pointercancel', end);
   }
 
-  function showModal(id) {
+  // sheet: shown as a bottom sheet sliding up (touch devices); its title
+  // has the accent colour only with caption (wxCAPTION), as in wxDart Flutter
+  function showModal(id, sheet, caption) {
     const w = wins.get(id);
     if (!w) return;
     closeMenus();
     modalStack.push(id);
     w.el.classList.remove('wxc-modeless');
+    w.el.classList.toggle('wxc-sheet', !!sheet);
+    w.el.classList.toggle('wxc-sheet-plain', !!sheet && !caption);
+    if (sheet && w.dialog) {
+      w.dialog._dx = 0; w.dialog._dy = 0;
+      w.dialog.style.transform = '';
+    }
     show(id, true);
     // focus the default button, else the first button, else the dialog
     const btn = w.client.querySelector('.wxc-default:not(:disabled)') ||
@@ -1039,6 +1081,20 @@
     if (width > 0 && height > 0) {
       const pixels = new Uint8ClampedArray(data.buffer, data.byteOffset, width * height * 4);
       c.getContext('2d').putImageData(new ImageData(pixels, width, height), 0, 0);
+    }
+    images.set(handle, c);
+  }
+
+  // a scaled copy of the image src (WxBitmapBundle.getBitmapForSize)
+  function scaleImage(handle, src, width, height) {
+    const s = images.get(src);
+    const c = document.createElement('canvas');
+    c.width = Math.max(1, width);
+    c.height = Math.max(1, height);
+    if (s) {
+      const ctx = c.getContext('2d');
+      ctx.imageSmoothingQuality = 'high';
+      ctx.drawImage(s, 0, 0, c.width, c.height);
     }
     images.set(handle, c);
   }
@@ -1644,15 +1700,30 @@
   window.addEventListener('blur', () => { modState = 0; });
   function modifiers() { return modState; }
 
+  // A device is operated with fingers if its primary pointer is coarse,
+  // whatever the size of the screen (phones and tablets). Then the class
+  // wxc-touch makes the targets larger; the larger font is chosen once at
+  // start-up, since the Dart side caches the CSS of fonts.
+  const coarseQuery = matchMedia('only screen and (pointer: coarse)');
+  const FINGER_FONT_SCALE = 15 / 13;
+  const fingerFont = coarseQuery.matches;
+  const html0 = document.documentElement;
+  html0.classList.toggle('wxc-touch', coarseQuery.matches);
+  html0.classList.toggle('wxc-touch-font', fingerFont);
   let touchCache = null;
   window.addEventListener('resize', () => { touchCache = null; });
+  coarseQuery.addEventListener('change', () => {
+    touchCache = null;
+    html0.classList.toggle('wxc-touch', coarseQuery.matches);
+  });
+  // touch layout (app bar, navigation at the bottom): finger input or a
+  // narrow window, like in wxDart Flutter
   function isTouch() {
-    if (touchCache === null) {
-      touchCache = window.innerWidth < 700 ||
-        (matchMedia('(pointer: coarse)').matches && !matchMedia('(pointer: fine)').matches);
-    }
+    if (touchCache === null) touchCache = coarseQuery.matches || window.innerWidth < 700;
     return touchCache;
   }
+  // factor for the size of all fonts, see WxFont
+  function fontScale() { return fingerFont ? FINGER_FONT_SCALE : 1; }
 
   // ---------------------------------------------------------- popup menus
 
@@ -2278,6 +2349,106 @@
     if (!w) return { id: 0, x: 0, y: 0 };
     const r = mouseTargetOf(w).getBoundingClientRect();
     return { id: id, x: Math.round(x - r.left), y: Math.round(y - r.top) };
+  }
+
+  // ------------------------------------------------------------ gestures
+
+  // WxWindow.enableTouchEvents(): one finger pans, two fingers zoom, like
+  // in wxDart Flutter. Fingers on such a window send no mouse events, only
+  // a tap (a touch without movement) arrives as left down and left up.
+  // Mouse and pen keep sending mouse events.
+
+  const TAP_SLOP = 8;   // pixels a finger may move and still tap
+
+  function touchEvents(id, mask) {
+    const w = wins.get(id);
+    if (!w) return;
+    w.touchMask = mask;
+    const target = mouseTargetOf(w);
+    const pan = mask & 3;
+    // the browser must not scroll or zoom where the app handles gestures
+    target.style.touchAction = (mask & 4) || pan === 3 ? 'none'
+      : (pan === 1 ? 'pan-y' : (pan === 2 ? 'pan-x' : ''));
+    if (w.gestures) return;
+    const g = w.gestures = { pts: new Map(), mode: 'none', x0: 0, y0: 0, dx: 0, dy: 0, dist0: 1, zoom: 1 };
+    const local = (e) => {
+      const r = target.getBoundingClientRect();
+      return { x: e.clientX - r.left, y: e.clientY - r.top };
+    };
+    const pair = () => {
+      const [a, b] = Array.from(g.pts.values());
+      return { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2, d: Math.max(1, Math.hypot(a.x - b.x, a.y - b.y)) };
+    };
+    const keys = (e) => ({ ctrl: e.ctrlKey, shift: e.shiftKey, alt: e.altKey, meta: e.metaKey });
+    const sendPan = (p, dx, dy, start, end) =>
+      send(ev('gesturepan', id, { x: Math.round(p.x), y: Math.round(p.y), dx: dx, dy: dy, start: start, end: end }));
+    const sendZoom = (c, start, end) =>
+      send(ev('gesturezoom', id, { x: Math.round(c.x), y: Math.round(c.y), zoom: g.zoom, start: start, end: end }));
+    const mine = (e) => e.pointerType === 'touch' && w.touchMask > 0;
+
+    target.addEventListener('pointerdown', (e) => {
+      if (!mine(e) || wxIdOf(e.target) !== id) return;
+      const p = local(e);
+      g.pts.set(e.pointerId, p);
+      try { target.setPointerCapture(e.pointerId); } catch (_) { }
+      if (g.pts.size === 1) {
+        g.mode = 'pending'; g.x0 = p.x; g.y0 = p.y; g.dx = 0; g.dy = 0;
+      } else if (g.pts.size === 2) {
+        if (g.mode === 'pan') sendPan(p, 0, 0, false, true);
+        if (w.touchMask & 4) {
+          const c = pair();
+          g.mode = 'zoom'; g.dist0 = c.d; g.zoom = 1;
+          sendZoom(c, true, false);
+        } else {
+          g.mode = 'blocked';
+        }
+      }
+    });
+    target.addEventListener('pointermove', (e) => {
+      if (!g.pts.has(e.pointerId)) return;
+      const p = local(e);
+      g.pts.set(e.pointerId, p);
+      if (g.mode === 'pending' && g.pts.size === 1) {
+        if (Math.hypot(p.x - g.x0, p.y - g.y0) <= TAP_SLOP) return;
+        if (!(w.touchMask & 3)) { g.mode = 'blocked'; return; }
+        g.mode = 'pan';
+        sendPan(p, 0, 0, true, false);
+      }
+      if (g.mode === 'pan') {
+        // whole pixels since the last event, only along the enabled axes
+        const tx = (w.touchMask & 1) ? Math.floor(p.x - g.x0) : 0;
+        const ty = (w.touchMask & 2) ? Math.floor(p.y - g.y0) : 0;
+        if (tx === g.dx && ty === g.dy) return;
+        sendPan(p, tx - g.dx, ty - g.dy, false, false);
+        g.dx = tx; g.dy = ty;
+      } else if (g.mode === 'zoom' && g.pts.size === 2) {
+        const c = pair();
+        const zoom = c.d / g.dist0;
+        if (Math.abs(zoom - g.zoom) < 0.002) return;
+        g.zoom = zoom;
+        sendZoom(c, false, false);
+      }
+    });
+    const up = (e) => {
+      if (!g.pts.has(e.pointerId)) return;
+      const p = local(e);
+      if (g.mode === 'pending' && g.pts.size === 1 && e.type === 'pointerup') {
+        // a tap is a click
+        const m = Object.assign({ x: Math.round(p.x), y: Math.round(p.y), button: 0 }, keys(e));
+        send(ev('mousedown', id, Object.assign({ leftDown: true }, m)));
+        send(ev('mouseup', id, m));
+      } else if (g.mode === 'pan') {
+        sendPan(p, 0, 0, false, true);
+        g.mode = 'blocked';
+      } else if (g.mode === 'zoom') {
+        sendZoom(pair(), false, true);
+        g.mode = 'blocked';    // the remaining finger does not pan
+      }
+      g.pts.delete(e.pointerId);
+      if (g.pts.size === 0) g.mode = 'none';
+    };
+    target.addEventListener('pointerup', up);
+    target.addEventListener('pointercancel', up);
   }
 
   // feedback for a drag within the app (WxDropSource): only the mouse
@@ -3288,7 +3459,7 @@
     setMenuBar, updateMenuItem, closeMenus, isDark, setDark, setAccent, dpr,
     textGet, textSet, textReplace, textSelection, textSetSelection, textCommand, textSetOptions,
     checkSet, choiceSetItems, choiceSelect, linkSet, openUrl, htmlSet, htmlLoad, htmlScrollTo,
-    sliderSet, gaugeSet, imageFromRGBA, imageToRGBA,
+    sliderSet, gaugeSet, imageFromRGBA, scaleImage, imageToRGBA,
     setScrollTarget, setVirtualSize, scrollTo, scrollPos, toolbarSet, attachToolBar, popupMenu,
     listboxSet, listboxSelect, listboxScroll, listboxTopItem, listboxPerPage: lbPerPage, iconFromPaths,
     setCursor, setCanFocus, screenSize,
@@ -3296,7 +3467,7 @@
     buttonSetBitmap, toggleSet, staticBitmapSet, staticBoxChrome, radioSetGroup, radioboxSet, radioboxSelect,
     spinSet, searchSet, comboSetItems, comboSelect, comboOpen: comboOpenId, comboClose: comboCloseId, collapsibleSet, collapsibleHeader,
     glContext, activitySet, animLoad, animFrameCount, animDelay, animFrame, animFree, animCtrlSet, animPlay, animSetInactive,
-    bookSet, bookSelect, bookExpand, bookChrome, fetchText, setDropTarget, dragFeedback, mousePosition, windowAt, clientOrigin, blobUrl, revokeUrl, bitmapToPng,
+    bookSet, bookSelect, bookExpand, bookChrome, fetchText, setDropTarget, dragFeedback, fontScale, touchEvents, mousePosition, windowAt, clientOrigin, blobUrl, revokeUrl, bitmapToPng,
     pickFiles, readFile, downloadFile,
     frameChrome, frameHistory, appBarSet, attachAppBar, appBarAttach, frameMenuBar, fabSet,
     drawerSet, drawerSlotSize, drawerOpen, drawerIsOpen, isTouch, modifiers, infoBar,
