@@ -46,16 +46,16 @@ class MyGestureWindow extends WxWindow {
     {
       _usingGestures = event.isChecked();
       if (event.isChecked()) {
-        // enableTouchEvents( wxTOUCH_ALL_GESTURES );
+        enableTouchEvents( wxTOUCH_ALL_GESTURES );
       } else {
-        //enableTouchEvents( 0 );
+        enableTouchEvents( 0 );
       }
       refresh();
     }, -1);
 
 
     if (wxTheApp.isTouch()) {
-      // enableTouchEvents( wxTOUCH_ALL_GESTURES );
+      enableTouchEvents( wxTOUCH_ALL_GESTURES );
       _usingGestures = true;
       _touchToggle.setValue(true);
     }
@@ -80,6 +80,15 @@ class MyGestureWindow extends WxWindow {
     if (event.isGestureStart()) {
       _isZooming = true;
       _liveZoom = 1.0;
+      final point = event.getPosition();
+      final top = getParent();
+      if (top is WxFrame) {
+        top.setStatusText("Zoom start at: ${point.x},${point.x}" );
+      }
+      // this centers the zoom around the window middle, not the touch
+      final windowSize = getSize();
+      _startZoom = WxPoint( (windowSize.x/(_zoom*2)).floor()-_offset.x, (windowSize.y/(_zoom*2)).floor()-_offset.y );
+      
     } else 
     if (event.isGestureEnd()) {
       _isZooming = false;
@@ -87,6 +96,12 @@ class MyGestureWindow extends WxWindow {
       _liveZoom = 1.0;
     } else {
       _liveZoom = event.getZoomFactor();
+
+      // this centers the zoom around the window middle, not the touch
+      final windowSize = getSize();
+      final zoom = _zoom * _liveZoom;
+      _offset = WxPoint( (((windowSize.x~/2)/zoom) - _startZoom.x).floor(), (((windowSize.y~/2)/zoom - _startZoom.y)).floor() );
+
     }
     refresh();
   }
@@ -101,7 +116,7 @@ class MyGestureWindow extends WxWindow {
       _liveOffset = WxPoint.zero;
       _isPanning = false;
     } else {
-      _liveOffset = WxPoint( _liveOffset.x + event.getDelta().x, _liveOffset.y + event.getDelta().y );
+      _liveOffset = WxPoint( _liveOffset.x + (event.getDelta().x/_zoom).round(), _liveOffset.y + (event.getDelta().y/_zoom).round() );
     }
     refresh();
   }
@@ -255,6 +270,7 @@ class MyGestureWindow extends WxWindow {
   double _liveZoom = 1.0;
   WxPoint _offset = WxPoint.zero;
   WxPoint _liveOffset = WxPoint.zero;
+  WxPoint _startZoom = WxPoint.zero;
   WxPoint _dragStart = WxPoint.zero;
   late WxBitmap _bitmap;
   late WxBitmap _castle;

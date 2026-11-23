@@ -1,3 +1,10 @@
+## 0.9.34
+
+* Corrected gesture test in sample
+* Implemented gestures in wxDart Web
+* Adapted font sizes to mobile devices in wxDart Web
+* Corrected detection of touch screen in Javascript
+
 ## 0.9.33
 
 * Published all three ports

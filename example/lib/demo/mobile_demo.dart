@@ -52,13 +52,13 @@ const idDataTree = 5008;
 class MyTutorialsPage extends WxScrolledWindow {
   MyTutorialsPage( WxWindow parent ) : super( parent, -1, style: wxVSCROLL )
   {
-    final mainSizer = WxBoxSizer(wxVERTICAL);
+    final mainSizer = WxColumn();
     setSizer( mainSizer );
 
     late WxButton tutButton;
 
     final flex = WxFlexGridSizer( 2, vgap: 10, hgap: 10 );
-    mainSizer.addSizer( flex, flag: wxTOP|wxRIGHT|wxEXPAND, border: 10 );
+    mainSizer.addSizer( flex, flag: wxLEFT|wxTOP|wxRIGHT|wxEXPAND, border: 20 );
 
     final parent = wxTheApp.getTopWindow() as WxFrame;
 
@@ -167,7 +167,7 @@ class MyTutorialsPage extends WxScrolledWindow {
 class MyLessonsPage extends WxScrolledWindow {
   MyLessonsPage( WxWindow parent ) : super( parent, -1, style: wxVSCROLL )
   {
-    final mainSizer = WxBoxSizer(wxVERTICAL);
+    final mainSizer = WxColumn();
     setSizer( mainSizer );
 
     const int idSizers = 100;
@@ -183,7 +183,7 @@ class MyLessonsPage extends WxScrolledWindow {
     const int idOpenGL = 109;
 
     final flex = WxFlexGridSizer( 2, vgap: 10, hgap: 10 );
-    mainSizer.addSizer( flex, flag: wxTOP|wxRIGHT|wxEXPAND, border: 10 );
+    mainSizer.addSizer( flex, flag: wxLEFT|wxTOP|wxRIGHT|wxEXPAND, border: 15 );
 
     flex.add( WxStaticText(this, -1, "Layout using sizers:") );
     flex.add( WxButton(this, idSizers, "Start...") );
