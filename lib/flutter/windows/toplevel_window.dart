@@ -156,6 +156,7 @@ class WxTopLevelWindow extends WxNonOwnedWindow {
   }
 
   String _title;
+  bool _hasBeenPushed = false;
   bool _hasRequestedMoreIdleEvents = false;
   bool _isTouch = false;
   bool _isFullScreen = false;
@@ -174,11 +175,11 @@ class WxTopLevelWindow extends WxNonOwnedWindow {
     if (show) {
       BuildContext? parentContext = _navigatorKey.currentContext;
       if (parentContext != null) {
+        _hasBeenPushed = true;
         Navigator.push(parentContext, MaterialPageRoute(
            builder: (BuildContext context) => PopScope(
             canPop: false,
             onPopInvokedWithResult: (didPop, result) {
-
               if (didPop) return;
               WxCloseEvent event = WxCloseEvent( wxGetCloseWindowEventType(), id: getId() );
               event.setEventObject(this);
@@ -195,6 +196,7 @@ class WxTopLevelWindow extends WxNonOwnedWindow {
       if (parentContext != null) {
         _isBeingDeleted = true;
         Navigator.pop(parentContext);
+        _hasBeenPushed = false;
         _parent!._children.remove(this);
       }
     }
@@ -227,16 +229,19 @@ class WxTopLevelWindow extends WxNonOwnedWindow {
   bool destroy()
   {
     _isBeingDeleted = true;
-    if (_parent != null)
-    {
-      BuildContext? parentContext = _navigatorKey.currentContext;
-      if (parentContext != null) {
-        Navigator.pop(parentContext);
+    // WxFileDialog doesn't use push(), or the dialog was
+    // created and never shown.
+    if (_hasBeenPushed) {
+      if (_parent != null) {
+        BuildContext? parentContext = _navigatorKey.currentContext;
+        if (parentContext != null) {
+          Navigator.pop(parentContext);
+          _hasBeenPushed = false;
+        }
+      } else {
+        SystemNavigator.pop();
+        _hasBeenPushed = false;
       }
-    }
-    else
-    {
-      SystemNavigator.pop();
     }
     _topLevelWindows.remove( this );
 

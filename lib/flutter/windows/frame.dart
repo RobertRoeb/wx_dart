@@ -141,7 +141,11 @@ const int wxINFOBAR_FLOATING = 2;
 
 class WxFrame extends WxTopLevelWindow {
   WxFrame( super._parent, super._id, super._title, { super.pos = wxDefaultPosition, super.size = wxDefaultSize, super.style = wxDEFAULT_FRAME_STYLE } ) {
-    theTLW ??= this;
+    if (theTLW == null) {
+      // the main frame inherently was pushed
+      _hasBeenPushed = true;
+      theTLW = this;
+    }    
 
     bindMenuHighlightEvent(_onMenuHighlight);
     bindMenuCloseEvent(_onMenuClose);

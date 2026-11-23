@@ -3,7 +3,10 @@
 * Corrected gesture test in sample
 * Implemented gestures in wxDart Web
 * Adapted font sizes to mobile devices in wxDart Web
-* Corrected detection of touch screen in Javascript
+* Corrected detection of touch screen in Javascript for wxDart Web
+* Implemented WxBitmapBundle.getBitmapForSize for wxDart Web
+* Implemened bottom sheet variant of WxDialog for wxDart Web
+* Reorganized .destroy() and Navigator.push()/pop() code in wxDart Flutter
 
 ## 0.9.33
 

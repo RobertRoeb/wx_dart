@@ -268,18 +268,6 @@ class WxDialog extends WxTopLevelWindow {
     return _retCode;
   }
 
-  /// Destroy the window. This will happen in a deferred way.
-  @override
-  bool destroy() {
-    _isBeingDeleted = true;
-    if (_parent != null) {
-      _parent!.removeChild(this);
-    }
-    // SystemNavigator.pop();
-    _topLevelWindows.remove( this );
-    return true;
-  }
-
   void _onButton( WxCommandEvent event ) 
   {
     final id = event.getId();
@@ -321,18 +309,13 @@ class WxDialog extends WxTopLevelWindow {
   /// return code via the callback given to [showModal]
   void endModal( int retCode ) {
     _retCode = retCode;
-    BuildContext? parentContext = _navigatorKey.currentContext;
-    if (parentContext != null) {
-      Navigator.pop(parentContext);
-    }
     _isModal = false;
-    if (_synchronous)
-    {
+    if (_synchronous) {
       if (_onReturn != null) {
         _onReturn!( _retCode, null );
       }
-      destroy();
     }
+    destroy();
   }
 
   Widget _buildTitleBar()
@@ -441,7 +424,6 @@ class WxDialog extends WxTopLevelWindow {
         onReturn( id, null );
       }
     });
-    destroy();
   }
 
   /// Wraps [child] in IntrinsicHeight if the dialog has no given height
@@ -457,6 +439,9 @@ class WxDialog extends WxTopLevelWindow {
       return wxID_CANCEL;
     } 
     _isModal = true;
+
+    // showXXX pushes the dialog
+    _hasBeenPushed = true;
 
     if (wxTheApp.isTouch())
     {
@@ -589,6 +574,8 @@ class WxDialog extends WxTopLevelWindow {
     return _retCode;
   }
 
+  // This only gets called when the dialog does not fit on a small 
+  // screen (see beginning of showModal())
   @override
   Widget _build(BuildContext context)
   {
@@ -620,7 +607,12 @@ class WxDialog extends WxTopLevelWindow {
         title: Text(_title),
         actions: actions.isEmpty ? null : actions,
       ),
-      body: _doBuildChildrenWithOrWithoutSizer( context ),
+      body:
+        SizedBox(
+          // fill out the entire width of the (small screen)
+          width: double.infinity,
+          child: _doBuildChildrenWithOrWithoutSizer( context ),
+        ) 
     );
   }
 }
