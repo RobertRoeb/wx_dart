@@ -10,6 +10,8 @@
 * Added WxDataViewVirtualTileListCtrl
 * Documented WxDataViewRenderer properly
 * Added WxScrolledWindow.scrollPixels() which scrolls to an absolute pixel position
+* Corrected alignment and stretching of nested sizers in wxDart Flutter
+* Corrected .getVirtualSize() when size was determined by a sizer in wxDart Flutter
 
 ## 0.9.33
 
