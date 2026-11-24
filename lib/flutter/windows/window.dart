@@ -809,8 +809,34 @@ class WxWindow extends WxEvtHandler {
   /// client size which ever is bigger
   WxSize getVirtualSize()
   {
+    // wxWidgets reports bigger of clientSize or virtualSize
     final clientSize = getClientSize();
-    return WxSize( max(clientSize.x,_virtualSize.x), max(clientSize.y,_virtualSize.y) ); 
+
+    // a) the virtual size was set using .setVirtualSize() or
+    //    using .setScrollbars() 
+    WxSize virtualSize = _virtualSize;
+
+    if (_scrollOwnerWindow != null) {
+      // b) or maybe, a WxScrolledWindow only used its sizers to
+      //    extend and then we need to figure out the size ourselves
+      if (_scrollOwnerWindow!._onlyVerticalScrolling() == false) {
+        final hextent = _scrollOwnerWindow!._horizontalController.position.maxScrollExtent;
+        if (!(hextent.isNaN) &&
+            !(hextent.isInfinite)) {
+          virtualSize = WxSize( hextent.round(), virtualSize.y );
+        }
+      }
+      final vextent = _scrollOwnerWindow!._verticalController.position.maxScrollExtent;
+      if (!(vextent.isNaN) &&
+          !(vextent.isInfinite)) {
+        virtualSize = WxSize( virtualSize.x, vextent.round());
+      }
+    }
+    if ((_virtualSize.y > 0) && (virtualSize != _virtualSize)) {
+      print( "In $runtimeType _virtualSize.x ${_virtualSize.x} _virtualSize.y ${_virtualSize.y}" );
+      print( "In $runtimeType virtualSize.x ${virtualSize.x} virtualSize.y ${ virtualSize.y}" );
+    }
+    return WxSize( max(clientSize.x,virtualSize.x), max(clientSize.y,virtualSize.y) ); 
   }
 
   /// Sets the virtual size of the client area in a scrolled window
