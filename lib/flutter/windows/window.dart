@@ -823,18 +823,14 @@ class WxWindow extends WxEvtHandler {
         final hextent = _scrollOwnerWindow!._horizontalController.position.maxScrollExtent;
         if (!(hextent.isNaN) &&
             !(hextent.isInfinite)) {
-          virtualSize = WxSize( hextent.round(), virtualSize.y );
+          virtualSize = WxSize( hextent.round()+clientSize.x, virtualSize.y );
         }
       }
       final vextent = _scrollOwnerWindow!._verticalController.position.maxScrollExtent;
       if (!(vextent.isNaN) &&
           !(vextent.isInfinite)) {
-        virtualSize = WxSize( virtualSize.x, vextent.round());
+        virtualSize = WxSize( virtualSize.x, vextent.round()+clientSize.y );
       }
-    }
-    if ((_virtualSize.y > 0) && (virtualSize != _virtualSize)) {
-      print( "In $runtimeType _virtualSize.x ${_virtualSize.x} _virtualSize.y ${_virtualSize.y}" );
-      print( "In $runtimeType virtualSize.x ${virtualSize.x} virtualSize.y ${ virtualSize.y}" );
     }
     return WxSize( max(clientSize.x,virtualSize.x), max(clientSize.y,virtualSize.y) ); 
   }
