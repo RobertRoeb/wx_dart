@@ -7,6 +7,8 @@
 * Implemented WxBitmapBundle.getBitmapForSize for wxDart Web
 * Implemened bottom sheet variant of WxDialog for wxDart Web
 * Reorganized .destroy() and Navigator.push()/pop() code in wxDart Flutter
+* Added WxDataViewVirtualTileListCtrl
+* Documented WxDataViewRenderer properly
 
 ## 0.9.33
 

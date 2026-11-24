@@ -190,10 +190,14 @@ class WxDataViewTileRenderer extends WxDataViewRenderer {
   }
 }
 
-// ------------------------- wxDataViewTileListCtrl ----------------------
+// ------------------------- WxDataViewTileListCtrl ----------------------
 
 /// Specialized variant of a [WxDataViewListCtrl] showing tiles constructed from
 /// [WxDataViewTileData] rendered by a [WxDataViewTileRenderer].
+/// 
+/// This controls stores the actual data in a [WxDataViewListStore]. If you needed
+/// to fetch the data from an external source (database) on demand, use the 
+/// [WxDataViewVirtualTileListCtrl].
 /// 
 /// This is an example case of how [WxDataViewCtrl] can be used on mobile devices
 /// showing one large vertical list of similar objects, in this case a tile.
@@ -231,10 +235,7 @@ class WxDataViewTileListCtrl extends WxDataViewListCtrl {
          super.pos = wxDefaultPosition, super.size = wxDefaultSize, super.style = wxDV_NO_HEADER|wxVSCROLL } )
   {
     _store._columns.add( (WxDataViewTileData).toString() );
-    _tileRenderer = WxDataViewTileRenderer( height, margins );  
-    final dvc = WxDataViewColumn("", _tileRenderer, 0, width: wxDVC_DEFAULT_WIDTH,
-                             flags: wxDATAVIEW_COL_RESIZABLE );
-    appendColumn( dvc );
+    _tileRenderer = _wxAppendTileColumn( this, height, margins );
     if (height != -1) {
       setRowHeight( height );
     } else {
@@ -307,4 +308,155 @@ class WxDataViewTileListCtrl extends WxDataViewListCtrl {
   }
 
   bool _needToCalculateHeight = false;
+}
+
+// ---------------------- shared by both tile list controls -------------------
+
+/// Appends the single column with a [WxDataViewTileRenderer] that both tile
+/// list controls use and returns the renderer
+WxDataViewTileRenderer _wxAppendTileColumn( WxDataViewCtrl ctrl, int height, int margins )
+{
+  final renderer = WxDataViewTileRenderer( height, margins );
+  final dvc = WxDataViewColumn("", renderer, 0, width: wxDVC_DEFAULT_WIDTH,
+                           flags: wxDATAVIEW_COL_RESIZABLE );
+  ctrl.appendColumn( dvc );
+  return renderer;
+}
+
+/// Calculates the row height from the first row of the model as soon as
+/// the model has one (used if no height was given)
+class _WxTileHeightNotifier extends WxDataViewModelNotifier
+{
+  _WxTileHeightNotifier( super.owner, this._ctrl );
+  final WxDataViewVirtualTileListCtrl _ctrl;
+
+  @override
+  bool cleared() { _ctrl._checkRowHeight(); return true; }
+  @override
+  bool itemAdded( WxDataViewItem parent, WxDataViewItem item ) { _ctrl._checkRowHeight(); return true; }
+  @override
+  bool itemChanged( WxDataViewItem item ) { return true; }
+  @override
+  bool itemDeleted( WxDataViewItem parent, WxDataViewItem item ) { return true; }
+  @override
+  bool valueChanged( WxDataViewItem item, int column ) { return true; }
+}
+
+// ---------------------- WxDataViewVirtualTileListCtrl -------------------
+
+/// Shows tiles like [WxDataViewTileListCtrl], but the tiles come from a
+/// [WxDataViewVirtualListModel] that creates them on demand. This allows
+/// (nearly) endless lists, e.g. with rows that are loaded from a server.
+///
+/// The model returns a [WxDataViewTileData] for column 0 of each row. The
+/// application changes the rows through the model ([WxDataViewVirtualListModel.rowAppended],
+/// [WxDataViewVirtualListModel.rowChanged], [WxDataViewVirtualListModel.reset]
+/// followed by [WxDataViewModel.cleared], ...).
+///
+/// All rows have the same height: the [height] given to the constructor or,
+/// if that is -1, the height of the first row of the model.
+///
+/// ```dart
+/// class Numbers extends WxDataViewVirtualListModel {
+///   Numbers() : super( initalSize: 100000 );
+///   @override
+///   dynamic getValueByRow( int row, int col ) =>
+///       WxDataViewTileData( null, "Row $row", medium: "Created on demand" );
+///   @override
+///   bool setValueByRow( dynamic value, int row, int col ) => false;
+/// }
+///
+/// final tiles = WxDataViewVirtualTileListCtrl( this, -1, Numbers() );
+/// ```
+class WxDataViewVirtualTileListCtrl extends WxDataViewCtrl {
+  /// Creates the control showing the tiles of [model]
+  WxDataViewVirtualTileListCtrl( super.parent, super.id, WxDataViewVirtualListModel model,
+         { int height = -1, int margins = 5,
+         super.pos = wxDefaultPosition, super.size = wxDefaultSize, super.style = wxDV_NO_HEADER|wxVSCROLL } )
+  {
+    _virtualModel = model;
+    _tileRenderer = _wxAppendTileColumn( this, height, margins );
+    associateModel( model );
+    if (height != -1) {
+      setRowHeight( height );
+    } else {
+      _heightNotifier = _WxTileHeightNotifier( model, this );
+      model.addNotifier( _heightNotifier! );
+      _checkRowHeight();
+    }
+  }
+
+  late final WxDataViewVirtualListModel _virtualModel;
+  late final WxDataViewTileRenderer _tileRenderer;
+  _WxTileHeightNotifier? _heightNotifier;
+
+  void _checkRowHeight() {
+    final notifier = _heightNotifier;
+    if (notifier == null || _virtualModel.getCount() == 0) return;
+    final first = _virtualModel.getValueByRow( 0, 0 );
+    if (first is! WxDataViewTileData) return;
+    setRowHeight( calculateRowHeight( first ) );
+    // the notifier stays attached (removing it here would change the
+    // model's list of notifiers while the model iterates over it), but
+    // does nothing from now on
+    _heightNotifier = null;
+  }
+
+  /// Returns the model given to the constructor
+  WxDataViewVirtualListModel getVirtualModel() {
+    return _virtualModel;
+  }
+
+  /// Sets the font sizes of the (possible) text fields of the tiles
+  void setSizes( double big, double medium, double small ) {
+    _tileRenderer.setSizes( big, medium, small );
+    refresh();
+  }
+
+  /// Calculate height of all rows based on this single item (which should be the largest item)
+  int calculateRowHeight( WxDataViewTileData tile )
+  {
+    _tileRenderer.setValue( tile );
+    _tileRenderer._calculateHeight( WxInfoDC( this ));
+    return _tileRenderer._getHeight();
+  }
+
+  /// Returns the number of rows (the number of rows of the model)
+  int getItemCount() {
+    return _virtualModel.getCount();
+  }
+
+  /// Returns the [WxDataViewItem] for the [row]
+  WxDataViewItem rowToItem( int row ) {
+    if ((row < 0) || (row >= _virtualModel.getCount())) {
+      return WxDataViewItem();
+    }
+    return _virtualModel.getItem( row );
+  }
+
+  /// Returns the row index of [item]
+  int itemToRow( WxDataViewItem item ) {
+    if (!item.isOk()) return -1;
+    return _virtualModel.getRow( item );
+  }
+
+  /// Selects the item in [row]
+  void selectRow( int row ) {
+    setCurrentItem( rowToItem(row) );
+  }
+
+  /// Unselects the item in [row]
+  void unselectRow( int row ) {
+    unselect( rowToItem(row) );
+  }
+
+  /// Returns the selected row or -1
+  int getSelectedRow() {
+    return itemToRow( getSelection() );
+  }
+
+  /// Returns true if [row] is selected
+  bool isRowSelected( int row ) {
+    return isSelected( rowToItem(row) );
+  }
 }

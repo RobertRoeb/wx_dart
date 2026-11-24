@@ -4249,6 +4249,11 @@ class WxDataViewCtrlCachedColWidthInfo {
 /// main control in mobile devices by using more complex renderers such
 /// [WxDataViewTileRenderer] rendering [WxDataViewTileData] items.
 /// 
+/// [WxDataViewVirtualTileListCtrl] also renders data from [WxDataViewTileData],
+/// but the data is not stored in the model, but fetched from some data
+/// source (database). In that case, you need to provide your own model
+/// deriving from [WxDataViewModel].
+/// 
 /// In contrast to almost all other controls in the wxDart core library, the
 /// WxDataViewCtrl group and hierarchy of classes are not implemented separately
 /// in wxDart Flutter and wxDart Native (using Flutter and C++). Instead, the 
