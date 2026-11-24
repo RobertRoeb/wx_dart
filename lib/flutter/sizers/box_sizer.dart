@@ -300,19 +300,22 @@ class WxBoxSizer extends WxSizer {
         } else 
         if ((item._flag & wxALIGN_BOTTOM) != 0) {
           hasExpanded = true;
-          finalWidget = Align( 
-              alignment: const Alignment(0, 1.0),
+          finalWidget = Align(
+              // Note the -1,0 for the x-axis.
+              alignment: const Alignment(-1.0, 1.0),
               child: finalWidget );
         } else 
         if ((item._flag & wxALIGN_CENTRE) != 0) {
           hasExpanded = true;
           finalWidget = Align( 
-              alignment: const Alignment(0, 0.0),
+              // Note the -1,0 for the x-axis.
+              alignment: const Alignment(-1.0, 0.0),
               child: finalWidget );
         } else {
           // top
           finalWidget = Align( 
-              alignment: const Alignment(0, -1.0),
+              // Note the -1,0 for the x-axis.
+              alignment: const Alignment(-1.0, -1.0),
               child: finalWidget );
         }
 
