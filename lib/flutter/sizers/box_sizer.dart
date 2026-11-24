@@ -424,25 +424,29 @@ class WxBoxSizer extends WxSizer {
           return Text( 'empty WxSizerItem created');
         }
 
-        if ((item._flag & wxEXPAND) != 0) {
-          hasExpanded = true;
-        } else 
-        if ((item._flag & wxALIGN_RIGHT) != 0) {
-          hasExpanded = true;
-          finalWidget = Align( 
-              alignment: const Alignment(1.0, 0),
-              child: finalWidget );
-        } else 
-        if ((item._flag & wxALIGN_CENTRE) != 0) {
-          hasExpanded = true;
-          finalWidget = Align( 
-              alignment: const Alignment(0, 0),
-              child: finalWidget );
-        } else {
-          // left
-          finalWidget = Align( 
-              alignment: const Alignment(-1.0, 0),
-              child: finalWidget );
+        // Align in a Column makes an owning Wrap expand infinitely
+        if (!_childOfWrapSizer) 
+        {
+          if ((item._flag & wxEXPAND) != 0) {
+            hasExpanded = true;
+          } else 
+          if ((item._flag & wxALIGN_RIGHT) != 0) {
+            hasExpanded = true;
+            finalWidget = Align( 
+                alignment: const Alignment(1.0, 0),
+                child: finalWidget );
+          } else 
+          if ((item._flag & wxALIGN_CENTRE) != 0) {
+            hasExpanded = true;
+            finalWidget = Align( 
+                alignment: const Alignment(0, 0),
+                child: finalWidget );
+          } else {
+            // left
+            finalWidget = Align( 
+                alignment: const Alignment(-1.0, 0),
+                child: finalWidget );
+          }
         }
 
         if (((item._flag & wxALL) != 0) && (item._border != 0)) {

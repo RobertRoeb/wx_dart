@@ -49,7 +49,7 @@ class WxWrapSizer extends WxBoxSizer {
             }
           } else 
           if (item._kind == WxSizerKind.sizer) {
-            finalWidget = item._sizer!._build(context, owner);
+            finalWidget = item._sizer!._buildInWrapSizer(context, owner);
           } else {
             item._spacerParentWindow = owner;
             finalWidget = ReportSize( 

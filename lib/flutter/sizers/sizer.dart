@@ -94,6 +94,7 @@ class WxSizer extends WxObject {
 
   final List<WxSizerItem> _items = [];
   WxWindow? _owningWindow;
+  bool _childOfWrapSizer = false;
 
   WxPoint _position = wxDefaultPosition;
   WxSize _size = wxDefaultSize;
@@ -463,5 +464,12 @@ class WxSizer extends WxObject {
 
   Widget _build( BuildContext context, WxWindow owner ) {
     return Text( 'empty WxSizer created');
+  }
+
+  Widget _buildInWrapSizer( BuildContext context, WxWindow owner ) {
+    _childOfWrapSizer = true;
+    final widget = _build( context, owner );
+    _childOfWrapSizer = false;
+    return widget;
   }
 }
