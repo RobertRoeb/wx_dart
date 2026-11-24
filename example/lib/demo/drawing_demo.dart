@@ -116,8 +116,6 @@ class MyClippingWindow extends WxScrolledWindow {
     final dc = WxPaintDC( this );
     doPrepareDC(dc);
 
-    final gc = WxGraphicsContext.fromDC(dc);
-
     final size = getClientSize();
 
     dc.setPen(wxRED_PEN);
