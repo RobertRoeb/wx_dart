@@ -36,6 +36,42 @@ const int wxDataViewTextRendererPadding = 2;
 /// Provides the convenience function [renderText] that clips text to 
 /// fit into a column using an ellipsis.
 /// 
+/// Modes
+/// * [setMode]
+/// * [getMode]
+/// 
+/// Main interface
+/// * [setValue]
+/// * [getValue]
+/// * [render]
+/// * [renderText]
+/// * [getInfoDC]
+/// 
+/// Cell activation
+/// * [activateCell]
+/// 
+/// Size and layout
+/// * [getSize]
+/// * [setAlignment]
+/// * [getAlignment]
+/// * [getAttr]
+/// * [enableEllipsize]
+/// * [disableEllipsize]
+/// * [getEllipsizeMode]
+/// 
+/// * In-place editing
+/// * [hasEditorCtrl]
+/// * [createEditorCtrl]
+/// * [getValueFromEditorCtrl]
+/// * [startEditing]
+/// * [cancelEditing]
+/// * [finishEditing]
+/// * [getEditorCtrl]
+/// 
+/// * Owning column
+/// * [setOwner]
+/// * [getOwner]
+/// 
 /// # Cell mode constants
 /// | constant | meaning |
 /// | -------- | -------- |
@@ -71,20 +107,30 @@ class WxDataViewRenderer extends WxObject {
   WxDataViewItem _item = WxDataViewItem();
   WxInfoDC? _infoDC;
 
+  /// Sets the owning column. Done internally.
   void setOwner( WxDataViewColumn owner ) {
     _owner = owner;
   }
+
+  /// Returns the owning column.
   WxDataViewColumn getOwner() {
     return _owner;
   }
 
+  /// Returns the current value (that would need to be displayed)
   dynamic getValue() {
     return _value;
   }
+
+  /// Set the value for the renderer. Called by [WxDataViewCtrl]
   void setValue( dynamic value ) {
     _value = value;
   }
 
+  /// Render the current cell. [setValue] was called before. It
+  /// has default rendering for String, int, bool and double.
+  /// The default renderer for double renders 2 digits after the comma.
+  /// 
   bool render( WxRect cell, WxDC dc, int state ) {
 
     // print( "Render cell ${cell.x}, ${cell.y}, ${cell.width}, ${cell.height} : $_value " );
@@ -101,6 +147,9 @@ class WxDataViewRenderer extends WxObject {
     }
     return false;
   }
+
+  /// Renders [text] with alignment. If the space does not fit, the text will
+  /// get ellipcized. This method can be called form custom rendereres. 
   void renderText( String text, int xoffset, WxRect rect, WxDC dc, int state, { WxHAlignment alignment = WxHAlignment.left })
   {
       final textExtent = dc.getTextExtent( text );
@@ -123,9 +172,13 @@ class WxDataViewRenderer extends WxObject {
       // print( "textHeight: $textHeight cell.height ${cell.height}" );
       dc.drawText(finalText, wxDataViewTextRendererPadding + rect.x + xoffset, rect.y + (rect.height-textExtent.y)~/2 );
   }
+
+  /// Gets called before rendering the cell. TBD.
   void renderBackground( WxDC dc, WxRect rect ) {
   }
 
+  /// Gets called when the user double clicks on the Cell
+  /// of presses ENTER on the line.
   bool activateCell( WxRect cell, WxDataViewModel model, WxDataViewItem item, int col, { bool fromMouseClick=false, WxPoint pos=wxDefaultPosition} ) { 
     return false;
   }
@@ -209,6 +262,8 @@ class WxDataViewRenderer extends WxObject {
     render( rectItem, dc, state );
   }
 
+  /// Creates an [WxInfoDC] for the renderer or returns a previously
+  /// created one. Can be used within [render] to measure text extent using [WxInfoDC.getTextExtent] 
   WxInfoDC? getInfoDC()
   {
     if (_infoDC != null) {
@@ -221,6 +276,7 @@ class WxDataViewRenderer extends WxObject {
     return WxInfoDC( dvc );
   }
 
+  /// Override this to return the size of the cell
   WxSize getSize()
   {
     if (_value is String) 
@@ -294,6 +350,23 @@ class WxDataViewRenderer extends WxObject {
   bool isCompatibleVariantType(String variantType) {
     return variantType == getVariantType();
   }
+
+  /// Returns true if the renderer can show [value] (as returned by the model).
+  ///
+  /// The default compares the variant type of [value] with [getVariantType].
+  /// For own classes, the variant type is the name of the class. Build it
+  /// with `(MyClass).toString()`, never as a fixed string such as
+  /// `"MyClass"`: `dart compile js` shortens class names, so a fixed string
+  /// would not match in a compiled web app. Alternatively, override this
+  /// method in a custom renderer:
+  ///
+  /// ```dart
+  /// @override
+  /// bool isCompatibleValue(dynamic value) => value is MyClass;
+  /// ```
+  bool isCompatibleValue(dynamic value) {
+    return isCompatibleVariantType(wxDynamicTypeToVariantType(value));
+  }
   bool validate( dynamic value ) {
     return true;
   }
@@ -304,10 +377,11 @@ class WxDataViewRenderer extends WxObject {
     final value = model.getValue(item, column);
     if (value != null)
     {
-        final variantType = wxDynamicTypeToVariantType(value);
-        if ( !isCompatibleVariantType( variantType ) )
+        if ( !isCompatibleValue( value ) )
         {
-            wxLogError( "Wrong type $variantType vs. ${getVariantType()} returned from the model for column $column" );
+            final variantType = wxDynamicTypeToVariantType(value);
+            wxLogError( "Wrong type $variantType vs. ${getVariantType()} returned from the model for column $column "
+                "(use (MyClass).toString() as the variant type of a renderer for own classes)" );
             return null;
         }
     }
