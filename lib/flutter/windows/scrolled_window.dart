@@ -47,6 +47,25 @@ part of '../../wx_dart.dart';
 /// When drawing into a window, adapt the coordinate system using
 /// [WxScrolledWindow.doPrepareDC] like this.
 /// 
+/// Main interface
+/// * [setScrollbars]
+/// * [setScrollRate]
+/// * [getScrollPixelsPerUnitX]
+/// * [getScrollPixelsPerUnitY]
+/// * [getViewStartPixels]
+/// 
+/// Conversion between scrolled and unscrolled coordinates
+/// * [calcScrolledPosition]
+/// * [calcUnscrolledPosition]
+/// 
+/// Target window
+/// * [setTargetWindow]
+/// 
+/// Scrolling programmatically
+/// * [scroll]
+/// * [scrollPixels]
+/// 
+/// 
 /// Example usage:
 /// ```dart
 /// // Derive new class from WxWindow
@@ -154,6 +173,8 @@ class WxScrolledWindow extends WxWindow {
   /// Scroll [x] and [y] number of units (not pixels)
   /// 
   /// -1 indicates no change in the respective direction
+  /// 
+  /// See [scrollPixels]
   void scroll( int x, int y )
   {
     if (x != -1) {
@@ -170,6 +191,21 @@ class WxScrolledWindow extends WxWindow {
   WxPoint getViewStart( ) {
     final viewstart = getViewStartPixels();
     return WxPoint( viewstart.x ~/ _pixelsPerUnitX, viewstart.y ~/ _pixelsPerUnitY );
+  }
+
+  /// Scrolls to position [x] and [y] in pixels (not units)
+  /// 
+  /// -1 indicates no change in the respective direction
+  /// 
+  /// See [scroll]
+  void scrollPixels( int x, int y )
+  {
+    if (x != -1) {
+      _horizontalController.jumpTo( x.toDouble() );
+    }
+    if (y != -1) {
+      _verticalController.jumpTo( y.toDouble() );
+    }
   }
 
   /// Returns the view start (how much has been scrolled) in pixels

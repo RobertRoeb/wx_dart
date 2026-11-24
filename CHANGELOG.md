@@ -9,6 +9,7 @@
 * Reorganized .destroy() and Navigator.push()/pop() code in wxDart Flutter
 * Added WxDataViewVirtualTileListCtrl
 * Documented WxDataViewRenderer properly
+* Added WxScrolledWindow.scrollPixels() which scrolls to an absolute pixel position
 
 ## 0.9.33
 
