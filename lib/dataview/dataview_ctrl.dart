@@ -2368,19 +2368,8 @@ double _getTargetAngleFromDelta( double dx, double dy, double dist )
     // Draw background of alternate rows specially if required
     if ( _owner.hasFlag(wxDV_ROW_LINES) )
     {
-        WxColour altRowColour = _owner.getAlternateRowColour();
-        if ( !altRowColour.isOk() )
-        {
-            // Determine the alternate rows colour automatically from the
-            // background colour.
-            final bgColour = _owner.getBackgroundColour();
-
-            // Depending on the background, alternate row color
-            // will be 3% more dark or 10% brighter -- because 3% brighter
-            // would be unnoticeable.
-            int alpha = bgColour.getRGB() > 0x808080 ? 97 : 110;
-            altRowColour = bgColour.changeLightness(alpha);
-        }
+        // derived from the background unless set explicitly
+        final altRowColour = _owner.getAlternateRowColour();
 
         dc.setPen(wxTRANSPARENT_PEN);
         dc.setBrush(WxBrush(altRowColour));
@@ -4472,7 +4461,7 @@ class WxDataViewCtrl extends WxScrolledWindow {
   WxDataViewHeaderWindow? _headerArea;
   final List<WxDataViewCtrlCachedColWidthInfo> _colsBestWidths = [];
   bool _colsDirty = true;
-  WxColour _alternateRowColour = WxColour(200, 200, 255);
+  WxColour? _alternateRowColour;   // null: derived from the background
   final List<int> _sortingColumnIdxs = [];
   bool _allowMultiColumnSort = false;
 
@@ -4481,9 +4470,17 @@ class WxDataViewCtrl extends WxScrolledWindow {
     return false;
   }
 
-  /// Sets the alternating background colour. Use with the wxDV_ROW_LINES style.
+  /// Returns the alternating background colour used with the wxDV_ROW_LINES
+  /// style. Unless set with [setAlternateRowColour], it is derived from the
+  /// background colour, like in wxWidgets: 3% darker on a light background,
+  /// 10% brighter on a dark one.
   WxColour getAlternateRowColour() { 
-    return _alternateRowColour;
+    final colour = _alternateRowColour;
+    if (colour != null) return colour;
+    // the background of the area with the rows, not of the whole control
+    final bgColour = _clientArea.getBackgroundColour();
+    final light = (bgColour.red + bgColour.green + bgColour.blue) > 3 * 128;
+    return bgColour.changeLightness(light ? 97 : 110);
   }
 
   /// Sets the background colour. Use with the wxDV_ROW_LINES style. 
