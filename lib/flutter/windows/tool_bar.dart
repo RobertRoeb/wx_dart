@@ -617,6 +617,9 @@ class WxToolBar extends WxControl {
               if (!hasFlag(wxTB_FLAT))
               {
               widget = ToggleButtons( 
+              constraints: BoxConstraints(
+                maxHeight: hasFlag( wxTB_TEXT ) ? getTextExtent("H").y + 8 + tool._bitmap!.getHeight()+4 : 30,
+              ),
               color: tool._isToggled ? accentFocus : null,
               onPressed: tool._isEnabled ? (button)
               {
@@ -643,7 +646,7 @@ class WxToolBar extends WxControl {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Padding(padding: EdgeInsetsGeometry.all(2), child: bitmap ),
-                        Text ( tool._label )
+                        Padding(padding: EdgeInsetsGeometry.all(4), child: Text ( tool._label ) ),
                       ] ) 
               ] );
               } 
