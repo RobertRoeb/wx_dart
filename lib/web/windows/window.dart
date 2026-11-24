@@ -65,14 +65,7 @@ class WxWindow extends WxEvtHandler {
     _windowsByHandle[_handle] = this;
     if (_parent != null) {
       _parent!._children.add(this);
-      // as in wxWidgets, positions in a scrolled window are client
-      // coordinates; the DOM needs content coordinates
-      final owner = _parent!._scrollOwner;
-      if (owner != null && (_position.x != -1 || _position.y != -1)) {
-        final start = owner.getViewStartPixels();
-        _position = WxPoint(_position.x == -1 ? -1 : _position.x + start.x,
-            _position.y == -1 ? -1 : _position.y + start.y);
-      }
+      _position = _toContentPosition(_position);
     }
     _jsCreateWindow(_handle, _parent?._handle ?? 0, _jsKind, _style);
     _applyRect();
@@ -334,8 +327,12 @@ class WxWindow extends WxEvtHandler {
     _rectApplied = true;
     _jsSetRect(_handle, x, y, w, h);
     if (sizeChanged) {
-      if (_sizer != null) layout();
+      // like wxWidgets: the application's size handler first (it may
+      // change the sizer, e.g. borders that depend on the width), then
+      // the layout. Unlike wxWidgets, the layout happens even if the
+      // handler does not call skip(), as in wxDart Flutter.
       _sendSizeEvent();
+      if (_sizer != null) layout();
       refresh();
     }
   }
@@ -478,13 +475,41 @@ class WxWindow extends WxEvtHandler {
     return WxRect(0, 0, size.x, size.y);
   }
 
+  /// Returns the position and size relative to the parent window. In a
+  /// scrolled parent, the position is relative to its visible area, see
+  /// [getPosition].
   WxRect getRect() {
-    return WxRect(_rect.x, _rect.y, _rect.width, _rect.height);
+    final start = _parentScrollOffset();
+    return WxRect(_rect.x - start.x, _rect.y - start.y, _rect.width, _rect.height);
   }
 
   /// Returns current position relative to parent window
+  ///
+  /// As in wxWidgets, the position of a child of a scrolled window is
+  /// relative to the visible area: it changes when the parent scrolls. A
+  /// child at y = 900 is at y = 0 once the parent has been scrolled down by
+  /// 900 pixels. [WxScrolledWindow.calcUnscrolledPosition] gives the
+  /// position in the whole (virtual) area.
   WxPoint getPosition() {
-    return WxPoint(_rect.x, _rect.y);
+    final start = _parentScrollOffset();
+    return WxPoint(_rect.x - start.x, _rect.y - start.y);
+  }
+
+  /// How far the parent has been scrolled, if it is the scrolled area of a
+  /// [WxScrolledWindow] (positions of its children are client coordinates,
+  /// the page and _rect use coordinates of the whole area)
+  WxPoint _parentScrollOffset() {
+    final owner = _parent?._scrollOwner;
+    if (owner == null) return const WxPoint(0, 0);
+    return owner.getViewStartPixels();
+  }
+
+  /// Converts a position given by the application (client coordinates of
+  /// the parent) to coordinates of the whole area; -1 stays -1
+  WxPoint _toContentPosition(WxPoint pos) {
+    if (pos.x == -1 && pos.y == -1) return pos;
+    final start = _parentScrollOffset();
+    return WxPoint(pos.x == -1 ? -1 : pos.x + start.x, pos.y == -1 ? -1 : pos.y + start.y);
   }
 
   /// Returns minimal size as determined by the system and/or
@@ -524,9 +549,10 @@ class WxWindow extends WxEvtHandler {
     setSize(size);
   }
 
-  /// Sets current position relative to parent window
+  /// Sets current position relative to parent window (relative to the
+  /// visible area of a scrolled parent, see [getPosition])
   void setPosition(WxPoint pos) {
-    _position = pos;
+    _position = _toContentPosition(pos);
     _applyRect();
   }
 
@@ -538,7 +564,7 @@ class WxWindow extends WxEvtHandler {
   ///
   /// A value of -1 indicates default values if possible
   void setPositionAndSize(int x, int y, int width, int height) {
-    _position = WxPoint(x, y);
+    _position = _toContentPosition(WxPoint(x, y));
     _size = WxSize(width, height);
     _applyRect();
   }
