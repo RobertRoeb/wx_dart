@@ -4,7 +4,7 @@
 // Modified by: The magic C++ to Dart code generator
 // Created:     07/01/2025
 // Copyright:   (c) Robert Roebling
-// Licence:     Commercial licence
+// Licence:     wxWindows licence 3.1
 // -------------------------------------------------------------
 
 part of '../wx_dart.dart';
@@ -978,6 +978,10 @@ typedef _WxScrolledWindowScrollNative = Void Function( Pointer, Int32, Int32  );
 typedef _WxScrolledWindowScroll = void Function( Pointer, int, int  );
 late _WxScrolledWindowScroll _wxScrolledWindowScroll;
 
+typedef _WxScrolledWindowScrollPixelsNative = Void Function( Pointer, Int32, Int32  );
+typedef _WxScrolledWindowScrollPixels = void Function( Pointer, int, int  );
+late _WxScrolledWindowScrollPixels _wxScrolledWindowScrollPixels;
+
 typedef _WxScrolledWindowGetViewStartNative = WxPointNative Function( Pointer  );
 typedef _WxScrolledWindowGetViewStart = WxPointNative Function( Pointer  );
 late _WxScrolledWindowGetViewStart _wxScrolledWindowGetViewStart;
@@ -1038,6 +1042,10 @@ class WxScrolledWindow extends WxWindow {
 
   void scroll( int x, int y ) {
     _wxScrolledWindowScroll( nativeHandle, x, y );
+  }
+
+  void scrollPixels( int x, int y ) {
+    _wxScrolledWindowScrollPixels( nativeHandle, x, y );
   }
 
   WxPoint getViewStart( ) {
@@ -2591,6 +2599,9 @@ void setupWxWindows( DynamicLibrary dylib )
 
   final wxScrolledWindowScrollPtr = dylib.lookup <NativeFunction<_WxScrolledWindowScrollNative>>('wxScrolledWindowScroll');
   _wxScrolledWindowScroll = wxScrolledWindowScrollPtr.asFunction<_WxScrolledWindowScroll>();
+
+  final wxScrolledWindowScrollPixelsPtr = dylib.lookup <NativeFunction<_WxScrolledWindowScrollPixelsNative>>('wxScrolledWindowScrollPixels');
+  _wxScrolledWindowScrollPixels = wxScrolledWindowScrollPixelsPtr.asFunction<_WxScrolledWindowScrollPixels>();
 
   final wxScrolledWindowGetViewStartPtr = dylib.lookup <NativeFunction<_WxScrolledWindowGetViewStartNative>>('wxScrolledWindowGetViewStart');
   _wxScrolledWindowGetViewStart = wxScrolledWindowGetViewStartPtr.asFunction<_WxScrolledWindowGetViewStart>();
