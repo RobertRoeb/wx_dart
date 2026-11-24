@@ -1799,8 +1799,8 @@ typedef _WxDCDrawPolygonNative = Void Function( Pointer, Pointer, Int32, Int32, 
 typedef _WxDCDrawPolygon = void Function( Pointer, Pointer, int, int, int  );
 late _WxDCDrawPolygon _wxDCDrawPolygon;
 
-typedef _WxDCGradientFillLinearNative = Void Function( Pointer, Int32, Int32, Int32, Int32, Uint32, Uint32  );
-typedef _WxDCGradientFillLinear = void Function( Pointer, int, int, int, int, int, int  );
+typedef _WxDCGradientFillLinearNative = Void Function( Pointer, Int32, Int32, Int32, Int32, Uint32, Uint32, Int32  );
+typedef _WxDCGradientFillLinear = void Function( Pointer, int, int, int, int, int, int, int  );
 late _WxDCGradientFillLinear _wxDCGradientFillLinear;
 
 typedef _WxDCGradientFillConcentricNative = Void Function( Pointer, Int32, Int32, Int32, Int32, Uint32, Uint32  );
@@ -1984,8 +1984,8 @@ class WxDC extends WxReadOnlyDC {
     // pointsList.dispose();
   }
 
-  void gradientFillLinear( WxRect rect, WxColour initialColour, WxColour destColour ) {
-    _wxDCGradientFillLinear( nativeHandle, rect.x, rect.y, rect.width, rect.height, initialColour.getRGBA(), destColour.getRGBA() );
+  void gradientFillLinear( WxRect rect, WxColour initialColour, WxColour destColour, { int nDirection = wxRIGHT } ) {
+    _wxDCGradientFillLinear( nativeHandle, rect.x, rect.y, rect.width, rect.height, initialColour.getRGBA(), destColour.getRGBA(), nDirection );
   }
 
   void gradientFillConcentric( WxRect rect, WxColour initialColour, WxColour destColour ) {
