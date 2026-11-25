@@ -9,10 +9,15 @@ part of '../../wx_dart.dart';
 
 // ------------------------- platform ----------------------
 
-/// Returns true if the Flutter backend is used (false for wxDart Native)
+/// Returns true if the Flutter backend is used
 ///
 /// Returns false: wxDart Web does not use Flutter
 bool wxUsesFlutter() => false;
+
+/// Returns true if the Native backend is used
+///
+/// Returns false: wxDart Web does not use FFI
+bool wxUsesNative() => false;
 
 /// Returns true if the Web/Javascript backend is used
 ///

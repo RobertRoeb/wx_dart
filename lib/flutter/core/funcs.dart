@@ -29,12 +29,23 @@ _wxInitKeyEventModifiers( WxKeyEvent event )
 
 // ------------------ Operating system -----------------
 
-/// Returns true if the Flutter backend is used (false for wxDart Native)
+/// Returns true if the Flutter backend is used
+/// 
+/// see [wxUsesNative], [wxUsesHTML], [wxIsWeb], [wxIsLinux], [wxIsMac], [wxIsMSW]
 bool wxUsesFlutter() {
    return true;
 }
 
+/// Returns true if the Native backend is used
+/// 
+/// see [wxUsesFlutter], [wxUsesHTML], [wxIsWeb], [wxIsLinux], [wxIsMac], [wxIsMSW]
+bool wxUsesNative() {
+   return true;
+}
+
 /// Returns true if the Web/Javascript backend is used
+/// 
+/// see [wxUsesNative], [wxUsesFlutter], [wxIsWeb], [wxIsLinux], [wxIsMac], [wxIsMSW]
 bool wxUsesHTML() {
    return false;
 }

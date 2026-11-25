@@ -11,6 +11,10 @@ part of '../wx_dart.dart';
 
 // ------------------ Operating system -----------------
 
+bool wxUsesNative() {
+   return true;
+}
+
 bool wxUsesFlutter() {
    return false;
 }
