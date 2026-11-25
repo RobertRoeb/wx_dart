@@ -351,7 +351,7 @@ class WxGraphicsContext extends WxGraphicsObject {
   }
 
   /// Fills the given [path] with the current brush
-  void fillPath( WxGraphicsPath path ) {
+  void fillPath( WxGraphicsPath path, { int fillStyle = wxODDEVEN_RULE } ) {
     if (_canvas == null) {
       wxLogError("No valid canvas for graphics context" );
       return;
@@ -361,7 +361,7 @@ class WxGraphicsContext extends WxGraphicsObject {
 
   /// Fills the given [path] with the current brush and then
   /// stokes it with the current pen
-  void drawPath( WxGraphicsPath path ) {
+  void drawPath( WxGraphicsPath path, { int fillStyle = wxODDEVEN_RULE } ) {
     if (_canvas == null) {
       wxLogError("No valid canvas for graphics context" );
       return;

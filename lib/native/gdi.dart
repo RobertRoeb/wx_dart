@@ -235,12 +235,12 @@ typedef _WxGraphicsContextStrokePathNative = Void Function( Pointer, Pointer  );
 typedef _WxGraphicsContextStrokePath = void Function( Pointer, Pointer  );
 late _WxGraphicsContextStrokePath _wxGraphicsContextStrokePath;
 
-typedef _WxGraphicsContextFillPathNative = Void Function( Pointer, Pointer  );
-typedef _WxGraphicsContextFillPath = void Function( Pointer, Pointer  );
+typedef _WxGraphicsContextFillPathNative = Void Function( Pointer, Pointer, Int32  );
+typedef _WxGraphicsContextFillPath = void Function( Pointer, Pointer, int  );
 late _WxGraphicsContextFillPath _wxGraphicsContextFillPath;
 
-typedef _WxGraphicsContextDrawPathNative = Void Function( Pointer, Pointer  );
-typedef _WxGraphicsContextDrawPath = void Function( Pointer, Pointer  );
+typedef _WxGraphicsContextDrawPathNative = Void Function( Pointer, Pointer, Int32  );
+typedef _WxGraphicsContextDrawPath = void Function( Pointer, Pointer, int  );
 late _WxGraphicsContextDrawPath _wxGraphicsContextDrawPath;
 
 typedef _WxGraphicsContextStrokeLineNative = Void Function( Pointer, Double, Double, Double, Double  );
@@ -431,12 +431,12 @@ class WxGraphicsContext extends WxGraphicsObject {
     _wxGraphicsContextStrokePath( nativeHandle, path.nativeHandle );
   }
 
-  void fillPath( WxGraphicsPath path ) {
-    _wxGraphicsContextFillPath( nativeHandle, path.nativeHandle );
+  void fillPath( WxGraphicsPath path, { int fillStyle = wxODDEVEN_RULE } ) {
+    _wxGraphicsContextFillPath( nativeHandle, path.nativeHandle, fillStyle );
   }
 
-  void drawPath( WxGraphicsPath path ) {
-    _wxGraphicsContextDrawPath( nativeHandle, path.nativeHandle );
+  void drawPath( WxGraphicsPath path, { int fillStyle = wxODDEVEN_RULE } ) {
+    _wxGraphicsContextDrawPath( nativeHandle, path.nativeHandle, fillStyle );
   }
 
   void strokeLine( double x1, double y1, double x2, double y2 ) {
