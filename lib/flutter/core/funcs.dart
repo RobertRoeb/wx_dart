@@ -40,7 +40,7 @@ bool wxUsesFlutter() {
 /// 
 /// see [wxUsesFlutter], [wxUsesHTML], [wxIsWeb], [wxIsLinux], [wxIsMac], [wxIsMSW]
 bool wxUsesNative() {
-   return true;
+   return false;
 }
 
 /// Returns true if the Web/Javascript backend is used
