@@ -40,7 +40,7 @@ const int wxIMAGE_QUALITY_HIGH = 4;
 /// RGBA data as a single block, call [getRGBA].
 /// 
 /// The various image manipulation functions of the wxWidgets C++
-/// library like _blur_ and _resize_ are not yet available in wxDart. 
+/// library like _blur_ not available in wxDart.
 ///
 /// A WxImage cannot be drawn directly to a [WxDC]. Instead, a platform-specific
 /// [WxBitmap] object must be created from it using [WxBitmap.fromImage]. This
@@ -85,6 +85,9 @@ const int wxIMAGE_QUALITY_HIGH = 4;
 /// * [WxImage.fromRGB]
 /// * [WxImage.fromRGBA]
 /// 
+/// Deep copy
+/// * [copy]
+/// 
 /// Get access to raw data
 /// * [getData]
 /// * [getAlphaData]
@@ -109,6 +112,7 @@ const int wxIMAGE_QUALITY_HIGH = 4;
 /// * [getGreen]
 /// * [getBlue]
 /// * [getAlpha]
+/// * [replace]
 /// 
 /// Scaling and cropping
 /// * [scale]
