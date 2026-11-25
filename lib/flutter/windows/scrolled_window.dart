@@ -287,6 +287,22 @@ class WxScrolledWindow extends WxWindow {
     return WxPoint( 0, 0 );
   }
 
+  /// Lets what the paint handler draws stay in place while the children
+  /// scroll, e.g. a background picture, and paint it in client coordinates
+  /// (without [doPrepareDC]). The window is then not repainted when it
+  /// scrolls.
+  ///
+  /// In wxDart Web, without this, the drawing first scrolls with the content
+  /// and comes back with the repaint in the next frame, which makes a fixed
+  /// background jitter. Only has an effect in wxDart Web.
+  void setPaintFixed( bool fixed ) {
+  }
+
+  /// See [setPaintFixed]
+  bool isPaintFixed() {
+    return false;
+  }
+
   /// Adapts the [dc] to the amount scrolled
   void doPrepareDC( WxDC dc )
   {

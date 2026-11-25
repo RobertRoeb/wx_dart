@@ -354,6 +354,9 @@ external void _jsSetVirtualSize(int id, int width, int height);
 @JS('wxc.scrollTo')
 external void _jsScrollTo(int id, int x, int y);
 
+@JS('wxc.setPaintFixed')
+external void _jsSetPaintFixed(int id, bool fixed);
+
 @JS('wxc.scrollPos')
 external _JsPoint _jsScrollPos(int id);
 
@@ -586,6 +589,10 @@ external JSPromise<JSUint8Array> _jsReadFile(JSObject file);
 
 @JS('wxc.downloadFile')
 external void _jsDownloadFile(String name, JSUint8Array data, String mime);
+
+@JS('wxc.exportDocument')
+external JSPromise<JSNumber> _jsExportDocument(String name, JSUint8Array data, String mime,
+    String message, int mode, bool open);
 
 /// A file chosen in the browser's file chooser (see wxc.pickFiles)
 extension type _JsPickedFile._(JSObject _) implements JSObject {

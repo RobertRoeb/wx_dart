@@ -72,6 +72,8 @@ html, body {
   height: 100%;
   display: block;
 }
+/* WxScrolledWindow.setPaintFixed(): the browser keeps the canvas in view */
+.wxc-fixed-paint > .wxc-canvas { position: sticky; left: 0 !important; top: 0 !important; display: block; }
 
 /* --------------------------------------------------------- menubar */
 

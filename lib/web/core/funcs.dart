@@ -144,6 +144,51 @@ bool wxLaunchDefaultBrowser(String url, {int flags = 0}) {
   return true;
 }
 
+// ------------------------- wxExportDocument -------------------------
+
+/// Hands a document the application created to the user, in the way the
+/// platform expects it, e.g. a PDF from [WxPDFGraphicsContext].
+///
+/// | style | |
+/// | -------- | -------- |
+/// | wxEXPORT_DEFAULT | the share sheet on devices operated with fingers, saving elsewhere |
+/// | wxEXPORT_SAVE | save under a name and in a folder chosen by the user |
+/// | wxEXPORT_SHARE | the share sheet of the system (mail, messenger, "save to files", print) |
+/// | wxEXPORT_OPEN | also open the document with the default application |
+///
+/// In wxDart Web, saving uses the save dialog of the browser where there is
+/// one (Chrome, Edge), otherwise the document is downloaded to the
+/// downloads folder. Sharing uses the share sheet of phones and tablets.
+/// Both need a recent click of the user: create the document in the event
+/// handler of the click, and do not wait for anything slow before. Without
+/// such a click, the document is downloaded. [wxEXPORT_OPEN] shows the
+/// document in a new tab. [message] is the text of a shared document and
+/// the description of the file type in the save dialog.
+///
+/// [parent] is the window the dialog belongs to (not used in wxDart Web).
+///
+/// Returns wxID_OK if the document was saved or shared, wxID_CANCEL if the
+/// user cancelled, and wxID_ANY if it is not known (a browser download
+/// gives no feedback).
+///
+/// ```dart
+/// final out = WxPDFUint8ListOutput();
+/// final gc = WxPDFGraphicsContext( out, title: "Menu" );
+/// await gc.generate( pageCount: 2, renderPage: drawPage );
+/// await wxExportDocument( this, await out.result, "Menu.pdf", mimeType: "application/pdf" );
+/// ```
+Future<int> wxExportDocument( WxWindow? parent, Uint8List data, String fileName,
+    { String mimeType = '', String message = '', int style = wxEXPORT_DEFAULT } ) async {
+  final mode = (style & wxEXPORT_SHARE) != 0 ? 2 : ((style & wxEXPORT_SAVE) != 0 ? 1 : 0);
+  final result = await _jsExportDocument( fileName, data.toJS, mimeType, message, mode,
+      (style & wxEXPORT_OPEN) != 0 ).toDart;
+  switch (result.toDartInt) {
+    case 0: return wxID_OK;
+    case 1: return wxID_CANCEL;
+    default: return wxID_ANY;
+  }
+}
+
 // ------------------------- wxVariant compatibility ----------------------
 
 /// Returns the wxVariant type name from for a given dynamic type in Dart

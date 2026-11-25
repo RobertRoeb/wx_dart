@@ -353,3 +353,65 @@ bool wxLaunchDefaultBrowser( String url, { int flags = 0 } ) {
   launchUrl(uri);
   return true;
 }
+
+
+// ------------------------- wxExportDocument -------------------------
+
+/// Hands a document the application created to the user, in the way the
+/// platform expects it, e.g. a PDF from [WxPDFGraphicsContext].
+///
+/// | style | |
+/// | -------- | -------- |
+/// | wxEXPORT_DEFAULT | the share sheet on devices operated with fingers, saving elsewhere |
+/// | wxEXPORT_SAVE | save under a name and in a folder chosen by the user |
+/// | wxEXPORT_SHARE | the share sheet of the system (mail, messenger, "save to files", print) |
+/// | wxEXPORT_OPEN | also open the document with the default application |
+///
+/// In wxDart Flutter, the document is saved with the save dialog of the
+/// system (package file_picker): on the desktop, the user chooses folder
+/// and name; on Android and iOS, the system's document picker writes the
+/// file; on the web, the browser downloads it. [wxEXPORT_SHARE] needs a
+/// share sheet (e.g. package share_plus) and saves for now. [message] is
+/// the title of the dialog.
+///
+/// Returns wxID_OK if the document was saved or shared, wxID_CANCEL if the
+/// user cancelled, and wxID_ANY if it is not known.
+///
+/// ```dart
+/// final out = WxPDFUint8ListOutput();
+/// final gc = WxPDFGraphicsContext( out, title: "Menu" );
+/// await gc.generate( pageCount: 2, renderPage: drawPage );
+/// await wxExportDocument( this, await out.result, "Menu.pdf", mimeType: "application/pdf" );
+/// ```
+Future<int> wxExportDocument( WxWindow? parent, Uint8List data, String fileName,
+    { String mimeType = '', String message = '', int style = wxEXPORT_DEFAULT } ) async {
+  // file_picker writes the bytes itself on Android, iOS and the web; on the
+  // desktop it only returns the path chosen by the user
+  final writesItself = kIsWeb || Platform.isAndroid || Platform.isIOS;
+  final dot = fileName.lastIndexOf('.');
+  final ext = dot > 0 ? fileName.substring(dot + 1) : '';
+  try {
+    final path = await FilePicker.platform.saveFile(
+      dialogTitle: message.isNotEmpty ? message : null,
+      fileName: fileName,
+      bytes: writesItself ? data : null,
+      type: ext.isEmpty ? FileType.any : FileType.custom,
+      allowedExtensions: ext.isEmpty ? null : [ext],
+      lockParentWindow: true,
+    );
+    if (path == null) {
+      // the web gives no feedback for a download
+      return kIsWeb ? wxID_ANY : wxID_CANCEL;
+    }
+    if (!writesItself) {
+      await File(path).writeAsBytes(data, flush: true);
+    }
+    if ((style & wxEXPORT_OPEN) != 0 && !kIsWeb) {
+      launchUrl(Uri.file(path));
+    }
+    return wxID_OK;
+  } catch (e) {
+    wxLogError("wxExportDocument: $e");
+    return wxID_ANY;
+  }
+}

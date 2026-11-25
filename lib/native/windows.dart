@@ -1030,6 +1030,11 @@ class WxScrolledWindow extends WxWindow {
     ownsHandle = false;
     _postCreation();
   }
+  void setPaintFixed( bool fixed ) {
+  }
+  bool isPaintFixed() {
+    return false;
+  }
 
   WxSize getMinSize( ) {
     final WxSizeNative sizeReturn = _wxScrolledWindowGetMinSize( nativeHandle  );

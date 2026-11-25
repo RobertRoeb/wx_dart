@@ -802,3 +802,17 @@ const int  wxDIALOG_MODALITY_NONE              = 0;
 const int  wxDIALOG_MODALITY_WINDOW_MODAL      = 1;
 const int  wxDIALOG_MODALITY_APP_MODAL         = 2;
 
+// ------------------------- wxExportDocument -------------------------
+
+/// [wxExportDocument]: the platform decides, the share sheet on devices
+/// operated with fingers, saving everywhere else
+const int wxEXPORT_DEFAULT = 0;
+/// [wxExportDocument]: save under a name and in a folder chosen by the user
+/// (in the browser: the save dialog or a download)
+const int wxEXPORT_SAVE    = 1;
+/// [wxExportDocument]: the share sheet of the system (mail, messenger,
+/// "save to files", print, ...), where there is one
+const int wxEXPORT_SHARE   = 2;
+/// [wxExportDocument]: also open the document with the default application
+/// (in the browser: in a new tab)
+const int wxEXPORT_OPEN    = 4;

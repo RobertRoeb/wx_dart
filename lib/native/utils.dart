@@ -717,3 +717,64 @@ void setupWxUtils( DynamicLibrary dylib )
   final wxUnsetLogTargetNullPtr = dylib.lookup <NativeFunction<_WxUnsetLogTargetNullNative>>('wxUnsetLogTargetNull');
   _wxUnsetLogTargetNull = wxUnsetLogTargetNullPtr.asFunction<_WxUnsetLogTargetNull>();
 }
+
+
+// ------------------------- wxExportDocument -------------------------
+
+/// Hands a document the application created to the user, in the way the
+/// platform expects it, e.g. a PDF from [WxPDFGraphicsContext].
+///
+/// | style | |
+/// | -------- | -------- |
+/// | wxEXPORT_DEFAULT | the share sheet on devices operated with fingers, saving elsewhere |
+/// | wxEXPORT_SAVE | save under a name and in a folder chosen by the user |
+/// | wxEXPORT_SHARE | the share sheet of the system (mail, messenger, "save to files", print) |
+/// | wxEXPORT_OPEN | also open the document with the default application |
+///
+/// In wxDart Native, the document is saved with the save dialog of the
+/// system ([WxFileDialog]), which starts in the downloads folder. Since the
+/// user chooses the file, this also works in a sandboxed app on macOS
+/// (with the entitlement com.apple.security.files.user-selected.read-write).
+/// wxWidgets has no share sheet, so [wxEXPORT_SHARE] saves, too. [message]
+/// is the title of the dialog.
+///
+/// For very large documents, ask for the path with [WxFileDialog] and let
+/// [WxPDFFileOutput] write the PDF page by page instead.
+///
+/// Returns wxID_OK if the document was saved or shared, wxID_CANCEL if the
+/// user cancelled, and wxID_ANY if it is not known.
+///
+/// ```dart
+/// final out = WxPDFUint8ListOutput();
+/// final gc = WxPDFGraphicsContext( out, title: "Menu" );
+/// await gc.generate( pageCount: 2, renderPage: drawPage );
+/// await wxExportDocument( this, await out.result, "Menu.pdf", mimeType: "application/pdf" );
+/// ```
+Future<int> wxExportDocument( WxWindow? parent, Uint8List data, String fileName,
+    { String mimeType = '', String message = '', int style = wxEXPORT_DEFAULT } ) async {
+  final dot = fileName.lastIndexOf('.');
+  final ext = dot > 0 ? fileName.substring(dot + 1) : '';
+  final home = Platform.environment[Platform.isWindows ? 'USERPROFILE' : 'HOME'] ?? '';
+  final downloads = home.isEmpty ? '' : '$home${Platform.pathSeparator}Downloads';
+  int result = wxID_CANCEL;
+  final dialog = WxFileDialog( parent, message.isNotEmpty ? message : "Save",
+      defaultDir: Directory(downloads).existsSync() ? downloads : '',
+      defaultFile: fileName,
+      defaultWildCard: ext.isEmpty ? '*.*' : '${ext.toUpperCase()} (*.$ext)|*.$ext',
+      style: wxFD_SAVE | wxFD_OVERWRITE_PROMPT );
+  // synchronous in wxDart Native: the callback runs before showModal returns
+  dialog.showModal( (ret, path) {
+    if (ret != wxID_OK) return;
+    try {
+      File(path as String).writeAsBytesSync(data, flush: true);
+      result = wxID_OK;
+      if ((style & wxEXPORT_OPEN) != 0) {
+        wxLaunchDefaultBrowser( Uri.file(path).toString() );
+      }
+    } catch (e) {
+      wxLogError("wxExportDocument: $e");
+      result = wxID_ANY;
+    }
+  });
+  return result;
+}
