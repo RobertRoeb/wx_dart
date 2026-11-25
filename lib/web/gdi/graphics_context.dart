@@ -14,6 +14,10 @@ part of '../../wx_dart.dart';
 
 class WxGraphicsObject extends WxObject {
   WxGraphicsObject();
+
+  // Needed for overriding WxGraphicsClasses in native and non-native ports
+  WxGraphicsObject._defaultConstructor();
+  bool ownsHandle = true;
 }
 
 // ------------------------- wxGraphicsBitmap ----------------------
@@ -44,6 +48,9 @@ class WxGraphicsBitmap extends WxGraphicsObject {
   WxGraphicsBitmap( );
 
   WxBitmap? _bitmap;
+
+  // Needed for overriding WxGraphicsClasses in native and non-native ports
+  WxGraphicsBitmap._defaultConstructor();
 }
 
 // ------------------------- wxGraphicsContext ----------------------
@@ -191,6 +198,9 @@ class _GcState {
 /// used alternately.
 
 class WxGraphicsContext extends WxGraphicsObject {
+
+  // Needed for overriding WxGraphicsClasses in native and non-native ports
+  WxGraphicsContext._defaultConstructor();
 
   /// Creates lightweight graphics context for measuring metric (of text) and
   /// for creating a [WxGraphicsBitmap] from a [WxBitmap] or a [WxImage] outside

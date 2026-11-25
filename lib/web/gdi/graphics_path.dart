@@ -47,6 +47,9 @@ part of '../../wx_dart.dart';
 /// at integer coordinates are drawn sharply.
 class WxGraphicsPath extends WxGraphicsObject {
 
+  // Needed for overriding WxGraphicsClasses in native and non-native ports
+  WxGraphicsPath._defaultConstructor();
+
   /// Don't call this: use [WxGraphicsContext.createPath] to create a path.
   WxGraphicsPath( );
 
