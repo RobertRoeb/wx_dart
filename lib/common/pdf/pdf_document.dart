@@ -123,6 +123,8 @@ class WxPDFPaperSize {
 
 // ------------------------- WxPDFProgress ----------------------
 
+/// Helper class to report printing progress
+
 class WxPDFProgress {
   const WxPDFProgress(this.page, this.pageCount);
 
