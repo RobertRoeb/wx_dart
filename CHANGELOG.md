@@ -12,6 +12,10 @@
 * Added WxScrolledWindow.scrollPixels() which scrolls to an absolute pixel position
 * Corrected alignment and stretching of nested sizers in wxDart Flutter
 * Corrected .getVirtualSize() when size was determined by a sizer in wxDart Flutter
+* Added WxScrolledWindow.setPaintFixed() to allow for a still background with childwindow scrolling
+* Added wxExportDocument() to save, upload or share a file in the standard platform way
+* Implemented ability to derive from WxGraphicsContext classes in native and non-native code
+* Based on above, added WxPDFGraphicsContext printing framework
 
 ## 0.9.33
 

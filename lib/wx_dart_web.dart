@@ -57,6 +57,13 @@ part 'common/pen.dart';
 part 'common/brush.dart';
 part 'common/colour.dart';
 
+part 'common/pdf/pdf_document.dart';
+part 'common/pdf/pdf_graphics_bitmap.dart';
+part 'common/pdf/pdf_graphics_context.dart';
+part 'common/pdf/pdf_graphics_path.dart';
+part 'common/pdf/pdf_std_fonts.dart';
+part 'common/pdf/pdf_text.dart';
+
 // shared with wxDart Flutter, copied unchanged (pure Dart)
 part 'web/core/object.dart';
 

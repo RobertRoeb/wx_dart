@@ -38,6 +38,13 @@ part 'common/pen.dart';
 part 'common/brush.dart';
 part 'common/colour.dart';
 
+part 'common/pdf/pdf_document.dart';
+part 'common/pdf/pdf_graphics_bitmap.dart';
+part 'common/pdf/pdf_graphics_context.dart';
+part 'common/pdf/pdf_graphics_path.dart';
+part 'common/pdf/pdf_std_fonts.dart';
+part 'common/pdf/pdf_text.dart';
+
 part 'flutter/core/viewbuilder.dart';
 part 'flutter/core/app.dart';
 part 'flutter/core/funcs.dart';

@@ -295,6 +295,16 @@ of the Dart classes as well as the C++ classes which wxDart Native uses internal
 | [WxAnimation](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxAnimation-class.html) | [wxAnimation](https://docs.wxwidgets.org/trunk/classwx_animation.html) |
 | [WxRendererNative](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxRendererNative-class.html) | [wxRendererNative](https://docs.wxwidgets.org/trunk/classwx_renderer_native.html) |
 
+## PDF printing
+
+| Dart | 
+| ------------------ | 
+| [WxPDFGraphicsContext](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxPDFGraphicsContext-class.html) |
+| [WxPDFGraphicsBitmap](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxPDFGraphicsBitmap-class.html) |
+| [WxPDFGraphicsPath](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxPDFGraphicsPath-class.html) |
+| [WxPDFOutput](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxPDFOutput-class.html) |
+| [WxPDFUint8ListOutput](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxPDFUint8ListOutput-class.html) |
+
 ## Control classes
 
 | Dart | C++ |

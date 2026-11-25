@@ -9,6 +9,7 @@ import 'dart:math';
 import 'dart:typed_data';
 import 'package:flutter/widgets.dart'; // for bindings
 import 'dart:ui' as ui;
+import 'dart:async';
 part 'common/enums.dart';
 part 'common/webgl_constants.dart';
 part 'common/stop_watch.dart';
@@ -16,6 +17,15 @@ part 'common/geometry.dart';
 part 'common/pen.dart';
 part 'common/brush.dart';
 part 'common/colour.dart';
+
+part 'common/pdf/pdf_document.dart';
+part 'common/pdf/pdf_graphics_bitmap.dart';
+part 'common/pdf/pdf_graphics_context.dart';
+part 'common/pdf/pdf_graphics_path.dart';
+part 'common/pdf/pdf_std_fonts.dart';
+part 'common/pdf/pdf_text.dart';
+part 'native/pdf_file_output.dart';
+
 part 'native/core.dart';
 part 'native/misc.dart';
 part 'native/utils.dart';
