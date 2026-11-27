@@ -40,7 +40,7 @@ const int wxBITMAP_TYPE_ANY = 50;
 ///    final bitmap = WxBitmap.fromAsset( "images/MyImage.png", wxBITMAP_TYPE_PNG ); 
 /// ```
 /// 
-/// If you want to get notified when a bitmap is fully built, use [waitUntilOK]
+/// If you want to get notified when a bitmap is fully built, use [waitUntilOk]
 /// ```dart
 ///   bitmap.waitUntilOk().then( (ok) {
 ///     if (!ok) {
