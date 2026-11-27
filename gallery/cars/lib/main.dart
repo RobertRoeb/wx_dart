@@ -596,16 +596,10 @@ class SearchFrame extends WxFrame {
     final panel = WxPanel(this, -1);
     final main = WxColumn();
 
-    late WxWindow area;
-    late WxCollapsiblePane pane;
 
-    if (wxUsesNative()) {
-      area = panel;
-    } else {
-      // seven search criteria that wrap in narrow windows
-      pane = WxCollapsiblePane(panel, -1, "Search criteria");
-      area = pane.getPane();
-    }
+    // seven search criteria that wrap in narrow windows
+    final pane = WxCollapsiblePane(panel, -1, "Search criteria");
+    final area = pane.getPane();
     final criteria = WxWrapSizer();
     WxChoice field(String label, List<String> choices) {
       final box = WxColumn();
@@ -625,14 +619,10 @@ class SearchFrame extends WxFrame {
     year = field("Registered from", [for (final y in yearLimits) any(y, (v) => "$v")]);
     colour = field("Colour", ["any", ...colourNames]);
     
-    if (wxUsesNative()) {
-      main.addSizer( criteria );
-    } else { 
-      area.setSizer(criteria);
-      main.add(pane, flag: wxEXPAND | wxLEFT | wxRIGHT | wxTOP, border: 8);
-      // collapsed at first on touch devices, leaving room for the list
-      if (!wxTheApp.isTouch()) pane.expand();
-    }
+    area.setSizer(criteria);
+    main.add(pane, flag: wxEXPAND | wxLEFT | wxRIGHT | wxTOP, border: 8);
+    // collapsed at first on touch devices, leaving room for the list
+    if (!wxTheApp.isTouch()) pane.expand();
 
     // the list
     final status = createStatusBar();
