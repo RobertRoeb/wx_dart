@@ -287,10 +287,22 @@ class WxBoxSizer extends WxSizer {
               child: item._window!._build( context )
             );
           }
-
+          if (((item._flag & wxEXPAND) != 0) && (size.y > 0)) {
+            // Respect minimum height also when wxEXPAND is given
+            finalWidget = ConstrainedBox(
+                constraints: BoxConstraints( minHeight: size.y.toDouble() ),
+                child: finalWidget );
+          }
         } else 
         if (item._kind == WxSizerKind.sizer) {
           finalWidget = item._sizer!._build( context, owner );
+          // As for windows above: with a proportion, the sizer gets all of
+          // its share, also when it is aligned in the other direction (the
+          // Align below would loosen the width, and e.g. an IntrinsicWidth
+          // would then shrink to its smallest size)
+          if (item._proportion != 0) {
+            finalWidget = SizedBox( width: double.infinity, child: finalWidget );
+          }
         } else {
           return Text( 'empty WxSizerItem created');
         }
@@ -417,9 +429,18 @@ class WxBoxSizer extends WxSizer {
               child: item._window!._build( context )
             );
           }
+          if (((item._flag & wxEXPAND) != 0) && (size.x > 0)) {
+            // Respect minimum width also when wxEXPAND is given
+            finalWidget = ConstrainedBox(
+                constraints: BoxConstraints( minWidth: size.x.toDouble() ),
+                child: finalWidget );
+          }
         } else 
         if (item._kind == WxSizerKind.sizer) {
           finalWidget = item._sizer!._build( context, owner );
+          if (item._proportion != 0) {
+            finalWidget = SizedBox( height: double.infinity, child: finalWidget );
+          }
         } else {
           return Text( 'empty WxSizerItem created');
         }
