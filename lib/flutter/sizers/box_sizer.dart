@@ -236,12 +236,7 @@ class WxBoxSizer extends WxSizer {
 
       for (WxSizerItem item in _items)
       {
-        final int proportion = ((item._proportion != 0) && owner.hasFlag(wxVSCROLL)) ? 0 : item._proportion;
-        if ((proportion != item._proportion) && !_warnedScrollProportion) {
-          _warnedScrollProportion = true;
-          wxLogWarning( "WxColumn: the proportion of an item in a window scrolling vertically "
-                        "is ignored in wxDart Flutter" );
-        }
+        final int proportion = item._proportion;
 
         Widget ? finalWidget;
         if (item._kind == WxSizerKind.spacer)
@@ -384,6 +379,16 @@ class WxBoxSizer extends WxSizer {
 
       for (WxSizerItem item in _items)
       {
+        // In a window scrolling vertically there is no extra space to
+        // distribute: as in wxWidgets, where the proportion then has no
+        // effect (and Flutter can't flex in an unbounded direction)
+        final int proportion = ((item._proportion != 0) && owner.hasFlag(wxVSCROLL)) ? 0 : item._proportion;
+        if ((proportion != item._proportion) && !_warnedScrollProportion) {
+          _warnedScrollProportion = true;
+          wxLogWarning( "WxColumn: the proportion of an item in a window scrolling vertically "
+                        "is ignored in wxDart Flutter" );
+        }
+
         Widget ? finalWidget;
         if (item._kind == WxSizerKind.spacer)
         {
@@ -407,11 +412,11 @@ class WxBoxSizer extends WxSizer {
           {
             // -1,-1 is natural size for native control
             finalWidget = item._window!._build( context );
-            if (((size.y != -1) && (item._proportion == 0)) || (size.x != -1))
+            if (((size.y != -1) && (proportion == 0)) || (size.x != -1))
             {
               finalWidget = SizedBox(
                 width: ((item._flag & wxEXPAND) == 0) && (size.x > 0) ? size.x.toDouble() : null,
-                height:  (item._proportion !=0) ? double.infinity : (size.y != -1) ? size.y.toDouble() : null,
+                height:  (proportion !=0) ? double.infinity : (size.y != -1) ? size.y.toDouble() : null,
                 child: finalWidget
               );
             }
@@ -424,14 +429,14 @@ class WxBoxSizer extends WxSizer {
               children.add( Text( "Error: no width" ) );
               continue;
             }
-            if ((size.y == -1) && (item._proportion  == 0)) {
+            if ((size.y == -1) && (proportion  == 0)) {
               wxLogError( "WxColumn item with neither height nor proportion set for ${item._window.runtimeType}" );
               children.add( Text( "Error: no height" ) );
               continue;
             }
             finalWidget = SizedBox(
               width: ((item._flag & wxEXPAND) == 0) ? size.x.toDouble() : null,
-              height:  (item._proportion !=0) ? double.infinity : size.y.toDouble(),
+              height:  (proportion !=0) ? double.infinity : size.y.toDouble(),
               child: item._window!._build( context )
             );
           }
@@ -444,7 +449,7 @@ class WxBoxSizer extends WxSizer {
         } else 
         if (item._kind == WxSizerKind.sizer) {
           finalWidget = item._sizer!._build( context, owner );
-          if (item._proportion != 0) {
+          if (proportion != 0) {
             finalWidget = SizedBox( height: double.infinity, child: finalWidget );
           }
         } else {
@@ -487,8 +492,8 @@ class WxBoxSizer extends WxSizer {
             child: finalWidget);
         }
 
-        if (item._proportion != 0) {
-          Expanded exp = Expanded(flex: item._proportion, child: finalWidget);
+        if (proportion != 0) {
+          Expanded exp = Expanded(flex: proportion, child: finalWidget);
           finalWidget = exp;
         }
 
