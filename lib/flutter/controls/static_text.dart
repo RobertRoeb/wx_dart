@@ -45,9 +45,28 @@ class WxStaticText extends WxControl {
 
   @override
   Widget _build( BuildContext context ) {
-    return _buildControl( context, Text( _labelText, 
+    final Widget text = Text( _labelText, 
       maxLines: hasFlag(wxST_WRAP) ? null : 1,
-      overflow: ((wxST_ELLIPSIZE_START|wxST_ELLIPSIZE_START|wxST_ELLIPSIZE_START) & _style != 0) ? TextOverflow.ellipsis : null,
-      style: _convertTextStyle( _foregroundColour, _font) ) );
+      overflow: ((wxST_ELLIPSIZE_START|wxST_ELLIPSIZE_MIDDLE|wxST_ELLIPSIZE_END) & _style != 0) ? TextOverflow.ellipsis : null,
+      style: _convertTextStyle( _foregroundColour, _font) );
+    return _buildControl( context, hasFlag(wxST_WRAP) ? _WrapIntrinsics( child: text ) : text );
   }
+}
+
+/// A wrapping text adapts to the width it gets, as in wxWidgets, so it
+/// does not ask for the width of its unwrapped text: otherwise the longest
+/// paragraph would make an [IntrinsicWidth] (used by [WxColumn] with
+/// wxEXPAND items) as wide as the text in one line.
+class _WrapIntrinsics extends SingleChildRenderObjectWidget {
+  const _WrapIntrinsics({ required super.child });
+
+  @override
+  RenderObject createRenderObject( BuildContext context ) => _RenderWrapIntrinsics();
+}
+
+class _RenderWrapIntrinsics extends RenderProxyBox {
+  // the longest word instead of the whole text in one line
+  @override
+  double computeMaxIntrinsicWidth( double height ) =>
+      child?.getMinIntrinsicWidth( height ) ?? 0.0;
 }
