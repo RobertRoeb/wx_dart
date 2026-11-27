@@ -994,6 +994,9 @@ class WxBitmap extends WxObject {
   Future<WxImage?> convertToImage() async {
     return _convertToImageSync();
   }
+
+  // WxBitmap is not asynchronous in wxDart Native
+  Future<bool> waitUntilOk({int maxMillis = 2000}) async => isOk();
   
   WxImage? _convertToImageSync( ) {
     final returnedNativeHandle = _wxBitmap_convertToImageSync( nativeHandle  );

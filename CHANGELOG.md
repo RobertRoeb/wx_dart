@@ -16,6 +16,7 @@
 * Added wxExportDocument() to save, upload or share a file in the standard platform way
 * Implemented ability to derive from WxGraphicsContext classes in native and non-native code
 * Based on above, added WxPDFGraphicsContext printing framework
+* Added WxBitmap.waitUntilOk() for asynchronous bitmaps 
 
 ## 0.9.33
 

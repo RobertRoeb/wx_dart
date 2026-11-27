@@ -40,7 +40,17 @@ const int wxBITMAP_TYPE_ANY = 50;
 ///    final bitmap = WxBitmap.fromAsset( "images/MyImage.png", wxBITMAP_TYPE_PNG ); 
 /// ```
 /// 
-/// From an image:
+/// If you want to get notified when a bitmap is fully built, use [waitUntilOK]
+/// ```dart
+///   bitmap.waitUntilOk().then( (ok) {
+///     if (!ok) {
+///        // something went wrong
+///        return;
+///     }
+///   } );
+/// ```
+/// 
+/// Build an bitmap from an image:
 /// ```dart
 ///    final image = WxImage( 100, 100 );
 ///    for (int y = 0; y < 100; y++) {
@@ -75,7 +85,7 @@ const int wxBITMAP_TYPE_ANY = 50;
 /// ```
 /// 
 /// Last not least, it is possible use dart::ui to draw off-screen and
-/// create a [WxBitmap] from it:
+/// create a [WxBitmap] from it in wxDart Flutter and wxDart Native:
 /// ```dart
   ///Future<WxBitmap?> createBitmapFromUIPicture( ui.Picture picture, int width, int height ) async
   ///{
@@ -155,6 +165,7 @@ const int wxBITMAP_TYPE_ANY = 50;
 /// 
 /// Main interface
 /// * [isOk]
+/// * [waitUntilOk]
 /// * [getWidth]
 /// * [getHeight]
 /// 
@@ -218,7 +229,11 @@ class WxBitmap extends WxObject {
     return (await codec.getNextFrame()).image;
   }
 
+  // The final image, null until fully built
   ui.Image? _image;
+  /// the image being built asynchronously, null when nothing is pending
+  Future<ui.Image?>? _pendingImage;
+
   final List <WxWindow> _listeners = [];
   final List <WxBitmap> _derivedBitmaps = [];
   // needed to rebuild with new size, or disabled colour
@@ -233,6 +248,28 @@ class WxBitmap extends WxObject {
   bool _calcScaleFactorLater = false;
   bool _calcSizeLater = false;
 
+  // Sets the image once [future] completes. A newer build replaces an
+  // older one that has not finished yet.
+  void _setImageAsync( Future<ui.Image> future )
+  {
+    _image = null;
+    late final Future<ui.Image?> pending;
+    pending = future.then<ui.Image?>((image) {
+      if (identical(_pendingImage, pending))
+      {
+        _image = image;
+        _pendingImage = null;
+        _notify();
+      }
+      return image;
+    }, onError: (Object e) {
+      if (identical(_pendingImage, pending)) _pendingImage = null;
+      wxLogError("WxBitmap: building the bitmap failed: $e");
+      return null;
+    });
+    _pendingImage = pending;
+  }
+  
   /// Returns the scale factor of this bitmap.
   /// 
   /// Scale factor is 1 by default, but can be greater to indicate that
@@ -355,10 +392,7 @@ class WxBitmap extends WxObject {
     if (original._isSVG) {
       _svg = original._svg;
       _isSVG = true;
-      _buildSVG().then( (image) {
-        _image = image;
-        _notify();
-      } );
+      _setImageAsync( _buildSVG() );
       return;
     }
 
@@ -431,10 +465,7 @@ class WxBitmap extends WxObject {
       }
     }
 
-    _buildImage(rgba,width,height).then( (image ) {
-      _image = image;
-      _notify();
-    } );
+    _setImageAsync( _buildImage(rgba,width,height) );
   }
 
   void _notify() {
@@ -458,10 +489,7 @@ class WxBitmap extends WxObject {
     for (int i = 0; i < width*height; i++) {
       byteData.setUint8(  i*4 + 3, 255 ); // fully opaque
     }
-    _buildImage(rgba,width,height).then( (image ) {
-      _image = image;
-      _notify();
-    } );
+    _setImageAsync( _buildImage(rgba,width,height) );
   }
 
   void _addListener( WxWindow window ) {
@@ -485,10 +513,8 @@ class WxBitmap extends WxObject {
     _knownSize = WxSize( width, height );
     _isSVG = true;
     final resourcePath = "${wxGetStandardPaths().getResourcesDir()}/$path";
-    _buildSVGAsset(resourcePath,width,height).then( (image ) {
-      _image = image;
-      _notify();
-    } );
+
+    _setImageAsync( _buildSVGAsset(resourcePath,width,height) );
   }
 
   Future<ui.Image> _buildSVGAsset( String path, int width, int height ) async
@@ -587,19 +613,13 @@ class WxBitmap extends WxObject {
     textPainter.dispose();
 
     _image = null;
-    _buildPicture(picture, _knownSize.x, _knownSize.y ).then( (image ) {
-      _image = image;
-      _notify();
-    } );  
+    _setImageAsync( _buildPicture(picture, _knownSize.x, _knownSize.y ) );
   } 
 
   WxBitmap._fromPicture( ui.Picture picture, int width, int height )
   {
     _knownSize = WxSize( width, height );
-    _buildPicture(picture, width, height ).then( (image ) {
-      _image = image;
-      _notify();
-    } );
+    _setImageAsync( _buildPicture(picture, width, height ) );
   }
 
   Future<ui.Image> _buildPicture( ui.Picture picture, int width, int height ) async
@@ -615,10 +635,7 @@ class WxBitmap extends WxObject {
     _knownSize = WxSize( width, height );
     _isSVG = true;
     _svg = svg;
-    _buildSVG().then( (image) {
-      _image = image;
-      _notify();
-    } );
+    _setImageAsync( _buildSVG() );
   }
 
   Future<ui.Image> _buildSVG() async
@@ -671,9 +688,16 @@ class WxBitmap extends WxObject {
   /// ```dart
   /// final image = await bitmap.convertToImage();
   /// ```
-  Future<WxImage?> convertToImage() async {
-    final image = _image;
+  Future<WxImage?> convertToImage() async
+  {
+    ui.Image? image = _image;
     if (image == null) {
+      if (_pendingImage != null) {
+        image = await _pendingImage!.timeout(Duration(milliseconds: 1000), onTimeout: () => null);
+      }
+    }
+    if (image == null)
+    {
       wxLogError( "WxBitmap.convertToImage: the bitmap is not complete yet." );
       return null;
     }
@@ -683,6 +707,21 @@ class WxBitmap extends WxObject {
       return null;
     }
     return WxImage.fromRGBA( image.width, image.height, byteData.buffer.asUint8List() );
+  }
+
+  /// Waits until the bitmap has been loaded, at most [maxMillis]
+  /// milliseconds. Returns [isOk] afterwards.
+  ///
+  /// Bitmaps are loaded or built asynchronously in wxDart Web (assets,
+  /// URLs) and wxDart Flutter (also bitmaps from a WxMemoryDC); in
+  /// wxDart Native this returns immediately. 
+  Future<bool> waitUntilOk({int maxMillis = 2000}) async
+  {
+    if (_image != null) return true;
+    final pending = _pendingImage;
+    if (pending == null) return false;
+    await pending.timeout(Duration(milliseconds: maxMillis), onTimeout: () => null);
+    return _image != null;
   }
 
   /// Returns true if the bitmap is valid.

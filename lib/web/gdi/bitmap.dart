@@ -103,6 +103,19 @@ class WxBitmap extends WxObject {
     _completer.complete(this);
   }
 
+  /// Waits until the bitmap has been loaded, at most [maxMillis]
+  /// milliseconds. Returns [isOk] afterwards.
+  ///
+  /// Bitmaps are loaded or built asynchronously in wxDart Web (assets,
+  /// URLs) and wxDart Flutter (also bitmaps from a WxMemoryDC); in
+  /// wxDart Native this returns immediately. 
+  Future<bool> waitUntilOk({int maxMillis = 2000}) async {
+    if (!_loaded && !_failed) {
+      await ready.timeout(Duration(milliseconds: maxMillis), onTimeout: () => this);
+    }
+    return _loaded;
+  }
+  
   WxMaterialIcon? _materialIcon;
   WxSize _materialIconSize = WxSize.zero;
   WxColour? _materialIconColour;
