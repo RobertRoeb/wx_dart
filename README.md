@@ -204,7 +204,14 @@ of the Dart classes as well as the C++ classes which wxDart Native uses internal
 | [dynamic](https://dart.dev/language/type-system) | [wxVariant](https://docs.wxwidgets.org/trunk/classwx_variant.html) |
 | [WxApp](https://pub.dev/documentation/wx_dart/latest/wx_dart/WxApp-class.html) | [wxApp](https://docs.wxwidgets.org/trunk/classwx_app.html) |
 
-## Window classes
+## global functions
+| Group | List of function |
+| ------------------ | ----------------- |
+| Misc | [wxFindWindowAtPoint](https://pub.dev/documentation/wx_dart/latest/wx_dart/wxFindWindowAtPoint.html), [wxGetMousePosition](https://pub.dev/documentation/wx_dart/latest/wx_dart/wxGetMousePosition.html), [wxExportDocument](https://pub.dev/documentation/wx_dart/latest/wx_dart/wxExportDocument.html), [wxLaunchDefaultBrowser](https://pub.dev/documentation/wx_dart/latest/wx_dart/wxLaunchDefaultBrowser.html) |
+| Resources | [wxLoadStringFromResource](https://pub.dev/documentation/wx_dart/latest/wx_dart/wxLoadStringFromResource.html), [wxLoadRGBAFromResource](https://pub.dev/documentation/wx_dart/latest/wx_dart/wxLoadRGBAFromResource.html), [wxLoadImageFromResource](https://pub.dev/documentation/wx_dart/latest/wx_dart/wxLoadImageFromResource.html), [wxLoadSVGFromResource](https://pub.dev/documentation/wx_dart/latest/wx_dart/wxLoadSVGFromResource.html) |
+| Logging | [wxLogMessage](https://pub.dev/documentation/wx_dart/latest/wx_dart/wxLogMessage.html), [wxLogWarning](https://pub.dev/documentation/wx_dart/latest/wx_dart/wxLogWarning.html), [wxLogError](https://pub.dev/documentation/wx_dart/latest/wx_dart/wxLogError.html), [wxLogDebug](https://pub.dev/documentation/wx_dart/latest/wx_dart/wxLogDebug.html), [wxLogStatus](https://pub.dev/documentation/wx_dart/latest/wx_dart/wxLogStatus.html) |
+| Port | [wxUsesNative](https://pub.dev/documentation/wx_dart/latest/wx_dart/wxUsesNative.html), [wxUsesHTML](https://pub.dev/documentation/wx_dart/latest/wx_dart/wxUsesHTML.html), [wxUsesFlutter](https://pub.dev/documentation/wx_dart/latest/wx_dart/wxUsesFlutter.html) |
+| Platform | [wxIsWeb](https://pub.dev/documentation/wx_dart/latest/wx_dart/wxIsWeb.html), [wxIsMSW](https://pub.dev/documentation/wx_dart/latest/wx_dart/wxIsMSW.html), [wxIsMac](https://pub.dev/documentation/wx_dart/latest/wx_dart/wxIsMac.html), [wxIsLinux](https://pub.dev/documentation/wx_dart/latest/wx_dart/wxIsLinux.html) |
 
 | Dart | C++ |
 | ------------------ | ----------------- |
