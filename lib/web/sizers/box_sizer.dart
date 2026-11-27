@@ -120,31 +120,20 @@ class WxBoxSizer extends WxSizer {
       item.informFirstDirection(_minorDirection, minorSize, -1);
     }
 
-    int totalProportion = 0;
-    int sumMinMajor = 0;
-    for (final item in shown) {
-      totalProportion += item.getProportion();
-      sumMinMajor += _major(item.getMinSizeWithBorder());
-    }
-    int remainingExtra = max(0, majorSize - sumMinMajor);
-    int remainingProportion = totalProportion;
+    // the sizes in the major direction, as in wxBoxSizer::RepositionChildren()
+    final majorSizes = _distributeMajor(shown, majorSize);
 
     int pos = 0;
-    for (final item in shown) {
+    for (int n = 0; n < shown.length; n++) {
+      final item = shown[n];
       final minSize = item.getMinSizeWithBorder();
-      int itemMajor = _major(minSize);
-      final proportion = item.getProportion();
-      if (proportion > 0 && remainingProportion > 0) {
-        final share = (remainingExtra * proportion / remainingProportion).round();
-        itemMajor += share;
-        remainingExtra -= share;
-        remainingProportion -= proportion;
-      }
+      final itemMajor = majorSizes[n];
 
       final flag = item.getFlag();
       int itemMinor = _minor(minSize);
       int minorPos = 0;
-      if ((flag & wxEXPAND) != 0) {
+      // like wxWidgets: an item too big for the minor direction is truncated
+      if ((flag & wxEXPAND) != 0 || itemMinor > minorSize) {
         itemMinor = minorSize;
       } else if (_horizontal) {
         if ((flag & wxALIGN_CENTER_VERTICAL) != 0) {
@@ -166,5 +155,71 @@ class WxBoxSizer extends WxSizer {
       item.setDimension(itemPos, _make(itemMajor, itemMinor));
       pos += itemMajor;
     }
+  }
+
+  /// Distributes [majorSize] among the [shown] items like
+  /// wxBoxSizer::RepositionChildren() in wxWidgets (without max sizes):
+  ///
+  /// * if there is not even enough space for the min sizes, the items
+  ///   without proportion get their min size (or what is left), then the
+  ///   others get theirs (or what is left), the rest gets nothing
+  /// * otherwise the whole size is shared according to the proportions;
+  ///   an item whose share would be below its min size gets its min size
+  ///   and the others share what remains
+  List<int> _distributeMajor(List<WxSizerItem> shown, int majorSize) {
+    final minMajor = [for (final item in shown) max(0, _major(item.getMinSizeWithBorder()))];
+    final sizes = List<int>.filled(shown.length, -1);
+    int remaining = majorSize;
+    int totalProportion = 0;
+    for (final item in shown) {
+      totalProportion += item.getProportion();
+    }
+
+    int minOrRemaining(int n) {
+      if (remaining <= 0) return 0;
+      final size = min(minMajor[n], remaining);
+      remaining -= size;
+      return size;
+    }
+
+    if (majorSize < minMajor.fold(0, (a, b) => a + b)) {
+      for (int n = 0; n < shown.length; n++) {
+        if (shown[n].getProportion() == 0) sizes[n] = minOrRemaining(n);
+      }
+      for (int n = 0; n < shown.length; n++) {
+        if (shown[n].getProportion() != 0) sizes[n] = minOrRemaining(n);
+      }
+      return sizes;
+    }
+
+    // fix the items without proportion, and those whose share would be too
+    // small, at their min size; each one changes the shares of the others,
+    // so start over after it
+    bool changed = true;
+    while (changed) {
+      changed = false;
+      for (int n = 0; n < shown.length; n++) {
+        if (sizes[n] != -1) continue;
+        final proportion = shown[n].getProportion();
+        if (proportion != 0) {
+          if (remaining * proportion ~/ totalProportion >= minMajor[n]) continue;
+          totalProportion -= proportion;
+        }
+        sizes[n] = minMajor[n];
+        remaining -= minMajor[n];
+        changed = true;
+        break;
+      }
+    }
+
+    // share the rest among the other items
+    for (int n = 0; n < shown.length; n++) {
+      if (sizes[n] != -1) continue;
+      final proportion = shown[n].getProportion();
+      sizes[n] = remaining * proportion ~/ totalProportion;
+      remaining -= sizes[n];
+      totalProportion -= proportion;
+    }
+    return sizes;
   }
 }
