@@ -302,9 +302,34 @@ class WxFont extends WxObject {
   late bool _underline;
   bool _strikethrough = false;
 
+  /// Returns a bold font for a heading of the given [level] (1 to 6),
+  /// relative to [wxNORMAL_FONT] with the scale of HTML headings: level 1
+  /// is twice as large, level 4 as large as and levels 5 and 6 smaller
+  /// than the normal font. Level 4 is also italic (unlike in browsers),
+  /// to tell it from bold words in normal text. Use it together with
+  /// [WxStaticText.setHeadingLevel], which marks the text as a heading.
+  static WxFont heading(int level) {
+    const scale = [2.0, 1.5, 1.17, 1.0, 0.83, 0.67];
+    final l = level.clamp(1, 6);
+    return WxFont(wxNORMAL_FONT.getPointSize() * scale[l - 1],
+        weight: wxFONTWEIGHT_BOLD,
+        style: (l == 4) ? wxFONTSTYLE_ITALIC : wxFONTSTYLE_NORMAL);
+  }
+
   /// Returns true if the font is defined
   bool isOk( ) {
     return true;
+  }
+
+  /// Returns an independent copy of this font: changing one of them (e.g.
+  /// with [setPointSize] or [makeLarger]) doesn't change the other. A
+  /// [WxFont] is an object passed by reference in Dart, while in C++ a
+  /// wxFont is copied by value.
+  WxFont clone() {
+    final font = WxFont(_pointSize,
+        family: _family, style: _style, weight: _weight, underline: _underline);
+    font._strikethrough = _strikethrough;
+    return font;
   }
 
   /// Returns size in points

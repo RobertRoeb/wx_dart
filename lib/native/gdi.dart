@@ -1347,6 +1347,15 @@ class WxFont extends WxObject {
     nativeHandle = _wxFontConstructorFromPixelSize( pixelSize.x, pixelSize.y, family, style, weight, underline );
     attachFinalizer();
   }
+  static WxFont heading(int level) {
+    const scale = [2.0, 1.5, 1.17, 1.0, 0.83, 0.67];
+    final l = level.clamp(1, 6);
+    return WxFont(wxNORMAL_FONT.getPointSize() * scale[l - 1],
+        weight: wxFONTWEIGHT_BOLD,
+        style: (l == 4) ? wxFONTSTYLE_ITALIC : wxFONTSTYLE_NORMAL);
+  }
+  // Return deep copy
+  WxFont clone() => scaled( 1.0 );
 
   bool isOk( ) {
     return _wxFontIsOk( nativeHandle  );
