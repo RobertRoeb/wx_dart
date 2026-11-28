@@ -16,7 +16,11 @@
 * Added wxExportDocument() to save, upload or share a file in the standard platform way
 * Implemented ability to derive from WxGraphicsContext classes in native and non-native code
 * Based on above, added WxPDFGraphicsContext printing framework
-* Added WxBitmap.waitUntilOk() for asynchronous bitmaps 
+* Added WxBitmap.waitUntilOk() for asynchronous bitmaps
+* Added WxFont.clone() and .heading()
+* Added WxStaticText wxST_SELECTABLE and .setHeadingLevel() to Web and Flutter port
+* Added WxWindow.getFont()
+* Changed semantics of WxWindow.setFont() to clone/deepcopy the font
 
 ## 0.9.33
 

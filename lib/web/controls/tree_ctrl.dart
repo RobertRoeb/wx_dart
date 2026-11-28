@@ -127,7 +127,7 @@ class _WxTreeModel extends WxDataViewModel {
     final node = item.getID() as _WxTreeNode;
     if (!node.bold && node.textColour == null && node.backgroundColour == null) return null;
     WxFont? font;
-    if (node.bold) font = WxFont( _tree.getFont().getPointSize(), weight: wxFONTWEIGHT_BOLD );
+    if (node.bold) font = WxFont( _tree._effectiveFont.getPointSize(), weight: wxFONTWEIGHT_BOLD );
     return WxDataViewItemAttr( node.textColour, font, node.backgroundColour );
   }
 

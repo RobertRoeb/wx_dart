@@ -904,9 +904,24 @@ class WxWindow extends WxEvtHandler {
 
   /// Sets the font of the window. This can have different effects in different
   /// controls. Be careful with different default font sizes on different platforms.
+  ///
+  /// The window keeps a copy: changing [font] afterwards
+  /// (e.g. with [WxFont.makeLarger]) doesn't change the window.
+  /// 
+  /// see [getFont]
   void setFont( WxFont? font ) {
-    _font = font;
+    _font = font?.clone();
     _setState();
+  }
+
+  /// Returns a copy of the font of the window (or of [wxNORMAL_FONT]).
+  /// 
+  /// Does not call [WxFont.clone] so be careful not to change the font
+  /// in place, or call [WxFont.clone] in your code.
+  /// 
+  /// see [setFont]
+  WxFont getFont() {
+    return (_font ?? wxNORMAL_FONT);
   }
 
   /// Returns the size if [text] when using the current font

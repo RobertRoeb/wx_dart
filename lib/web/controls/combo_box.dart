@@ -159,7 +159,7 @@ class WxComboBox extends WxItemContainer {
   WxSize _doGetBestSize() {
     // wide enough for the longest item
     int width = 60;
-    final font = getFont()._css();
+    final font = _effectiveFont._css();
     for (final item in _items) {
       width = max( width, _jsMeasureText( font, item.text ).w.ceil() );
     }

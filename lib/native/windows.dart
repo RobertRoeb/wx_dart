@@ -375,6 +375,10 @@ typedef _WxWindowSetFontNative = Void Function( Pointer, Pointer  );
 typedef _WxWindowSetFont = void Function( Pointer, Pointer  );
 late _WxWindowSetFont _wxWindowSetFont;
 
+typedef _WxWindowGetFontNative = Pointer Function( Pointer  );
+typedef _WxWindowGetFont = Pointer Function( Pointer  );
+late _WxWindowGetFont _wxWindowGetFont;
+
 typedef _WxWindowSetToolTipNative = Void Function( Pointer, Pointer<Utf8>  );
 typedef _WxWindowSetToolTip = void Function( Pointer, Pointer<Utf8>  );
 late _WxWindowSetToolTip _wxWindowSetToolTip;
@@ -900,6 +904,11 @@ class WxWindow extends WxEvtHandler {
 
   void setFont( WxFont? font ) {
     _wxWindowSetFont( nativeHandle, (font == null) ? nullptr : font.nativeHandle );
+  }
+
+  WxFont getFont( ) {
+    final returnedNativeHandle = _wxWindowGetFont( nativeHandle  );
+    return WxFont.fromHandle( returnedNativeHandle );
   }
 
   void setToolTip( String tip ) {
@@ -2567,6 +2576,9 @@ void setupWxWindows( DynamicLibrary dylib )
 
   final wxWindowSetFontPtr = dylib.lookup <NativeFunction<_WxWindowSetFontNative>>('wxWindowSetFont');
   _wxWindowSetFont = wxWindowSetFontPtr.asFunction<_WxWindowSetFont>();
+
+  final wxWindowGetFontPtr = dylib.lookup <NativeFunction<_WxWindowGetFontNative>>('wxWindowGetFont');
+  _wxWindowGetFont = wxWindowGetFontPtr.asFunction<_WxWindowGetFont>();
 
   final wxWindowSetToolTipPtr = dylib.lookup <NativeFunction<_WxWindowSetToolTipNative>>('wxWindowSetToolTip');
   _wxWindowSetToolTip = wxWindowSetToolTipPtr.asFunction<_WxWindowSetToolTip>();

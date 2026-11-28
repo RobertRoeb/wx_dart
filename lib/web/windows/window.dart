@@ -759,20 +759,28 @@ class WxWindow extends WxEvtHandler {
 
   /// Sets the font of the window. This can have different effects in different
   /// controls. Be careful with different default font sizes on different platforms.
+  ///
+  /// As in wxWidgets, the window keeps a copy: changing [font] afterwards
+  /// (e.g. with [WxFont.makeLarger]) doesn't change the window.
   void setFont(WxFont? font) {
-    _font = font;
+    _font = font?.clone();
     _jsSetFont(_handle, font == null ? "" : font._css());
     _labelOrFontChanged();
     refresh();
   }
 
+  /// Returns a copy of the font of the window (or of [wxNORMAL_FONT]):
+  /// changing it doesn't change the window, call [setFont] for that.
   WxFont getFont() {
-    return _font ?? wxNORMAL_FONT;
+    return _effectiveFont;
   }
+
+  /// The font used by the window, without copying it (for internal use)
+  WxFont get _effectiveFont => _font ?? wxNORMAL_FONT;
 
   /// Returns the size if [text] when using the current font
   WxSize getTextExtent(String text) {
-    final m = _jsMeasureText(getFont()._css(), text);
+    final m = _jsMeasureText(_effectiveFont._css(), text);
     return WxSize(m.w.ceil(), (m.ascent + m.descent).ceil());
   }
 

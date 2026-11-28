@@ -50,7 +50,7 @@ class WxHyperlinkCtrl extends WxControl {
     String align = "left";
     if (hasFlag(wxHL_ALIGN_CENTRE)) align = "center";
     if (hasFlag(wxHL_ALIGN_RIGHT)) align = "right";
-    _jsSetTextAlign(_handle, align, false);
+    _jsSetTextAlign(_handle, align, false, false);
     setLabel(label);
     _update();
   }

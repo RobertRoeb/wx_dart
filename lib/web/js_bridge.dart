@@ -43,7 +43,10 @@ external _JsSize _jsClientSize(int id);
 external void _jsSetLabel(int id, String text);
 
 @JS('wxc.setTextAlign')
-external void _jsSetTextAlign(int id, String align, bool wrap);
+external void _jsSetTextAlign(int id, String align, bool wrap, bool selectable);
+
+@JS('wxc.setHeading')
+external void _jsSetHeading(int id, int level);
 
 @JS('wxc.show')
 external void _jsShow(int id, bool show);

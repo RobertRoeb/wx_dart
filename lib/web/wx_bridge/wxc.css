@@ -221,6 +221,11 @@ html, body {
   user-select: none;
 }
 .wxc-statictext.wxc-wrap { white-space: pre-wrap; }
+/* wxST_SELECTABLE: "auto" would still behave like the "none" of the parents,
+   so the text has to allow the selection explicitly */
+/* setHeadingLevel(): <h1> to <h6> with the look of the static text */
+.wxc-statictext > .wxc-heading { margin: 0; padding: 0; font: inherit; color: inherit; }
+.wxc-statictext.wxc-selectable { user-select: text; -webkit-user-select: text; cursor: text; }
 
 /* text controls */
 .wxc-text {
