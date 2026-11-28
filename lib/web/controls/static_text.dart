@@ -18,6 +18,11 @@ part of '../../wx_dart.dart';
 /// | wxALIGN_CENTRE_HORIZONTAL | centred |
 /// | wxALIGN_RIGHT | right aligned |
 /// | wxST_WRAP | wrap text at the window width |
+/// | wxST_SELECTABLE | the text can be selected with the mouse and copied |
+///
+/// With [setHeadingLevel], the text becomes a heading (<h1> to <h6>) for
+/// search engines and screen readers, without changing its look; use
+/// [WxFont.heading] for a matching font.
 ///
 /// Without wxST_WRAP (the default), the text is never wrapped (only at
 /// "\n") and the control is as wide as its longest line, as in wxDart
@@ -47,6 +52,20 @@ class WxStaticText extends WxControl {
     _labelOrFontChanged();
   }
 
+  int _headingLevel = 0;
+
+  /// Marks the text as a heading of the given [level] (1 to 6), or as normal
+  /// text with 0: in wxDart Web an <h1> to <h6> element, in wxDart Flutter
+  /// a heading for screen readers (and Flutter web), no effect in wxDart
+  /// Native so far. The look doesn't change, see [WxFont.heading].
+  void setHeadingLevel(int level) {
+    _headingLevel = (level >= 1 && level <= 6) ? level : 0;
+    _jsSetHeading(_handle, _headingLevel);
+  }
+
+  /// Returns the level set with [setHeadingLevel], 0 if not a heading
+  int getHeadingLevel() => _headingLevel;
+
   /// Wraps the text at [width] pixels
   void wrap(int width) {
     _style |= wxST_WRAP;
@@ -68,8 +87,18 @@ class WxStaticText extends WxControl {
   }
 
   void _updateAlignment() {
-    _jsSetTextAlign(_handle, _align(), _fixedWrap || _wrapped);
+    _jsSetTextAlign(_handle, _align(), _fixedWrap || _wrapped, (_style & wxST_SELECTABLE) != 0);
   }
+
+  /// Also switches wxST_SELECTABLE on or off.
+  @override
+  void setWindowStyleFlag(int style) {
+    super.setWindowStyleFlag(style);
+    _updateAlignment();
+  }
+
+  @override
+  void setWindowStyle(int style) => setWindowStyleFlag(style);
 
   @override
   bool informFirstDirection(int direction, int size, int availableOtherDir) {

@@ -589,12 +589,14 @@ late _WxStaticTextIsEllipsized _wxStaticTextIsEllipsized;
 /// | wxST_ELLIPSIZE_START | 0x0004 |
 /// | wxST_ELLIPSIZE_MIDDLE | 0x0008 |
 /// | wxST_ELLIPSIZE_END | 0x0010 |
+/// | wxST_SELECTABLE | 0x0020 |
 
 const int wxST_NO_AUTORESIZE = 0x0001;
 const int wxST_WRAP = 0x0002;
 const int wxST_ELLIPSIZE_START = 0x0004;
 const int wxST_ELLIPSIZE_MIDDLE = 0x0008;
 const int wxST_ELLIPSIZE_END = 0x0010;
+const int wxST_SELECTABLE = 0x0020;
 
 class WxStaticText extends WxControl {
   WxStaticText._defaultConstructor() : super._defaultConstructor();
@@ -609,6 +611,11 @@ class WxStaticText extends WxControl {
     ownsHandle = false;
     _postCreation();
   }
+  int _headingLevel = 0;
+  void setHeadingLevel( int level ) {
+    _headingLevel = (level >= 1 && level <= 6) ? level : 0;
+  }
+  int getHeadingLevel() => _headingLevel;
 
   void wrap( int width ) {
     _wxStaticTextWrap( nativeHandle, width );
