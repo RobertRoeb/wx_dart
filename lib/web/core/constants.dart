@@ -137,6 +137,7 @@ const int wxST_WRAP = 0x0002;
 const int wxST_ELLIPSIZE_START = 0x0004;
 const int wxST_ELLIPSIZE_MIDDLE = 0x0008;
 const int wxST_ELLIPSIZE_END = 0x0010;
+const int wxST_SELECTABLE = 0x0020;
 
 // --- button styles (any_button.dart)
 const int wxBU_LEFT = 0x0040;
